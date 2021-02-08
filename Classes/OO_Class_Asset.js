@@ -1,1 +1,8 @@
-//CLASS ASSET
+function Tree(){
+
+
+
+
+
+
+}
