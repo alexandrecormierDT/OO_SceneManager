@@ -25,24 +25,13 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 OO.filter_string =function(str){
 
 	var forbidden_char = [];
-	
-	var clean_str = str;
-		
+	var clean_str = str;	
 	return  clean_str;
-	
-	
-}
 
+}
 
 OO.log = new OO.Log("scenemanager_");
 
-
-
-function OO_main(){
-	
-	MessageLog.trace("oo_main");
-
-}
 
 function exportViews(){
 	
@@ -57,7 +46,5 @@ function exportViews(){
 		S.views.export_views();
 		
 	}
-	
 
-	
 }
