@@ -28,20 +28,39 @@ OO.ViewManager = function(_S){
 				
 				var curTLM = TLM_list[t];
 				
+				MessageLog.trace("NAME");
+				MessageLog.trace(curTLM.name);
 				
+				if(isViewName(curTLM.name)){
+					
+					var nview = new OO.View();
+					
+					nview.load(TLM_list[t]);
+					
+					list.push(nview);
 				
-				MessageLog.trace("TLM = "+TLM_list[t]);
+					
+				}
 				
-				var nview = new OO.View();
-				
-				nview.load(TLM_list[t]);
-				
-				list.push(nview);
-				
-				MessageLog.trace(nview.name);
+
 			
 			}
 
+		
+		
+	}
+	
+	var isViewName = function (TLM_name){
+		
+		var split1 = TLM_name.split("_");
+		
+		if(split1[0] == "VIEW"){
+			
+			return true;
+		
+		}
+		
+		return false;
 		
 		
 	}

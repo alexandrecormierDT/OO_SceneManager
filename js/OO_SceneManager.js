@@ -17,7 +17,16 @@ include("P:/pipeline/alexdev/OO_SceneManager/js/Classes/OO_Class_Stage.js");
 include("P:/pipeline/alexdev/OO_SceneManager/js/Classes/OO_Class_ViewManager.js");
 include("P:/pipeline/alexdev/OO_SceneManager/js/Classes/OO_Class_View.js");
 
+OO.filter_string =function(str){
 
+	var forbidden_char = [];
+	
+	var clean_str = str;
+		
+	return  clean_str;
+	
+	
+}
 
 
 

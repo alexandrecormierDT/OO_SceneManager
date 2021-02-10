@@ -4,16 +4,15 @@ MessageLog.trace("CLASS OO_View");
 
 OO.View = function(TLM){
 	
-	this.version_name = "unamed_version"; 
+	this.version = "unnamedversion"; 
 	
 	this.exportFrame = 0;
 	
 	this.exportLength = 0; 
 	
-	this.asset = "unamed_asset";
-	
-	this.task = "unamed_task";
-	
+	this.asset = "unnamedasset";
+	 
+	this.task = "unnamedtask";
 	
 	this.exportFormat = "png";
 	
@@ -22,8 +21,6 @@ OO.View = function(TLM){
 	this.exportCameraFrame = false;
 	
 	this.frameScale = 1;
-
-	
 	
 	// reading data from an xml elment object "timelineMarker"
 	
@@ -38,19 +35,20 @@ OO.View = function(TLM){
 			MessageLog.trace(TLM.name)
 			MessageLog.trace(TLM.note)
 
-			this.exportFrame = TLM.markerStart;
-			this.exportLength = TLM.markerLength;
-			this.version_name =TLM.name;
+			this.exportFrame = filter(TLM.markerStart);
+			this.exportLength = filter(TLM.markerLength);
 			
-			var note =parse_note(TLM.note);
+			var note = parse_note(TLM.note);
 			
 			if(note!=false){
 
-				this.asset = note.hasOwnProperty('asset') ? note.asset : this.asset ; 
-				this.task = note.hasOwnProperty('task') ? note.task : this.task ;				
-				this.frameScale = note.hasOwnProperty('frameScale') ? parseFloat(note.frameScale) : this.frameScale;
-				this.exportBackground = note.hasOwnProperty('exportBackground') ? (note.exportBackground == "yes"): this.exportBackground;
-				this.exportCameraFrame = note.hasOwnProperty('exportCameraFrame') ? (note.exportCameraFrame == "yes") : this.exportCameraFrame;		
+				this.version = filter(note.hasOwnProperty('version') ? note.version : this.version) ; 
+				this.asset = filter(note.hasOwnProperty('asset') ? note.asset : this.asset) ; 
+				this.task = filter(note.hasOwnProperty('task') ? note.task : this.task) ;				
+				this.frameScale = filter(note.hasOwnProperty('frameScale') ? parseFloat(note.frameScale) : this.frameScale);
+				this.exportBackground = filter(note.hasOwnProperty('exportBackground') ? (note.exportBackground == "yes"): this.exportBackground);
+				this.exportCameraFrame = filter(note.hasOwnProperty('exportCameraFrame') ? (note.exportCameraFrame == "yes") : this.exportCameraFrame);		
+				this.format = filter_format(note.hasOwnProperty('format') ? note.format : this.exportCameraFrame);		
 				
 			}
 			
@@ -62,17 +60,38 @@ OO.View = function(TLM){
 		
 	}
 	
-	this.get_file_name = function(){
+	var filter = function(str){
 	
-		return this.asset+"_"+this.task+"_"+this.version_name+"."+this.exportFromat;
+		return OO.filter_string(str);
 		
 	}
+	
+	var filter_format = function(f){
+		
+		if(allowed_formats.indexOf(f)!=-1){
+		
+			return f;
+			
+		}
+		
+		return allowed_formats[0];
+		
+	}
+	
+	this.get_file_name = function(){
+	
+		return this.asset+"_"+this.task+"_"+this.version+"."+this.exportFromat;
+		
+	}
+	
+	var allowed_formats = ['png','jpg','tga'];
 	
 	var parse_note = function(note){
 		/*
 		
 		note content exemple : 
 		
+		version:QF
 		asset:ch_billy
 		task:turn
 		exportBackground:yes
