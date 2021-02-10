@@ -79,9 +79,20 @@ OO.ViewManager = function(_S){
 		
 	}
 	
+	
+	
+	this.exportDialog = function(){
+		
+		
+		
+		
+		
+		
+	}
+	
+	var selectedViews = [];
+	
 
-	
-	
 	this.export_views = function(){
 		
 		MessageLog.trace("LIST");
