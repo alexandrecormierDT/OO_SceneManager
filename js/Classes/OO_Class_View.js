@@ -22,6 +22,11 @@ OO.View = function(TLM){
 	
 	this.frameScale = 1;
 	
+	this.is_selected = false;
+	
+	this.name = "VIEW"
+
+	
 	// reading data from an xml elment object "timelineMarker"
 	
 	//exmple of TLM element in xml :  <timelineMarker markerStart="4" markerLength="0" colour="#FF0000FF" note="hello" name="C_marker"/>
@@ -35,8 +40,10 @@ OO.View = function(TLM){
 			MessageLog.trace(TLM.name)
 			MessageLog.trace(TLM.note)
 
+			this.name = filter(TLM.name);
 			this.exportFrame = filter(TLM.markerStart);
 			this.exportLength = filter(TLM.markerLength);
+			
 			
 			var note = parse_note(TLM.note);
 			
@@ -48,7 +55,7 @@ OO.View = function(TLM){
 				this.frameScale = filter(note.hasOwnProperty('frameScale') ? parseFloat(note.frameScale) : this.frameScale);
 				this.exportBackground = filter(note.hasOwnProperty('exportBackground') ? (note.exportBackground == "yes"): this.exportBackground);
 				this.exportCameraFrame = filter(note.hasOwnProperty('exportCameraFrame') ? (note.exportCameraFrame == "yes") : this.exportCameraFrame);		
-				this.format = filter_format(note.hasOwnProperty('format') ? note.format : this.exportCameraFrame);		
+				this.exportFormat = note.hasOwnProperty('format') ? filter_format(note.exportFormat) : this.exportFormat;		
 				
 			}
 			
@@ -80,7 +87,7 @@ OO.View = function(TLM){
 	
 	this.get_file_name = function(){
 	
-		return this.asset+"_"+this.task+"_"+this.version+"."+this.exportFromat;
+		return this.asset+"_"+this.task+"_"+this.version+"."+this.exportFormat;
 		
 	}
 	
@@ -138,6 +145,7 @@ OO.View = function(TLM){
 		
 
 	}
+	
 
   
 }

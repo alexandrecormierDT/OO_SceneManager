@@ -14,19 +14,19 @@ OO.ViewManager = function(_S){
 	}
 	
 	
-	var list = [];
+	var list_of_views = [];
 	
 	var output_dir = "";
 	
 
 	this.load = function(_stage){
 		
-		var TLM_list=_stage.get_timelinemarkers();
+		var TLM_list_of_views=_stage.get_timelinemarkers();
 
 			
-			for(var t in TLM_list){
+			for(var t in TLM_list_of_views){
 				
-				var curTLM = TLM_list[t];
+				var curTLM = TLM_list_of_views[t];
 				
 				MessageLog.trace("NAME");
 				MessageLog.trace(curTLM.name);
@@ -35,9 +35,9 @@ OO.ViewManager = function(_S){
 					
 					var nview = new OO.View();
 					
-					nview.load(TLM_list[t]);
+					nview.load(TLM_list_of_views[t]);
 					
-					list.push(nview);
+					list_of_views.push(nview);
 				
 					
 				}
@@ -67,15 +67,19 @@ OO.ViewManager = function(_S){
 	
 	this.set_output_dir = function(_path){
 		
-		
-		
 		output_dir = _path;
 	}
 	
 	var get_export_dir = function(view){
 		
-		return  output_dir+"\\"+view.asset+"\\"+view.task+"\\";
+		return  output_dir+"/"+view.asset+"/"+view.task+"/";
 
+		
+	}
+	
+	var get_export_path = function(view){
+		
+		return get_export_dir(view) + view.get_file_name();
 		
 	}
 	
@@ -94,20 +98,21 @@ OO.ViewManager = function(_S){
 	
 
 	this.export_views = function(){
-		
-		MessageLog.trace("LIST");
-		MessageLog.trace(list.length);
 	
-		for(var v in list){
+		for(var v in list_of_views){
 			
-				var CV = list[v];
+				var CV = list_of_views[v];
 				
-				var final_path = get_export_dir(CV) + CV.get_file_name();
+				if(CV.is_selected){
+					
+					var final_path = get_export_dir(CV) + CV.get_file_name();
+					
+					var asset_dir = new $.oFolder(get_export_dir(CV)).create();
+		
+					//openHamrony method of oScene : exportLayoutImage(path, includedNodes, exportFrame,exportCameraFrame,exportBackground,frameScale)
+					OO.doc.exportLayoutImage(final_path,[],CV.exportFrame,CV.exportBackground,CV.exportCameraFrame,CV.frameScale);
 				
-				var asset_dir = new $.oFolder(get_export_dir(CV)).create();
-	
-				//openHamrony method of oScene : exportLayoutImage(path, includedNodes, exportFrame,exportCameraFrame,exportBackground,frameScale)
-				OO.doc.exportLayoutImage(final_path,[],CV.exportFrame,CV.exportBackground,CV.exportCameraFrame,CV.frameScale);
+				}
 				
 			
 		}
@@ -118,7 +123,47 @@ OO.ViewManager = function(_S){
 
 	this.get_views = function(){
 		
-			return list; 
+			return list_of_views; 
+		
+	}
+	
+	this.InputDialog = function(){
+		
+		var dialog = new Dialog();
+		dialog.title = "Export Views";
+		dialog.width = 600;
+		
+		var CB_list = [];
+		
+		for (var v in list_of_views){
+			
+			var curView = list_of_views[v];
+
+			var Vpath = get_export_path(curView);
+			
+			var VCB = new CheckBox();
+			VCB.checked = false;
+			VCB.text = curView.name+"  Frame  "+curView.exportFrame+"  -->  "+Vpath;
+			dialog.add(VCB)
+			
+			CB_list.push(VCB);
+			
+		}	
+		
+		if ( dialog.exec() ){
+			
+			for (var v in list_of_views){
+				
+				var curView = list_of_views[v];
+				
+				curView.is_selected = CB_list[v].checked;
+				
+				
+			}				
+
+			return true;
+			
+		}
 		
 	}
 	

@@ -7,6 +7,9 @@ var OO = {}
 OO.doc = $.scn;
 
 
+// FOLDER should be declared in previous include : OO_SceneManager_proto or master    enable to switch from folders proto(dev) and master(for users) 
+
+
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Log.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Stage.js");
@@ -48,8 +51,13 @@ function exportViews(){
 	MessageLog.trace("oo_main");
 	
 	S.init();
-	S.views.set_output_dir("P:/projects/billy/views/");
-	S.views.export_views();
+	S.views.set_output_dir("P:/projects/billy/views");
+	if(S.views.InputDialog()){
+		
+		S.views.export_views();
+		
+	}
+	
 
 	
 }
