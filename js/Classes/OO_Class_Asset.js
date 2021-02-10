@@ -2,9 +2,12 @@
 
 MessageLog.trace("CLASS OO_ASSET")
 
-function OO_Asset(){
+OO.Asset = function(){
 	
+	this.list = [];
 	
-  
-  
+	this.load=function(){
+		
+	}	
+	
 }

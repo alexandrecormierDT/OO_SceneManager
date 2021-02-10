@@ -2,13 +2,16 @@
 
 MessageLog.trace("CLASS OO_AssetManager")
 
-function OO_AssetManager(){
+OO.AssetManager = function(_S){
+	
+
+	
+	var S = _S; 
 	
 	this.list = [];
 	
 	this.load=function(){
 		
-	}
+	}	
 	
-  
 }

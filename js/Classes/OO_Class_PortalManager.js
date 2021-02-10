@@ -2,7 +2,8 @@
 
 MessageLog.trace("CLASS OO_PortalManager")
 
-function OO_PortalManager(){
+function OO_PortalManager(_S){
+	
 	
 	this.list = [];
 	
