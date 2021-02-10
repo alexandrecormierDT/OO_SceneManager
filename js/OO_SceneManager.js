@@ -7,17 +7,17 @@ var OO = {}
 OO.doc = $.scn;
 
 
-include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_SceneManager.js");
-include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_Log.js");
-include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_Stage.js");
-//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_Asset.js");
-//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_AssetManager.js");
-//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_Tree.js");
-//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_TreeManager.js");
-//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_Portal.js");
-//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_PortalManager.js");
-include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_ViewManager.js");
-include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager/js/Classes/OO_Class_View.js");
+include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_SceneManager.js");
+include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_Log.js");
+include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_Stage.js");
+//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_Asset.js");
+//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_AssetManager.js");
+//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_Tree.js");
+//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_TreeManager.js");
+//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_Portal.js");
+//include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_PortalManager.js");
+include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_ViewManager.js");
+include("P:/pipeline/alexdev/"+folder+"/OO_SceneManager_"+folder+"/js/Classes/OO_Class_View.js");
 
 OO.filter_string =function(str){
 
