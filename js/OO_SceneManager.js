@@ -6,7 +6,9 @@ var OO = {}
 //OpenHamrony class
 OO.doc = $.scn;
 
+
 include("P:/pipeline/alexdev/OO_SceneManager/js/Classes/OO_Class_SceneManager.js");
+include("P:/pipeline/alexdev/OO_SceneManager/js/Classes/OO_Class_Log.js");
 include("P:/pipeline/alexdev/OO_SceneManager/js/Classes/OO_Class_Stage.js");
 //include("P:/pipeline/alexdev/OO_SceneManager/js/Classes/OO_Class_Asset.js");
 //include("P:/pipeline/alexdev/OO_SceneManager/js/Classes/OO_Class_AssetManager.js");
@@ -29,6 +31,9 @@ OO.filter_string =function(str){
 }
 
 
+OO.log = new OO.Log("scenemanager_");
+
+
 
 function OO_main(){
 	
@@ -36,7 +41,7 @@ function OO_main(){
 
 }
 
-function OO_exportViews(){
+function exportViews(){
 	
 	var S = new OO.SceneManager();
 	
