@@ -13,6 +13,8 @@ OO.ViewManager = function(_S){
 	
 	}
 	
+	this.noviews = true;
+	
 	
 	var list_of_views = [];
 	
@@ -21,15 +23,27 @@ OO.ViewManager = function(_S){
 
 	this.load = function(_stage){
 		
-		var TLM_list_of_views=_stage.get_timelinemarkers();
+			var TLM_list_of_views=_stage.get_TLM();
+			
+			if(TLM_list_of_views.length == 0){
+				
+				OO.log.add('no views detected in the scene','ERROR');
+				
+				this.noviews = true;
+				
+				return; 
+			}else{
+				
+				this.noviews = false;
 
 			
+			}
+			
+			
+
 			for(var t in TLM_list_of_views){
 				
 				var curTLM = TLM_list_of_views[t];
-				
-				MessageLog.trace("NAME");
-				MessageLog.trace(curTLM.name);
 				
 				if(isViewName(curTLM.name)){
 					
@@ -39,14 +53,10 @@ OO.ViewManager = function(_S){
 					
 					list_of_views.push(nview);
 				
-					
 				}
 				
-
-			
 			}
 
-		
 		
 	}
 	
@@ -82,18 +92,7 @@ OO.ViewManager = function(_S){
 		return get_export_dir(view) + view.get_file_name();
 		
 	}
-	
-	
-	
-	this.exportDialog = function(){
-		
-		
-		
-		
-		
-		
-	}
-	
+
 	var selectedViews = [];
 	
 

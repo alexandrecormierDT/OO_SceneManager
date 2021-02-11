@@ -35,16 +35,18 @@ OO.log = new OO.Log("scenemanager_");
 
 function exportViews(){
 	
-	var S = new OO.SceneManager();
+	MessageLog.trace("exportViews");
 	
-	MessageLog.trace("oo_main");
+	var S = new OO.SceneManager();
 	
 	S.init();
 	S.views.set_output_dir("P:/projects/billy/views");
-	if(S.views.InputDialog()){
-		
-		S.views.export_views();
-		
+	
+	if(S.views.noviews == false){
+		if(S.views.InputDialog()){
+			S.views.export_views();
+		}		
 	}
+
 
 }

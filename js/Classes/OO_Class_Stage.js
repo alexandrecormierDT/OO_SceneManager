@@ -1,35 +1,73 @@
 // CLASS OO_Stage
 MessageLog.trace("CLASS OO_Stage")
 
+
 OO.Stage = function (){
 	
 	
-	var xmlelements; 
+	var XMLobj; 
 
 	var timelinemarkers = [];
 	
 	//var parser = new marknote.Parser(); 
 	
-	this.load_xml = function(xmlobject){
+	this.load_xmlobj = function(xmlobject){
 		
-		xmlelements = xmlobject.children[0].children;
-		
-		timelinemarkers = get_elements_by_tag('timelineMarker');
+		if(typeof(xmlobject) == "object"){
 
+			XMLobj = xmlobject.children[0].children;
+			
+			timelinemarkers = get_elements_by_tag('timelineMarker');
+		
+			return true;
+
+		}else{
+		
+			return false;
+			
+		}
 	}
 	
+	this.parse_xml = function(string){
+		
+		//external parser , on which i deactivated node.js functions to make it completely without dependencies
+		//
+		var XML = require("P:/pipeline/extra_soft/pixl-xml-master/modified_xml.js");
+		XMLobj = XML.parse(string,{ preserveAttributes: true });
+
+	}	
 	
-	this.get_timelinemarkers = function(){
+	var find_TLM_in_xml = function(str){
 		
 		
-		MessageLog.trace(timelinemarkers);
-		return timelinemarkers;
+		
+	}
+	
+	this.get_TLM = function(){
+		
+		
+		var timelineMarkers = XMLobj.timelineMarkers.timelineMarker;
+		
+		var list = [];
+		
+		for(var t in timelineMarkers){
+			
+			var curTLM = timelineMarkers[t];
+			MessageLog.trace(Object.getOwnPropertyNames(curTLM));
+			MessageLog.trace(Object.getOwnPropertyNames(curTLM._Attribs));
+			
+			list.push(curTLM._Attribs);
+			
+		}
+		
+
+		return list
 		
 	}
 	
 	var get_elements_by_tag = function( _tag ){
 	
-		var current_list = xmlelements;
+		var current_list = XMLobj;
 		
 		var elements_list = [];
 		

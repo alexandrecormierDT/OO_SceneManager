@@ -14,10 +14,10 @@ OO.SceneManager = function(){
 	
 	this.init = function(){
 		
-		var xstageDOM =  getDOM();
+		var xstageDOM = new $.oFile(OO.doc.stage).read();
 		
 		//we feed the scene xstage to the class
-		this.stage.load_xml(xstageDOM);
+		this.stage.parse_xml(xstageDOM);
 		
 		this.views.load(this.stage);
 	
@@ -25,6 +25,7 @@ OO.SceneManager = function(){
 	}
 	
 	
+	//obsolete
 
 	var getDOM = function(){
 		
@@ -32,15 +33,25 @@ OO.SceneManager = function(){
 		
 		var dom_object ="";
 	
-		var stageFile = new $.oFile(OO.doc.stage);
+		/*var stageFile = new $.oFile(OO.doc.stage);
 		
 		var content = stageFile.read();
 		
 		var newFile = new $.oFile(OO.doc.path+"/stage_dom.xml");		
 		
-		newFile.write(content,false);
+		MessageLog.trace(newFile);
 		
-		var xmlcontent =  newFile.parseAsXml();
+		newFile.write(content,false);*/
+		
+		var stageFile = new $.oFile(OO.doc.stage);
+		MessageLog.trace(stageFile);
+		var xmlcontent =  stageFile.parseAsXml();
+		
+		MessageLog.trace("XML OBJECT : ");
+		MessageLog.trace(Object.getOwnPropertyNames(xmlcontent));
+		MessageLog.trace(xmlcontent.children.length);
+		MessageLog.trace(Object.getOwnPropertyNames(xmlcontent.children));
+		
 		
 		dom_object =  xmlcontent;
 		
