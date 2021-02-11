@@ -22,20 +22,26 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ViewManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_View.js");
 
+//FILTERS
+
 OO.filter_string =function(str){
 
-	var forbidden_char = [];
+	var forbidden_chars = [];
 	var clean_str = str;	
 	return  clean_str;
 
 }
 
+//LOG
+
 OO.log = new OO.Log("scenemanager_");
 
 
-function exportViews(){
+//SCRIPT EXPIEW
+
+function Expiew(){
 	
-	MessageLog.trace("exportViews");
+	MessageLog.trace("Expiew");
 	
 	var S = new OO.SceneManager();
 	
