@@ -32,6 +32,7 @@ OO.ViewManager = function(_S){
 				this.noviews = true;
 				
 				return; 
+				
 			}else{
 				
 				this.noviews = false;

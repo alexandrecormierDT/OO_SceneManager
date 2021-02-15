@@ -2,47 +2,30 @@
 MessageLog.trace("CLASS OO_Stage")
 
 
-OO.Stage = function (){
+OO.Stage = function (_S){
 	
+	//reference to the singleton
+	var S = _S;
+	
+	if(_S == ""){
+	
+		S = new OO.SceneManager();
+	
+	}
 	
 	var XMLobj; 
 
 	var timelinemarkers = [];
 	
-	//var parser = new marknote.Parser(); 
-	
-	this.load_xmlobj = function(xmlobject){
-		
-		if(typeof(xmlobject) == "object"){
-
-			XMLobj = xmlobject.children[0].children;
-			
-			timelinemarkers = get_elements_by_tag('timelineMarker');
-		
-			return true;
-
-		}else{
-		
-			return false;
-			
-		}
-	}
-	
 	this.parse_xml = function(string){
 		
 		//external parser , on which i deactivated node.js functions to make it completely without dependencies
 		//
-		var XML = require("P:/pipeline/extra_soft/pixl-xml-master/modified_xml.js");
-		XMLobj = XML.parse(string,{ preserveAttributes: true });
+		
+		XMLobj = OO.XML.parse(string,{ preserveAttributes: true });
 
 	}	
-	
-	var find_TLM_in_xml = function(str){
-		
-		
-		
-	}
-	
+
 	this.get_TLM = function(){
 		
 		
@@ -53,17 +36,17 @@ OO.Stage = function (){
 		for(var t in timelineMarkers){
 			
 			var curTLM = timelineMarkers[t];
-			MessageLog.trace(Object.getOwnPropertyNames(curTLM));
-			MessageLog.trace(Object.getOwnPropertyNames(curTLM._Attribs));
-			
 			list.push(curTLM._Attribs);
 			
 		}
 		
 
-		return list
+		return list;
 		
 	}
+	
+	//obsolete
+
 	
 	var get_elements_by_tag = function( _tag ){
 	
