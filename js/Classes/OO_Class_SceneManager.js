@@ -87,25 +87,34 @@ OO.SceneManager = function(){
 
 	}
 	
-	this.import_tpl = function(_path){
+	this.import_tpl = function(_code,_path){
+		
 		
 		//we create a group with a the path of the tpl as name. 
-		var import_group =  OO.doc.root.addGroup(_path, false, false);    
+		var import_group =  OO.doc.root.addGroup(_path, false, false); 
+		
+		import_group.createAttribute("import_path", "string", "path", false)
 		
 		var myPasteOptions = copyPaste.getCurrentPasteOptions();
 		
 		var nodes = import_group.importTemplate(_path,false,true);
 		
+		this.trees.add_layout_peg(import_group);	
+		
 		return nodes; 
 
 	}
 	
-	this.import_psd = function(_path){
+	this.import_psd = function(_code,_path){
 		
 		//importPSD(path, separateLayers, addPeg, addComposite, alignment, nodePosition){Array.<$.oNode>}
-		var import_group =  OO.doc.root.addGroup(_path, false, false);  
+		var import_group =  OO.doc.root.addGroup(_code, false, false);  
+		
+		import_group.createAttribute("import_path", "string", "path", true)
 		
 		var nodes = import_group.importPSD(_path,true,false,false,"ASIS");  
+		
+		this.trees.add_layout_peg(import_group);
 
 		return nodes; 		
 		

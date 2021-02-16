@@ -99,7 +99,7 @@ function Impog(){
 				final_path = OO.library_path+apath;
 				
 
-				var nodes = S.import_psd(final_path);
+				var nodes = S.import_psd(asset_code,final_path);
 				
 				var bg_tree = S.trees.add(asset_code,nodes)
 	
@@ -114,7 +114,7 @@ function Impog(){
 			
 			case ('Character'):
 			
-				//S.import_tpl(final_path);
+				//S.import_tpl(asset_code,final_path);
 			
 			break;
 			

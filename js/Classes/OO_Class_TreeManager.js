@@ -98,7 +98,9 @@ OO.TreeManager = function(_S){
 		
 		var final_comp = group.addNode("COMPOSITE",t.code+"-C");
 		
-		group.multiportIn.linkOutNode(top_peg);
+		//linkInNode(nodeToLink, ownPort, destPort, createPorts){bool}
+
+		top_peg.linkInNode(group.multiportIn);
 		
 		final_comp.linkOutNode(group.multiportOut);
 		
@@ -116,9 +118,10 @@ OO.TreeManager = function(_S){
 			
 			//linkOutNode(nodeToLink, ownPort, destPort, createPorts){bool}
 			
-			cr.linkOutNode(final_comp);
 			
 			top_peg.linkOutNode(npeg);
+			
+			cr.linkOutNode(final_comp);
 			
 			var Z = (reads.length-r)*z_factor;
 			
@@ -150,10 +153,22 @@ OO.TreeManager = function(_S){
 		group.multiportOut.centerBelow(reads, 0, 500);
 		
 		t.add_node(top_peg);
+		
 		t.add_node(final_comp);
 		
-
 		group.addBackdropToNodes( t.get_nodes(), t.code, "", new $.oColorValue("#5097D8ff"), 0, 0, 20, 20);
+		
+	}
+	
+	// on : oNode
+	
+	this.add_layout_peg = function(on){
+		
+		var group = on.parent;
+		
+		var npeg = group.addNode("PEG",on.name+"-P",new $.oPoint(on.x,on.y-40,0))
+			
+		npeg.linkOutNode(on);			
 		
 	}
 	
@@ -181,11 +196,15 @@ OO.TreeManager = function(_S){
 		var finalsx = 0;
 		var finalsy = 0;
 		
-		top_peg.attribute.position.x.setValue(finalx);
-		top_peg.attribute.position.y.setValue(finaly);
-		top_peg.attribute.scalexy.setValue(finalsxy);
-		top_peg.attribute.scale.y.setValue(finalsy);
-		top_peg.attribute.scale.x.setValue(finalsx);
+		MessageLog.trace(Object.getOwnPropertyNames(top_peg.attributes));
+		
+		//for(var p in Object.getOwnPropertyNames(top_peg.attributes)){ MessageLog.trace(Object.getOwnPropertyNames(top_peg.attributes)[p]);
+		
+		top_peg.attributes.position.x.setValue(finalx);
+		top_peg.attributes.position.y.setValue(finaly);
+		//top_peg.attributes.scale.xy.setValue(finalsxy);
+		top_peg.attributes.scale.y.setValue(finalsy);
+		top_peg.attributes.scale.x.setValue(finalsx);
 		
 		
 	}

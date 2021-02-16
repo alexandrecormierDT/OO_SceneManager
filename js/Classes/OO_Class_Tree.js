@@ -32,7 +32,7 @@ OO.Tree = function(_code,_nodes,_position){
 		
 	}
 	
-	this.set_top_peg(tp){
+	this.set_top_peg = function(tp){
 		
 		this.top_peg = tp;
 		
@@ -77,16 +77,7 @@ OO.Tree = function(_code,_nodes,_position){
 	this.reads = fetch_reads();
 	
 	
-	this.fit_to_camera = function(cadre){
-		
-		var cw = cadre.width; 
-		
-		var ch = cadre.height
-		
-		var cx = 
-		
-		
-	}
+
 }
 
 
