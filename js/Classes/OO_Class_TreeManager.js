@@ -94,9 +94,9 @@ OO.TreeManager = function(_S){
 		
 		//linkInNode(nodeToLink, ownPort, destPort, createPorts){bool}
 
-		top_peg.linkInNode(group.multiportIn);
-		
-		final_comp.linkOutNode(group.multiportOut);
+		group.multiportIn.linkOutNode(top_peg,0,0,true);
+
+		final_comp.linkOutNode(group.multiportOut,0,0,true);
 		
 		final_comp.attributes.composite_mode.setValue("Pass Through");
 		
@@ -129,7 +129,6 @@ OO.TreeManager = function(_S){
 			npeg.attributes.position.separate.setValue("On");
 			
 			npeg.attributes.position.z.setValue(Z);
-			
 			
 			t.add_node(npeg);
 			
@@ -168,7 +167,8 @@ OO.TreeManager = function(_S){
 	//Apply transformation to a BG TREE top_peg WITH CADRE COORDONATES (see load_cadre in scenemanager) 
 	
 	this.fit_to_camera = function(tree,cadre){
-
+		
+		var EVIL_RATIO = 4/3
 		
 		//Peg to move : 
 		
@@ -177,21 +177,21 @@ OO.TreeManager = function(_S){
 
 		// cadre coords
 		
-		var cad_w = cadre.rect.width; 
+		var cad_w = cadre.rect.width  
 		
-		var cad_h = cadre.rect.height
+		var cad_h = cadre.rect.height 
 		
-		var cad_x = cadre.rect.x; 
+		var cad_x = cadre.rect.x 
 		
-		var cad_y = cadre.rect.y
+		var cad_y = cadre.rect.y 
 		
 		
 		
 		//bg ( full size of the bg)
 		
-		var bg_w = cadre.bg.width;
+		var bg_w = cadre.bg.width 
 		
-		var bg_h = cadre.bg.height;
+		var bg_h = cadre.bg.height 
 		
 		// coords of the center of the full bg
 		
@@ -203,17 +203,17 @@ OO.TreeManager = function(_S){
 		
 		// camera coords :
 	
-		var cam_w= 1920; 
+		var cam_w= 1920
 		
-		var cam_h = 1080; 
+		var cam_h = 1080 
 		
 		// camera center 
 		
 		var cam_cx = cam_w/2;
 		
-		var cam_cy = cam_h/2; 
+		var cam_cy = cam_h/2;
 		
-		// camera peg coords : 
+		// camera peg coords : (for later)
 		
 		var campeg_x = 0
 		
@@ -227,7 +227,7 @@ OO.TreeManager = function(_S){
 		
 		var bg_cam_x = bg_cx - cam_cx;
 		
-		var bg_cam_y = bg_cy - cam_cy;
+		var bg_cam_y = bg_cy - cam_cy
 			
 		
 		// CALCUL OF THE TRANSFORM 
@@ -241,7 +241,7 @@ OO.TreeManager = function(_S){
 		
 		// translation 
 		
-		var dist_cam_cad_x = -(cad_x -  bg_cam_x )/ratio_x 
+		var dist_cam_cad_x = -(cad_x -  bg_cam_x )/ratio_x
 		
 		var dist_cam_cad_y = (cad_y - bg_cam_y )/ratio_y
 		
@@ -254,15 +254,15 @@ OO.TreeManager = function(_S){
 		
 		// FINAL POSITIONS
 		
-		var RATIO_PIXEL_X = 15.9993/(1920/2);
+		var RATIO_PIXEL_X = (15.9993/(1920/2)) 
 		
-		var RATIO_PIXEL_Y = 12.0555/(1080/2);
+		var RATIO_PIXEL_Y = RATIO_PIXEL_X * EVIL_RATIO
 		
 		
 
-		var final_x = (dist_cam_cad_x * RATIO_PIXEL_X) / (4/3);
+		var final_x = (dist_cam_cad_x * RATIO_PIXEL_X) / EVIL_RATIO
 		
-		var final_y = (dist_cam_cad_y * RATIO_PIXEL_Y) * (4/3);
+		var final_y = (dist_cam_cad_y * RATIO_PIXEL_Y) * EVIL_RATIO
 		
 		
 		

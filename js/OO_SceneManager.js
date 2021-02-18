@@ -52,7 +52,7 @@ function Expiew(){
 	
 	var S = new OO.SceneManager();
 	
-	//would need to add a waring message. 
+	//would need to add a warning message. 
 	
 	MessageLog.trace("Expiew");
 
@@ -66,7 +66,16 @@ function Expiew(){
 		}		
 	}
 
+}
 
+
+function importPSD(){
+	
+	S.context = new OO.Context(this,"Server");
+	
+	
+	
+	
 }
 
 //SCRIPT : IMPORT BG
@@ -74,7 +83,10 @@ function Impog(){
 	
 	MessageLog.trace("Impog");
 	
+	
 	var S = new OO.SceneManager();
+	
+	S.context = new OO.Context(this,"Server");
 	
 	S.load_breakdown('json');
 	
@@ -100,13 +112,16 @@ function Impog(){
 				
 				var bg_tree = S.trees.add(asset_code,nodes)
 				
-	
 				S.trees.arange_psd_node(bg_tree);
-				
 				
 				var bg_cadre = S.load_cadre(cura);
 				
-				S.trees.fit_to_camera(bg_tree,bg_cadre);
+				if(bg_cadre!=false){
+					
+					S.trees.fit_to_camera(bg_tree,bg_cadre);
+					
+				}
+				
 
 			break; 
 			

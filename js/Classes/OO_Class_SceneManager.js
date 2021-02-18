@@ -143,59 +143,68 @@ OO.SceneManager = function(){
 		var final_path = OO.library_path+apath;
 		
 		var svg_file_content = new $.oFile(final_path).read();
-
-		XMLobj = OO.XML.parse(svg_file_content,{ preserveAttributes: true });
 		
-		MessageLog.trace(final_path);
-		
-		/*MessageLog.trace(Object.getOwnPropertyNames(XMLobj));
-		MessageLog.trace("XMLobj.g");
-		MessageLog.trace(Object.getOwnPropertyNames(XMLobj.g));
-		MessageLog.trace(Object.getOwnPropertyNames(XMLobj.g['rect']));
-		MessageLog.trace(Object.getOwnPropertyNames(XMLobj.g['rect'][0]));*/
-		
-		var groups = XMLobj['g'];
-		
-		
-		for(var i in groups){
+		if(svg_file_content!=false && svg_file_content!="" && svg_file_content!=undefined){
 			
-			cg = groups[i]; 
+			XMLobj = OO.XML.parse(svg_file_content,{ preserveAttributes: true });
 			
-			MessageLog.trace("CG"); 
-			MessageLog.trace(Object.getOwnPropertyNames(cg));
+			MessageLog.trace(final_path);
 			
-			// possible problems if thee is just one group
+			/*MessageLog.trace(Object.getOwnPropertyNames(XMLobj));
+			MessageLog.trace("XMLobj.g");
+			MessageLog.trace(Object.getOwnPropertyNames(XMLobj.g));
+			MessageLog.trace(Object.getOwnPropertyNames(XMLobj.g['rect']));
+			MessageLog.trace(Object.getOwnPropertyNames(XMLobj.g['rect'][0]));*/
 			
-			if(cg._Attribs.id=="CADRES"){
+			var groups = XMLobj['g'];
+			
+			
+			for(var i in groups){
 				
-				var rectangles = cg['rect']; 
+				cg = groups[i]; 
 				
-				for(var i in rectangles){
+				MessageLog.trace("CG"); 
+				MessageLog.trace(Object.getOwnPropertyNames(cg));
+				
+				// possible problems if thee is just one group
+				
+				if(cg._Attribs.id=="CADRES"){
 					
-					var crect = rectangles[i]; 
+					var rectangles = cg['rect']; 
 					
-					var attr = crect._Attribs;
+					for(var i in rectangles){
+						
+						var crect = rectangles[i]; 
+						
+						var attr = crect._Attribs;
 
-					if(attr.id == shot){
+						if(attr.id == shot){
+								
+							MessageLog.trace(attr.id);	
+								
+							cadre.rect = attr;
 							
-						MessageLog.trace(attr.id);	
+						}
+						
+						if(attr.id == "bg_size"){
 							
-						cadre.rect = attr;
-						
-					}
-					
-					if(attr.id == "bg_size"){
-						
-						cadre.bg = attr;
-					}
-						
-				}				
+							cadre.bg = attr;
+						}
+							
+					}				
+				}
+
 			}
-
+			
+			
+			return cadre;
+			
+		}else{
+			
+			return false;
+			
 		}
 		
-		
-		return cadre;
 
 	}
 	

@@ -20,7 +20,6 @@ OO.Tree = function(_code,_nodes,_position){
 	
 	this.id = 0;
 	
-	
 	this.pegs = []; 
 	
 	this.backdrop = [];
