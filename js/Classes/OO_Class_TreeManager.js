@@ -168,6 +168,7 @@ OO.TreeManager = function(_S){
 	//Apply transformation to a BG TREE top_peg WITH CADRE COORDONATES (see load_cadre in scenemanager) 
 	
 	this.fit_to_camera = function(tree,cadre){
+
 		
 		//Peg to move : 
 		
@@ -198,8 +199,7 @@ OO.TreeManager = function(_S){
 		
 		var bg_cy = bg_h/2;
 		
-		
-		
+
 		
 		// camera coords :
 	
@@ -241,9 +241,9 @@ OO.TreeManager = function(_S){
 		
 		// translation 
 		
-		var dist_cam_cad_x = -(cad_x -  bg_cam_x )/ratio_x
+		var dist_cam_cad_x = -(cad_x -  bg_cam_x )/ratio_x 
 		
-		var dist_cam_cad_y = (cad_y -bg_cam_y )/ratio_y
+		var dist_cam_cad_y = (cad_y - bg_cam_y )/ratio_y
 		
 		
 		//FINAL SCALE 
@@ -255,19 +255,25 @@ OO.TreeManager = function(_S){
 		// FINAL POSITIONS
 		
 		var RATIO_PIXEL_X = 15.9993/(1920/2);
+		
 		var RATIO_PIXEL_Y = 12.0555/(1080/2);
 		
 		
 
-		var final_x = (dist_cam_cad_x * RATIO_PIXEL_X)
+		var final_x = (dist_cam_cad_x * RATIO_PIXEL_X) / (4/3);
 		
-		var final_y = (dist_cam_cad_y * RATIO_PIXEL_Y) * (4/3)
+		var final_y = (dist_cam_cad_y * RATIO_PIXEL_Y) * (4/3);
+		
+		
 		
 		MessageLog.trace(" ----- FINAL TRANSFORM -------------------------------- ");
 		
 		MessageLog.trace(dist_cam_cad_x);
+		
 		MessageLog.trace(dist_cam_cad_y);
+		
 		MessageLog.trace(final_x);
+		
 		MessageLog.trace(final_y);
 		
 		MessageLog.trace(" ------------------------------------------------------ ");
