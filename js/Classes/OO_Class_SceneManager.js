@@ -164,6 +164,8 @@ OO.SceneManager = function(){
 			MessageLog.trace("CG"); 
 			MessageLog.trace(Object.getOwnPropertyNames(cg));
 			
+			// possible problems if thee is just one group
+			
 			if(cg._Attribs.id=="CADRES"){
 				
 				var rectangles = cg['rect']; 

@@ -235,36 +235,45 @@ OO.TreeManager = function(_S){
 
 		// scale ratio between cadre and camera
 
-		var ratio_x = cad_w / cam_w;
+		var ratio_x = cam_w / cad_w;
 		
-		var ratio_y = cad_h / cam_h;
+		var ratio_y = cam_h / cad_h;
 		
 		// translation 
 		
-		var dist_cam_cad_x = (bg_cam_x - cad_x)
+		var dist_cam_cad_x = -(cad_x -  bg_cam_x )/ratio_x
 		
-		var dist_cam_cad_y = (bg_cam_y - cad_y)
+		var dist_cam_cad_y = (cad_y -bg_cam_y )/ratio_y
 		
 		
 		//FINAL SCALE 
 		
 		var final_sx = ratio_x ;
 		
-		var final_sy = ratio_y;
+		var final_sy = ratio_y ;
 		
 		// FINAL POSITIONS
+		
+		var RATIO_PIXEL_X = 15.9993/(1920/2);
+		var RATIO_PIXEL_Y = 12.0555/(1080/2);
+		
+		
 
-		var final_x = dist_cam_cad_x;
+		var final_x = (dist_cam_cad_x * RATIO_PIXEL_X)
 		
-		var final_y = dist_cam_cad_y;
+		var final_y = (dist_cam_cad_y * RATIO_PIXEL_Y) * (4/3)
+		
+		MessageLog.trace(" ----- FINAL TRANSFORM -------------------------------- ");
+		
+		MessageLog.trace(dist_cam_cad_x);
+		MessageLog.trace(dist_cam_cad_y);
+		MessageLog.trace(final_x);
+		MessageLog.trace(final_y);
+		
+		MessageLog.trace(" ------------------------------------------------------ ");
 		
 		
-		
-		//INJECT X
-		top_peg.attributes.position.x.setValue(final_x);
-		
-		//INJECT Y
-		top_peg.attributes.position.y.setValue(final_y);
+
 		
 		//INJECT SX
 		top_peg.attributes.scale.x.setValue(final_sx);
@@ -272,7 +281,11 @@ OO.TreeManager = function(_S){
 		//INJECT SY
 		top_peg.attributes.scale.y.setValue(final_sy);
 
+		//INJECT X
+		top_peg.attributes.position.x.setValue(final_x);
 		
+		//INJECT Y
+		top_peg.attributes.position.y.setValue(final_y);		
 		
 	}
   	
