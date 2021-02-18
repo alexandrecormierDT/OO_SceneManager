@@ -77,13 +77,7 @@ OO.TreeManager = function(_S){
 		return total_width;
 		
 	}
-	
-	this.fit_to_camera = function(t){
-		
-		
-		
-	}
-	
+
 	this.arange_psd_node = function(t){
 		
 		var reads = t.reads
@@ -143,8 +137,7 @@ OO.TreeManager = function(_S){
 		}
 		
 
-		
-		top_peg.centerAbove(reads, 0, -200)
+		top_peg.centerAbove(reads, 0, -200);
 		
 		group.multiportIn.centerAbove(reads, 0, -500);
 		
@@ -172,39 +165,113 @@ OO.TreeManager = function(_S){
 		
 	}
 	
-	
+	//Apply transformation to a BG TREE top_peg WITH CADRE COORDONATES (see load_cadre in scenemanager) 
 	
 	this.fit_to_camera = function(tree,cadre){
 		
+		//Peg to move : 
+		
 		var top_peg = tree.top_peg;
 		
-		var w= 1920; 
+
+		// cadre coords
 		
-		var h = 1080; 
+		var cad_w = cadre.rect.width; 
 		
-		var cw = cadre.width; 
+		var cad_h = cadre.rect.height
 		
-		var ch = cadre.height
+		var cad_x = cadre.rect.x; 
 		
-		var cx = cadre.x; 
+		var cad_y = cadre.rect.y
 		
-		var cy = cadre.y
 		
-		var finalx = 0;
-		var finaly = 0;
-		var finalsxy = 0;
-		var finalsx = 0;
-		var finalsy = 0;
 		
-		MessageLog.trace(Object.getOwnPropertyNames(top_peg.attributes));
+		//bg ( full size of the bg)
 		
-		//for(var p in Object.getOwnPropertyNames(top_peg.attributes)){ MessageLog.trace(Object.getOwnPropertyNames(top_peg.attributes)[p]);
+		var bg_w = cadre.bg.width;
 		
-		top_peg.attributes.position.x.setValue(finalx);
-		top_peg.attributes.position.y.setValue(finaly);
-		//top_peg.attributes.scale.xy.setValue(finalsxy);
-		top_peg.attributes.scale.y.setValue(finalsy);
-		top_peg.attributes.scale.x.setValue(finalsx);
+		var bg_h = cadre.bg.height;
+		
+		// coords of the center of the full bg
+		
+		var bg_cx = bg_w/2;
+		
+		var bg_cy = bg_h/2;
+		
+		
+		
+		
+		// camera coords :
+	
+		var cam_w= 1920; 
+		
+		var cam_h = 1080; 
+		
+		// camera center 
+		
+		var cam_cx = cam_w/2;
+		
+		var cam_cy = cam_h/2; 
+		
+		// camera peg coords : 
+		
+		var campeg_x = 0
+		
+		var campeg_y = 0
+		
+		var campeg_sx = 1
+		
+		var campeg_sy = 1
+		
+		// position of the camera in bg space 
+		
+		var bg_cam_x = bg_cx - cam_cx;
+		
+		var bg_cam_y = bg_cy - cam_cy;
+			
+		
+		// CALCUL OF THE TRANSFORM 
+		
+
+		// scale ratio between cadre and camera
+
+		var ratio_x = cad_w / cam_w;
+		
+		var ratio_y = cad_h / cam_h;
+		
+		// translation 
+		
+		var dist_cam_cad_x = (bg_cam_x - cad_x)
+		
+		var dist_cam_cad_y = (bg_cam_y - cad_y)
+		
+		
+		//FINAL SCALE 
+		
+		var final_sx = ratio_x ;
+		
+		var final_sy = ratio_y;
+		
+		// FINAL POSITIONS
+
+		var final_x = dist_cam_cad_x;
+		
+		var final_y = dist_cam_cad_y;
+		
+		
+		
+		//INJECT X
+		top_peg.attributes.position.x.setValue(final_x);
+		
+		//INJECT Y
+		top_peg.attributes.position.y.setValue(final_y);
+		
+		//INJECT SX
+		top_peg.attributes.scale.x.setValue(final_sx);
+		
+		//INJECT SY
+		top_peg.attributes.scale.y.setValue(final_sy);
+
 		
 		
 	}

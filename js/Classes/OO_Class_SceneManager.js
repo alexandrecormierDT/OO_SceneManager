@@ -130,6 +130,8 @@ OO.SceneManager = function(){
 	}
 	
 	
+	// extract rectangle coords from svg files (export from psd) 
+	
 	this.load_cadre = function(a){
 		
 		var shot = this.context.get_shot();
@@ -154,10 +156,12 @@ OO.SceneManager = function(){
 		
 		var groups = XMLobj['g'];
 		
+		
 		for(var i in groups){
 			
 			cg = groups[i]; 
 			
+			MessageLog.trace("CG"); 
 			MessageLog.trace(Object.getOwnPropertyNames(cg));
 			
 			if(cg._Attribs.id=="CADRES"){
@@ -170,18 +174,26 @@ OO.SceneManager = function(){
 					
 					var attr = crect._Attribs;
 
-					if(crect._Attribs.id == shot){
+					if(attr.id == shot){
 							
-						MessageLog.trace(crect._Attribs.id);	
+						MessageLog.trace(attr.id);	
 							
-						return crect._Attribs;
+						cadre.rect = attr;
 						
+					}
+					
+					if(attr.id == "bg_size"){
+						
+						cadre.bg = attr;
 					}
 						
 				}				
 			}
 
 		}
+		
+		
+		return cadre;
 
 	}
 	

@@ -86,29 +86,27 @@ function Impog(){
 		
 		var final_path = OO.library_path+apath;
 		
-		var asset_code = cura.get_code()
+		var asset_code = cura.get_code();
 		
 		switch(cura.get_type()){
 
 			case ('bg'): 
 			
-				
-				
 				apath = cura.get_psd_path();
 		
 				final_path = OO.library_path+apath;
 				
-
 				var nodes = S.import_psd(asset_code,final_path);
 				
 				var bg_tree = S.trees.add(asset_code,nodes)
+				
 	
 				S.trees.arange_psd_node(bg_tree);
 				
 				
-				var cadre = S.load_cadre(cura);
+				var bg_cadre = S.load_cadre(cura);
 				
-				S.trees.fit_to_camera(bg_tree,cadre);
+				S.trees.fit_to_camera(bg_tree,bg_cadre);
 
 			break; 
 			
