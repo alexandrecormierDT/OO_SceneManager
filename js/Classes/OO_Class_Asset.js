@@ -57,7 +57,7 @@ OO.Asset = function(_param){
 	
 	this.get_svg_path = function(){
 		
-		return "/assets/"+this.get_type()+"/"+this.get_code()+"/svg/"+this.get_last_publish()+".svg";
+		return "/assets/"+this.get_type()+"/"+this.get_code()+"/psd/"+this.get_last_publish()+".svg";
 		
 	}	
 

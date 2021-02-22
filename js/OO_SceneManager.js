@@ -6,11 +6,14 @@ var OO = {}
 //OpenHamrony class
 OO.doc = $.scn;
 
-//handy xml parser 
+//handy xml and svg parser 
 OO.XML = require("P:/pipeline/extra_soft/pixl-xml-master/modified_xml.js");
 
-OO.library_path = "P:/pipeline/alexDT/Harmony20/Context_library/";
+// SVG PARSER CLASS
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/utils/SVG_reader.js");
+OO.SVG = new SVG_reader();
 
+OO.library_path = "P:/pipeline/alexDT/Harmony20/Context_library/";
 OO.sg_path = "P:/pipeline/alexDT/Harmony20/Context_sg/"
 
 // FOLDER should be declared in previous include : OO_SceneManager_proto or master    enable to switch from folders proto(dev) and master(for users) 

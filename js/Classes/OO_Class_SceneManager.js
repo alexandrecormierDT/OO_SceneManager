@@ -46,6 +46,18 @@ OO.SceneManager = function(){
 				
 			break;
 			
+			case ('csv'):
+			
+				var path = OO.sg_path+"/csv/Shot.csv";
+				
+				var csv_string = new $.oFile(path).read();
+				
+				var line_split = csv_string.split("\n");
+				
+				
+				
+			break;			
+			
 			case ('python'):
 			
 				//python sub process call 
@@ -136,8 +148,6 @@ OO.SceneManager = function(){
 		
 		var shot = this.context.get_shot();
 		
-		var cadre ={};
-		
 		var apath = a.get_svg_path();
 		
 		var final_path = OO.library_path+apath;
@@ -148,53 +158,9 @@ OO.SceneManager = function(){
 			
 			XMLobj = OO.XML.parse(svg_file_content,{ preserveAttributes: true });
 			
+			var cadre = OO.SVG.get_cadre(XMLobj,shot);
+			
 			MessageLog.trace(final_path);
-			
-			/*MessageLog.trace(Object.getOwnPropertyNames(XMLobj));
-			MessageLog.trace("XMLobj.g");
-			MessageLog.trace(Object.getOwnPropertyNames(XMLobj.g));
-			MessageLog.trace(Object.getOwnPropertyNames(XMLobj.g['rect']));
-			MessageLog.trace(Object.getOwnPropertyNames(XMLobj.g['rect'][0]));*/
-			
-			var groups = XMLobj['g'];
-			
-			
-			for(var i in groups){
-				
-				cg = groups[i]; 
-				
-				MessageLog.trace("CG"); 
-				MessageLog.trace(Object.getOwnPropertyNames(cg));
-				
-				// possible problems if thee is just one group
-				
-				if(cg._Attribs.id=="CADRES"){
-					
-					var rectangles = cg['rect']; 
-					
-					for(var i in rectangles){
-						
-						var crect = rectangles[i]; 
-						
-						var attr = crect._Attribs;
-
-						if(attr.id == shot){
-								
-							MessageLog.trace(attr.id);	
-								
-							cadre.rect = attr;
-							
-						}
-						
-						if(attr.id == "bg_size"){
-							
-							cadre.bg = attr;
-						}
-							
-					}				
-				}
-
-			}
 			
 			
 			return cadre;

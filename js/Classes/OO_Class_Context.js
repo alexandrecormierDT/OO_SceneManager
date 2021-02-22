@@ -82,6 +82,13 @@ OO.Context = function (_S,_type){
 		
 	}
 	
+	this.read_CSV = function(CSV_path){
+		
+		
+		
+		
+	}
+	
 
 }
 
