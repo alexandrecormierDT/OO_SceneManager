@@ -264,16 +264,7 @@ OO.TreeManager = function(_S){
 		var cadre_distance_to_center_y =  bg_y - (cad_y * ratio);
 		
 		var cadre_distance_to_cam_y =  cadre_distance_to_center_y - (cam_h / 2)
-		
-		
 
-		
-		// translation 
-		
-		var dist_cam_cad_x = parseFloat(-(cad_x -  bg_cam_x ))
-		
-		var dist_cam_cad_y = parseFloat((cad_y - bg_cam_y ))
-		
 		
 		//FINAL SCALE 
 		
@@ -300,13 +291,10 @@ OO.TreeManager = function(_S){
 		
 		MessageLog.trace(" ----- FINAL TRANSFORM -------------------------------- ");
 		
-			MessageLog.trace(dist_cam_cad_x);
-		
-			MessageLog.trace(dist_cam_cad_y);
 		
 			MessageLog.trace(final_x);
 		
-			//MessageLog.trace(final_y);
+			MessageLog.trace(final_y);
 		
 		MessageLog.trace(" ------------------------------------------------------ ");
 		
