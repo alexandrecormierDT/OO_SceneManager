@@ -168,50 +168,63 @@ OO.TreeManager = function(_S){
 	
 	this.fit_to_camera = function(tree,cadre){
 		
-		var EVIL_RATIO = 4/3
+		var EVIL_RATIO = parseFloat(4/3)
 		
 		//Peg to move : 
 		
 		var top_peg = tree.top_peg;
 		
+		
+		// camera dimmentions :
+	
+		var cam_w= 1920;
+		
+		var cam_h =1080;
+		
 
-		// cadre coords
 		
-		var cad_w = cadre.rect.width  
+		// cadre dimmentions :
 		
-		var cad_h = cadre.rect.height 
+		var cad_w = cadre.rect.width
 		
-		var cad_x = cadre.rect.x 
+		var cad_h = cadre.rect.height
+
+
+		// scale ratio between cadre and camera
+
+		var ratio = parseFloat(cam_w / cad_w);
 		
-		var cad_y = cadre.rect.y 
+		var ratio_y = parseFloat(cam_h / cad_h);		
 		
+
 		
+		// coords of the center of the full bg in camera scale
 		
-		//bg ( full size of the bg)
-		
+				
 		var bg_w = cadre.bg.width 
 		
-		var bg_h = cadre.bg.height 
+		var bg_h = cadre.bg.height
 		
-		// coords of the center of the full bg
+		// we divide by ratio to get the bg space. 
 		
-		var bg_cx = bg_w/2;
+		var bg_cx = parseFloat((bg_w/2)) ;
 		
-		var bg_cy = bg_h/2;
+		var bg_cy = parseFloat((bg_h/2));
 		
 
+
+
 		
-		// camera coords :
-	
-		var cam_w= 1920
+		var cad_x = parseFloat(cadre.rect.x) 
 		
-		var cam_h = 1080 
+		var cad_y = parseFloat(cadre.rect.y) 		
+
 		
 		// camera center 
 		
-		var cam_cx = cam_w/2;
+		var cam_cx = parseFloat(cam_w/2) ;
 		
-		var cam_cy = cam_h/2;
+		var cam_cy = parseFloat(cam_h/2) ;
 		
 		// camera peg coords : (for later)
 		
@@ -223,63 +236,86 @@ OO.TreeManager = function(_S){
 		
 		var campeg_sy = 1
 		
-		// position of the camera in bg space 
+
+
+		// position of the top up corner of the camera in bg space 
 		
-		var bg_cam_x = bg_cx - cam_cx;
+		var bg_cam_x = parseFloat(bg_cx - cam_cx);
 		
-		var bg_cam_y = bg_cy - cam_cy
+		var bg_cam_y = parseFloat(bg_cy - cam_cy);
 			
 		
 		// CALCUL OF THE TRANSFORM 
 		
-
-		// scale ratio between cadre and camera
-
-		var ratio_x = cam_w / cad_w;
 		
-		var ratio_y = cam_h / cad_h;
+		// X
+		
+		var bg_x = (bg_w/2) * ratio; 
+		
+		var cadre_distance_to_center_x = bg_x - (cad_x * ratio) 
+		
+		var cadre_distance_to_cam_x =  cadre_distance_to_center_x - (cam_w / 2)
+		
+		
+		// Y
+		
+		var bg_y = (bg_h/2) * ratio; 
+		
+		var cadre_distance_to_center_y =  bg_y - (cad_y * ratio);
+		
+		var cadre_distance_to_cam_y =  cadre_distance_to_center_y - (cam_h / 2)
+		
+		
+
 		
 		// translation 
 		
-		var dist_cam_cad_x = -(cad_x -  bg_cam_x )/ratio_x
+		var dist_cam_cad_x = parseFloat(-(cad_x -  bg_cam_x ))
 		
-		var dist_cam_cad_y = (cad_y - bg_cam_y )/ratio_y
+		var dist_cam_cad_y = parseFloat((cad_y - bg_cam_y ))
 		
 		
 		//FINAL SCALE 
 		
-		var final_sx = ratio_x ;
+		var final_sx = ratio ;
 		
-		var final_sy = ratio_y ;
+		var final_sy = ratio ;
 		
 		// FINAL POSITIONS
 		
-		var RATIO_PIXEL_X = (15.9993/(1920/2)) 
+	
 		
-		var RATIO_PIXEL_Y = RATIO_PIXEL_X * EVIL_RATIO
+		
+		var RATIO_PIXEL_X = parseFloat(16/(1920/2))
+		
+		var RATIO_PIXEL_Y = parseFloat(12/(1080/2))
 		
 		
 
-		var final_x = (dist_cam_cad_x * RATIO_PIXEL_X) / EVIL_RATIO
+		var final_x =  parseFloat(cadre_distance_to_cam_x * RATIO_PIXEL_X);
 		
-		var final_y = (dist_cam_cad_y * RATIO_PIXEL_Y) * EVIL_RATIO
+		var final_y =  parseFloat(-cadre_distance_to_cam_y * RATIO_PIXEL_Y)
 		
 		
 		
 		MessageLog.trace(" ----- FINAL TRANSFORM -------------------------------- ");
 		
-		MessageLog.trace(dist_cam_cad_x);
+			MessageLog.trace(dist_cam_cad_x);
 		
-		MessageLog.trace(dist_cam_cad_y);
+			MessageLog.trace(dist_cam_cad_y);
 		
-		MessageLog.trace(final_x);
+			MessageLog.trace(final_x);
 		
-		MessageLog.trace(final_y);
+			//MessageLog.trace(final_y);
 		
 		MessageLog.trace(" ------------------------------------------------------ ");
 		
 		
-
+		//INJECT X
+		top_peg.attributes.position.x.setValue(final_x);
+		
+		//INJECT Y
+		top_peg.attributes.position.y.setValue(final_y);	
 		
 		//INJECT SX
 		top_peg.attributes.scale.x.setValue(final_sx);
@@ -287,11 +323,7 @@ OO.TreeManager = function(_S){
 		//INJECT SY
 		top_peg.attributes.scale.y.setValue(final_sy);
 
-		//INJECT X
-		top_peg.attributes.position.x.setValue(final_x);
-		
-		//INJECT Y
-		top_peg.attributes.position.y.setValue(final_y);		
+	
 		
 	}
   	
