@@ -7,10 +7,13 @@ OO.Tree = function(_code,_nodes,_position){
 	
 	var onodes = _nodes; 
 	
-	this.group =_nodes[0].parent;
+	this.onodes = _nodes
+	
+	this.parent_group;
 	
 	this.top_peg ="";
 	
+	this.group = ""; 
 	
 	this.code = _code; 
 	
@@ -22,7 +25,9 @@ OO.Tree = function(_code,_nodes,_position){
 	
 	this.pegs = []; 
 	
-	this.backdrop = [];
+	this.backdrop;
+	
+	this.script_module;
 	
 	this.add_node = function(onode){
 		
@@ -35,7 +40,12 @@ OO.Tree = function(_code,_nodes,_position){
 		
 		this.top_peg = tp;
 		
-	}	
+	}
+
+	this.get_parent_group = function(){
+		
+		return onodes[0].parent;
+	}
 	
 	
 	var fetch_reads = function(){
@@ -75,7 +85,120 @@ OO.Tree = function(_code,_nodes,_position){
 	
 	this.reads = fetch_reads();
 	
+	this.get_width = function(){
+		
+		if(this.backdrop.width != undefined){
+			
+			return this.backdrop.width;
+			
+		}else{
+			
+			return this.onodes.bounds.width;
+		
+		}
+		
+		return false;
+
+	}
 	
+	
+	this.get_height = function(){
+		
+		if(this.backdrop.width != undefined){
+			
+			return this.backdrop.width
+			
+		}else{
+			
+			return this.onodes.bounds.height;
+		
+		}
+
+	}	
+	
+	this.get_X = function(){
+		
+		if(this.backdrop.x != undefined){
+			
+			return this.backdrop.x;
+			
+		}
+		
+		return 0;
+
+	}	
+	
+	this.get_Y = function(){
+		
+		if(this.backdrop.y != undefined){
+			
+			return this.backdrop.y;
+			
+		}
+		
+		return 0;
+
+	}		
+	this.move = function(_x,_y){
+		
+		for(var on in this.onodes){
+		
+			var cn = this.onodes[on];
+			
+			cn.x += _x
+			cn.y += _y
+			
+		}
+		
+		this.backdrop.x+=x
+		this.backdrop.y+=y
+
+	}
+	
+
+	this.moveTo = function(_x,_y){
+		
+		for(var on in this.onodes){
+		
+			var cn = this.onodes[on];
+			
+			if(this.backdrop != undefined){
+			
+				var diffX =   cn.x - this.backdrop.x
+			
+				var diffY =  cn.y - this.backdrop.y 
+			
+				cn.x = _x + diffX
+				cn.y = _y + diffY
+			
+			}
+			
+		}
+		
+		if(this.backdrop != undefined){
+		
+			this.backdrop.x=_x
+			this.backdrop.y=_y
+		
+		}
+
+	}
+	
+	this.scale = function(sx,sy){
+		
+		for(var on in onodes){
+		
+			var cn = onodes[on];
+			
+			cn.x *= sx
+			cn.y *= sy
+			
+		}
+		
+		this.backdrop.x*=sx
+		this.backdrop.y*=sy
+
+	}	
 
 }
 

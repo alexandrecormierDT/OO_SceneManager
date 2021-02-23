@@ -15,12 +15,12 @@ OO.TreeManager = function(_S){
 	this.add = function(code,nodes){
 		
 		var ntree = new OO.Tree(code,nodes);
+		
 		this.list.push(ntree);
 
 		return ntree;
+		
 	}
-	
-	
 	
 
 	this.update= function(){
@@ -35,6 +35,50 @@ OO.TreeManager = function(_S){
 	this.move_tree = function(){
 		
 		
+		
+	}
+
+	
+	this.import_tpl= function(_path){
+		
+		var import_group =  OO.doc.root.addGroup(_path, false, false); 
+
+		var nodes = import_group.importTemplate(_path,false,true);
+		
+		return nodes; 
+
+	}	
+	
+	this.import_tpl_grouped = function(_code,_path){
+		
+		
+		//we create a group with a the path of the tpl as name. 
+		var import_group =  OO.doc.root.addGroup(_path, false, false); 
+		
+		import_group.createAttribute("import_path", "string", "path", false)
+		
+		var myPasteOptions = copyPaste.getCurrentPasteOptions();
+		
+		var nodes = import_group.importTemplate(_path,false,true);
+		
+		this.add_layout_peg(import_group);	
+		
+		return nodes; 
+
+	}
+	
+	this.import_psd_grouped = function(_code,_path){
+		
+		//importPSD(path, separateLayers, addPeg, addComposite, alignment, nodePosition){Array.<$.oNode>}
+		var import_group =  OO.doc.root.addGroup(_code, false, false);  
+		
+		import_group.createAttribute("import_path", "string", "path", true)
+		
+		var nodes = import_group.importPSD(_path,true,false,false,"ASIS");  
+		
+		this.add_layout_peg(import_group);
+
+		return nodes; 		
 		
 	}
 	
@@ -149,6 +193,25 @@ OO.TreeManager = function(_S){
 		t.add_node(final_comp);
 		
 		group.addBackdropToNodes( t.get_nodes(), t.code, "", new $.oColorValue("#5097D8ff"), 0, 0, 20, 20);
+		
+	}
+	
+	this.put_next_to = function(tree1,tree2,padding){
+		
+		var W = tree1.get_width(); 
+		
+		var X = tree1.get_X()+padding+W; 
+		
+		var Y = tree1.get_Y(); 
+		
+		
+		MessageLog.trace("BACKDROP")
+		MessageLog.trace(tree1.backdrop.width)
+		MessageLog.trace(tree1.get_width())
+		MessageLog.trace(tree2.backdrop.width)
+		
+		tree2.moveTo(X,Y);
+		
 		
 	}
 	

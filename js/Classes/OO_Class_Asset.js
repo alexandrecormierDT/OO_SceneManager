@@ -43,7 +43,6 @@ OO.Asset = function(_param){
 	
 	this.get_tpl_path= function(){
 		
-		//return "assets/"+this.get_type()+"/"+this.get_code()+"/master/"+this.get_last_publish()+".tpl";
 		return "/assets/"+this.get_type()+"/"+this.get_code()+"/M/"+this.get_last_publish()+".tpl";
 		
 		
