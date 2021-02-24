@@ -3,35 +3,39 @@
 MessageLog.trace("CLASS OO_Tree")
 
 
-OO.Tree = function(_code,_nodes,_position){
+OO.Tree = function(_code,_nodes){
 	
 	var onodes = _nodes; 
 	
 	this.onodes = _nodes
 	
-	this.parent_group;
-	
-	this.top_peg ="";
-	
-	this.group = ""; 
+	this.node_map; 
+
+	this.group; 
 	
 	this.code = _code; 
 	
-	this.position = _position;
+	this.position;
 	
 	this.reads;
 	
 	this.id = 0;
 	
-	this.pegs = []; 
+	this.top_peg;
+	
+	this.peg; 
 	
 	this.backdrop;
 	
 	this.script_module;
 	
+	this.final_comp;
+	
+	
 	this.add_node = function(onode){
 		
 	
+		this.onodes.push(onode);
 		onodes.push(onode);
 		
 	}
@@ -41,10 +45,20 @@ OO.Tree = function(_code,_nodes,_position){
 		this.top_peg = tp;
 		
 	}
-
+	this.set_final_comp = function(fc){
+		
+		this.final_comp= fc;
+		
+	}
+	
 	this.get_parent_group = function(){
 		
-		return onodes[0].parent;
+		if(onodes != null){
+			
+			return this.onodes[0].parent;
+			
+		}
+		
 	}
 	
 	
@@ -93,7 +107,7 @@ OO.Tree = function(_code,_nodes,_position){
 			
 		}else{
 			
-			return this.onodes.bounds.width;
+			return onodes.bounds.width;
 		
 		}
 		
@@ -110,7 +124,7 @@ OO.Tree = function(_code,_nodes,_position){
 			
 		}else{
 			
-			return this.onodes.bounds.height;
+			return onodes.bounds.height;
 		
 		}
 

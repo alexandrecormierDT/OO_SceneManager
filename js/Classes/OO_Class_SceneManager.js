@@ -19,6 +19,8 @@ OO.SceneManager = function(){
 	
 	this.load_breakdown = function(inputtype){
 		
+		MessageLog.trace("LOAD BREAKDOWN");
+		
 		var asset_list=[];
 		
 		switch(inputtype){
@@ -80,28 +82,11 @@ OO.SceneManager = function(){
 		}
 		
 	}
-	
-	this.create_asset_portals = function(){
-		
-		for(var a in this.assets.list){
-			
-			var cura = this.assets.list[a];
-		
-			var apath = cura.get_tpl_path();
-			
-			var final_path = OO.library_path+apath;
-
-			var nodes = this.import_tpl(this.portals.tpl_path);
-			
-			var nportal = this.portals.add(cura.code,final_path);
-		
-		}
-
-	}
-	
 
 	
 	this.load_xstage= function(){
+		
+		MessageLog.trace("load_xstage");
 		
 		var xstageDOM = new $.oFile(OO.doc.stage).read();
 		
@@ -113,15 +98,11 @@ OO.SceneManager = function(){
 	
 	// extract rectangle coords from svg files (export from psd) 
 	
-	this.load_cadre = function(a){
+	this.load_cadre = function(svg_path){
 		
 		var shot = this.context.get_shot();
 		
-		var apath = a.get_svg_path();
-		
-		var final_path = OO.library_path+apath;
-		
-		var svg_file_content = new $.oFile(final_path).read();
+		var svg_file_content = new $.oFile(svg_path).read();
 		
 		if(svg_file_content!=false && svg_file_content!="" && svg_file_content!=undefined){
 			

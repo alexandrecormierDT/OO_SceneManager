@@ -23,11 +23,15 @@ OO.ViewManager = function(_S){
 
 	this.load = function(_stage){
 		
+			MessageLog.trace("ViewManager Load");
+		
 			var TLM_list_of_views=_stage.get_TLM();
 			
 			if(TLM_list_of_views.length == 0){
 				
 				OO.log.add('no views detected in the scene','ERROR');
+				
+				MessageLog.trace('no views detected in the scene');
 				
 				this.noviews = true;
 				
@@ -46,17 +50,23 @@ OO.ViewManager = function(_S){
 				
 				var curTLM = TLM_list_of_views[t];
 				
-				if(isViewName(curTLM.name)){
+				if(curTLM != undefined){
 					
-					var nview = new OO.View();
+					if(isViewName(curTLM.name)){
+						
+						var nview = new OO.View();
+						
+						nview.load(TLM_list_of_views[t]);
+						
+						list_of_views.push(nview);
 					
-					nview.load(TLM_list_of_views[t]);
+					}
 					
-					list_of_views.push(nview);
-				
 				}
 				
 			}
+			
+			
 
 		
 	}

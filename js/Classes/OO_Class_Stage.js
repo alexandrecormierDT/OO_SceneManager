@@ -28,6 +28,7 @@ OO.Stage = function (_S){
 
 	this.get_TLM = function(){
 		
+		MessageLog.trace("stage get_TLM");
 		
 		var timelineMarkers = XMLobj.timelineMarkers.timelineMarker;
 		
@@ -39,6 +40,8 @@ OO.Stage = function (_S){
 			list.push(curTLM._Attribs);
 			
 		}
+		
+		MessageLog.trace(list);
 		
 
 		return list;

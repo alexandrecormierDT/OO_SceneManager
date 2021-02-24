@@ -31,13 +31,9 @@ OO.TreeManager = function(_S){
 		
 		
 	}
-	
-	this.move_tree = function(){
-		
-		
-		
-	}
 
+
+	//IMPORTING TPL 
 	
 	this.import_tpl= function(_path){
 		
@@ -51,13 +47,8 @@ OO.TreeManager = function(_S){
 	
 	this.import_tpl_grouped = function(_code,_path){
 		
-		
 		//we create a group with a the path of the tpl as name. 
 		var import_group =  OO.doc.root.addGroup(_path, false, false); 
-		
-		import_group.createAttribute("import_path", "string", "path", false)
-		
-		var myPasteOptions = copyPaste.getCurrentPasteOptions();
 		
 		var nodes = import_group.importTemplate(_path,false,true);
 		
@@ -67,20 +58,38 @@ OO.TreeManager = function(_S){
 
 	}
 	
+	this.import_tpl_in_group = function(_code,_path,_group){
+		
+		var nodes = _group.importTemplate(_path,false,true);
+		
+		this.add_layout_peg(import_group);	
+		
+		return nodes; 
+
+	}
+	
 	this.import_psd_grouped = function(_code,_path){
 		
-		//importPSD(path, separateLayers, addPeg, addComposite, alignment, nodePosition){Array.<$.oNode>}
 		var import_group =  OO.doc.root.addGroup(_code, false, false);  
 		
 		import_group.createAttribute("import_path", "string", "path", true)
 		
+		//importPSD(path, separateLayers, addPeg, addComposite, alignment, nodePosition){Array.<$.oNode>}
 		var nodes = import_group.importPSD(_path,true,false,false,"ASIS");  
-		
-		this.add_layout_peg(import_group);
 
 		return nodes; 		
 		
 	}
+	
+	this.import_psd_in_group = function(_code,_path,_group){
+
+		var nodes = _group.importPSD(_path,true,false,false,"ASIS");  
+
+		return nodes; 		
+		
+	}	
+	
+	//FUNCTION TO MAKE THE NODEVIEW PRETTY 
 	
 	this.align_nodes = function (node_list){
 
@@ -124,9 +133,11 @@ OO.TreeManager = function(_S){
 
 	this.arange_psd_node = function(t){
 		
+		MessageLog.trace("ARRANGE PSD NODES");
+		
 		var reads = t.reads
 		
-		var group = t.group;
+		var group = t.get_parent_group();
 		
 		var width = this.align_nodes(reads);
 		
@@ -135,6 +146,12 @@ OO.TreeManager = function(_S){
 		t.set_top_peg(top_peg);
 		
 		var final_comp = group.addNode("COMPOSITE",t.code+"-C");
+		
+		t.set_final_comp(final_comp);
+		
+		t.add_node(top_peg);
+		
+		t.add_node(final_comp);
 		
 		//linkInNode(nodeToLink, ownPort, destPort, createPorts){bool}
 
@@ -187,10 +204,10 @@ OO.TreeManager = function(_S){
 		final_comp.centerBelow(reads, 0, 200);
 		
 		group.multiportOut.centerBelow(reads, 0, 500);
+
 		
-		t.add_node(top_peg);
+
 		
-		t.add_node(final_comp);
 		
 		group.addBackdropToNodes( t.get_nodes(), t.code, "", new $.oColorValue("#5097D8ff"), 0, 0, 20, 20);
 		
@@ -229,14 +246,10 @@ OO.TreeManager = function(_S){
 	
 	//Apply transformation to a BG TREE top_peg WITH CADRE COORDONATES (see load_cadre in scenemanager) 
 	
-	this.fit_to_camera = function(tree,cadre){
+	this.fit_to_camera = function(top_peg,cadre){
 		
 		var EVIL_RATIO = parseFloat(4/3)
-		
-		//Peg to move : 
-		
-		var top_peg = tree.top_peg;
-		
+
 		
 		// camera dimmentions :
 	

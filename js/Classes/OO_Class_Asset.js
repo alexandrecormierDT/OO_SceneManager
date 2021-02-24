@@ -23,6 +23,12 @@ OO.Asset = function(_param){
 	
 	}
 	
+	this.get_id = function(){
+	
+		return attributes.id;
+	
+	}	
+	
 	this.get_attribute = function(an){
 	
 		return attributes[an];
@@ -40,6 +46,8 @@ OO.Asset = function(_param){
 		return attributes.code;
 		
 	}
+	
+	// those should be handeled by the context 
 	
 	this.get_tpl_path= function(){
 		
