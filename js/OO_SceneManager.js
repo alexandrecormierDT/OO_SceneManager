@@ -72,11 +72,67 @@ function Expiew(){
 }
 
 
-function importPSD(){
+function test(){
 	
-	S.context = new OO.Context(this,"Server");
+	var S = new OO.SceneManager();	
+	
+	S.context = new OO.Context("Shotgun");
+
+	S.load_breakdown('csv');	
+	
+	for(var a in S.assets.list){
+		
+		var cura = S.assets.list[a]; 
+		
+		MessageLog.trace("CREATE NEW PORTAL");
+		
+		MessageLog.trace(cura.get_code());
+		
+		var tpl_apath = cura.get_tpl_path();
+		
+		var psd_apath = cura.get_psd_path();
+		
+		var final_tpl_path =  OO.library_path+tpl_apath;
+		
+		var final_psd_path =  OO.library_path+psd_apath;
+		
+		var asset_type = cura.get_type()
+		
+		var asset_code = cura.get_code()
+		
+		var asset_id = cura.get_id()
+
+		var nportal = S.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path);	
+		
+		nportal.id = asset_id;
+
+	}
+	
+
+	for(var p = 0 ; p < S.portals.list.length; p++){
+		
+		var cportal = S.portals.list[p]
+		
+		if(p > 0){
+			
+			var pportal = S.portals.list[p-1];
+			
+			S.trees.put_next_to(pportal.tree,cportal.tree,100);
+			
+		}		
+		
+	}
 	
 	
+	for(var p = 0 ; p < S.portals.list.length; p++){
+		
+		
+		var cportal = S.portals.list[p]
+
+		cportal.deploy();
+		
+		
+	}
 	
 	
 }
@@ -88,7 +144,7 @@ function pull_psd(){
 	
 	var S = new OO.SceneManager();	
 	
-	S.context = new OO.Context(this,"Server");	
+	S.context.set_context_type('Server');	
 	
 	S.load_breakdown('json');
 	
@@ -110,6 +166,8 @@ function pull_psd(){
 			
 			//we find the linked asset
 			
+			
+			
 					
 			var svg_path = linked_asset.get_svg_path();
 	
@@ -124,18 +182,20 @@ function pull_psd(){
 				
 			}					
 					
+
 		}
 
+		
+		
 	}	
 	
 }
 
 function create_portals_from_breakdown(){
 	
-	
 	var S = new OO.SceneManager();	
 	
-	S.context = new OO.Context(this,"Server");
+	S.context.set_context_type('Server');
 	
 	S.load_breakdown('json');
 	

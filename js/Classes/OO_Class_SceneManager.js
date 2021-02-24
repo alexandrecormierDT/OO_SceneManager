@@ -19,18 +19,24 @@ OO.SceneManager = function(){
 	
 	this.load_breakdown = function(inputtype){
 		
-		MessageLog.trace("LOAD BREAKDOWN");
-		
 		var asset_list=[];
+		
+		var shot = this.context.get_shot();
+		
+		MessageLog.trace("DETECTED SHOT");
+		
+		MessageLog.trace(shot);
 		
 		switch(inputtype){
 			
 			case ('json'):
 			
-				var shot = this.context.get_shot();
+				MessageLog.trace("LOAD JSON");
 				
 				var path = OO.sg_path+"/json/"+shot+".json";
 
+				MessageLog.trace(path);
+				
 				var json_string = new $.oFile(path).read();
 				
 				var obj_list = 	JSON.parse(json_string);
@@ -50,11 +56,57 @@ OO.SceneManager = function(){
 			
 			case ('csv'):
 			
+				// SAMPLE LINE : "1373","ep101_pl001","bg_ep101pl001_bil_ext_m_a1_ranch, pr_noissette_or","billy",
+				
+				var asset_codes = [];
+			
 				var path = OO.sg_path+"/csv/Shot.csv";
 				
 				var csv_string = new $.oFile(path).read();
 				
 				var line_split = csv_string.split("\n");
+				
+				
+				for (var l = 1 ; l < line_split.length ; l++){
+					
+					var second_split = line_split[l].split('"');
+
+					MessageLog.trace(second_split[3]);
+					
+					if(second_split[3] == shot){
+						
+						var assets_string = second_split[5];
+						
+						var assets = assets_string.split(',');
+						
+						MessageLog.trace(assets);
+
+						asset_codes = assets;
+						
+						break;
+					}
+					
+				}
+				
+				for (var a = 1 ; a < asset_codes.length ; a++){
+					
+					var curac = asset_codes[a]; 
+					
+					var asset = {}
+					
+					asset.code = curac.substring(1); //removing the space
+					
+					asset.sg_asset_type =this.context.get_type_with_asset_code(curac);
+					
+					MessageLog.trace("CSV");
+					
+					MessageLog.trace(asset.code);
+					MessageLog.trace(asset.sg_asset_type);
+					
+					asset_list.push(asset);
+					
+				}
+				
 				
 				
 				
@@ -72,21 +124,26 @@ OO.SceneManager = function(){
 			
 			var curItem = asset_list[a];
 			
+			
+			
+			MessageLog.trace("new asset param : ");
 			MessageLog.trace(Object.getOwnPropertyNames(curItem));
 			
 			var asset_param = asset_list[a];
+			
+			
 			
 			this.assets.add(asset_param);
 			
 			
 		}
 		
+		
+		
 	}
 
 	
 	this.load_xstage= function(){
-		
-		MessageLog.trace("load_xstage");
 		
 		var xstageDOM = new $.oFile(OO.doc.stage).read();
 		

@@ -15,8 +15,6 @@ OO.Tree = function(_code,_nodes){
 	
 	this.code = _code; 
 	
-	this.position;
-	
 	this.reads;
 	
 	this.id = 0;

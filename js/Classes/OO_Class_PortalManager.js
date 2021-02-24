@@ -177,64 +177,11 @@ OO.PortalManager = function(_S){
 		
 	}  	
 	
-	this.add_for_asset = function(_asset){ 
-		
-		var pnodes =  S.trees.import_tpl(this.module_path);
-		
-		var ntree = S.trees.add(asset.code,pnodes);
-		
-		//OO.Portal(_name,tpl_path,psd_path,_tree)
-		var nportal = new OO.Portal(_asset.code,_asset.type,tpl_path,psd_path,ntree);
-		
-		var tpl_path = _asset.get_tpl_path();
-		var psd_path = _asset.get_psd_path();
-		
-		for (var n in pnodes){
-		
-			var cn = pnodes[n]; 
-			
-			if(cn.type == "SCRIPT_MODULE"){
-				
-				cn.attributes.tpl_path.setValue(tpl_path);
-				cn.attributes.psd_path.setValue(psd_path);
-				cn.attributes.code.setValue(_asset.code);
-				cn.attributes.sg_asset_type.setValue(_asset.type);
-				nportal.tree.script_module = cn; 
-				
-				cn.name = "PORTAL_"+_code;
-				 
-			}
-			
-			if(cn.type == "GROUP"){
-				
-				
-				nportal.tree.group = cn; 
-				cn.name = _code;
-				
-			}	
-			
-			if(cn.type == "PEG"){
-				
-				nportal.tree.peg = cn; 
-				cn.name = "LT_"+_asset.code;
-				
-			}			
-			
-		} 
-		
-		var parent_group = nportal.tree.get_parent_group();
-		
-		nportal.tree.backdrop = parent_group.addBackdropToNodes(pnodes, "PORTAL", _asset.code,new $.oColorValue("#000000ff"), 0, 0, 20, 20)
-
-		this.list.push(nportal);
-		
-		return nportal;
-		
-			
-	}
 	
 	
 	this.add = function(_code,_type,tpl_path,psd_path){ 
+	
+		MessageLog.trace("Portal ADD");
 		
 		var pnodes =  S.trees.import_tpl(this.module_path);
 		
@@ -275,7 +222,12 @@ OO.PortalManager = function(_S){
 			
 		} 
 		
+		
 		var parent_group = nportal.tree.get_parent_group();
+		
+		MessageLog.trace("parent_group");
+		MessageLog.trace(parent_group);
+		
 		
 		nportal.tree.backdrop = parent_group.addBackdropToNodes(pnodes, "PORTAL", _code,new $.oColorValue("#000000ff"), 0, 0, 20, 20)
 

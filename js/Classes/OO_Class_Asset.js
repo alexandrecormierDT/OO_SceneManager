@@ -19,31 +19,42 @@ OO.Asset = function(_param){
 	
 	this.get_code = function(){
 	
-		return attributes.code;
+		return	this.get_attribute("code");
 	
 	}
 	
 	this.get_id = function(){
 	
-		return attributes.id;
+		return	this.get_attribute("id");
 	
 	}	
 	
 	this.get_attribute = function(an){
-	
-		return attributes[an];
+		
+		MessageLog.trace("get attr "+an)
+		MessageLog.trace(attributes[an])
+		
+		if(attributes.hasOwnProperty(an)){
+			return attributes[an];
+			
+		}
+		
+		
+		
+		return "noattr"; 
 	
 	}
 	
 	this.get_type = function(){
-	
-		return attributes.sg_asset_type;
+		
+
+		return	this.get_attribute("sg_asset_type");
 	
 	}
 	
 	this.get_last_publish = function(){
 		
-		return attributes.code;
+		return	this.get_attribute("code");
 		
 	}
 	

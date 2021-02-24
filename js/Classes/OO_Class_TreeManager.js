@@ -147,7 +147,7 @@ OO.TreeManager = function(_S){
 		
 		var final_comp = group.addNode("COMPOSITE",t.code+"-C");
 		
-		t.set_final_comp(final_comp);
+		t.set_final_comp(final_comp); 
 		
 		t.add_node(top_peg);
 		

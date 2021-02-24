@@ -49,7 +49,6 @@ OO.Stage = function (_S){
 	}
 	
 	//obsolete
-
 	
 	var get_elements_by_tag = function( _tag ){
 	
