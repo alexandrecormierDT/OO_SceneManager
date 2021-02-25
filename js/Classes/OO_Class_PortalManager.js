@@ -14,6 +14,8 @@ OO.PortalManager = function(_S){
 	
 	this.load_from_scene = function(){
 		
+		MessageLog.trace("LOAD FROM SCENE");
+		
 		// Detect the script module with "portal" attributes among the scene nodes and fetch the linked nodes to make the tree, read the script module attributes 
 		//add a new portal object to the list. 
 		
@@ -43,9 +45,7 @@ OO.PortalManager = function(_S){
 			
 			
 			var cur_script_module = scene_PSM[sm];
-			
-			
-			
+		
 			// CODE,TYPE AND PATHS
 			
 			var tpl_path = OO.filter_string(cur_script_module.tpl_path);
@@ -86,7 +86,9 @@ OO.PortalManager = function(_S){
 			var ntree = S.trees.add(code,[]);
 			
 			ntree.add_node(linked_group);
+			
 			ntree.add_node(linked_peg);
+			
 			ntree.add_node(cur_script_module);
 			
 			ntree.script_module = cur_script_module;
@@ -96,6 +98,7 @@ OO.PortalManager = function(_S){
 			ntree.peg = linked_peg;	
 
 			MessageLog.trace(ntree.onodes);			
+			
 			MessageLog.trace(ntree.group);			
 
 			var nportal = new OO.Portal(code,type,tpl_path,psd_path,ntree);
@@ -104,12 +107,10 @@ OO.PortalManager = function(_S){
 			
 			//we gathered all informations expect the backdrop. 
 			
-			MessageLog.trace("PUSH PORTAL");
+			MessageLog.trace(">>>>PUSH PORTAL TO LIST");
 			
 			this.list.push(nportal);
-			
-			
-			
+
 		}
 		
 		MessageLog.trace(this.list);
@@ -117,20 +118,9 @@ OO.PortalManager = function(_S){
 	}
 	
 	
-	
-	this.load = function(){
-		
-	}
-	
-
-	this.create_tree = function(_portal){
-		
-		
-		
-	}
-	
-	
 	this.pull = function(_portal,_type){
+		
+		MessageLog.trace("PULL PORTAL");
 		
 		switch (_type){
 			
@@ -157,6 +147,7 @@ OO.PortalManager = function(_S){
 				_portal.set_content(bg_tree);
 
 			break;
+			
 			case 'tpl':
 			
 			

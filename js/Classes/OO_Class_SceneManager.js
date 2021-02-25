@@ -12,6 +12,7 @@ OO.SceneManager = function(){
 	this.views = new OO.ViewManager(this);
 	this.context = new OO.Context(this,"Shotgun");
 	this.portals = new OO.PortalManager(this);
+	this.setups = new OO.SetupManager(this);
 	
 	this.init = function(){
 		
@@ -79,7 +80,11 @@ OO.SceneManager = function(){
 						
 						var assets = assets_string.split(',');
 						
+						MessageLog.trace("----");
+						MessageLog.trace("CSV ASSETS");
+						MessageLog.trace("---'");
 						MessageLog.trace(assets);
+						MessageLog.trace("---");
 
 						asset_codes = assets;
 						
@@ -88,15 +93,15 @@ OO.SceneManager = function(){
 					
 				}
 				
-				for (var a = 1 ; a < asset_codes.length ; a++){
+				for (var a = 0 ; a < asset_codes.length ; a++){
 					
 					var curac = asset_codes[a]; 
 					
 					var asset = {}
 					
-					asset.code = curac.substring(1); //removing the space
+					asset.code = this.remove_spaces(curac);
 					
-					asset.sg_asset_type =this.context.get_type_with_asset_code(curac);
+					asset.sg_asset_type =this.context.get_type_from_asset_code(asset.code);
 					
 					MessageLog.trace("CSV");
 					
@@ -141,6 +146,13 @@ OO.SceneManager = function(){
 		
 		
 	}
+	
+	this.remove_spaces = function(str){
+		
+	
+		return str.replace(/\s/g, '');
+		
+	}
 
 	
 	this.load_xstage= function(){
@@ -167,11 +179,12 @@ OO.SceneManager = function(){
 			
 			var cadre = OO.SVG.get_cadre(XMLobj,shot);
 			
-			MessageLog.trace(final_path);
-			
+			// return false if no mathcing cadre with current shot where found in the svg
 			
 			return cadre;
+
 			
+			MessageLog.trace(final_path);
 		}else{
 			
 			return false;

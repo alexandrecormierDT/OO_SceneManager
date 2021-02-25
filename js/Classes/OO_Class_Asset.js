@@ -52,32 +52,11 @@ OO.Asset = function(_param){
 	
 	}
 	
+
 	this.get_last_publish = function(){
 		
 		return	this.get_attribute("code");
 		
 	}
-	
-	// those should be handeled by the context 
-	
-	this.get_tpl_path= function(){
-		
-		return "/assets/"+this.get_type()+"/"+this.get_code()+"/M/"+this.get_last_publish()+".tpl";
-		
-		
-	}
-	
-	this.get_psd_path = function(){
-		
-		return "/assets/"+this.get_type()+"/"+this.get_code()+"/psd/"+this.get_last_publish()+".psd";
-		
-	}
-	
-	this.get_svg_path = function(){
-		
-		return "/assets/"+this.get_type()+"/"+this.get_code()+"/psd/"+this.get_last_publish()+".svg";
-		
-	}	
 
-	
 }

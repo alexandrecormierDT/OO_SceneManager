@@ -8,6 +8,8 @@ OO.TreeManager = function(_S){
 	
 	this.list = [];
 	
+
+	
 	this.load = function(){
 		
 	}
@@ -82,6 +84,22 @@ OO.TreeManager = function(_S){
 	}
 	
 	this.import_psd_in_group = function(_code,_path,_group){
+		
+		MessageLog.trace("PSD GROUP");
+		var psd_gp= CELIO.getLayerGroupInformation(_path);
+		MessageLog.trace(Object.getOwnPropertyNames(psd_gp));
+		MessageLog.trace(Object.getOwnPropertyNames(psd_gp.groups));
+		
+		for(var i = 0 ; i < psd_gp.groups.length ; i++){
+			var curgp = psd_gp.groups[i];
+			MessageLog.trace(curgp);
+			if(typeof(curgp) == "object"){
+				
+				MessageLog.trace(Object.getOwnPropertyNames(curgp));
+				MessageLog.trace(curgp.name);
+				
+			}
+		}
 
 		var nodes = _group.importPSD(_path,true,false,false,"ASIS");  
 
@@ -244,9 +262,36 @@ OO.TreeManager = function(_S){
 		
 	}
 	
+	
+	// CAMERA AND BG OPERATIONS
+	
+	
+	//the size of the camera in bg is 10% bigger 
+
+	
+	this.scale_to_camera = function(top_peg){
+		
+		var SECU_W = 2111.99;
+		
+		var SECU_H = 1188;			
+	
+		var cam_w= 1920;
+		
+		var cam_h =1080;	
+
+		var ratio = cam_w /SECU_W; 
+		
+		//INJECT SX
+		top_peg.attributes.scale.x.setValue(ratio);
+		
+		//INJECT SY
+		top_peg.attributes.scale.y.setValue(ratio);		
+		
+	}
+	
 	//Apply transformation to a BG TREE top_peg WITH CADRE COORDONATES (see load_cadre in scenemanager) 
 	
-	this.fit_to_camera = function(top_peg,cadre){
+	this.fit_cadre_to_camera = function(top_peg,cadre){
 		
 		var EVIL_RATIO = parseFloat(4/3)
 

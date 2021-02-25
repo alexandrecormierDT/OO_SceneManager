@@ -20,6 +20,8 @@ function SVG_reader(){
 		
 		var cadre = {};
 		
+		var match = 0;
+		
 		var groups = XMLobj['g'];
 			
 			for(var i in groups){
@@ -41,9 +43,7 @@ function SVG_reader(){
 					for(var i in gimages){
 						
 						var cimage = gimages[i]; 
-						
-						
-						
+
 						if(cimage.title == shot_code){
 							
 							var attr = cimage._Attribs;
@@ -59,7 +59,11 @@ function SVG_reader(){
 								
 							cadre.rect = rect;
 							
+							match++;
+							
 						}
+						
+						// !! would actulay need to get this from the svg infos. not from a layer
 						
 						if(cimage.title == "bg_size"){
 							
@@ -83,9 +87,16 @@ function SVG_reader(){
 
 			}
 			
+		if(match > 0){
 			
+			return cadre ;
 			
-		return cadre ;
+		}else{
+			
+			return false ;
+			
+		}
+			
 		
 	}
 	

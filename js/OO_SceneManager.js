@@ -31,6 +31,8 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ViewManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_View.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Context.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SetupManager.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Setup.js");
 
 
 
@@ -77,6 +79,8 @@ function test(){
 	var S = new OO.SceneManager();	
 	
 	S.context = new OO.Context("Shotgun");
+	
+	S.context.set_library_path(OO.library_path);
 
 	S.load_breakdown('csv');	
 	
@@ -88,13 +92,9 @@ function test(){
 		
 		MessageLog.trace(cura.get_code());
 		
-		var tpl_apath = cura.get_tpl_path();
+		var final_tpl_path =   S.context.get_tpl_path(cura);
 		
-		var psd_apath = cura.get_psd_path();
-		
-		var final_tpl_path =  OO.library_path+tpl_apath;
-		
-		var final_psd_path =  OO.library_path+psd_apath;
+		var final_psd_path =   S.context.get_psd_path(cura);
 		
 		var asset_type = cura.get_type()
 		
@@ -144,9 +144,11 @@ function pull_psd(){
 	
 	var S = new OO.SceneManager();	
 	
-	S.context.set_context_type('Server');	
+	S.context.set_context_type('Shotgun');	
 	
-	S.load_breakdown('json');
+	S.context.set_library_path(OO.library_path);
+	
+	S.load_breakdown('csv');
 	
 	S.portals.load_from_scene();
 
@@ -163,30 +165,28 @@ function pull_psd(){
 			MessageLog.trace(cportal.code);
 
 			S.portals.pull(cportal,'psd');		
-			
-			//we find the linked asset
-			
-			
-			
-					
-			var svg_path = linked_asset.get_svg_path();
 	
-			var full_svg_path = OO.library_path+svg_path;
+			var full_svg_path = S.context.get_svg_path(linked_asset);
+			
+			
+			
+			// if the bg has cadres that match the shot name. 
 			
 			var bg_cadre = S.load_cadre(full_svg_path);
-			
-			
+		
 			if(bg_cadre!=false){
 				
-				S.trees.fit_to_camera(cportal.tree.peg,bg_cadre);
+				S.trees.fit_cadre_to_camera(cportal.tree.peg,bg_cadre);
 				
-			}					
+			}else{
+				
+				//we compensate the bg secu
+				
+				S.trees.scale_to_camera(cportal.tree.peg);
+			}
 					
-
 		}
 
-		
-		
 	}	
 	
 }
@@ -210,9 +210,9 @@ function create_portals_from_breakdown(){
 		
 		MessageLog.trace(cura.get_code());
 		
-		var tpl_apath = cura.get_tpl_path();
+		var tpl_apath = S.context.get_tpl_path(cura);
 		
-		var psd_apath = cura.get_psd_path();
+		var psd_apath = S.context.get_psd_path(cura);
 		
 		var final_tpl_path =  OO.library_path+tpl_apath;
 		
@@ -273,9 +273,9 @@ function Impog(){
 	for(var a in S.assets.list){
 		
 		var cura = S.assets.list[a];
-		
-		var apath = cura.get_tpl_path();
-		
+	
+		var apath = S.context.get_tpl_path(cura);
+	
 		var final_path = OO.library_path+apath;
 		
 		var asset_code = cura.get_code();
@@ -298,7 +298,11 @@ function Impog(){
 				
 				if(bg_cadre!=false){
 					
-					S.trees.fit_to_camera(bg_tree,bg_cadre);
+					S.trees.fit_cadre_to_camera(bg_tree,bg_cadre);
+					
+				}else{
+					
+					
 					
 				}
 				

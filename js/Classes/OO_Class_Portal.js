@@ -69,7 +69,7 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_tree){
 		
 		var tpl = new $.oFile(this.tpl_path)
 		
-		return tpl.exist;
+		return tpl.exists;
 		
 	}
 	
@@ -77,7 +77,10 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_tree){
 		
 		var psd = new $.oFile(this.psd_path)
 		
-		return psd.exist;
+		MessageLog.trace("PSD EXIST");
+		MessageLog.trace(psd.exists);
+
+		return psd.exists;
 	}
 
 	this.set_content = function(tree){
