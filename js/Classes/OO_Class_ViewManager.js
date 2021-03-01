@@ -1,6 +1,6 @@
 // CLASS OO_ViewManager
 
-MessageLog.trace("CLASS OO_ViewManager");
+//MessageLog.trace("CLASS OO_ViewManager");
 
 OO.ViewManager = function(_S){
 	
@@ -23,7 +23,7 @@ OO.ViewManager = function(_S){
 
 	this.load = function(_stage){
 		
-			MessageLog.trace("ViewManager Load");
+			//MessageLog.trace("ViewManager Load");
 		
 			var TLM_list_of_views=_stage.get_TLM();
 			
@@ -31,7 +31,7 @@ OO.ViewManager = function(_S){
 				
 				OO.log.add('no views detected in the scene','ERROR');
 				
-				MessageLog.trace('no views detected in the scene');
+				//MessageLog.trace('no views detected in the scene');
 				
 				this.noviews = true;
 				

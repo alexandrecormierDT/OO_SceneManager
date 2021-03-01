@@ -1,6 +1,6 @@
 // CLASS OO_SceneManager
 
-MessageLog.trace("CLASS OO_Log imported")
+//MessageLog.trace("CLASS OO_Log imported")
 
 OO.Log =function (_path){
 		

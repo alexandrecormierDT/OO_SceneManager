@@ -1,6 +1,6 @@
 // CLASS OO_Portal
 
-MessageLog.trace("CLASS OO_PortalManager")
+////MessageLog.trace("CLASS OO_PortalManager")
 
 OO.PortalManager = function(_S){
 	
@@ -10,11 +10,9 @@ OO.PortalManager = function(_S){
 	
 	this.list = [];
 	
-	
-	
 	this.load_from_scene = function(){
 		
-		MessageLog.trace("LOAD FROM SCENE");
+		////MessageLog.trace("LOAD FROM SCENE");
 		
 		// Detect the script module with "portal" attributes among the scene nodes and fetch the linked nodes to make the tree, read the script module attributes 
 		//add a new portal object to the list. 
@@ -61,27 +59,27 @@ OO.PortalManager = function(_S){
 			
 			var linked_group = OO.doc.getNodeByPath(cur_script_module.linkedInNodes);
 			
-			MessageLog.trace("GROUP");
+			////MessageLog.trace("GROUP");
 			
-			MessageLog.trace(linked_group.name);
+			////MessageLog.trace(linked_group.name);
 			
-			MessageLog.trace(tpl_path);
+			////MessageLog.trace(tpl_path);
 			
-			MessageLog.trace(psd_path);
+			////MessageLog.trace(psd_path);
 			
 			
 			//PORTAL PEG
 			
 			var linked_peg = OO.doc.getNodeByPath(linked_group.linkedInNodes);
 			
-			MessageLog.trace("PEG");
+			////MessageLog.trace("PEG");
 			
-			MessageLog.trace(linked_peg.name);
+			////MessageLog.trace(linked_peg.name);
 			
 			
 			//TREE
 			
-			MessageLog.trace("TREE");
+			////MessageLog.trace("TREE");
 			
 			var ntree = S.trees.add(code,[]);
 			
@@ -97,9 +95,9 @@ OO.PortalManager = function(_S){
 			
 			ntree.peg = linked_peg;	
 
-			MessageLog.trace(ntree.onodes);			
+			////MessageLog.trace(ntree.onodes);			
 			
-			MessageLog.trace(ntree.group);			
+			////MessageLog.trace(ntree.group);			
 
 			var nportal = new OO.Portal(code,type,tpl_path,psd_path,ntree);
 			
@@ -107,32 +105,32 @@ OO.PortalManager = function(_S){
 			
 			//we gathered all informations expect the backdrop. 
 			
-			MessageLog.trace(">>>>PUSH PORTAL TO LIST");
+			////MessageLog.trace(">>>>PUSH PORTAL TO LIST");
 			
 			this.list.push(nportal);
 
 		}
 		
-		MessageLog.trace(this.list);
+		////MessageLog.trace(this.list);
 		
 	}
 	
 	
 	this.pull = function(_portal,_type){
 		
-		MessageLog.trace("PULL PORTAL");
+		////MessageLog.trace("PULL PORTAL");
 		
 		switch (_type){
 			
 			case 'psd': 
 			
-				MessageLog.trace("PULL");
+				////MessageLog.trace("PULL");
 
 				final_path = _portal.psd_path ;
 				
-				MessageLog.trace(final_path); 
+				////MessageLog.trace(final_path); 
 				
-				MessageLog.trace(_portal.tree.group);
+				////MessageLog.trace(_portal.tree.group);
 				
 				//we import the tpl inside the portal's group
 				var nodes = S.trees.import_psd_in_group(_portal.code,final_path,_portal.tree.group);
@@ -145,6 +143,12 @@ OO.PortalManager = function(_S){
 				S.trees.arange_psd_node(bg_tree);
 			
 				_portal.set_content(bg_tree);
+				
+				var pbackdrop = _portal.get_backdrop();
+				
+				pbackdrop.color = new $.oColorValue("#5097D8ff");
+				
+				
 
 			break;
 			
@@ -156,6 +160,7 @@ OO.PortalManager = function(_S){
 		
 	}
 	
+	// should be handled by the tree class
 	
 	this.empty = function (_portal){
 		
@@ -210,6 +215,18 @@ OO.PortalManager = function(_S){
 			node.deleteNode(curc,true,true); 
 
 		}		
+		
+		//until we can delete backdrops.....
+		
+		_portal.tree.group.backdrops[0].x+=2000; 
+		_portal.tree.group.backdrops[0].width=20;
+		_portal.tree.group.backdrops[0].height=20;
+		_portal.tree.group.backdrops[0].title = "deleteme";
+		_portal.tree.group.backdrops[0].body = "deleteme";
+		
+		var pbackdrop = _portal.get_backdrop();
+				
+		pbackdrop.color = new $.oColorValue("#000000ff");
 	}
 	
 	this.push= function(type){
@@ -225,10 +242,12 @@ OO.PortalManager = function(_S){
 	}  	
 	
 	
+	// CREATING THE PORTAL TREE
+	
 	
 	this.add = function(_code,_type,tpl_path,psd_path){ 
 	
-		MessageLog.trace("Portal ADD");
+		////MessageLog.trace("Portal ADD");
 		
 		var pnodes =  S.trees.import_tpl(this.module_path);
 		
@@ -271,10 +290,6 @@ OO.PortalManager = function(_S){
 		
 		
 		var parent_group = nportal.tree.get_parent_group();
-		
-		MessageLog.trace("parent_group");
-		MessageLog.trace(parent_group);
-		
 		
 		nportal.tree.backdrop = parent_group.addBackdropToNodes(pnodes, "PORTAL", _code,new $.oColorValue("#000000ff"), 0, 0, 20, 20)
 

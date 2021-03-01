@@ -56,7 +56,7 @@ function Expiew(){
 	
 	//would need to add a warning message. 
 	
-	MessageLog.trace("Expiew");
+	////MessageLog.trace("Expiew");
 
 	S.load_xstage();
 	S.views.load(S.stage);
@@ -86,12 +86,9 @@ function load_shot_setup(){
 } 
 
 
-
-
-
 function pull_psd(){
 	
-	MessageLog.trace("PULL PSD FUNCTION");
+	////MessageLog.trace("PULL PSD FUNCTION");
 	
 	var S = new OO.SceneManager();	
 	
@@ -111,9 +108,9 @@ function pull_psd(){
 		
 		if(cportal.psd_exist()){
 					
-			MessageLog.trace("CODE");
+			////MessageLog.trace("CODE");
 			
-			MessageLog.trace(cportal.code);
+			////MessageLog.trace(cportal.code);
 
 			S.portals.pull(cportal,'psd');		
 	
@@ -152,23 +149,48 @@ function create_portals(_type){
 	
 	S.load_breakdown('csv');
 	
-
-	var bg_backdrop = S.get_backdrop_by_name('BG');
+	var target_backdrop = false;
 	
-	if(S.get_backdrop_by_name == false){
+	var target_composite = false;
+	
+	
+	switch(_type){
+		
+		case ('bg'):
+		
+			target_backdrop = S.get_backdrop_by_name('BG');
+			target_composite = OO.doc.getNodeByPath("Top/BG-C");
+		
+		break; 
+		
+		case('Character'):
+		
+			target_backdrop = S.get_backdrop_by_name('ANIM');
+			target_composite = OO.doc.getNodeByPath("Top/ANIM-C");
+		
+		break;
+		
+
+	}
+	
+	if(target_backdrop == false){
 		
 		bg_backdrop = {x:0,y:0};
 		
 	}
 
 	var point = {
-		x:bg_backdrop.x + 400,
-		y:bg_backdrop.y + 400 
+		x:target_backdrop.x + 400,
+		y:target_backdrop.y + 400 
+	}
+	
+	if(target_composite != undefined){
+		
+		S.create_asset_portals(_type,point,target_composite);
+		
 	}
 
-	var bg_composite = OO.doc.getNodeByPath("Top/BG-C");
 
-	S.create_asset_portals(_type,point,bg_composite);
 	
 }
 
@@ -197,77 +219,7 @@ function empty_portals(_type){
 			
 		}
 		
-				
 	}
-	
-	
-	
-}
-
-//SCRIPT : IMPORT BG
-function Impog(){
-	
-	MessageLog.trace("Impog");
-	
-	
-	var S = new OO.SceneManager();
-	
-	S.context = new OO.Context(this,"Server");
-	
-	S.load_breakdown('json');
-	
-	for(var a in S.assets.list){
-		
-		var cura = S.assets.list[a];
-	
-		var apath = S.context.get_tpl_path(cura);
-	
-		var final_path = OO.library_path+apath;
-		
-		var asset_code = cura.get_code();
-		
-		switch(cura.get_type()){
-
-			case ('bg'): 
-			
-				apath = cura.get_psd_path();
-		
-				final_path = OO.library_path+apath;
-				
-				var nodes = S.trees.import_psd_grouped(asset_code,final_path);
-				
-				var bg_tree = S.trees.add(asset_code,nodes)
-				
-				S.trees.arange_psd_node(bg_tree);
-				
-				var bg_cadre = S.load_cadre(cura);
-				
-				if(bg_cadre!=false){
-					
-					S.trees.fit_cadre_to_camera(bg_tree,bg_cadre);
-					
-				}else{
-					
-					
-					
-				}
-				
-
-			break; 
-			
-			case ('Character'):
-			
-				//S.trees.import_tpl_grouped(asset_code,final_path);
-			
-			break;
-			
-		}
-		
-
-	
-		
-	}
-
 
 }
 

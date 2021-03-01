@@ -1,6 +1,18 @@
 // CLASS OO_TreeManager
 
-MessageLog.trace("CLASS OO_TreeManager")
+////MessageLog.trace("CLASS OO_TreeManager")
+
+
+/*
+
+TREE AND NODES SHOULD BE HANDLE IN A CLEANER WAY 
+it's not clear how to fin the nodes related to the tree. 
+when they chang group for exemple 
+the nodes shoul be a simple array of nodes not a GroupeNode object 
+the trees should have a node_map. 
+
+
+*/
 
 OO.TreeManager = function(_S){
 	
@@ -107,18 +119,18 @@ OO.TreeManager = function(_S){
 	
 	this.import_psd_in_group = function(_code,_path,_group){
 		
-		MessageLog.trace("PSD GROUP");
+		////MessageLog.trace("PSD GROUP");
 		var psd_gp= CELIO.getLayerGroupInformation(_path);
-		MessageLog.trace(Object.getOwnPropertyNames(psd_gp));
-		MessageLog.trace(Object.getOwnPropertyNames(psd_gp.groups));
+		////MessageLog.trace(Object.getOwnPropertyNames(psd_gp));
+		////MessageLog.trace(Object.getOwnPropertyNames(psd_gp.groups));
 		
 		for(var i = 0 ; i < psd_gp.groups.length ; i++){
 			var curgp = psd_gp.groups[i];
-			MessageLog.trace(curgp);
+			////MessageLog.trace(curgp);
 			if(typeof(curgp) == "object"){
 				
-				MessageLog.trace(Object.getOwnPropertyNames(curgp));
-				MessageLog.trace(curgp.name);
+				////MessageLog.trace(Object.getOwnPropertyNames(curgp));
+				////MessageLog.trace(curgp.name);
 				
 			}
 		}
@@ -176,10 +188,27 @@ OO.TreeManager = function(_S){
 		onode.createAttribute("tree_id", type, displayName, linkable);
 		
 	}
+	
+	
+	
+	
+	//
+	//
+	//
+	//
+	//	
+	//	B G   T R E A T M E N T
+	//	
+	//	
+	//
+	//
+	//
+	//
+	//
 
 	this.arange_psd_node = function(t){
 		
-		MessageLog.trace("ARRANGE PSD NODES");
+		////MessageLog.trace("ARRANGE PSD NODES");
 		
 		var reads = t.reads
 		
@@ -252,9 +281,6 @@ OO.TreeManager = function(_S){
 		group.multiportOut.centerBelow(reads, 0, 500);
 
 		
-
-		
-		
 		group.addBackdropToNodes( t.get_nodes(), t.code, "", new $.oColorValue("#5097D8ff"), 0, 0, 20, 20);
 		
 	}
@@ -267,14 +293,7 @@ OO.TreeManager = function(_S){
 		
 		var Y = tree1.get_Y(); 
 		
-		
-		MessageLog.trace("BACKDROP")
-		MessageLog.trace(tree1.backdrop.width)
-		MessageLog.trace(tree1.get_width())
-		MessageLog.trace(tree2.backdrop.width)
-		
 		tree2.moveTo(X,Y);
-		
 		
 	}
 	
@@ -438,14 +457,14 @@ OO.TreeManager = function(_S){
 		
 		
 		
-		MessageLog.trace(" ----- FINAL TRANSFORM -------------------------------- ");
+		////MessageLog.trace(" ----- FINAL TRANSFORM -------------------------------- ");
 		
 		
-			MessageLog.trace(final_x);
+			////MessageLog.trace(final_x);
 		
-			MessageLog.trace(final_y);
+			////MessageLog.trace(final_y);
 		
-		MessageLog.trace(" ------------------------------------------------------ ");
+		////MessageLog.trace(" ------------------------------------------------------ ");
 		
 		
 		//INJECT X

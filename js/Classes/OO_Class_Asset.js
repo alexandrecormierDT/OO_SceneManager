@@ -1,6 +1,6 @@
 // CLASS OO_ASSET
 
-MessageLog.trace("CLASS OO_ASSET")
+////MessageLog.trace("CLASS OO_ASSET")
 
 OO.Asset = function(_param){
 
@@ -15,7 +15,7 @@ OO.Asset = function(_param){
 		
 	}
 
-	MessageLog.trace("new asset : "+attributes.code)
+	////MessageLog.trace("new asset : "+attributes.code)
 	
 	this.get_code = function(){
 	
@@ -31,8 +31,8 @@ OO.Asset = function(_param){
 	
 	this.get_attribute = function(an){
 		
-		MessageLog.trace("get attr "+an)
-		MessageLog.trace(attributes[an])
+		////MessageLog.trace("get attr "+an)
+		////MessageLog.trace(attributes[an])
 		
 		if(attributes.hasOwnProperty(an)){
 			return attributes[an];

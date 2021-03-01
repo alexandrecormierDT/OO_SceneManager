@@ -1,6 +1,6 @@
 // CLASS OO_View
 
-MessageLog.trace("CLASS OO_View");
+//MessageLog.trace("CLASS OO_View");
 
 OO.View = function(TLM){
 	
@@ -32,13 +32,13 @@ OO.View = function(TLM){
 	//exmple of TLM element in xml :  <timelineMarker markerStart="4" markerLength="0" colour="#FF0000FF" note="hello" name="C_marker"/>
 	this.load = function(TLM){
 
-		MessageLog.trace(Object.getOwnPropertyNames(TLM));
+		//MessageLog.trace(Object.getOwnPropertyNames(TLM));
 		
 		if(TLM.hasOwnProperty('note')){
 			
-			MessageLog.trace("HAS NOTE")
-			MessageLog.trace(TLM.name)
-			MessageLog.trace(TLM.note)
+			//MessageLog.trace("HAS NOTE")
+			//MessageLog.trace(TLM.name)
+			//MessageLog.trace(TLM.note)
 
 			this.name = filter(TLM.name);
 			this.exportFrame = filter(TLM.markerStart);
@@ -137,8 +137,8 @@ OO.View = function(TLM){
 		
 		
 							
-		MessageLog.trace("NOTES");
-		MessageLog.trace(Object.getOwnPropertyNames(obj));
+		//MessageLog.trace("NOTES");
+		//MessageLog.trace(Object.getOwnPropertyNames(obj));
 		
 		return obj;
 		

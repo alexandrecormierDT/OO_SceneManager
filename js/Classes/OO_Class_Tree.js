@@ -1,6 +1,6 @@
 // CLASS OO_Tree
 
-MessageLog.trace("CLASS OO_Tree")
+////MessageLog.trace("CLASS OO_Tree")
 
 
 OO.Tree = function(_code,_nodes){
@@ -257,14 +257,14 @@ OO.Tree = function(_code,_nodes){
 	
 	this.ungroup = function(){
 		
-		MessageLog.trace("BEFORE UNGROUP TREE");
+		////MessageLog.trace("BEFORE UNGROUP TREE");
 		
 		var node_name_list = []
 
 		for (var i = 0 ; i < this.onodes.length ; i++){
 			
-			MessageLog.trace( this.onodes[i]);
-			MessageLog.trace( this.onodes[i].name);
+			////MessageLog.trace( this.onodes[i]);
+			////MessageLog.trace( this.onodes[i].name);
 			
 			node_name_list.push(this.onodes[i].name);
 		}
@@ -277,15 +277,7 @@ OO.Tree = function(_code,_nodes){
 	
 		}
 		
-		MessageLog.trace("AFTER UNGROUP TREE");
-		
-		for (var i = 0 ; i < this.onodes.length ; i++){
-			
-			//this.onodes[i] = this.udpate_onode_with_new_group("Top",node_name_list[i]);
-			
-			//MessageLog.trace( this.onodes[i]);
-			//MessageLog.trace( this.onodes[i].name);			
-		}
+		////MessageLog.trace("AFTER UNGROUP TREE");
 
 	}
 	

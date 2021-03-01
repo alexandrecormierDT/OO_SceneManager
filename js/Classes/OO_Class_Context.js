@@ -1,5 +1,5 @@
 // CLASS OO_Stage
-MessageLog.trace("CLASS OO_Context")
+//MessageLog.trace("CLASS OO_Context")
 
 // CLASS TO HANDLE FILES , PATHS , GLOBAL CONTEXT AND INTERACTIONS
 
@@ -33,9 +33,9 @@ OO.Context = function (_type){
 		
 		var slash_split = scene_path.split("/");
 		
-		MessageLog.trace("SCEN PATH");
-		MessageLog.trace(scene_path);
-		MessageLog.trace(slash_split);
+		//MessageLog.trace("SCEN PATH");
+		//MessageLog.trace(scene_path);
+		//MessageLog.trace(slash_split);
 		
 		return slash_split[slash_split.length-1];
 		
@@ -44,11 +44,11 @@ OO.Context = function (_type){
 	
 	this.get_type_from_asset_code = function(asset_code){
 		
-		MessageLog.trace("get_type_with_asset_code");
+		//MessageLog.trace("get_type_with_asset_code");
 		
 		var short_type = asset_code.split("_")[0];
 		
-		MessageLog.trace(short_type);
+		//MessageLog.trace(short_type);
 		
 		var sg_asset_type = "notype";
 		
@@ -81,8 +81,8 @@ OO.Context = function (_type){
 			break;				
 		}
 		
-		MessageLog.trace("FOUND TYPE : ");
-		MessageLog.trace(sg_asset_type);
+		//MessageLog.trace("FOUND TYPE : ");
+		//MessageLog.trace(sg_asset_type);
 		
 		return sg_asset_type;
 		
@@ -123,8 +123,8 @@ OO.Context = function (_type){
 			var scene_path = scene.currentScene().split("/")
 			var scene_name = scene_path[scene_path.length-1]
 			var shotcode = scene_name.split("_")[0]+"_"+scene_name.split("_")[1];
-			MessageLog.trace("SHOTCODE")
-			MessageLog.trace(shotcode)
+			//MessageLog.trace("SHOTCODE")
+			//MessageLog.trace(shotcode)
 			return shotcode;
 		
 	}
@@ -260,7 +260,7 @@ OO.Context = function (_type){
 		
 		// CHANGE   "bg_ep102pl022_ded_ext"   TO   "ep102pl022_ded_ext"  
 		
-		MessageLog.trace("get_asset_code_without_type");
+		//MessageLog.trace("get_asset_code_without_type");
 		
 		var split1 =  asset_code.split("_");
 		
@@ -276,11 +276,11 @@ OO.Context = function (_type){
 				result +=split1[i];
 			}
 			
-			MessageLog.trace(split1[i]);
+			//MessageLog.trace(split1[i]);
 			
 		}
 		
-		MessageLog.trace(result);
+		//MessageLog.trace(result);
 		
 		return result; 
 	}
@@ -334,8 +334,8 @@ OO.Context = function (_type){
 		
 		//OO.log.add(path+" exist ="+f.exists)
 		
-		MessageLog.trace("FILE CHECK");
-		MessageLog.trace(path+" exist ="+f.exists);
+		//MessageLog.trace("FILE CHECK");
+		//MessageLog.trace(path+" exist ="+f.exists);
 		
 		return f.exists;
 		

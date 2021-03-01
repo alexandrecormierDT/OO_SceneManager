@@ -1,6 +1,6 @@
 // CLASS OO_AssetManager
 
-MessageLog.trace("CLASS OO_AssetManager")
+//MessageLog.trace("CLASS OO_AssetManager")
 
 OO.AssetManager = function(_S){
 	

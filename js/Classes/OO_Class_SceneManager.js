@@ -1,6 +1,6 @@
 // CLASS OO_SceneManager
 
-MessageLog.trace("CLASS OO_SceneManager imported")
+////MessageLog.trace("CLASS OO_SceneManager imported")
 
 OO.SceneManager = function(){
 	
@@ -23,15 +23,25 @@ OO.SceneManager = function(){
 
 		var backdrops = OO.doc.root.backdrops;
 
-		MessageLog.trace("BACKDROP");
+		////MessageLog.trace("BACKDROP");
+		
+		var match = 0; 
 
 		for(var b = 0 ; b < backdrops.length ; b++){
 
 			if(backdrops[b].title == bdname){
 				
+				match++;
+				
 				return backdrops[b];
+				
 
 			};
+		}
+		
+		if(match==0){
+			
+			return false;
 		}
 	}
 	
@@ -41,25 +51,25 @@ OO.SceneManager = function(){
 		
 		var shot = this.context.get_shot();
 		
-		MessageLog.trace("DETECTED SHOT");
+		////MessageLog.trace("DETECTED SHOT");
 		
-		MessageLog.trace(shot);
+		////MessageLog.trace(shot);
 		
 		switch(inputtype){
 			
 			case ('json'):
 			
-				MessageLog.trace("LOAD JSON");
+				////MessageLog.trace("LOAD JSON");
 				
 				var path = OO.sg_path+"/json/"+shot+".json";
 
-				MessageLog.trace(path);
+				////MessageLog.trace(path);
 				
 				var json_string = new $.oFile(path).read();
 				
 				var obj_list = 	JSON.parse(json_string);
 		
-				MessageLog.trace(Object.getOwnPropertyNames(obj_list));
+				////MessageLog.trace(Object.getOwnPropertyNames(obj_list));
 				
 				asset_list = obj_list.Assets;
 				
@@ -89,7 +99,7 @@ OO.SceneManager = function(){
 					
 					var second_split = line_split[l].split('"');
 
-					MessageLog.trace(second_split[3]);
+					////MessageLog.trace(second_split[3]);
 					
 					if(second_split[3] == shot){
 						
@@ -97,11 +107,11 @@ OO.SceneManager = function(){
 						
 						var assets = assets_string.split(',');
 						
-						MessageLog.trace("----");
-						MessageLog.trace("CSV ASSETS");
-						MessageLog.trace("---'");
-						MessageLog.trace(assets);
-						MessageLog.trace("---");
+						////MessageLog.trace("----");
+						////MessageLog.trace("CSV ASSETS");
+						////MessageLog.trace("---'");
+						////MessageLog.trace(assets);
+						////MessageLog.trace("---");
 
 						asset_codes = assets;
 						
@@ -120,10 +130,10 @@ OO.SceneManager = function(){
 					
 					asset.sg_asset_type =this.context.get_type_from_asset_code(asset.code);
 					
-					MessageLog.trace("CSV");
+					////MessageLog.trace("CSV");
 					
-					MessageLog.trace(asset.code);
-					MessageLog.trace(asset.sg_asset_type);
+					////MessageLog.trace(asset.code);
+					////MessageLog.trace(asset.sg_asset_type);
 					
 					asset_list.push(asset);
 					
@@ -148,8 +158,8 @@ OO.SceneManager = function(){
 			
 			
 			
-			MessageLog.trace("new asset param : ");
-			MessageLog.trace(Object.getOwnPropertyNames(curItem));
+			////MessageLog.trace("new asset param : ");
+			////MessageLog.trace(Object.getOwnPropertyNames(curItem));
 			
 			var asset_param = asset_list[a];
 			
@@ -201,7 +211,7 @@ OO.SceneManager = function(){
 			return cadre;
 
 			
-			MessageLog.trace(final_path);
+			////MessageLog.trace(final_path);
 		}else{
 			
 			return false;
@@ -219,26 +229,24 @@ OO.SceneManager = function(){
 			
 			var cura = this.assets.list[a]; 
 			
-			MessageLog.trace("CREATE NEW PORTAL");
+			var final_tpl_path = this.context.get_tpl_path(cura);
 			
-			MessageLog.trace(cura.get_code());
-			
-			var final_tpl_path =   this.context.get_tpl_path(cura);
-			
-			var final_psd_path =   this.context.get_psd_path(cura);
-			
-			var asset_type = cura.get_type()
+			var final_psd_path = this.context.get_psd_path(cura);
 			
 			var asset_code = cura.get_code()
 			
-			var asset_id = cura.get_id()
+			var asset_type = cura.get_type()
+			
 
 			if(asset_type == _type || asset_type == "all_type"){
 
-				var nportal = this.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path);	
 				
-				nportal.id = asset_id;
+				var nportal = this.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path);	
 
+				MessageLog.trace("*------------> creating portal for asset : "+asset_code+" type "+asset_type);
+				MessageLog.trace("*------------> final_tpl_path : "+final_tpl_path)
+				MessageLog.trace("*------------> final_psd_path : "+final_psd_path)
+				
 			}
 
 		}
@@ -278,24 +286,19 @@ OO.SceneManager = function(){
 				// i think the nodes pointers are lost after the ungroup; 
 				
 				//fix this with an id ? 
-				
-
-
 
 				if(typeof(_composite) != undefined ){
 
 					var group = OO.doc.getNodeByPath("Top/"+cportal.code);
-				
-					//group.createAttribute(attrName, type, displayName, linkable)
-
-					group.linkOutNode(_composite)
 					
-
+					if(group != undefined) {
+						
+						group.linkOutNode(_composite)
+						
+					}
 
 				}
 
-				
-				
 			}
 
 		}	

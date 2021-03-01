@@ -1,6 +1,6 @@
 // CLASS OO_Portal
 
-MessageLog.trace("CLASS OO_Portal")
+////MessageLog.trace("CLASS OO_Portal")
 
 /*
 	a portal is a tree with a particular setup to import and export tpl
@@ -65,6 +65,35 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_tree){
 		
 	}
 	
+	this.update_backdrop = function(){
+		
+		var scene_backdrops = OO.doc.root.backdrops; 
+		
+		for (var b = 0 ; b < scene_backdrops.length ; b++){
+		
+			var curb = scene_backdrops[b]
+			
+			if(curb.body == this.code && curb.title == "PORTAL"){
+				
+				this.tree.backdrop = curb;
+				
+				break;
+				
+			}
+
+		}
+		
+	}
+	
+	this.get_backdrop = function (){
+		
+		this.update_backdrop();
+		
+		return this.tree.backdrop;
+		
+		
+	}
+	
 	this.tpl_exist = function(){
 		
 		var tpl = new $.oFile(this.tpl_path)
@@ -77,8 +106,8 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_tree){
 		
 		var psd = new $.oFile(this.psd_path)
 		
-		MessageLog.trace("PSD EXIST");
-		MessageLog.trace(psd.exists);
+		////MessageLog.trace("PSD EXIST");
+		////MessageLog.trace(psd.exists);
 
 		return psd.exists;
 	}
