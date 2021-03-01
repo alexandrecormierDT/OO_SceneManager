@@ -14,6 +14,12 @@ OO.TreeManager = function(_S){
 		
 	}
 	
+	this.generate_id = function(){
+		
+		return new Date().getUTCMilliseconds();
+		
+	}
+	
 	this.add = function(code,nodes){
 		
 		var ntree = new OO.Tree(code,nodes);
@@ -24,6 +30,22 @@ OO.TreeManager = function(_S){
 		
 	}
 	
+	this.mark_node_id = function(_node,_id){
+			
+		_node.createAttribute("node_id", "string", "NID", false);
+	
+		_node.attributes.tree_id.setValue(_id);				
+		
+	}	
+	
+	this.mark_treeid = function(_node,_id){
+			
+		_node.createAttribute("tree_id", "string", "TID", false);
+	
+		_node.attributes.tree_id.setValue(_id);				
+		
+	}	
+		
 
 	this.update= function(){
 		
@@ -41,9 +63,9 @@ OO.TreeManager = function(_S){
 		
 		var import_group =  OO.doc.root.addGroup(_path, false, false); 
 
-		var nodes = import_group.importTemplate(_path,false,true);
+		import_group.importTemplate(_path,false,true);
 		
-		return nodes; 
+		return import_group.nodes; 
 
 	}	
 	
@@ -146,6 +168,12 @@ OO.TreeManager = function(_S){
 		}	
 
 		return total_width;
+		
+	}
+	
+	this.add_tree_id_to_node = function (onode,id){
+		
+		onode.createAttribute("tree_id", type, displayName, linkable);
 		
 	}
 

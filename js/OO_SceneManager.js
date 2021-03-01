@@ -49,9 +49,6 @@ OO.filter_string =function(str){
 OO.log = new OO.Log("scenemanager_");
 
 
-
-
-
 //SCRIPT : EXPIEW
 function Expiew(){
 	
@@ -74,68 +71,22 @@ function Expiew(){
 }
 
 
-function test(){
+
+
+function load_shot_setup(){
 	
 	var S = new OO.SceneManager();	
 	
 	S.context = new OO.Context("Shotgun");
 	
 	S.context.set_library_path(OO.library_path);
+	
+	var shot_setup = S.setups.apply('shot');	
 
-	S.load_breakdown('csv');	
-	
-	for(var a in S.assets.list){
-		
-		var cura = S.assets.list[a]; 
-		
-		MessageLog.trace("CREATE NEW PORTAL");
-		
-		MessageLog.trace(cura.get_code());
-		
-		var final_tpl_path =   S.context.get_tpl_path(cura);
-		
-		var final_psd_path =   S.context.get_psd_path(cura);
-		
-		var asset_type = cura.get_type()
-		
-		var asset_code = cura.get_code()
-		
-		var asset_id = cura.get_id()
+} 
 
-		var nportal = S.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path);	
-		
-		nportal.id = asset_id;
 
-	}
-	
 
-	for(var p = 0 ; p < S.portals.list.length; p++){
-		
-		var cportal = S.portals.list[p]
-		
-		if(p > 0){
-			
-			var pportal = S.portals.list[p-1];
-			
-			S.trees.put_next_to(pportal.tree,cportal.tree,100);
-			
-		}		
-		
-	}
-	
-	
-	for(var p = 0 ; p < S.portals.list.length; p++){
-		
-		
-		var cportal = S.portals.list[p]
-
-		cportal.deploy();
-		
-		
-	}
-	
-	
-}
 
 
 function pull_psd(){
@@ -191,70 +142,65 @@ function pull_psd(){
 	
 }
 
-function create_portals_from_breakdown(){
+function create_portals(_type){
 	
 	var S = new OO.SceneManager();	
 	
-	S.context.set_context_type('Server');
+	S.context.set_context_type('Shotgun');	
 	
-	S.load_breakdown('json');
+	S.context.set_library_path(OO.library_path);	
 	
-	var X = 0; 
-	var Y = 0; 
-	
-	for(var a in S.assets.list){
-		
-		var cura = S.assets.list[a]; 
-		
-		MessageLog.trace("CREATE NEW PORTAL");
-		
-		MessageLog.trace(cura.get_code());
-		
-		var tpl_apath = S.context.get_tpl_path(cura);
-		
-		var psd_apath = S.context.get_psd_path(cura);
-		
-		var final_tpl_path =  OO.library_path+tpl_apath;
-		
-		var final_psd_path =  OO.library_path+psd_apath;
-		
-		var asset_type = cura.get_type()
-		
-		var asset_code = cura.get_code()
-		
-		var asset_id = cura.get_id()
-
-		var nportal = S.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path);	
-		
-		nportal.id = asset_id;
-
-	}
+	S.load_breakdown('csv');
 	
 
-	for(var p = 0 ; p < S.portals.list.length; p++){
+	var bg_backdrop = S.get_backdrop_by_name('BG');
+	
+	if(S.get_backdrop_by_name == false){
 		
-		var cportal = S.portals.list[p]
-		
-		if(p > 0){
-			
-			var pportal = S.portals.list[p-1];
-			
-			S.trees.put_next_to(pportal.tree,cportal.tree,100);
-			
-		}		
+		bg_backdrop = {x:0,y:0};
 		
 	}
-	
-	
-	for(var p = 0 ; p < S.portals.list.length; p++){
-		
-		
-		var cportal = S.portals.list[p]
 
-		cportal.deploy();
+	var point = {
+		x:bg_backdrop.x + 400,
+		y:bg_backdrop.y + 400 
+	}
+
+	var bg_composite = OO.doc.getNodeByPath("Top/BG-C");
+
+	S.create_asset_portals(_type,point,bg_composite);
+	
+}
+
+
+function empty_portals(_type){
+	
+	var S = new OO.SceneManager();	
+	
+	S.context.set_context_type('Shotgun');	
+	
+	S.context.set_library_path(OO.library_path);
+	
+	S.load_breakdown('csv');
+	
+	S.portals.load_from_scene();
+
+	for(var p = 0 ; p < S.portals.list.length; p++){
+	
+		var cportal = S.portals.list[p]
 		
+		var linked_asset = S.assets.get_asset_by_code(cportal.code);
 		
-	}	
+		if(linked_asset.get_type()== _type){
+			
+			S.portals.empty(cportal);
+			
+		}
+		
+				
+	}
+	
+	
 	
 }
 

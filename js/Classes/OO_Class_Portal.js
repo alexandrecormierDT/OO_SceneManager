@@ -101,15 +101,7 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_tree){
 	}
 	
 	
-	this.deploy = function(){
 
-		if(this.tree.peg != undefined && this.tree.get_parent_group() != null && this.tree.get_parent_group().path != "Top"){
-	
-			node.explodeGroup(this.tree.get_parent_group().path);
-	
-		}
-
-	}
 	
 
 }

@@ -2,12 +2,17 @@
 
 MessageLog.trace("CLASS OO_Setup")
 
-OO.Setup = function(name,tree,script){
+OO.Setup = function(_name,_tree,_script){
 
-	this.tree = tree; 
+	this.tree = _tree; 
 	
-	this.name = name; 
+	this.name = _name; 
 	
-	this.script = script; 
+	var script = require(_script);
 	
+	this.run_script= function(){
+
+		script.run();
+
+	}
 }

@@ -17,6 +17,23 @@ OO.SceneManager = function(){
 	this.init = function(){
 		
 	}
+
+
+	this.get_backdrop_by_name = function(bdname){
+
+		var backdrops = OO.doc.root.backdrops;
+
+		MessageLog.trace("BACKDROP");
+
+		for(var b = 0 ; b < backdrops.length ; b++){
+
+			if(backdrops[b].title == bdname){
+				
+				return backdrops[b];
+
+			};
+		}
+	}
 	
 	this.load_breakdown = function(inputtype){
 		
@@ -193,6 +210,99 @@ OO.SceneManager = function(){
 		
 
 	}
+
+	this.create_asset_portals = function(_type,_point,_composite){
+
+		// fetching assets and creating portals; 
+
+		for(var a in this.assets.list){
+			
+			var cura = this.assets.list[a]; 
+			
+			MessageLog.trace("CREATE NEW PORTAL");
+			
+			MessageLog.trace(cura.get_code());
+			
+			var final_tpl_path =   this.context.get_tpl_path(cura);
+			
+			var final_psd_path =   this.context.get_psd_path(cura);
+			
+			var asset_type = cura.get_type()
+			
+			var asset_code = cura.get_code()
+			
+			var asset_id = cura.get_id()
+
+			if(asset_type == _type || asset_type == "all_type"){
+
+				var nportal = this.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path);	
+				
+				nportal.id = asset_id;
+
+			}
+
+		}
+
+
+		if(this.portals.list.length > 0){
+			
+			//Placing portal trees in nodeview : 
+
+			for(var p = 0 ; p < this.portals.list.length; p++){
+				
+				var cportal = this.portals.list[p]
+				
+				if(p > 0){
+					
+					var pportal = this.portals.list[p-1];
+					
+					this.trees.put_next_to(pportal.tree,cportal.tree,100);
+					
+				}else{
+
+					
+					cportal.tree.moveTo(_point.x,_point.y);
+
+				}
+				
+			}
+			
+			//	ungrouping them 
+			
+			for(var p = 0 ; p < this.portals.list.length; p++){
+				
+				var cportal = this.portals.list[p]
+
+				cportal.tree.ungroup();
+				
+				// i think the nodes pointers are lost after the ungroup; 
+				
+				//fix this with an id ? 
+				
+
+
+
+				if(typeof(_composite) != undefined ){
+
+					var group = OO.doc.getNodeByPath("Top/"+cportal.code);
+				
+					//group.createAttribute(attrName, type, displayName, linkable)
+
+					group.linkOutNode(_composite)
+					
+
+
+				}
+
+				
+				
+			}
+
+		}	
+
+
+	}
+	
 	
 }
 

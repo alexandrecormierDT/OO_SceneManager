@@ -5,7 +5,7 @@ MessageLog.trace("CLASS OO_Tree")
 
 OO.Tree = function(_code,_nodes){
 	
-	var onodes = _nodes; 
+	var onodes = _nodes
 	
 	this.onodes = _nodes
 	
@@ -29,14 +29,39 @@ OO.Tree = function(_code,_nodes){
 	
 	this.final_comp;
 	
+	this.node_id_list = [];
+	
+
+	
 	
 	this.add_node = function(onode){
 		
-	
-		this.onodes.push(onode);
+		//this.mark_treeid(onode,this.code);
+		
+		//this.mark_node_id(onode,Math.random(100));
+
 		onodes.push(onode);
 		
+		this.onodes.push(onode);
+
 	}
+	
+	this.mark_node_id = function(_node,_id){
+			
+		_node.createAttribute("node_id", "string", "NID", false);
+	
+		_node.attributes.node_id.setValue(_id);				
+		
+	}	
+	
+	
+	this.mark_treeid = function(_node,_id){
+			
+		_node.createAttribute("tree_id", "string", "TID", false);
+	
+		_node.attributes.tree_id.setValue(_id);				
+		
+	}	
 	
 	this.set_top_peg = function(tp){
 		
@@ -49,6 +74,11 @@ OO.Tree = function(_code,_nodes){
 		
 	}
 	
+	this.set_group = function(){
+		
+		
+	}
+	
 	this.get_parent_group = function(){
 		
 		if(onodes != null){
@@ -57,6 +87,11 @@ OO.Tree = function(_code,_nodes){
 			
 		}
 		
+	}
+
+	this.get_group = function(){
+
+
 	}
 	
 	
@@ -111,6 +146,12 @@ OO.Tree = function(_code,_nodes){
 		
 		return false;
 
+	}
+	
+	this.main_group = function(){
+		
+		
+		
 	}
 	
 	
@@ -211,6 +252,58 @@ OO.Tree = function(_code,_nodes){
 		this.backdrop.y*=sy
 
 	}	
+
+	// the nodes are no longueur reachable after the ungroup , that's a shame, i should find a way to updatethem. with id for each node ? 
+	
+	this.ungroup = function(){
+		
+		MessageLog.trace("BEFORE UNGROUP TREE");
+		
+		var node_name_list = []
+
+		for (var i = 0 ; i < this.onodes.length ; i++){
+			
+			MessageLog.trace( this.onodes[i]);
+			MessageLog.trace( this.onodes[i].name);
+			
+			node_name_list.push(this.onodes[i].name);
+		}
+		
+		
+
+		if(this.get_parent_group() != null && this.get_parent_group().path != "Top"){
+	
+			node.explodeGroup(this.get_parent_group().path);
+	
+		}
+		
+		MessageLog.trace("AFTER UNGROUP TREE");
+		
+		for (var i = 0 ; i < this.onodes.length ; i++){
+			
+			//this.onodes[i] = this.udpate_onode_with_new_group("Top",node_name_list[i]);
+			
+			//MessageLog.trace( this.onodes[i]);
+			//MessageLog.trace( this.onodes[i].name);			
+		}
+
+	}
+	
+	this.get_node_by_id = function(id){
+		
+		
+		
+	}
+	
+	this.udpate_onode_with_new_group = function(newgroup,node_name){
+		
+		
+		var updated_onode  = OO.doc.getNodeByPath(newgroup+"/"+node_name);
+		
+		return updated_onode;
+		
+	}
+
 
 }
 

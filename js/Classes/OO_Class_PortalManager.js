@@ -156,6 +156,62 @@ OO.PortalManager = function(_S){
 		
 	}
 	
+	
+	this.empty = function (_portal){
+		
+		var all_reads = []
+		var all_pegs = []
+		var all_composites = []
+		var list_type = []
+		
+		for(var n = 0 ; n < _portal.tree.group.nodes.length ; n ++){
+			
+			var curn = _portal.tree.group.nodes[n]; 
+			
+			if(curn.type !== "MULTIPORT_IN" && curn.type !== "MULTIPORT_OUT" ){
+				
+				if(curn.type == "READ"){
+					
+					all_reads.push(curn.path);
+				}
+				if(curn.type == "PEG"){
+					
+					all_pegs.push(curn.path);
+				}			
+				if(curn.type == "COMPOSITE"){
+					
+					all_composites.push(curn.path);
+				}	
+
+			}
+		
+		}
+		
+		for(var n = 0 ; n < all_reads.length ; n ++){
+			
+			var curr = all_reads[n]; 
+			
+			node.deleteNode(curr,true,true); 
+
+		}		
+		
+		for(var n = 0 ; n < all_pegs.length ; n ++){
+			
+			var curp = all_pegs[n]; 
+			
+			node.deleteNode(curp,true,true); 
+
+		}			
+		
+		for(var n = 0 ; n < all_composites.length ; n ++){
+			
+			var curc = all_composites[n]; 
+			
+			node.deleteNode(curc,true,true); 
+
+		}		
+	}
+	
 	this.push= function(type){
 		
 		
