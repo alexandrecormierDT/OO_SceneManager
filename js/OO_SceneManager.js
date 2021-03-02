@@ -14,7 +14,7 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/ut
 OO.SVG = new SVG_reader();
 
 OO.library_path = "P:/pipeline/alexDT/Harmony20/Context_library/";
-OO.sg_path = "P:/pipeline/alexDT/Harmony20/Context_sg/"
+OO.sg_path = "P:/projects/billy/sg_exports/"
 
 // FOLDER should be declared in previous include : OO_SceneManager_proto or master    enable to switch from folders proto(dev) and master(for users) 
 
@@ -116,11 +116,17 @@ function pull_psd(){
 	
 			var full_svg_path = S.context.get_svg_path(linked_asset);
 			
+			var full_psd_path = S.context.get_psd_path(linked_asset);
 			
+			MessageLog.trace("SVG_PATH : ");
+			
+			MessageLog.trace(full_svg_path);
 			
 			// if the bg has cadres that match the shot name. 
 			
 			var bg_cadre = S.load_cadre(full_svg_path);
+			
+			var bg_psd_cadre = S.load_cadre_from_psd(full_psd_path)
 		
 			if(bg_cadre!=false){
 				
@@ -146,9 +152,9 @@ function map_nodes(){
 	
 	var S = new OO.SceneManager();	
 	
-	var ntree = S.trees.add("test",selection);
+	var ntree = S.trees.add_tree_module("test",selection);
 	
-	ntree.add_key_node(selection[0],"TOP_PEG");
+	//ntree.add_key_node(selection[0],"TOP_PEG");
 	
 	
 }

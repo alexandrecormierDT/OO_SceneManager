@@ -5,6 +5,7 @@
 
 /*
 
+
 TREE AND NODES SHOULD BE HANDLE IN A CLEANER WAY 
 it's not clear how to fin the nodes related to the tree. 
 when they chang group for exemple 
@@ -28,11 +29,11 @@ OO.TreeManager = function(_S){
 	
 	// CREATE TREE 
 	
-	this.add = function(code,nodes){
+	this.add = function(_code,_nodes){
 		
-		var ntree = new OO.Tree(code,nodes);
+		var ntree = new OO.Tree(_code,_nodes);
 		
-		this.add_tree_module(code,nodes);
+		//var script_module = this.add_tree_module(_code,_nodes);
 		
 		this.list.push(ntree);
 
@@ -40,11 +41,20 @@ OO.TreeManager = function(_S){
 		
 	}
 	
-
-	
 	this.add_tree_module = function(_code,_nodes){
 		
-		var script_module = this.import_tpl_ungrouped(this.module_path)[0];
+		var first_node = _nodes[0] != undefined ? _nodes[0] : _nodes[0].nodes[0]; 
+		
+		var parent_group = first_node.parent;
+		
+		if( parent_group =="Top"){
+			parent_group =OO.doc.root;
+			
+		}
+		
+		MessageLog.trace(parent_group)
+		
+		var script_module = this.import_tpl_in_group(_code,this.module_path,parent_group)[0];
 		 
 		var map_string = this.map_nodes(_nodes);
 		
@@ -54,11 +64,13 @@ OO.TreeManager = function(_S){
 		
 		script_module.attributes.code.setValue(_code);
 
-		script_module.linkInNode(_nodes[0]);
+		script_module.linkInNode(first_node);
 		
 		script_module.name = "Tree_"+_code
 		
 		script_module.centerBelow(_nodes,100,50)
+		
+		return script_module; 
 		
 		
 	}
@@ -127,16 +139,7 @@ OO.TreeManager = function(_S){
 	
 	this.select_tree_nodes = function(tree){
 		
-		
 		selectedNodes = tree.get_nodes();
-		
-		
-	}
-	
-	this.add_key_node = function(tree,node){
-		
-		
-		
 		
 	}
 	
@@ -193,7 +196,7 @@ OO.TreeManager = function(_S){
 		
 	}
 	
-	this.get_node_list_from_map = function(node_map){
+	this.get_node_list_from_map = function(node_map){ 
 		
 		var node_list = []
 		
@@ -293,7 +296,7 @@ OO.TreeManager = function(_S){
 	}
 
 
-	//IMPORTING TPL 
+	//DIFFERENT IMPORTING TPL METHODS : 
 	
 	this.import_tpl_ungrouped= function(_path){
 		
@@ -327,8 +330,6 @@ OO.TreeManager = function(_S){
 	this.import_tpl_in_group = function(_code,_path,_group){
 		
 		var nodes = _group.importTemplate(_path,false,true);
-		
-		this.add_layout_peg(import_group);	
 		
 		return nodes; 
 
@@ -570,6 +571,12 @@ OO.TreeManager = function(_S){
 	
 	this.fit_cadre_to_camera = function(top_peg,cadre){
 		
+		
+		
+		MessageLog.trace("FIT TO CAMERA");
+		
+		MessageLog.trace("CADRE "+cadre);
+		
 		var EVIL_RATIO = parseFloat(4/3)
 
 		
@@ -616,6 +623,34 @@ OO.TreeManager = function(_S){
 		var cad_x = parseFloat(cadre.rect.x) 
 		
 		var cad_y = parseFloat(cadre.rect.y) 		
+		
+		
+		// camera_peg 
+		
+		var camera_peg = OO.doc.getNodeByPath("Top/Camera_Peg");
+		
+		
+		
+		/*var cam_peg_x = node.getTextAttr(camera_peg,frame.current(),"position.x")
+		var cam_peg_y = node.getTextAttr(camera_peg,frame.current(),"position.y")
+		var cam_peg_z = node.getTextAttr(camera_peg,frame.current(),"position.z")*/
+
+		
+		var column3D = get_linked_3D_columns(camera_peg)
+		
+		var next_3d_key = get_next_3Dkey(column3D);
+		
+		
+		var cam_peg_x = toonboom_coords_to_float(next_3d_key[0]);
+		var cam_peg_y = toonboom_coords_to_float(next_3d_key[1]);
+		var cam_peg_z = toonboom_coords_to_float(next_3d_key[2]);		
+		
+		
+		MessageLog.trace("CAMERA PEG")
+		MessageLog.trace(cam_peg_x)
+		MessageLog.trace(cam_peg_y)
+		MessageLog.trace(cam_peg_z)
+		
 
 		
 		// camera center 
@@ -681,27 +716,33 @@ OO.TreeManager = function(_S){
 		
 		
 
-		var final_x =  parseFloat(cadre_distance_to_cam_x * RATIO_PIXEL_X);
+		var final_x =  parseFloat(cadre_distance_to_cam_x * RATIO_PIXEL_X) + parseFloat(cam_peg_x);
 		
-		var final_y =  parseFloat(-cadre_distance_to_cam_y * RATIO_PIXEL_Y)
+		var final_y =  parseFloat(-cadre_distance_to_cam_y * RATIO_PIXEL_Y)+ parseFloat(cam_peg_y);
 		
-		
-		
-		////MessageLog.trace(" ----- FINAL TRANSFORM -------------------------------- ");
+		var final_z =  parseFloat(cam_peg_z);
 		
 		
-			////MessageLog.trace(final_x);
 		
-			////MessageLog.trace(final_y);
+		MessageLog.trace(" ----- FIT TO CAMERA -------------------------------- ");
 		
-		////MessageLog.trace(" ------------------------------------------------------ ");
+			MessageLog.trace("X = "+final_x);
+		
+			MessageLog.trace("Y = "+final_y);
+			
+			MessageLog.trace("Z = "+final_z);
+		
+		MessageLog.trace(" ------------------------------------------------------ ");
 		
 		
 		//INJECT X
 		top_peg.attributes.position.x.setValue(final_x);
 		
 		//INJECT Y
-		top_peg.attributes.position.y.setValue(final_y);	
+		top_peg.attributes.position.y.setValue(final_y);
+		
+		//INJECT Y
+		top_peg.attributes.position.z.setValue(final_z);
 		
 		//INJECT SX
 		top_peg.attributes.scale.x.setValue(final_sx);
@@ -712,7 +753,119 @@ OO.TreeManager = function(_S){
 	
 		
 	}
+	
+	function get_linked_3D_columns(_node){
+		
+		var node_columns = Array();
+	
+		var attrList = getAttributesNameList (_node);
+		
+		for (var i=0; i<attrList.length; i++){
+			
+			var attribute_name = attrList[i]
+			
+			//MessageLog.trace("*****"+attribute_name);
+			
+			if(attribute_name == "POSITION.3DPATH"){
+			
+				var linked_column = node.linkedColumn(_node,attribute_name)
+				
+				if( linked_column !=""){
+					
+					MessageLog.trace(attribute_name);
+
+					node_columns = (linked_column);
+				}
+				
+			}
+
+			
+		}
+		
+		return node_columns;
+		
+		
+	}
   	
-  
-  
+	function getAttributesNameList (snode){
+		
+		//MessageLog.trace(arguments.callee.name)
+		
+		var attrList = node.getAttrList(snode, frame.current(),"");
+		var name_list= Array();
+		
+		for (var i=0; i<attrList.length; i++){	
+
+			var attr = attrList[i];
+			var a_name = attr.keyword();
+			var sub_attr = attr.getSubAttributes()
+			name_list.push(a_name);
+
+			if(sub_attr.length > 0){
+				for (var j=0; j<sub_attr.length; j++){	
+					attrList.push(sub_attr[j]);
+					var sub_attr_name = sub_attr[j].fullKeyword()
+					name_list.push(sub_attr_name);
+				}
+			}
+			
+		}
+		
+		//MessageLog.trace(name_list)
+		
+		return name_list;
+		
+	} 
+ 	
+	function get_next_3Dkey(_column){
+		
+		//MessageLog.trace(arguments.callee.name)
+
+		sub_column = 4;
+		key = Array();
+		s = 1;
+		
+		for (var f = 0 ; f<=frame.numberOf();f++){
+				
+
+				 if(column.isKeyFrame(_column,s,f)){
+		
+					for (s = s ; s<sub_column;s++){
+
+						key.push(column.getEntry(_column,s,f))
+
+					}
+					
+					return key;
+	
+				}
+					
+		}
+		
+		return false;
+
+	}
+	
+	function toonboom_coords_to_float(tbv){
+		
+		var result = 0
+		
+		result= tbv.split(" ")[0];
+		var letter = tbv.split(" ")[1];
+		
+		
+		
+		if(letter == "W" || letter =="B" || letter =="S"){
+			
+			result = "-"+result;
+		}
+		
+		
+		result = parseFloat(result)
+		
+		//MessageLog.trace(" from "+tbv+"  to   "+result)
+
+		return result
+		
+	}		 
 }

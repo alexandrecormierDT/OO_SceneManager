@@ -31,6 +31,8 @@ OO.Tree = function(_code,_nodes){
 	
 	this.node_id_list = [];
 	
+	this.key_nodes = [];
+	
 
 	
 	
@@ -109,13 +111,20 @@ OO.Tree = function(_code,_nodes){
 				
 			}
 			
-			
 		}
 		
 		return list;
 		
+	}
+	
+	// NODES 
+	
+	this.get_nodes = function(){
+	
+		return onodes;
 		
 	}
+	
 	
 	this.set_nodes = function(_onodes){
 		
@@ -123,19 +132,36 @@ OO.Tree = function(_code,_nodes){
 		
 	}
 	
+	
+	// KEY NODES 
+	
 	this.add_key_node = function(_node,_key){
 		
-		
+		var key_node_array = this.get_key_nodes();
 		
 	}
 	
 
-	this.get_nodes = function(){
-	
-		return onodes;
+	this.get_key_nodes = function(){
+		
 		
 	}
 	
+	
+	// SCRIPT MODULE
+	
+	this.update_script_module = function(){
+		
+		
+		
+	}
+	
+	
+	this.get_script_module = function(){
+		
+		
+	}
+
 	this.reads = fetch_reads();
 	
 	this.get_width = function(){

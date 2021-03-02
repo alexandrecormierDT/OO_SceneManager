@@ -217,11 +217,11 @@ OO.Context = function (_type){
 		
 		var file_path = dir_path+asset.get_last_publish()+".tpl";
 		
-		if(this.file_exist(file_path)){
+		//if(this.file_exist(file_path)){
 			
 			return file_path
 			
-		}
+		//}
 		
 		return "";
 		
@@ -243,12 +243,12 @@ OO.Context = function (_type){
 			
 			file_path = this.get_lt_path(asset)+".psd";
 			
-			if(this.file_exist(file_path)){
+			//if(this.file_exist(file_path)){
 				
 				return file_path;
 				
-			}
-			
+			//}
+			 
 		}
 		
 		return "";

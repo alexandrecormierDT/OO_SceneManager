@@ -36,18 +36,23 @@ function SVG_reader(){
 		
 		cadre.bg = rect;
 		
+		MessageLog.trace("CADRE BG");
+		MessageLog.trace(Object.getOwnPropertyNames(cadre.bg));
+		MessageLog.trace(cadre.bg.width);
+		MessageLog.trace(cadre.bg.height);
+		
 		
 		var groups = XMLobj['g'];
+		
+		MessageLog.trace("SEARCHING FOR "+shot_code);	
 			
 			for(var i in groups){
 				
 				cg = groups[i]; 
 				
-				MessageLog.trace("CG"); 
-				MessageLog.trace(Object.getOwnPropertyNames(cg));
-				
 				var group_title = cg.title;
 				MessageLog.trace(group_title);
+				
 				
 				// possible problems if thee is just one group
 				
@@ -58,10 +63,35 @@ function SVG_reader(){
 					for(var i in gimages){
 						
 						var cimage = gimages[i]; 
-
-						if(cimage.title == shot_code){
+						
+						MessageLog.trace("GIMAGE"+i);
+						MessageLog.trace(gimages[i]);
+						
+						MessageLog.trace("found "+cimage.title);
+						
+						var image_title = "";
+						
+						var image_attributes = ""
+						
+						if(i == "title"){
+								
+							image_title = gimages[i];
+							image_attributes = gimages._Attribs;
+							MessageLog.trace(Object.getOwnPropertyNames(image_attributes));
+								
+						}else{
 							
-							var attr = cimage._Attribs;
+							image_title = cimage.title;
+							image_attributes = cimage._Attribs;
+				
+						}
+						
+						if(image_title == shot_code){
+							
+							
+							MessageLog.trace("CADRE FOUND FOR "+image_title);	
+							
+							var attr = image_attributes;
 							
 							var rect = {
 								width:attr.width,
@@ -75,6 +105,10 @@ function SVG_reader(){
 							cadre.rect = rect;
 							
 							match++;
+							
+						}else{
+							
+			
 							
 						}
 						
@@ -105,6 +139,8 @@ function SVG_reader(){
 			return cadre ;
 			
 		}else{
+			
+			MessageLog.trace("NO CADRE FOUND")
 			
 			return false ;
 			

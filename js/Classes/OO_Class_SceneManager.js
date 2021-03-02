@@ -194,6 +194,18 @@ OO.SceneManager = function(){
 	
 	// extract rectangle coords from svg files (export from psd) 
 	
+	this.load_cadre_from_psd = function(psd_path){
+		
+		MessageLog.trace("LOAD FROM PSD");
+		
+		var shot = this.context.get_shot();
+		
+		var group_info = CELIO.getLayerGroupInformation (psd_path);
+		
+		MessageLog.trace(group_info);
+		
+	}
+	
 	this.load_cadre = function(svg_path){
 		
 		var shot = this.context.get_shot();
@@ -210,8 +222,6 @@ OO.SceneManager = function(){
 			
 			return cadre;
 
-			
-			////MessageLog.trace(final_path);
 		}else{
 			
 			return false;
