@@ -20,21 +20,19 @@ OO.TreeManager = function(_S){
 	
 	this.list = [];
 	
-
+	this.module_path = "P:/pipeline/script_modules/TreeMap/TreeMap.tpl";
 	
 	this.load = function(){
 		
 	}
 	
-	this.generate_id = function(){
-		
-		return new Date().getUTCMilliseconds();
-		
-	}
+	// CREATE TREE 
 	
 	this.add = function(code,nodes){
 		
 		var ntree = new OO.Tree(code,nodes);
+		
+		this.add_tree_module(code,nodes);
 		
 		this.list.push(ntree);
 
@@ -42,21 +40,247 @@ OO.TreeManager = function(_S){
 		
 	}
 	
-	this.mark_node_id = function(_node,_id){
-			
-		_node.createAttribute("node_id", "string", "NID", false);
+
 	
-		_node.attributes.tree_id.setValue(_id);				
+	this.add_tree_module = function(_code,_nodes){
 		
-	}	
-	
-	this.mark_treeid = function(_node,_id){
-			
-		_node.createAttribute("tree_id", "string", "TID", false);
-	
-		_node.attributes.tree_id.setValue(_id);				
+		var script_module = this.import_tpl_ungrouped(this.module_path)[0];
+		 
+		var map_string = this.map_nodes(_nodes);
 		
-	}	
+		MessageLog.trace(script_module.name)
+		
+		script_module.attributes.node_map.setValue(map_string);
+		
+		script_module.attributes.code.setValue(_code);
+
+		script_module.linkInNode(_nodes[0]);
+		
+		script_module.name = "Tree_"+_code
+		
+		script_module.centerBelow(_nodes,100,50)
+		
+		
+	}
+
+
+	this.map_nodes = function(_nodes,_override){
+		
+		var override = _override != undefined ? _override : false;
+ 
+		var map_string = "";
+		
+		for(var s = 0 ; s < _nodes.length ; s++){
+			
+			var curn = _nodes[s];
+			
+			MessageLog.trace( curn);
+			
+			var layer_id = curn.type+"_"+get_unique_id()
+			
+			// if the node already has an ID we jut read it unless we want to override the id (dangerous) 
+			
+			if(curn.hasOwnProperty("smlayerid")==false || override == true ){
+				
+				node.createDynamicAttr(curn, "STRING", "smlayerid", "smlayerid", false)
+				
+			}else{
+				
+				layer_id = curn.smlayerid;
+			}
+			
+			node.setTextAttr(curn,"smlayerid",frame.current,layer_id);
+			
+			var row = curn.name+":"+curn.smlayerid;
+			
+			if(s==0){
+				
+				map_string+=row;
+				
+			}else{
+				
+				map_string+=",";
+				map_string+=row;
+				
+			}
+			
+			
+		}
+		
+		function get_unique_id(){
+			
+
+			var k = Math.floor(Math.random() * 10000000);
+			var m =k.toString();	
+				
+			return m ;
+			
+		}
+		
+		return map_string;
+		
+	}
+	
+	
+	// READING SCENES
+	
+	
+	this.select_tree_nodes = function(tree){
+		
+		
+		selectedNodes = tree.get_nodes();
+		
+		
+	}
+	
+	this.add_key_node = function(tree,node){
+		
+		
+		
+		
+	}
+	
+	this.load_trees_from_scene = function(){
+		
+		//beware it's only searhcing in root and not in sub groups
+		
+		var scene_nodes = OO.doc.root.nodes;
+		
+		var scene_TSM = []
+		
+		for(var n = 0 ; n < scene_nodes.length ; n++){
+			
+			var cnode = scene_nodes[n];
+			
+			if(cnode.type == "SCRIPT_MODULE"){
+				
+				if(cnode.hasOwnProperty('treemap') == true){
+					
+					//TREE SCRIPT MODULE
+					
+					scene_TSM.push(cnode);
+					
+				};
+				
+			}
+			
+		}
+		
+		for(var sm = 0 ; sm < scene_TSM.length ; sm++){
+			
+			
+			var cur_script_module = scene_TSM[sm];
+		
+			// CODE,MAP AND ID
+			
+			var node_map_string  = OO.filter_string(cur_script_module.node_map);
+			
+			var code = OO.filter_string(cur_script_module.code);
+			
+			var treeid = OO.filter_string(cur_script_module.treeid);
+
+			var node_map = this.parse_node_map(node_map_string);
+			
+			ntree.node_map = node_map;
+			
+			var tree_nodes = this.get_node_list_from_map(node_map);
+			
+			var ntree = new OO.Tree(code,tree_nodes);
+			
+			this.list.push(ntree);
+
+		}		
+		
+	}
+	
+	this.get_node_list_from_map = function(node_map){
+		
+		var node_list = []
+		
+		for(var i = 0 ; i< node_map.length; i++){
+			
+			var currow = node_map[i];
+			
+			var search_node = this.find_node_by_smlayerid(currow.id)
+			
+			if(search_node != false){
+				
+				node_list.push(search_node);
+				
+			}
+			
+		}
+		
+		return node_list;
+		
+	}
+	
+	this.get_node_smlayerid = function(_node){
+		
+		if(_node.hasOwnProperty('smlayerid')){
+		
+			return  _node.smlayerid;
+			
+		}		
+		
+		return false;
+		
+	}
+	
+	this.parse_node_map = function(_node_map){
+		
+		var splitcoma = _node_map.split(',');
+		
+		var node_map_array = []; 
+		
+		for(var i = 0 ; i< splitcoma.length; i++){
+			
+			var row = splitcoma[i]; 
+			
+			var splitequal = row.split(":");
+			
+			var row = {name:splitequal[0],id:splitequal[1]};
+			
+			node_map_array.push(row);
+			
+		}
+		
+		return node_map_array;
+		
+		
+	}
+	
+	this.find_node_by_smlayerid = function(_smlayerid){
+		
+		var scene_nodes = OO.doc.root.nodes;
+		
+		for(var n = 0 ; n < scene_nodes.length ; n++){		
+		
+			if(this.get_node_smlayerid(curn) == _smlayerid){
+				
+				return  curn;
+			}
+
+		}
+		
+		return false;
+		
+	}
+	
+	
+	// EDITING TREES
+	
+	this.add_node = function(node,tree){
+		
+		
+	}
+	
+	this.get_tree_module = function(tree){
+		
+		
+		
+		
+	}
 		
 
 	this.update= function(){
@@ -70,6 +294,12 @@ OO.TreeManager = function(_S){
 
 
 	//IMPORTING TPL 
+	
+	this.import_tpl_ungrouped= function(_path){
+		
+		return OO.doc.root.importTemplate(_path,false,true);
+
+	}	
 	
 	this.import_tpl= function(_path){
 		

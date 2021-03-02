@@ -139,6 +139,49 @@ function pull_psd(){
 	
 }
 
+function map_nodes(){
+	
+	
+	var selection = OO.doc.selectedNodes;
+	
+	var S = new OO.SceneManager();	
+	
+	var ntree = S.trees.add("test",selection);
+	
+	ntree.add_key_node(selection[0],"TOP_PEG");
+	
+	
+}
+
+function show_layer_ID(){
+	
+	var S = new OO.SceneManager();	
+	
+	var selection = OO.doc.selectedNodes;
+	
+	MessageLog.trace(S.trees.get_node_smlayerid(selection[0]));
+	
+	MessageBox.information(S.trees.get_node_smlayerid(selection[0]));
+	
+}
+
+function select_tree_nodes(){
+	
+	
+	var S = new OO.SceneManager();	
+	
+	S.trees.load_trees_from_scene();
+	
+	var test_tree = S.trees[0]; 
+	
+	//S.trees.select_tree_nodes = function(test_tree)
+	
+	
+}
+
+
+
+
 function create_portals(_type){
 	
 	var S = new OO.SceneManager();	

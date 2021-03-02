@@ -46,7 +46,7 @@ OO.PortalManager = function(_S){
 		
 			// CODE,TYPE AND PATHS
 			
-			var tpl_path = OO.filter_string(cur_script_module.tpl_path);
+			var tpl_path = OO.filter_string(cur_script_module.node_map);
 			
 			var psd_path = OO.filter_string(cur_script_module.psd_path);
 			
@@ -59,27 +59,16 @@ OO.PortalManager = function(_S){
 			
 			var linked_group = OO.doc.getNodeByPath(cur_script_module.linkedInNodes);
 			
-			////MessageLog.trace("GROUP");
-			
-			////MessageLog.trace(linked_group.name);
-			
-			////MessageLog.trace(tpl_path);
-			
-			////MessageLog.trace(psd_path);
-			
+
 			
 			//PORTAL PEG
 			
 			var linked_peg = OO.doc.getNodeByPath(linked_group.linkedInNodes);
 			
-			////MessageLog.trace("PEG");
-			
-			////MessageLog.trace(linked_peg.name);
 			
 			
 			//TREE
 			
-			////MessageLog.trace("TREE");
 			
 			var ntree = S.trees.add(code,[]);
 			
@@ -94,25 +83,19 @@ OO.PortalManager = function(_S){
 			ntree.group = linked_group;
 			
 			ntree.peg = linked_peg;	
-
-			////MessageLog.trace(ntree.onodes);			
 			
-			////MessageLog.trace(ntree.group);			
 
 			var nportal = new OO.Portal(code,type,tpl_path,psd_path,ntree);
 			
 
-			
 			//we gathered all informations expect the backdrop. 
-			
-			////MessageLog.trace(">>>>PUSH PORTAL TO LIST");
+
 			
 			this.list.push(nportal);
 
 		}
 		
-		////MessageLog.trace(this.list);
-		
+
 	}
 	
 	

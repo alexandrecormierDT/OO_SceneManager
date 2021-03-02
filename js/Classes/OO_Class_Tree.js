@@ -123,6 +123,12 @@ OO.Tree = function(_code,_nodes){
 		
 	}
 	
+	this.add_key_node = function(_node,_key){
+		
+		
+		
+	}
+	
 
 	this.get_nodes = function(){
 	
