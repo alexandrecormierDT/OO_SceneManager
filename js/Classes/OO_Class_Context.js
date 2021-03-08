@@ -16,6 +16,17 @@ OO.Context = function (_type){
 	var SVG_PATH = "";
 	var VIDEO_EXPORT_PATH = "";
 	
+	
+	this.project ="";
+	this.entity = ""	
+	this.sg_asset_type = ""
+	this.code =""
+	this.version = ""
+	this.user =""		
+	this.task =""		
+	this.software = ""				
+	this.tb_file_type =""
+	
 	//TODO MAKE ONE BIG FUNCTION FOR ALL THS : (set_path(type))
 	
 	this.set_video_export_path = function(_vep){
@@ -60,11 +71,48 @@ OO.Context = function (_type){
 		
 		var slash_split = scene_path.split("/");
 		
-		//MessageLog.trace("SCEN PATH");
-		//MessageLog.trace(scene_path);
-		//MessageLog.trace(slash_split);
+		return slash_split;
 		
-		return slash_split[slash_split.length-1];
+	}
+	
+	this.get_scene_path = function(){
+		
+		return scene.currentProjectPathRemapped()
+		
+	}
+	
+
+	
+	this.set_from_scene_path = function(){
+		
+		//P:,projects,billy,assets,Character,default,ch_mytestchar,work,a-cormier,design_main,toonboom,scenes
+		// 0  1          2      3      4        5      6             7   8             9           10   11
+		
+		var scene_path = this.breakdown_scene_path();
+		
+		this.project = scene_path[2];
+		this.entity = scene_path[3];
+		
+		switch (this.entity){
+			
+			case 'assets': 
+			
+				this.sg_asset_type = scene_path[4];
+				this.code = scene_path[6];
+				this.version = scene_path[7];
+				this.user = scene_path[8];				
+				this.task = scene_path[9];				
+				this.software = scene_path[10];				
+				this.tb_file_type = scene_path[11];					
+				
+			break; 
+			
+			case 'shots': 
+				
+				
+			break;
+		}
+		
 		
 	}
 	

@@ -19,6 +19,8 @@ OO.SceneManager = function(){
 	
 	this.init = function(){
 		
+		
+		
 	}
 	
 	this.update_render_path = function(writer_node,render_path) {
@@ -31,7 +33,64 @@ OO.SceneManager = function(){
 			
 			
 	}
+	
+	this.set_scene_settings  = function(ss){
+		
+		scene.setDefaultResolution (ss.RES_X, ss.RES_Y, ss.FOV);
+		scene.setFrameRate (ss.FRAME_RATE);
 
+	}
+	
+	this.write_scene_path_backdrop = function(){
+		
+		var scene_path = scene.currentProjectPathRemapped() 
+		
+		var scene_infos = scene_path+"\n";
+	
+		/*
+		
+		
+		<backdrop topLeft="-3212,323" bottomRight="-1360,490">
+		  <background color="#323232FF"/>
+		  <title text="SCENE NAME" color="#000000FF" size="12" font="Arial"/>
+		  <description text="" color="#000000FF" size="12" font="Arial"/>
+		 </backdrop>
+				 
+		var myBackdrop =
+		{
+		  "position"    : {"x": -100, "y" :-100, "w":300, "h":300},
+		  "title"       : {"text" : "My Title", "color" : fromRGBAtoInt(255, 100, 100, 255), "size" : 14, "font" : "Arial"},
+		  "description" : {"text" : "This is a new backdrop that will include the node covered by its area.\n", "color" : fromRGBAtoInt(100, 255, 100, 255), "size" : 14, "font" : "Arial"},
+		  "color"       : fromRGBAtoInt(100, 100, 0, 255)
+		};
+		Backdrop.addBackdrop("Top/MyGroup", myBackdrop);		 
+				 
+		 
+		 
+		 */		
+		 
+		var backdrop = this.get_backdrop_by_name("SCENE NAME");
+		 
+		if(backdrop == false){
+			
+			var myBackdrop =
+			{
+			  "position"    : {"x": -3212, "y" :-1360, "w":1000, "h":100},
+			  "title"       : {"text" : "SCENE NAME", "color" :"#FFFFFFFF", "size" : 14, "font" : "Arial"},
+			  "description" : {"text" : scene_path, "color" :"#FFFFFFFF", "size" : 14, "font" : "Arial"},
+			  "color"       : "#000000FF"
+			};		
+
+			Backdrop.addBackdrop("Top", myBackdrop);		
+
+		}else{
+			
+			backdrop.body = scene_path;
+			
+		}
+
+	}
+	
 
 	this.get_backdrop_by_name = function(bdname){
 
@@ -187,10 +246,7 @@ OO.SceneManager = function(){
 			
 			var asset_param = asset_list[a];
 			
-			
-			
 			this.assets.add(asset_param);
-			
 			
 		}
 		
@@ -200,7 +256,6 @@ OO.SceneManager = function(){
 	
 	this.remove_spaces = function(str){
 		
-	
 		return str.replace(/\s/g, '');
 		
 	}
