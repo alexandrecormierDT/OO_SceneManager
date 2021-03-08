@@ -98,10 +98,48 @@ function show_scene_infos(){
 	
 	S.write_scene_path_backdrop();
 	
-	var message = "SCENE PATH : "+S.context.get_scene_path()+"\n ASSET CODE : "+S.context.code+"\n"+"ASSET TYPE : "+S.context.sg_asset_type+"\n"+S.context.sg_asset_type;
+	MessageBox.information(S.context.get_scene_path());
 	
-	MessageBox.information(message);
+}
+
+
+function write_scene_journal(){
 	
+	var S = new OO.SceneManager();	
+	
+	S.context = new OO.Context("Shotgun");	
+	
+	S.context.set_from_scene_path();
+	
+	S.write_scene_path_backdrop();
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/journal");
+	
+	var scene_path = S.context.get_scene_path();
+	
+
+	var message = "";
+	
+	var dialog = new Dialog();
+	dialog.title = "SCENE JOURNAL (no accents)";
+	dialog.width = 900;
+	
+	var userInput = new TextEdit();
+	userInput.text = ""
+	dialog.add( userInput );
+		
+	if (dialog.exec()){
+		
+		message = OO.filter_string(userInput.text);
+		
+		S.log.add(message,"user message");
+		
+		S.add_entry_to_scene_journal(message)
+		
+	}
+	
+	
+
 }
 
 // SETUP SCRIPTS 

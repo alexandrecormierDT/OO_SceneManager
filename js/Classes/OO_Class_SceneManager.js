@@ -41,6 +41,43 @@ OO.SceneManager = function(){
 
 	}
 	
+	
+	this.add_entry_to_scene_journal = function(_text){
+		
+		var backdrop = this.get_backdrop_by_name("SCENE JOURNAL");
+		
+		var time_stamp = Date();
+		
+		var white_color = new $.oColorValue("#999999FF")		
+		var black_color = new $.oColorValue("#000000FF")	
+
+		var message = "\n\n"+time_stamp+"\n\n      "+_text;
+			 
+		if(backdrop == false){
+			
+			var myBackdrop =
+			{
+			  "position"    : {"x": 7000, "y" :200, "w":1000, "h":2000},
+			  "title"       : {"text" : "SCENE JOURNAL", "color" :black_color.toHex(), "size" : 20, "font" : "Arial"},
+			  "description" : {"text" : message, "color" :black_color.toHex() , "size" : 11, "font" : "Arial"},
+			  "color"       : white_color.toHex() 
+			};		
+
+			Backdrop.addBackdrop("Top", myBackdrop);
+			
+			var newbackdrop=this.get_backdrop_by_name("SCENE JOURNAL");		
+			 newbackdrop.color = white_color;
+
+			
+
+		}else{
+			
+			backdrop.body +=message
+			
+		}		
+		
+	}
+	
 	this.write_scene_path_backdrop = function(){
 		
 		var scene_path = scene.currentProjectPathRemapped() 
