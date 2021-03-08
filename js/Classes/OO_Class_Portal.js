@@ -41,7 +41,7 @@
 	</specs>
 	*/
 
-OO.Portal = function (_code,_type,_tpl_path,_psd_path,_tree){
+OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 
 	// a tree with a peg a group and a script_module
 	this.tree = _tree;
@@ -49,6 +49,8 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_tree){
 	this.tpl_path = _tpl_path;
 	
 	this.psd_path = _psd_path;
+	
+	this.png_path = _png_path;
 	
 	this.code = _code; 
 	
@@ -68,6 +70,8 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_tree){
 	this.update_backdrop = function(){
 		
 		var scene_backdrops = OO.doc.root.backdrops; 
+		
+		this.tree.backdrop = false;
 		
 		for (var b = 0 ; b < scene_backdrops.length ; b++){
 		
@@ -110,6 +114,15 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_tree){
 		////MessageLog.trace(psd.exists);
 
 		return psd.exists;
+	}
+	this.png_exist = function(){
+		
+		var png = new $.oFile(this.png_path)
+		
+		////MessageLog.trace("PSD EXIST");
+		////MessageLog.trace(psd.exists);
+
+		return png.exists;
 	}
 
 	this.set_content = function(tree){

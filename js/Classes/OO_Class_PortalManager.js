@@ -50,6 +50,8 @@ OO.PortalManager = function(_S){
 			
 			var psd_path = OO.filter_string(cur_script_module.psd_path);
 			
+			var png_path = OO.filter_string(cur_script_module.png_path);
+			
 			var code = OO.filter_string(cur_script_module.code);
 			
 			var type = OO.filter_string(cur_script_module.sg_asset_type);
@@ -84,10 +86,8 @@ OO.PortalManager = function(_S){
 			
 			ntree.peg = linked_peg;	
 			
-
-			var nportal = new OO.Portal(code,type,tpl_path,psd_path,ntree);
+			var nportal = new OO.Portal(code,type,tpl_path,psd_path,png_path,ntree);
 			
-
 			//we gathered all informations expect the backdrop. 
 
 			
@@ -134,6 +134,37 @@ OO.PortalManager = function(_S){
 				
 
 			break;
+			case 'png': 
+			
+				////MessageLog.trace("PULL");
+
+				final_path = _portal.png_path ;
+				
+				MessageLog.trace(final_path); 
+				
+				var png_node = _portal.tree.group.importImage(final_path);
+				
+				S.log.add("import png = "+png_node,"process")
+				
+				png_node.name = _portal.code;
+				
+
+				// we arange the psd nodes
+				var bg_tree = S.trees.add(_portal.code,png_node)
+				
+				_portal.tree.group.multiportIn.linkOutNode(png_node,0,0,true);
+
+				png_node.linkOutNode(_portal.tree.group.multiportOut,0,0,true);				
+				
+				png_node.centerAbove(_portal.tree.group.multiportOut, 0, -100);
+				
+				var pbackdrop = _portal.get_backdrop();
+				
+				pbackdrop.color = new $.oColorValue("#5097D8ff");
+				
+				return png_node;
+
+			break;			
 			
 			case 'tpl':
 			
@@ -201,15 +232,21 @@ OO.PortalManager = function(_S){
 		
 		//until we can delete backdrops.....
 		
-		_portal.tree.group.backdrops[0].x+=2000; 
-		_portal.tree.group.backdrops[0].width=20;
-		_portal.tree.group.backdrops[0].height=20;
-		_portal.tree.group.backdrops[0].title = "deleteme";
-		_portal.tree.group.backdrops[0].body = "deleteme";
+		if(_portal.tree.group.backdrops[0] != undefined){
+		
+			_portal.tree.group.backdrops[0].x+=2000; 
+			_portal.tree.group.backdrops[0].width=20;
+			_portal.tree.group.backdrops[0].height=20;
+			_portal.tree.group.backdrops[0].title = "deleteme";
+			_portal.tree.group.backdrops[0].body = "deleteme";
+		
+		}
 		
 		var pbackdrop = _portal.get_backdrop();
 				
 		pbackdrop.color = new $.oColorValue("#000000ff");
+		
+		S.log.add("portal is now empty","process");
 	}
 	
 	this.push= function(type){
@@ -228,7 +265,7 @@ OO.PortalManager = function(_S){
 	// CREATING THE PORTAL TREE
 	
 	
-	this.add = function(_code,_type,tpl_path,psd_path){ 
+	this.add = function(_code,_type,tpl_path,psd_path,png_path){ 
 	
 		////MessageLog.trace("Portal ADD");
 		
@@ -237,7 +274,7 @@ OO.PortalManager = function(_S){
 		var ntree = S.trees.add(_code,pnodes);
 		
 		//OO.Portal(_name,tpl_path,psd_path,_tree)
-		var nportal = new OO.Portal(_code,_type,tpl_path,psd_path,ntree);
+		var nportal = new OO.Portal(_code,_type,tpl_path,psd_path,png_path,ntree);
 		
 		for (var n in pnodes){
 		
@@ -247,6 +284,8 @@ OO.PortalManager = function(_S){
 				
 				cn.attributes.tpl_path.setValue(tpl_path);
 				cn.attributes.psd_path.setValue(psd_path);
+				cn.attributes.png_path.setValue(png_path);
+				
 				cn.attributes.code.setValue(_code);
 				cn.attributes.sg_asset_type.setValue(_type);
 				nportal.tree.script_module = cn; 

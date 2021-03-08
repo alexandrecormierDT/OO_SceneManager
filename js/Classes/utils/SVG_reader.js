@@ -29,12 +29,20 @@ function SVG_reader(){
 		
 		var attr = XMLobj._Attribs
 		
-		var rect = {
-			width:attr.width,
-			height:attr.height
+		if(attr.hasOwnProperty('height')==true){
+			
+			match++;
+			
+			var rect = {
+				width:attr.width,
+				height:attr.height
+			}			
+			cadre.bg = rect;
+			
 		}
 		
-		cadre.bg = rect;
+
+		
 		
 		MessageLog.trace("CADRE BG");
 		MessageLog.trace(Object.getOwnPropertyNames(cadre.bg));
@@ -52,6 +60,8 @@ function SVG_reader(){
 				
 				var group_title = cg.title;
 				MessageLog.trace(group_title);
+				
+				
 				
 				
 				// possible problems if thee is just one group

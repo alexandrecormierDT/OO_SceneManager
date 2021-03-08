@@ -6,9 +6,36 @@
 
 OO.Context = function (_type){
 	
-	CONTEXT_TYPE = _type
+	var CONTEXT_TYPE = _type
 	
-	LIBRARY_PATH = "none";
+	var LIBRARY_PATH = "none";
+	
+	//temporary
+	var PSD_PATH = "";
+	var PNG_PATH = "";
+	var SVG_PATH = "";
+	var VIDEO_EXPORT_PATH = "";
+	
+	//TODO MAKE ONE BIG FUNCTION FOR ALL THS : (set_path(type))
+	
+	this.set_video_export_path = function(_vep){
+	
+		VIDEO_EXPORT_PATH = _vep
+		
+	}
+	
+	this.set_psd_path = function(_pp){
+		
+		PSD_PATH = _pp
+	}
+	this.set_svg_path = function(_sp){
+		
+		SVG_PATH = _sp
+	}	
+	this.set_png_path = function(_pnp){
+		
+		PNG_PATH = _pnp
+	}	
 	
 	this.set_context_type = function(_ctype){
 		
@@ -153,6 +180,63 @@ OO.Context = function (_type){
 		
 	}
 	
+	
+	this.get_asset_png_dir_path = function(asset){
+		
+		dir_path = "";
+		
+		switch(CONTEXT_TYPE){
+			
+			case("Shotgun"):
+			
+				dir_path = PNG_PATH;
+				
+			break;
+				
+			case("Prototype"): 
+			
+				dir_path = ""
+			
+			break;		
+			
+			case("Server"): 
+			
+				dir_path = ""
+			
+			break;			
+		}
+		
+		return dir_path;		
+
+	}
+	this.get_asset_svg_dir_path = function(asset){
+		
+		dir_path = "";
+		
+		switch(CONTEXT_TYPE){
+			
+			case("Shotgun"):
+			
+				dir_path = SVG_PATH;
+				
+			break;
+				
+			case("Prototype"): 
+			
+				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/psd/"
+			
+			break;		
+			
+			case("Server"): 
+			
+				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/psd/"
+			
+			break;			
+		}
+		
+		return dir_path;
+		
+	}	
 	this.get_asset_psd_dir_path = function(asset){
 		
 		dir_path = "";
@@ -161,7 +245,7 @@ OO.Context = function (_type){
 			
 			case("Shotgun"):
 			
-				dir_path = "P:/projects/billy/layout/to_publish/ep102/psd/";
+				dir_path = PSD_PATH;
 				
 			break;
 				
@@ -241,7 +325,7 @@ OO.Context = function (_type){
 			
 			//maybe the psd starts with lt instead of bg ? 
 			
-			file_path = this.get_lt_path(asset)+".psd";
+			file_path = dir_path+this.get_lt_path(asset)+".psd";
 			
 			//if(this.file_exist(file_path)){
 				
@@ -255,6 +339,36 @@ OO.Context = function (_type){
 		
 		
 	}
+	
+	
+	this.get_png_path = function(asset){
+		
+		var dir_path = this.get_asset_png_dir_path(asset);
+		
+		var file_path = dir_path+asset.get_last_publish()+".png";
+		
+		if(this.file_exist(file_path)){
+			
+			return file_path
+			
+		}else{
+			
+			//maybe the psd starts with lt instead of bg ? 
+			
+			file_path = dir_path+this.get_lt_path(asset)+".png";
+			
+			//if(this.file_exist(file_path)){
+				
+				return file_path;
+				
+			//}
+			 
+		}
+		
+		return "";
+		
+		
+	}	
 	
 	this.get_asset_code_without_type = function(asset_code){
 		
@@ -286,15 +400,13 @@ OO.Context = function (_type){
 	}
 		
 	
-	this.get_lt_path = function(asset){
+	this.get_lt_path = function(asset,_type){
 		
 		var asset_code_notype = this.get_asset_code_without_type(asset.get_last_publish()); 
 		
 		var lt_code = "lt_"+asset_code_notype;
 		
-		var dir_path = this.get_asset_psd_dir_path(asset);
-		
-		return dir_path+lt_code;
+		return lt_code;
 		
 		
 	}
@@ -302,7 +414,7 @@ OO.Context = function (_type){
 	
 	this.get_svg_path = function(asset){
 		
-		var dir_path = this.get_asset_psd_dir_path(asset);
+		var dir_path = this.get_asset_svg_dir_path(asset);
 		
 		var file_path = dir_path+asset.get_last_publish()+".svg";
 		
@@ -314,13 +426,13 @@ OO.Context = function (_type){
 			
 			//maybe the psd starts with lt instead of bg ? 
 			
-			file_path = this.get_lt_path(asset)+".svg";
+			file_path = dir_path+this.get_lt_path(asset)+".svg";
 			
-			if(this.file_exist(file_path)){
+			//if(this.file_exist(file_path)){
 				
 				return file_path
 				
-			}
+			//}
 			
 		}
 		
@@ -341,6 +453,17 @@ OO.Context = function (_type){
 		
 	}
 	
+	this.generate_render_path = function(){
+		
+		var scene_name = scene.currentScene();
+		
+		var render_path =VIDEO_EXPORT_PATH+scene_name+".";
+		
+		return render_path;
+		
+	}
+	 
+
 	
 	
 }

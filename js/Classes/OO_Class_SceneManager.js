@@ -4,8 +4,8 @@
 
 OO.SceneManager = function(){
 	
-	
 	//access to the xstage throuht the class 
+	
 	this.stage = new OO.Stage(this);
 	this.assets = new OO.AssetManager(this);
 	this.trees = new OO.TreeManager(this);
@@ -13,9 +13,23 @@ OO.SceneManager = function(){
 	this.context = new OO.Context(this,"Shotgun");
 	this.portals = new OO.PortalManager(this);
 	this.setups = new OO.SetupManager(this);
+	this.log = new OO.Log(this);
+	
+
 	
 	this.init = function(){
 		
+	}
+	
+	this.update_render_path = function(writer_node,render_path) {
+		
+			
+			node.setTextAttr(writer_node, "EXPORT_TO_MOVIE",1,"Output Movie")
+			node.setTextAttr(writer_node, "MOVIE_PATH",1,render_path);
+			
+			this.log.add("setting export video to "+render_path,"file");
+			
+			
 	}
 
 
@@ -90,54 +104,64 @@ OO.SceneManager = function(){
 			
 				var path = OO.sg_path+"/csv/Shot.csv";
 				
-				var csv_string = new $.oFile(path).read();
+				var csv_file = new $.oFile(path);
 				
-				var line_split = csv_string.split("\n");
-				
-				
-				for (var l = 1 ; l < line_split.length ; l++){
+				if(csv_file.exists){
 					
-					var second_split = line_split[l].split('"');
-
-					////MessageLog.trace(second_split[3]);
+					var csv_string = new $.oFile(path).read();
 					
-					if(second_split[3] == shot){
+					var line_split = csv_string.split("\n");
+					
+					
+					for (var l = 1 ; l < line_split.length ; l++){
 						
-						var assets_string = second_split[5];
-						
-						var assets = assets_string.split(',');
-						
-						////MessageLog.trace("----");
-						////MessageLog.trace("CSV ASSETS");
-						////MessageLog.trace("---'");
-						////MessageLog.trace(assets);
-						////MessageLog.trace("---");
+						var second_split = line_split[l].split('"');
 
-						asset_codes = assets;
+						////MessageLog.trace(second_split[3]);
 						
-						break;
+						if(second_split[3] == shot){
+							
+							var assets_string = second_split[5];
+							
+							var assets = assets_string.split(',');
+							
+							////MessageLog.trace("----");
+							////MessageLog.trace("CSV ASSETS");
+							////MessageLog.trace("---'");
+							////MessageLog.trace(assets);
+							////MessageLog.trace("---");
+
+							asset_codes = assets;
+							
+							break;
+						}
+						
 					}
 					
+					for (var a = 0 ; a < asset_codes.length ; a++){
+						
+						var curac = asset_codes[a]; 
+						
+						var asset = {}
+						
+						asset.code = this.remove_spaces(curac);
+						
+						asset.sg_asset_type =this.context.get_type_from_asset_code(asset.code);
+						
+						////MessageLog.trace("CSV");
+						
+						////MessageLog.trace(asset.code);
+						////MessageLog.trace(asset.sg_asset_type);
+						
+						asset_list.push(asset);
+						
+					}
+					
+				}else{
+					
+					Log.add(path+" don't exist");
 				}
 				
-				for (var a = 0 ; a < asset_codes.length ; a++){
-					
-					var curac = asset_codes[a]; 
-					
-					var asset = {}
-					
-					asset.code = this.remove_spaces(curac);
-					
-					asset.sg_asset_type =this.context.get_type_from_asset_code(asset.code);
-					
-					////MessageLog.trace("CSV");
-					
-					////MessageLog.trace(asset.code);
-					////MessageLog.trace(asset.sg_asset_type);
-					
-					asset_list.push(asset);
-					
-				}
 				
 				
 				
@@ -210,24 +234,37 @@ OO.SceneManager = function(){
 		
 		var shot = this.context.get_shot();
 		
-		var svg_file_content = new $.oFile(svg_path).read();
+		var svg_file = new $.oFile(svg_path);
 		
-		if(svg_file_content!=false && svg_file_content!="" && svg_file_content!=undefined){
+		if(svg_file.exists){
 			
-			XMLobj = OO.XML.parse(svg_file_content,{ preserveAttributes: true });
+			var svg_file_content = svg_file.read();
 			
-			var cadre = OO.SVG.get_cadre(XMLobj,shot);
-			
-			// return false if no mathcing cadre with current shot where found in the svg
-			
-			return cadre;
+			if(svg_file_content!=false && svg_file_content!="" && svg_file_content!=undefined){
+				
+				XMLobj = OO.XML.parse(svg_file_content,{ preserveAttributes: true });
+				
+				var cadre = OO.SVG.get_cadre(XMLobj,shot);
+				
+				// return false if no mathcing cadre with current shot where found in the svg
+				
+				return cadre;
 
+			}else{
+				
+				this.log.add("SVG problem with content of "+svg_path,"error");
+				
+				return false;	
+				
+			}			
+			
 		}else{
 			
-			return false;
+				this.log.add("SVG can't find svg file - "+svg_path,"error");
+				
+				return false;			
 			
 		}
-		
 
 	}
 	
@@ -248,6 +285,8 @@ OO.SceneManager = function(){
 			
 			var final_psd_path = this.context.get_psd_path(cura);
 			
+			var final_png_path = this.context.get_png_path(cura);
+			
 			var asset_code = cura.get_code()
 			
 			var asset_type = cura.get_type()
@@ -256,11 +295,12 @@ OO.SceneManager = function(){
 			if(asset_type == _type || asset_type == "all_type"){
 
 				
-				var nportal = this.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path);	
+				var nportal = this.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path,final_png_path);	
 
 				MessageLog.trace("*------------> creating portal for asset : "+asset_code+" type "+asset_type);
 				MessageLog.trace("*------------> final_tpl_path : "+final_tpl_path)
 				MessageLog.trace("*------------> final_psd_path : "+final_psd_path)
+				MessageLog.trace("*------------> final_png_path : "+final_png_path)
 				
 			}
 

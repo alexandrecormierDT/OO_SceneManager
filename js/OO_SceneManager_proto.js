@@ -1,4 +1,5 @@
 //SCENE MANAGER MIRROR PROTO
+MessageLog.trace("SCENE MANAGER MIRROR - PROTO");
 
 var FOLDER = "proto"; 
 

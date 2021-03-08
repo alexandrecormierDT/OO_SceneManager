@@ -171,7 +171,6 @@ OO.TreeManager = function(_S){
 		
 		for(var sm = 0 ; sm < scene_TSM.length ; sm++){
 			
-			
 			var cur_script_module = scene_TSM[sm];
 		
 			// CODE,MAP AND ID
@@ -300,21 +299,79 @@ OO.TreeManager = function(_S){
 	
 	this.import_tpl_ungrouped= function(_path){
 		
+		S.log.add("importing tpl "+_path,"file")
+		
 		return OO.doc.root.importTemplate(_path,false,true);
 
 	}	
 	
 	this.import_tpl= function(_path){
+	
 		
-		var import_group =  OO.doc.root.addGroup(_path, false, false); 
+		S.log.add("importing tpl "+_path,"file")
+			
+		var import_group =  OO.doc.root.addNode("GROUP",_path); 	
+		
+		natif_Import_TPL_in_group(_path,import_group.path);
 
-		import_group.importTemplate(_path,false,true);
+	
+		var updated_group = OO.doc.$node(import_group.path)
 		
-		return import_group.nodes; 
+		return updated_group.nodes; 
 
 	}	
 	
+	function natif_Import_TPL_in_group(path,group){
+
+			var myCopyOptions = copyPaste.getCurrentCreateOptions();
+			
+			var myPasteOptions = copyPaste.getCurrentPasteOptions();
+			
+			myPasteOptions.extendScene = false;
+
+			//myCopyOptions.addModelsDir = false;
+			
+			var myDragObject = copyPaste.copyFromTemplate(path,0,0,myCopyOptions);
+			
+			MessageLog.trace(myDragObject);
+			
+			MessageLog.trace(copyPaste.pasteTemplateIntoGroup(path,group,0));	
+
+			selection.clearSelection();
+			
+			return true; 
+
+	}
+	
+	function natif_Import_TPL(path){
+
+			var myCopyOptions = copyPaste.getCurrentCreateOptions();
+			
+			var myPasteOptions = copyPaste.getCurrentPasteOptions();
+			
+			myPasteOptions.extendScene = false;
+
+			myCopyOptions.addModelsDir = false;
+			
+			var myDragObject = copyPaste.copyFromTemplate(path,0,0,myCopyOptions);
+			
+			MessageLog.trace(myDragObject);
+			
+			copyPaste.pasteNewNodes(myDragObject,"",myPasteOptions);
+
+			selection.clearSelection();
+
+			
+
+			
+			return true; 
+
+	}
+	
 	this.import_tpl_grouped = function(_code,_path){
+		
+		S.log.add("importing tpl "+_path,"file")
+		
 		
 		//we create a group with a the path of the tpl as name. 
 		var import_group =  OO.doc.root.addGroup(_path, false, false); 
@@ -329,6 +386,9 @@ OO.TreeManager = function(_S){
 	
 	this.import_tpl_in_group = function(_code,_path,_group){
 		
+		S.log.add("importing tpl "+_path,"file")
+		
+		
 		var nodes = _group.importTemplate(_path,false,true);
 		
 		return nodes; 
@@ -336,6 +396,9 @@ OO.TreeManager = function(_S){
 	}
 	
 	this.import_psd_grouped = function(_code,_path){
+		
+		S.log.add("importing psd "+_path,"file")
+		
 		
 		var import_group =  OO.doc.root.addGroup(_code, false, false);  
 		
@@ -345,26 +408,12 @@ OO.TreeManager = function(_S){
 		var nodes = import_group.importPSD(_path,true,false,false,"ASIS");  
 
 		return nodes; 		
-		
+		 
 	}
 	
 	this.import_psd_in_group = function(_code,_path,_group){
 		
-		////MessageLog.trace("PSD GROUP");
-		var psd_gp= CELIO.getLayerGroupInformation(_path);
-		////MessageLog.trace(Object.getOwnPropertyNames(psd_gp));
-		////MessageLog.trace(Object.getOwnPropertyNames(psd_gp.groups));
-		
-		for(var i = 0 ; i < psd_gp.groups.length ; i++){
-			var curgp = psd_gp.groups[i];
-			////MessageLog.trace(curgp);
-			if(typeof(curgp) == "object"){
-				
-				////MessageLog.trace(Object.getOwnPropertyNames(curgp));
-				////MessageLog.trace(curgp.name);
-				
-			}
-		}
+		S.log.add("importing psd "+_path,"file")
 
 		var nodes = _group.importPSD(_path,true,false,false,"ASIS");  
 
@@ -571,184 +620,189 @@ OO.TreeManager = function(_S){
 	
 	this.fit_cadre_to_camera = function(top_peg,cadre){
 		
-		
-		
-		MessageLog.trace("FIT TO CAMERA");
-		
-		MessageLog.trace("CADRE "+cadre);
-		
-		var EVIL_RATIO = parseFloat(4/3)
+		if(cadre.hasOwnProperty('rect')==true){
+			
+			MessageLog.trace("FIT TO CAMERA");
+			
+			MessageLog.trace("CADRE "+cadre);
+			
+			var EVIL_RATIO = parseFloat(4/3)
 
+			
+			// camera dimmentions :
 		
-		// camera dimmentions :
-	
-		var cam_w= 1920;
-		
-		var cam_h =1080;
-		
+			var cam_w= 1920;
+			
+			var cam_h =1080;
+			
 
-		
-		// cadre dimmentions :
-		
-		var cad_w = cadre.rect.width
-		
-		var cad_h = cadre.rect.height
+			
+			// cadre dimmentions :
+			
+			var cad_w = cadre.rect.width
+			
+			var cad_h = cadre.rect.height
 
 
-		// scale ratio between cadre and camera
+			// scale ratio between cadre and camera
 
-		var ratio = parseFloat(cam_w / cad_w);
-		
-		var ratio_y = parseFloat(cam_h / cad_h);		
-		
+			var ratio = parseFloat(cam_w / cad_w);
+			
+			var ratio_y = parseFloat(cam_h / cad_h);		
+			
 
-		
-		// coords of the center of the full bg in camera scale
-		
+			
+			// coords of the center of the full bg in camera scale
+			
+					
+			var bg_w = cadre.bg.width 
+			
+			var bg_h = cadre.bg.height
+			
+			// we divide by ratio to get the bg space. 
+			
+			var bg_cx = parseFloat((bg_w/2)) ;
+			
+			var bg_cy = parseFloat((bg_h/2));
+			
+
+
+
+			
+			var cad_x = parseFloat(cadre.rect.x) 
+			
+			var cad_y = parseFloat(cadre.rect.y) 		
+			
+			
+			// camera_peg 
+			
+			var camera_peg = OO.doc.getNodeByPath("Top/Camera_Peg");
+			
+			
+			
+			/*var cam_peg_x = node.getTextAttr(camera_peg,frame.current(),"position.x")
+			var cam_peg_y = node.getTextAttr(camera_peg,frame.current(),"position.y")
+			var cam_peg_z = node.getTextAttr(camera_peg,frame.current(),"position.z")*/
+
+			
+			var column3D = get_linked_3D_columns(camera_peg)
+			
+			var next_3d_key = get_next_3Dkey(column3D);
+			
+			
+			var cam_peg_x = toonboom_coords_to_float(next_3d_key[0]);
+			var cam_peg_y = toonboom_coords_to_float(next_3d_key[1]);
+			var cam_peg_z = toonboom_coords_to_float(next_3d_key[2]);		
+			
+			
+			MessageLog.trace("CAMERA PEG")
+			MessageLog.trace(cam_peg_x)
+			MessageLog.trace(cam_peg_y)
+			MessageLog.trace(cam_peg_z)
+			
+
+			
+			// camera center 
+			
+			var cam_cx = parseFloat(cam_w/2) ;
+			
+			var cam_cy = parseFloat(cam_h/2) ;
+			
+			// camera peg coords : (for later)
+			
+			var campeg_x = 0
+			
+			var campeg_y = 0
+			
+			var campeg_sx = 1
+			
+			var campeg_sy = 1
+			
+
+
+			// position of the top up corner of the camera in bg space 
+			
+			var bg_cam_x = parseFloat(bg_cx - cam_cx);
+			
+			var bg_cam_y = parseFloat(bg_cy - cam_cy);
 				
-		var bg_w = cadre.bg.width 
-		
-		var bg_h = cadre.bg.height
-		
-		// we divide by ratio to get the bg space. 
-		
-		var bg_cx = parseFloat((bg_w/2)) ;
-		
-		var bg_cy = parseFloat((bg_h/2));
-		
+			
+			// CALCUL OF THE TRANSFORM 
+			
+			
+			// X
+			
+			var bg_x = (bg_w/2) * ratio; 
+			
+			var cadre_distance_to_center_x = bg_x - (cad_x * ratio) 
+			
+			var cadre_distance_to_cam_x =  cadre_distance_to_center_x - (cam_w / 2)
+			
+			
+			// Y
+			
+			var bg_y = (bg_h/2) * ratio; 
+			
+			var cadre_distance_to_center_y =  bg_y - (cad_y * ratio);
+			
+			var cadre_distance_to_cam_y =  cadre_distance_to_center_y - (cam_h / 2)
 
-
-
-		
-		var cad_x = parseFloat(cadre.rect.x) 
-		
-		var cad_y = parseFloat(cadre.rect.y) 		
-		
-		
-		// camera_peg 
-		
-		var camera_peg = OO.doc.getNodeByPath("Top/Camera_Peg");
-		
-		
-		
-		/*var cam_peg_x = node.getTextAttr(camera_peg,frame.current(),"position.x")
-		var cam_peg_y = node.getTextAttr(camera_peg,frame.current(),"position.y")
-		var cam_peg_z = node.getTextAttr(camera_peg,frame.current(),"position.z")*/
-
-		
-		var column3D = get_linked_3D_columns(camera_peg)
-		
-		var next_3d_key = get_next_3Dkey(column3D);
-		
-		
-		var cam_peg_x = toonboom_coords_to_float(next_3d_key[0]);
-		var cam_peg_y = toonboom_coords_to_float(next_3d_key[1]);
-		var cam_peg_z = toonboom_coords_to_float(next_3d_key[2]);		
-		
-		
-		MessageLog.trace("CAMERA PEG")
-		MessageLog.trace(cam_peg_x)
-		MessageLog.trace(cam_peg_y)
-		MessageLog.trace(cam_peg_z)
-		
-
-		
-		// camera center 
-		
-		var cam_cx = parseFloat(cam_w/2) ;
-		
-		var cam_cy = parseFloat(cam_h/2) ;
-		
-		// camera peg coords : (for later)
-		
-		var campeg_x = 0
-		
-		var campeg_y = 0
-		
-		var campeg_sx = 1
-		
-		var campeg_sy = 1
-		
-
-
-		// position of the top up corner of the camera in bg space 
-		
-		var bg_cam_x = parseFloat(bg_cx - cam_cx);
-		
-		var bg_cam_y = parseFloat(bg_cy - cam_cy);
+			
+			//FINAL SCALE 
+			
+			var final_sx = ratio ;
+			
+			var final_sy = ratio ;
+			
+			// FINAL POSITIONS
 			
 		
-		// CALCUL OF THE TRANSFORM 
-		
-		
-		// X
-		
-		var bg_x = (bg_w/2) * ratio; 
-		
-		var cadre_distance_to_center_x = bg_x - (cad_x * ratio) 
-		
-		var cadre_distance_to_cam_x =  cadre_distance_to_center_x - (cam_w / 2)
-		
-		
-		// Y
-		
-		var bg_y = (bg_h/2) * ratio; 
-		
-		var cadre_distance_to_center_y =  bg_y - (cad_y * ratio);
-		
-		var cadre_distance_to_cam_y =  cadre_distance_to_center_y - (cam_h / 2)
-
-		
-		//FINAL SCALE 
-		
-		var final_sx = ratio ;
-		
-		var final_sy = ratio ;
-		
-		// FINAL POSITIONS
-		
-	
-		
-		
-		var RATIO_PIXEL_X = parseFloat(16/(1920/2))
-		
-		var RATIO_PIXEL_Y = parseFloat(12/(1080/2))
-		
-		
-
-		var final_x =  parseFloat(cadre_distance_to_cam_x * RATIO_PIXEL_X) + parseFloat(cam_peg_x);
-		
-		var final_y =  parseFloat(-cadre_distance_to_cam_y * RATIO_PIXEL_Y)+ parseFloat(cam_peg_y);
-		
-		var final_z =  parseFloat(cam_peg_z);
-		
-		
-		
-		MessageLog.trace(" ----- FIT TO CAMERA -------------------------------- ");
-		
-			MessageLog.trace("X = "+final_x);
-		
-			MessageLog.trace("Y = "+final_y);
 			
-			MessageLog.trace("Z = "+final_z);
+			
+			var RATIO_PIXEL_X = parseFloat(16/(1920/2))
+			
+			var RATIO_PIXEL_Y = parseFloat(12/(1080/2))
+			
+			
+
+			var final_x =  parseFloat(cadre_distance_to_cam_x * RATIO_PIXEL_X) + parseFloat(cam_peg_x);
+			
+			var final_y =  parseFloat(-cadre_distance_to_cam_y * RATIO_PIXEL_Y)+ parseFloat(cam_peg_y);
+			
+			var final_z =  parseFloat(cam_peg_z);
+			
+			
+			
+			MessageLog.trace(" ----- FIT TO CAMERA -------------------------------- ");
+			
+				MessageLog.trace("X = "+final_x);
+			
+				MessageLog.trace("Y = "+final_y);
+				
+				MessageLog.trace("Z = "+final_z);
+			
+			MessageLog.trace(" ------------------------------------------------------ ");
+			
+			
+			//INJECT X
+			top_peg.attributes.position.x.setValue(final_x);
+			
+			//INJECT Y
+			top_peg.attributes.position.y.setValue(final_y);
+			
+			//INJECT Y
+			top_peg.attributes.position.z.setValue(final_z);
+			
+			//INJECT SX
+			top_peg.attributes.scale.x.setValue(final_sx);
+			
+			//INJECT SY
+			top_peg.attributes.scale.y.setValue(final_sy);
+			
+			S.log.add("fit to camera X = "+final_x+ "Y = "+final_y+ "Z = "+final_z,"process")
 		
-		MessageLog.trace(" ------------------------------------------------------ ");
 		
-		
-		//INJECT X
-		top_peg.attributes.position.x.setValue(final_x);
-		
-		//INJECT Y
-		top_peg.attributes.position.y.setValue(final_y);
-		
-		//INJECT Y
-		top_peg.attributes.position.z.setValue(final_z);
-		
-		//INJECT SX
-		top_peg.attributes.scale.x.setValue(final_sx);
-		
-		//INJECT SY
-		top_peg.attributes.scale.y.setValue(final_sy);
+		}
 
 	
 		
@@ -869,3 +923,4 @@ OO.TreeManager = function(_S){
 		
 	}		 
 }
+
