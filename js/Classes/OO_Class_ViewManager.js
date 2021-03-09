@@ -58,6 +58,8 @@ OO.ViewManager = function(_S){
 						
 						nview.load(TLM_list_of_views[t]);
 						
+						// see class view for processing of the marker note content
+						
 						list_of_views.push(nview);
 					
 					}
@@ -92,6 +94,12 @@ OO.ViewManager = function(_S){
 	}
 	
 	var get_export_dir = function(view){
+		
+		if(view.direct_path != false){
+			
+			return  "P:/"+view.direct_path;
+			
+		}
 		
 		return  output_dir+"/"+view.asset+"/"+view.task+"/";
 

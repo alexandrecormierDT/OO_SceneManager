@@ -702,6 +702,11 @@ function select_tree_nodes(){
 	
 	
 }
+
+
+
+
+
 //DESIGN SCRIPT : 
 
 
@@ -725,4 +730,31 @@ function Expiew(){
 
 }
 
+function export_markers_process(){
+	
+	var S = new OO.SceneManager();
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/export_markers.html");
+	
+	S.context.set_context_type('Shotgun');	
+	
+	S.context.set_library_path(OO.library_path);
+
+	S.load_xstage();
+	
+	S.views.load(S.stage);
+	
+	S.views.set_output_dir("P:/projects/billy/views");
+	
+	if(S.views.noviews == false){
+		
+		if(S.views.InputDialog()){
+			
+			S.views.export_views();
+			
+		}		
+		
+	}
+
+}
 

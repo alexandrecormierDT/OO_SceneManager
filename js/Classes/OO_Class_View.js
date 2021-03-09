@@ -25,6 +25,12 @@ OO.View = function(TLM){
 	this.is_selected = false;
 	
 	this.name = "VIEW"
+	
+	//TO BY PASS SHOTGUN STRUCTURE AND EXPORT DIRECTLY TO PNG : 
+	
+	this.direct_path = false;
+	
+	this.file_name = false;
 
 	
 	// reading data from an xml elment object "timelineMarker"
@@ -48,7 +54,12 @@ OO.View = function(TLM){
 			var note = parse_note(TLM.note);
 			
 			if(note!=false){
+				
+				//TO BY PASS SHOTGUN STRUCTURE AND EXPORT DIRECTLY TO PNG :
 
+				this.direct_path = filter(note.hasOwnProperty('direct_path') ? note.direct_path : this.direct_path) ; 
+				this.file_name = filter(note.hasOwnProperty('file_name') ? note.file_name : this.file_name) ; 
+				
 				this.version = filter(note.hasOwnProperty('version') ? note.version : this.version) ; 
 				this.asset = filter(note.hasOwnProperty('asset') ? note.asset : this.asset) ; 
 				this.task = filter(note.hasOwnProperty('task') ? note.task : this.task) ;				
@@ -86,8 +97,16 @@ OO.View = function(TLM){
 	}
 	
 	this.get_file_name = function(){
+		
+		if(this.file_name == false){
 	
-		return this.asset+"_"+this.task+"_"+this.version+"."+this.exportFormat;
+			return this.asset+"_"+this.task+"_"+this.version+"."+this.exportFormat;
+		
+		}else{
+			
+			return this.file_name+"."+this.exportFormat;
+			
+		}
 		
 	}
 	
@@ -106,6 +125,15 @@ OO.View = function(TLM){
 		frameScale:1
 		task:turn
 		version:test
+		
+		
+		*/
+		
+		/*
+		short note content exemple : 
+		
+		file_name:my_test_image
+		direct_path:P:C:\Users\a.cormier\Pictures\export
 		
 		
 		*/
