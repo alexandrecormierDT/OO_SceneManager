@@ -191,7 +191,8 @@ function import_setup(_setup_name){
 			
 			S.write_scene_path_backdrop();
 		
-			//S.setups.apply(_setup_name);	
+			S.setups.apply(_setup_name);	
+			
 		break; 
 		
 		case 'rig': 

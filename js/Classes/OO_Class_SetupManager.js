@@ -28,8 +28,6 @@ OO.SetupManager = function(_S){
 			
 			S.log.add(setup_tree.code,"tree");
 			
-			//var setup_instance  = new OO.Setup(setup_name,setup_tree,setup_script_path);
-
 			setup_tree.ungroup();
 
 			//SHould find a cleaner way later to run the setup script !
