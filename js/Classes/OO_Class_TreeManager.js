@@ -27,6 +27,7 @@ OO.TreeManager = function(_S){
 		
 	}
 	
+	
 	// CREATE TREE 
 	
 	this.add = function(_code,_nodes){
@@ -41,69 +42,226 @@ OO.TreeManager = function(_S){
 		
 	}
 	
-	this.add_tree_module = function(_code,_nodes){
+	this.add_tree = function(_code,_nodes){
 		
-		var first_node = _nodes[0] != undefined ? _nodes[0] : _nodes[0].nodes[0]; 
 		
-		var parent_group = first_node.parent;
+		// intance of class Tree , see OO_Clas_Tree.js
 		
-		if( parent_group =="Top"){
-			parent_group =OO.doc.root;
+		var ntree = new OO.Tree(_code,_nodes);
+		
+		
+		
+		// marking nodes with unique id
+		
+		var tree_nodes = ntree.get_nodes();
+		
+		
+
+		this.add_id_to_nodes(tree_nodes)
+		
+		//for the id to be writen in the xstage 
+		
+		scene.saveAll();
+		
+		
+
+		
+		
+		
+		
+		// FINDING AND SETTING TOP AND BOTTOM NODES
+		
+		var node_to_link = tree_nodes[0];
+		
+		var found_top_node = ntree.find_top_node();
+		
+		if(found_top_node != false){
 			
+			ntree.set_top_node(found_top_node);
+			
+			node_to_link = found_top_node;
 		}
 		
-		MessageLog.trace(parent_group)
+		var found_bottom_node = ntree.find_bottom_node();
 		
-		var script_module = this.import_tpl_in_group(_code,this.module_path,parent_group)[0];
-		 
-		var map_string = this.map_nodes(_nodes);
+		if(found_bottom_node != false){
+			
+			ntree.set_bottom_node(found_bottom_node);
+		}		
 		
-		MessageLog.trace(script_module.name)
-		
-		script_module.attributes.node_map.setValue(map_string);
-		
-		script_module.attributes.code.setValue(_code);
 
-		script_module.linkInNode(first_node);
+		MessageLog.trace("TREE NODES");
+		MessageLog.trace(tree_nodes);
+		MessageLog.trace("TREE NODE FIRST ");
+		MessageLog.trace(tree_nodes[0]);
+		MessageLog.trace("LINK NODE");
+		MessageLog.trace(node_to_link);
+				
+		// parsing node map (list of node with their ids) 
 		
-		script_module.name = "Tree_"+_code
+		var node_map_string = this.stringify_node_list(tree_nodes);
 		
-		script_module.centerBelow(_nodes,100,50)
 		
-		return script_module; 
+		// adding linking and setting map module 
+		
+		var map_module = this.add_map_module(_code,node_to_link);
+		
+		map_module.name = "TreeMap_"+_code
+		
+		ntree.set_map_module(map_module);
+		
+		ntree.update_map_module("code",_code);
+		
+		ntree.update_map_module("node_list",node_map_string);
+		
+		ntree.update_map_module("node_count",tree_nodes.length);
+	
+				
+			
+		this.list.push(ntree);
+
+		return ntree;			
+
+		
+	}	
+	
+
+	this.add_map_module = function(_code,_node_to_link){
+		
+		MessageLog.trace("TOP NODE");
+		
+		MessageLog.trace(_node_to_link)
+		
+		var script_module = false;
+
+		if(_node_to_link != false){
+			
+			var parent_group = _node_to_link.parent;
+			
+			if( parent_group =="Top"){
+				
+				parent_group =OO.doc.root;
+				
+			}
+			
+			MessageLog.trace(parent_group)
+			
+			// importing tpl as oNode object
+			
+			script_module = this.import_tpl_in_group(_code,this.module_path,parent_group)[0];
+			
+			// module name 
+			
+
+			
+			// setting attritubes 
+			
+			script_module.attributes.code.setValue(_code);
+			
+			// linking node module to the top node
+
+			script_module.linkInNode(_node_to_link);
+			
+			
+			// position of the module : 
+			
+			script_module.centerBelow(_node_to_link,100,50)
+			
+			// pointing map_module param to the newly created module (for further operations) 
+
+		}
+
+		// oNode object
+
+		return script_module; 		
+
+		
+		
+	}
+	
+	
+	// TREE ID
+	
+	this.add_id_to_nodes = function(_nodes,_override){
+		
+		// mark nodes with unique id and return a formated string list of them
+
+		
+		for(var s = 0 ; s < _nodes.length ; s++){
+			
+			var curn = _nodes[s];
+			
+			var layer_id = this.add_unique_id_to_onode(curn,_override);
+
+		}
+		
+		
+	}
+	
+	
+	this.add_unique_id_to_onode = function(_onode,_override){
+		
+		// RETURN NODE ID
+		
+		var override = _override != undefined ? _override : false;
+			
+		var layer_id = _onode.type+"_"+get_unique_id()
+		
+		// if the node already has an ID we jut read it 
+		
+		if(_onode.hasOwnProperty("smlayerid")==false){
+			
+			node.createDynamicAttr(_onode, "STRING", "smlayerid", "smlayerid", false)
+			
+			node.setTextAttr(_onode,"smlayerid",frame.current,layer_id);	
+			
+		}else{
+			
+			if(override == true){
+				
+				//unless we want to override the id (dangerous) 
+				
+				node.setTextAttr(_onode,"smlayerid",frame.current,layer_id);		
+			}
+			
+			layer_id = _onode.smlayerid;
+		}
+		
+			
+		return layer_id;
 		
 		
 	}
 
-
-	this.map_nodes = function(_nodes,_override){
+	function get_unique_id(){
 		
-		var override = _override != undefined ? _override : false;
- 
+
+		var k = Math.floor(Math.random() * 10000000);
+		var m =k.toString();	
+			
+		return m ;
+		
+	}
+
+
+	// TREE MAP 
+
+	this.stringify_node_list = function(_nodes){
+		
 		var map_string = "";
 		
 		for(var s = 0 ; s < _nodes.length ; s++){
 			
 			var curn = _nodes[s];
 			
-			MessageLog.trace( curn);
-			
-			var layer_id = curn.type+"_"+get_unique_id()
-			
-			// if the node already has an ID we jut read it unless we want to override the id (dangerous) 
-			
-			if(curn.hasOwnProperty("smlayerid")==false || override == true ){
+			var layer_id = this.add_unique_id_to_onode(curn);
+		
+			if(curn.hasOwnProperty("smlayerid")==true){
 				
-				node.createDynamicAttr(curn, "STRING", "smlayerid", "smlayerid", false)
+				var row = curn.name+":"+curn.smlayerid;
 				
-			}else{
-				
-				layer_id = curn.smlayerid;
 			}
 			
-			node.setTextAttr(curn,"smlayerid",frame.current,layer_id);
-			
-			var row = curn.name+":"+curn.smlayerid;
 			
 			if(s==0){
 				
@@ -119,101 +277,234 @@ OO.TreeManager = function(_S){
 			
 		}
 		
-		function get_unique_id(){
-			
+		S.log.add(map_string,"nodes");
+		
+		return map_string;		
 
-			var k = Math.floor(Math.random() * 10000000);
-			var m =k.toString();	
-				
-			return m ;
+	}
+	
+
+	
+	this.parse_node_list = function(_node_list_string){ 
+	
+		var ID_list = [];
+		
+		var split_row = _node_list_string.split(","); 
+		
+		for(var r = 0 ; r < split_row.length; r++){
+			
+			var current_row = split_row[r];
+			
+			var split_coma = current_row.split(":"); 
+			
+			var ID = split_coma[1]
+			
+			ID_list.push(ID)
 			
 		}
 		
-		return map_string;
+		return ID_list 
+		
+	}	
+	
+	
+	this.fetch_nodes_by_id = function(_ID_list){
+		
+		var id_to_find = _ID_list;
+		
+		//var scene_nodes = OO.doc.root.nodes;
+		var scene_nodes = this.get_all_nodes();
+
+		var found_nodes = []
+		
+		for(var n = 0 ; n < scene_nodes.length ; n ++){
+			
+			var current_node = OO.doc.getNodeByPath(scene_nodes[n]);
+
+			if(current_node.hasOwnProperty("smlayerid")){
+				
+				var found_index = _ID_list.indexOf(current_node.smlayerid) 
+			
+				if(found_index != -1){
+					
+					found_nodes.push(current_node);
+					
+					id_to_find.splice(found_index, 1);
+					
+					if(id_to_find == 0){
+						
+						// all nodes where found
+						
+						return found_nodes;
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		for(var i = 0 ; i <  id_to_find.length ; i ++){
+			
+			S.log.add(id_to_find[i]+" not found","search result")
+			
+		}
+		
+		return found_nodes;
 		
 	}
 	
 	
+	this.get_node_id = function(_node){
+	
+		var onode = OO.doc.getNodeByPath(_node); 
+		
+		if(onode.hasOwnProperty('smlayerdid')){
+		
+			return onode.smlayerid;
+			
+		}
+		
+		return false;
+		
+		
+	}
+	
+	// KEY NODES 
+	
+	this.add_key_node_to_tree = function(_key,_node,_tree){
+		
+		
+		var node_id = this.get_node_id(_node);
+		
+		var key_node = {key:_key,node:node_id};
+		
+		var key_node_list = this.parse_key_node_list(_tree.get_key_notes());
+		
+		key_node_list.push(key_node);
+		
+		var key_node_list_string = this.stringify_key_nodes_list(key_node_list);
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
 	// READING SCENES
 	
-	
-	this.select_tree_nodes = function(tree){
+
+	this.find_map_modules_in_nodes = function(_nodes){
 		
-		selectedNodes = tree.get_nodes();
+		var map_module_list = [];
+		
+		for(var n = 0 ; n < _nodes.length ; n ++){
+		
+			var current_onode = OO.doc.getNodeByPath(_nodes[n]);
+			
+			if(current_onode.type == "SCRIPT_MODULE"){
+			
+				if(current_onode.hasOwnProperty("treemap")){
+						
+					map_module_list.push(current_onode);
+	
+				}
+				
+			}
+			
+		}
+		
+		if(map_module_list.length == 0){
+		
+			return false;
+			
+		}
+		
+		return map_module_list; 
+		
+	}
+	
+	
+	
+	
+	this.instaciate_tree_with_map_module = function(_map_module){
+		
+		// read the map_module attribute and instanciate a new tree object with the fetched data. 
+		
+		var tree_code = _map_module.code;
+		
+		var tree_id = _map_module.treeid;
+		
+		var node_list_string = OO.filter_string(_map_module.node_list)
+
+		var id_list = this.parse_node_list(node_list_string);
+		
+		var tree_nodes = this.fetch_nodes_by_id(id_list);
+		
+		var ntree = new OO.Tree(tree_code,tree_nodes); 
+		
+		ntree.set_map_module(_map_module);
+		
+		return ntree;
+		
+	}
+	
+	this.fetch_trees_from_nodes = function(){
+		
+		
+		
+	}
+	
+	this.get_all_nodes = function(){
+	
+		var groups_to_analyse = [OO.doc.root]
+		
+		var node_list = []
+		
+		for(var g = 0 ; g < groups_to_analyse.length ; g++){
+			
+			var group_nodes = groups_to_analyse[g].nodes;
+
+			for(var n = 0 ; n < group_nodes.length ; n++){
+				
+				var current_node = OO.doc.getNodeByPath(group_nodes[n]);
+				
+				if(current_node.type == "GROUP"){
+					
+					groups_to_analyse.push(current_node); 
+					
+				}
+				
+				node_list.push(current_node);
+		
+			}	
+
+		}		
+		
+		return node_list;
+		
 		
 	}
 	
 	this.load_trees_from_scene = function(){
 		
-		//beware it's only searhcing in root and not in sub groups
+		var scene_nodes = this.get_all_nodes();
 		
-		var scene_nodes = OO.doc.root.nodes;
+		var scene_map_modules = this.find_map_module_in_nodes(scene_nodes);
 		
-		var scene_TSM = []
-		
-		for(var n = 0 ; n < scene_nodes.length ; n++){
+		for(var m = 0 ; m < scene_map_modules.length ; m++){
 			
-			var cnode = scene_nodes[n];
-			
-			if(cnode.type == "SCRIPT_MODULE"){
+			var cur_map_module = scene_map_modules[m];
 				
-				if(cnode.hasOwnProperty('treemap') == true){
-					
-					//TREE SCRIPT MODULE
-					
-					scene_TSM.push(cnode);
-					
-				};
-				
-			}
-			
-		}
-		
-		for(var sm = 0 ; sm < scene_TSM.length ; sm++){
-			
-			var cur_script_module = scene_TSM[sm];
-		
-			// CODE,MAP AND ID
-			
-			var node_map_string  = OO.filter_string(cur_script_module.node_map);
-			
-			var code = OO.filter_string(cur_script_module.code);
-			
-			var treeid = OO.filter_string(cur_script_module.treeid);
-
-			var node_map = this.parse_node_map(node_map_string);
-			
-			ntree.node_map = node_map;
-			
-			var tree_nodes = this.get_node_list_from_map(node_map);
-			
-			var ntree = new OO.Tree(code,tree_nodes);
+			var ntree = this.instaciate_tree_with_map_module(cur_map_module);
 			
 			this.list.push(ntree);
 
 		}		
-		
-	}
-	
-	this.get_node_list_from_map = function(node_map){ 
-		
-		var node_list = []
-		
-		for(var i = 0 ; i< node_map.length; i++){
-			
-			var currow = node_map[i];
-			
-			var search_node = this.find_node_by_smlayerid(currow.id)
-			
-			if(search_node != false){
-				
-				node_list.push(search_node);
-				
-			}
-			
-		}
-		
-		return node_list;
 		
 	}
 	
@@ -226,29 +517,6 @@ OO.TreeManager = function(_S){
 		}		
 		
 		return false;
-		
-	}
-	
-	this.parse_node_map = function(_node_map){
-		
-		var splitcoma = _node_map.split(',');
-		
-		var node_map_array = []; 
-		
-		for(var i = 0 ; i< splitcoma.length; i++){
-			
-			var row = splitcoma[i]; 
-			
-			var splitequal = row.split(":");
-			
-			var row = {name:splitequal[0],id:splitequal[1]};
-			
-			node_map_array.push(row);
-			
-		}
-		
-		return node_map_array;
-		
 		
 	}
 	
@@ -272,19 +540,6 @@ OO.TreeManager = function(_S){
 	
 	// EDITING TREES
 	
-	this.add_node = function(node,tree){
-		
-		
-	}
-	
-	this.get_tree_module = function(tree){
-		
-		
-		
-		
-	}
-		
-
 	this.update= function(){
 		
 	}
@@ -420,6 +675,15 @@ OO.TreeManager = function(_S){
 		return nodes; 		
 		
 	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//FUNCTION TO MAKE THE NODEVIEW PRETTY 
 	

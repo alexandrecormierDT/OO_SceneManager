@@ -87,7 +87,6 @@ function log_test(){
 
 // SCRIPT HELP 
 
-
 function show_scene_infos(){
 	
 	var S = new OO.SceneManager();	
@@ -117,7 +116,6 @@ function write_scene_journal(){
 	
 	var scene_path = S.context.get_scene_path();
 	
-
 	var message = "";
 	
 	var dialog = new Dialog();
@@ -137,17 +135,105 @@ function write_scene_journal(){
 		S.add_entry_to_scene_journal(message)
 		
 	}
-	
-	
+
 
 }
+
+// TREE MANIPULATIONS
+
+function create_tree_with_selection(){
+	
+	// save the scene ! 
+	
+	var S = new OO.SceneManager();	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/add_tree.html");
+
+	var selected_nodes = OO.doc.selectedNodes; 
+	
+	var TREE_CODE = "";
+	
+	MessageLog.trace(selected_nodes);
+	
+	
+	
+	var dialog = new Dialog();
+	dialog.title = "TREE CODE (no accents) : ";
+	dialog.width = 100;
+	
+	var userInput = new LineEdit();
+	userInput.text = ""
+	dialog.add( userInput );
+		
+	if (dialog.exec()){
+		
+		TREE_CODE = OO.filter_string(userInput.text);
+		 
+		S.trees.add_tree( TREE_CODE,selected_nodes);
+		
+		S.log.add("new tree added "+TREE_CODE,"tree");
+		
+	}	
+}
+
+
+function select_tree_nodes(){
+	
+	
+	var S = new OO.SceneManager();	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/select_tree_nodes.html");
+
+	var selected_nodes = OO.doc.selectedNodes; 
+	
+	var fetched_map_modules = S.trees.find_map_modules_in_nodes(selected_nodes)
+	
+	MessageLog.trace("MODULES");
+	
+	MessageLog.trace(fetched_map_modules);
+	
+	selection.clearSelection ()
+	
+	for(var n = 0 ; n < fetched_map_modules.length ; n++){
+		
+		var current_map_module = fetched_map_modules[n]; 
+		
+		var ntree = S.trees.instaciate_tree_with_map_module(current_map_module);
+		
+		ntree.select_nodes();
+		
+		ntree.update_map_module("treeid","hallo");
+		
+	}
+	
+	MessageLog.trace(selected_nodes);
+	
+}
+
+
+
+function show_layer_ID(){
+	
+	var S = new OO.SceneManager();	
+	
+	var selection = OO.doc.selectedNodes;
+	
+	MessageLog.trace(S.trees.get_node_smlayerid(selection[0]));
+	
+	MessageBox.information(S.trees.get_node_smlayerid(selection[0]));
+	
+}
+
+
 
 // SETUP SCRIPTS 
 
 function import_project_settings(){
 	
 	var S = new OO.SceneManager();	
+	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/import_project_settings.html");
+	
 	S.set_scene_settings(OO.project_settings);
 	
 }
@@ -192,6 +278,8 @@ function import_setup(_setup_name){
 			S.write_scene_path_backdrop();
 		
 			S.setups.apply(_setup_name);	
+			
+			
 			
 		break; 
 		
@@ -238,7 +326,6 @@ function load_shot_setup(){
 // PORTAL SCRIPT 
 
 function create_portals(_type){
-	
 	
 	var S = new OO.SceneManager();	
 	
@@ -424,7 +511,7 @@ function pull_(_asset_type){
 
 	S.log.save();
 	
-}
+} 
 
 
 function fit_bg_to_camera(){
@@ -483,7 +570,7 @@ function fit_bg_to_camera(){
 		}
 	}	
 
-	S.log.save();	
+	S.log.save();
 	
 }
 
@@ -590,6 +677,8 @@ function pull_png(){
 	S.log.save();
 	
 }
+
+
 function pull_psd(){
 	
 	////MessageLog.trace("PULL PSD FUNCTION");
@@ -603,7 +692,9 @@ function pull_psd(){
 	S.context.set_library_path(OO.library_path);
 	
 	S.context.set_psd_path(OO.psd_path);
+	
 	S.context.set_png_path(OO.png_path);
+	
 	S.context.set_svg_path(OO.svg_path);
 	
 	S.load_breakdown('csv');
@@ -663,46 +754,6 @@ function pull_psd(){
 	S.log.save();
 	
 }
-function map_nodes(){
-	
-	
-	var selection = OO.doc.selectedNodes;
-	
-	var S = new OO.SceneManager();	
-	
-	var ntree = S.trees.add_tree_module("test",selection);
-	
-	//ntree.add_key_node(selection[0],"TOP_PEG");
-	
-	
-}
-
-function show_layer_ID(){
-	
-	var S = new OO.SceneManager();	
-	
-	var selection = OO.doc.selectedNodes;
-	
-	MessageLog.trace(S.trees.get_node_smlayerid(selection[0]));
-	
-	MessageBox.information(S.trees.get_node_smlayerid(selection[0]));
-	
-}
-
-function select_tree_nodes(){
-	
-	
-	var S = new OO.SceneManager();	
-	
-	S.trees.load_trees_from_scene();
-	
-	var test_tree = S.trees[0]; 
-	
-	//S.trees.select_tree_nodes = function(test_tree)
-	
-	
-}
-
 
 
 
@@ -723,8 +774,11 @@ function Expiew(){
 	S.views.set_output_dir("P:/projects/billy/views");
 	
 	if(S.views.noviews == false){
+		
 		if(S.views.InputDialog()){
+			
 			S.views.export_views();
+			
 		}		
 	}
 

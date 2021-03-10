@@ -41,6 +41,49 @@ OO.SceneManager = function(){
 
 	}
 	
+	this.write_shot_burnin = function(_sceneinfos,_date){
+		
+		var backdrop = this.get_backdrop_by_name("SHOT SCENE BURNIN");
+		
+		if(backdrop != false){
+		
+			
+		}
+		
+	}	
+	
+	this.write_asset_burnin = function(_sceneinfos,_assetinfos,_date){
+		
+		var backdrop = this.get_backdrop_by_name("ASSET SCENE BURNIN");
+		
+		if(backdrop != false){
+		
+			//outputs : 
+		
+			var SCENE_INFOS = "Top/SCENE_INFOS";
+			var ASSET_INFOS = "Top/ASSET_INFOS";
+			var DATE = "Top/DATE";
+			var FRAME = "Top/FRAME";
+			
+			//values : 
+			
+			
+			// node.setTextAttr(myNode, "PALETTES.ADD", frame.current(), palettePath);
+			
+			var v_scene_infos = OO.filter_string(_sceneinfos);
+			var v_asset_infos = OO.filter_string(_assetinfos);
+			var v_date_infos = OO.filter_string(_date);
+			
+			attribute_name = "PrintInfo";
+			
+			node.setTextAttr(SCENE_INFOS, attribute_name, frame.current(),v_scene_infos);
+			node.setTextAttr(ASSET_INFOS, attribute_name, frame.current(),v_asset_infos);
+			node.setTextAttr(DATE, attribute_name, frame.current(),v_date_infos);
+			node.setTextAttr(FRAME, attribute_name, frame.current(),"");
+			
+		}
+		
+	}	
 	
 	this.add_entry_to_scene_journal = function(_text){
 		
@@ -448,10 +491,11 @@ OO.SceneManager = function(){
 
 			}
 
-		}	
+		}	 
 
 
 	}
+
 	
 	
 }
