@@ -161,6 +161,15 @@ function write_scene_journal(){
 
 }
 
+
+function print_script_prefs(_script_name,_object){
+	
+	var json_string = JSON.stringify(_object)
+	
+	
+	
+}
+
 // TREE MANIPULATIONS
 
 function create_tree_with_selection(){
