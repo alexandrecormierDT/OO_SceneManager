@@ -67,7 +67,7 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		
 	}
 	
-	this.update_backdrop = function(){
+	this.get_backdrop = function (){
 		
 		var scene_backdrops = OO.doc.root.backdrops; 
 		
@@ -75,25 +75,17 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		
 		for (var b = 0 ; b < scene_backdrops.length ; b++){
 		
-			var curb = scene_backdrops[b]
+			var curb = scene_backdrops[b];
 			
-			if(curb.body == this.code && curb.title == "PORTAL"){
+			if(curb.body == this.get_code() && curb.title == "PORTAL"){
 				
-				this.tree.backdrop = curb;
+				return curb;
 				
 				break;
 				
 			}
 
 		}
-		
-	}
-	
-	this.get_backdrop = function (){
-		
-		this.update_backdrop();
-		
-		return this.tree.backdrop;
 		
 		
 	}
@@ -141,6 +133,13 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		return this.sg_asset_type
 		
 	}
+	
+	this.get_code = function(){
+		
+		return this.code
+		
+	}
+	
 	
 	
 

@@ -37,7 +37,7 @@ OO.Log =function (_S){
 			if(file_test.exists == false){
 				
 				logfile = new PermanentFile(_filepath);
-				var stamp = scene.currentScene()+"**************** NEW LOG >>>>"+OO.aujourdhui();
+				var stamp = scene.currentScene()+"**************** NEW LOG >>>>"+Date();
 
 				logfile.open(4);                 // open with write only stream
 				logfile.writeLine(stamp);           // write line to file
@@ -100,7 +100,7 @@ OO.Log =function (_S){
 				break; 
 				case "html": 
 				
-					stamp = "<div class='logbox'><h3><span class='scene'> "+scene_path+" </span></h3><span class='entry'>"+OO.aujourdhui()+"</span><br>";
+					stamp = "<div class='logbox'><h3><span class='scene'> "+scene_path+" </span></h3><span class='entry'>"+Date()+"</span><br>";
 				
 					for (l in this.logs){
 						

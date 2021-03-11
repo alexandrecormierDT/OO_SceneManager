@@ -268,11 +268,13 @@ function mark_nodes(){
 
 //=============================================================================================================================================
 
-function import_project_settings(){
+function import_project_settings(_project){
+	
+	var project = _project != undefined  ? _project : "billy";
 	
 	var S = new OO.SceneManager();	
 	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/import_project_settings.html");
+	S.log.create_new_log_file("P:/projects/"+project+"/pre_shotgun/batch_pool/logs/import_project_settings.html");
 	
 	S.set_scene_settings(OO.project_settings);
 	
@@ -317,7 +319,7 @@ function import_setup(_setup_name){
 			
 			S.context.set_from_scene_path();
 			
-			S.write_shot_burnin(S.context.get_scene_path(),S.context.code,OO.aujourdhui())
+			S.write_shot_burnin(S.context.get_scene_path(),S.context.get_shot(),OO.aujourdhui())
 			
 		break; 
 		

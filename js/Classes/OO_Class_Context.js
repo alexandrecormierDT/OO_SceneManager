@@ -216,18 +216,14 @@ OO.Context = function (_type){
 		switch(CONTEXT_TYPE){
 		
 			case("Shotgun"):
-			
-				//return "ep101_pl015";
-				
+				//need to reed the csv here
 				return this.get_shotcode_from_scene_name()
 				
 			break;
 				
 			case("Server"): 
 			
-				//return "ep201_pl010";
-			
-				return this.breakdown_scene_path();
+				return this.get_shotcode_from_scene_name()
 			
 			break;		
 		
