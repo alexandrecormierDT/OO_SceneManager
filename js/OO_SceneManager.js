@@ -162,12 +162,42 @@ function write_scene_journal(){
 }
 
 
-function print_script_prefs(_script_name,_object){
+// scripts preferences for dialog prefill
+
+function print_script_prefs(_script_name,_pref_object){
 	
-	var json_string = JSON.stringify(_object)
+	var note_name = "pref_"+_script_name
+
+	node.add("Top",note_name,"NOTE");
 	
+	var pref_note = OO.doc.getNodeByPath(note_name);
 	
+	var json_string = JSON.stringify(_pref_object);
 	
+	pref_note.attributes.text.setValue(json_string)
+
+	
+}
+
+
+function fetch_script_prefs(_script_name){
+	
+	var note_name = "pref_"+_script_name
+
+	var pref_note = OO.doc.getNodeByPath(note_name);
+	
+	if(pref_note.hasOwnProperty('text')){
+		
+		var json_string = pref_note.text 
+	
+		var json_object = JSON.parse(json_string);
+	
+		return json_object;		
+		
+	}
+	
+
+
 }
 
 // TREE MANIPULATIONS
