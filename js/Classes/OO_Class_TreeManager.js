@@ -306,7 +306,7 @@ OO.TreeManager = function(_S){
 
 	}	
 	
-	this.fetch_nodes_by_id_in_scene = function(_ID_list){
+	this.fetch_nodes_by_id = function(_ID_list){
 		
 		
 		var id_to_find = _ID_list;
@@ -1203,7 +1203,7 @@ OO.TreeManager = function(_S){
 		if(file_test.exists == false){
 			
 			logfile = new PermanentFile(_filepath);
-			var stamp = scene.currentScene()+"**************** NEW LOG >>>>"+Date();
+			var stamp = scene.currentScene()+"**************** NEW LOG >>>>"+OO.aujourdhui();
 
 			logfile.open(4);                 // open with write only stream
 			logfile.writeLine(stamp);           // write line to file

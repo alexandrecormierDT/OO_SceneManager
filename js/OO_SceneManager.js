@@ -39,6 +39,26 @@ OO.project_settings = {
 	
 }
 
+
+OO.aujourdhui = function(){
+	
+	var date1 = new Date();
+
+	var dateLocale = date1.toLocaleString('fr-FR',{
+		weekday: 'long',
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+		hour: 'numeric',
+		minute: 'numeric',
+		second: 'numeric'});
+
+	return dateLocale;	
+	
+}
+
+
+
 // FOLDER should be declared in previous include : OO_SceneManager_proto or master    enable to switch from folders proto(dev) and master(for users) 
 
 //CLASSES
@@ -71,6 +91,8 @@ OO.filter_string =function(str){
 //LOG
 
 OO.log = new OO.Log("scenemanager_");
+
+
 
 function log_test(){
 	
@@ -236,7 +258,15 @@ function mark_nodes(){
 }
 
 
+
+
+
+
+//============================================================================================================================================
+
 // SETUP SCRIPTS 
+
+//=============================================================================================================================================
 
 function import_project_settings(){
 	
@@ -264,6 +294,8 @@ function import_setup(_setup_name){
 	
 	//mark scene path : 
 	
+	// burnin should be improted separately
+	
 
 	switch (_setup_name){
 	
@@ -275,27 +307,36 @@ function import_setup(_setup_name){
 			
 			var video_render_path = S.context.generate_render_path();
 			
-			S.update_render_path(RENDER_MOV,video_render_path)	
-			
 			S.setups.apply(_setup_name);	
+			
+			// after the setup is imported in the nodeview
+			
+			S.write_scene_path_backdrop();
+			
+			S.update_render_path(RENDER_MOV,video_render_path);
+			
+			S.context.set_from_scene_path();
+			
+			S.write_shot_burnin(S.context.get_scene_path(),S.context.code,OO.aujourdhui())
 			
 		break; 
 		
 		case 'design': 
 		
 			S.context.set_from_scene_path();
-			
-			S.write_scene_path_backdrop();
 		
 			S.setups.apply(_setup_name);	
+		
+			// after the setup is imported in the nodeview
 			
+			S.write_scene_path_backdrop();
 			
+			S.write_asset_burnin(S.context.get_scene_path(),S.context.code,OO.aujourdhui());
 			
 		break; 
 		
 		case 'rig': 
-		
-		
+			
 		break; 		
 		
 	}
@@ -333,7 +374,12 @@ function load_shot_setup(){
 } 
 
 
+
+//============================================================================================================================================
+
 // PORTAL SCRIPT 
+
+//============================================================================================================================================
 
 function create_portals(_type){
 	
@@ -409,13 +455,13 @@ function empty_portals(_type){
 
 	for(var p = 0 ; p < S.portals.list.length; p++){
 	
-		var cportal = S.portals.list[p]
+		var current_portal = S.portals.list[p]
 		
-		var linked_asset = S.assets.get_asset_by_code(cportal.code);
+		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
 		
 		if(linked_asset.get_type()== _type){
 			
-			S.portals.empty(cportal);
+			S.portals.empty(current_portal);
 			
 		}
 		
@@ -450,24 +496,24 @@ function pull_(_asset_type){
 
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
-		var cportal = S.portals.list[p]
+		var current_portal = S.portals.list[p]
 		
-		var linked_asset = S.assets.get_asset_by_code(cportal.code);
+		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
 		
 		//checking asset type
-		if(linked_asset.get_type == _asset_type || _asset_type == "ALL" ){
+		if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
 			
 			//TODO : switch per asset type
 			
 			//we empty the portal first 
 			
-			S.portals.empty(cportal);
+			S.portals.empty(current_portal);
 			
-			S.log.add("pulling png of - "+cportal.code,"process");
+			S.log.add("pulling png of - "+current_portal.code,"process");
 			
-			if(cportal.png_exist()){
+			if(current_portal.png_exist()){
 
-				var bg_node = S.portals.pull(cportal,'png');		
+				var bg_node = S.portals.pull(current_portal,'png');		
 		
 				var full_svg_path = S.context.get_svg_path(linked_asset);
 				
@@ -542,11 +588,11 @@ function fit_bg_to_camera(){
 	
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
-		var cportal = S.portals.list[p]
+		var current_portal = S.portals.list[p]
 		
-		var linked_asset = S.assets.get_asset_by_code(cportal.code);
+		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
 		
-		if(cportal.png_exist()){
+		if(current_portal.png_exist()){
 			
 			var full_svg_path = S.context.get_svg_path(linked_asset);
 			
@@ -560,13 +606,13 @@ function fit_bg_to_camera(){
 				
 				if(bg_cadre.hasOwnProperty('rect')==true){
 					
-					S.trees.fit_cadre_to_camera(cportal.tree.peg,bg_cadre);
+					S.trees.fit_cadre_to_camera(current_portal.tree.peg,bg_cadre);
 					
 				}else{
 					
 					//we compensate the bg secu
 					
-					S.trees.scale_to_camera(cportal.tree.peg);
+					S.trees.scale_to_camera(current_portal.tree.peg);
 					
 				}				
 				
@@ -609,19 +655,19 @@ function pull_png(){
 
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
-		var cportal = S.portals.list[p]
+		var current_portal = S.portals.list[p]
 		
 		//we empty the portal first 
 		
-		S.portals.empty(cportal);
+		S.portals.empty(current_portal);
 		
-		var linked_asset = S.assets.get_asset_by_code(cportal.code);
+		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
 		
-		S.log.add("pulling png of - "+cportal.code,"process");
+		S.log.add("pulling png of - "+current_portal.code,"process");
 		
-		if(cportal.png_exist()){
+		if(current_portal.png_exist()){
 
-			var bg_node = S.portals.pull(cportal,'png');		
+			var bg_node = S.portals.pull(current_portal,'png');		
 	
 			var full_svg_path = S.context.get_svg_path(linked_asset);
 			
@@ -667,13 +713,13 @@ function pull_png(){
 		
 			if(bg_cadre.hasOwnProperty('rect')==true){
 				
-				S.trees.fit_cadre_to_camera(cportal.tree.peg,bg_cadre);
+				S.trees.fit_cadre_to_camera(current_portal.tree.peg,bg_cadre);
 				
 			}else{
 				
 				//we compensate the bg secu
 				
-				S.trees.scale_to_camera(cportal.tree.peg);
+				S.trees.scale_to_camera(current_portal.tree.peg);
 			}
 					
 		}else{
@@ -713,13 +759,13 @@ function pull_psd(){
 
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
-		var cportal = S.portals.list[p]
+		var current_portal = S.portals.list[p]
 		
-		var linked_asset = S.assets.get_asset_by_code(cportal.code);
+		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
 		
-		if(cportal.psd_exist()){
+		if(current_portal.psd_exist()){
 
-			var bg_node = S.portals.pull(cportal,'psd');		
+			var bg_node = S.portals.pull(current_portal,'psd');		
 	
 			var full_svg_path = S.context.get_svg_path(linked_asset);
 			
@@ -744,13 +790,13 @@ function pull_psd(){
 		
 			if(bg_cadre!=false){
 				
-				S.trees.fit_cadre_to_camera(cportal.tree.peg,bg_cadre);
+				S.trees.fit_cadre_to_camera(current_portal.tree.peg,bg_cadre);
 				
 			}else{
 				
 				//we compensate the bg secu
 				
-				S.trees.scale_to_camera(cportal.tree.peg);
+				S.trees.scale_to_camera(current_portal.tree.peg);
 			}
 					
 		}else{

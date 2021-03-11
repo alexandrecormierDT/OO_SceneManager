@@ -41,12 +41,33 @@ OO.SceneManager = function(){
 
 	}
 	
-	this.write_shot_burnin = function(_sceneinfos,_date){
+	this.write_shot_burnin = function(_sceneinfos,_shotinfos,_date){
 		
 		var backdrop = this.get_backdrop_by_name("SHOT SCENE BURNIN");
 		
 		if(backdrop != false){
 		
+			//outputs : 
+		
+			var SCENE_INFOS = "Top/SCENE_INFOS";
+			var SHOT_INFOS = "Top/SHOT_INFOS";
+			var DATE = "Top/DATE";
+			var FRAME = "Top/FRAME";
+			var TIME_CODE = "Top/TIME_CODE";
+			
+			//values : 
+
+			var v_scene_infos = OO.filter_string(_sceneinfos);
+			var v_shot_infos = OO.filter_string(_shotinfos);
+			var v_date_infos = OO.filter_string(_date);
+			
+			attribute_name = "PrintInfo";
+			
+			node.setTextAttr(SCENE_INFOS, attribute_name, frame.current(),v_scene_infos);
+			node.setTextAttr(SHOT_INFOS, attribute_name, frame.current(),v_shot_infos);
+			node.setTextAttr(DATE, attribute_name, frame.current(),v_date_infos);
+			node.setTextAttr(FRAME, attribute_name, frame.current(),"");
+			node.setTextAttr(TIME_CODE, attribute_name, frame.current(),"");
 			
 		}
 		
@@ -89,7 +110,7 @@ OO.SceneManager = function(){
 		
 		var backdrop = this.get_backdrop_by_name("SCENE JOURNAL");
 		
-		var time_stamp = Date();
+		var time_stamp = OO.aujourdhui();
 		
 		var white_color = new $.oColorValue("#999999FF")		
 		var black_color = new $.oColorValue("#000000FF")	

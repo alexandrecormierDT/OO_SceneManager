@@ -81,8 +81,6 @@ OO.Context = function (_type){
 		
 	}
 	
-
-	
 	this.set_from_scene_path = function(){
 		
 		//P:,projects,billy,assets,Character,default,ch_mytestchar,work,a-cormier,design_main,toonboom,scenes
@@ -108,13 +106,22 @@ OO.Context = function (_type){
 			break; 
 			
 			case 'shots': 
-				
+			
+				this.division = scene_path[4];
+				this.episode = scene_path[6];
+				this.version = scene_path[7];
+				this.user = scene_path[8];				
+				this.task = scene_path[9];				
+				this.software = scene_path[10];				
+				this.tb_file_type = scene_path[11];				
+			
 				
 			break;
 		}
-		
-		
+
 	}
+	
+	
 	
 	
 	this.get_type_from_asset_code = function(asset_code){
