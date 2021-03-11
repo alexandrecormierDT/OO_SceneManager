@@ -7,7 +7,7 @@
 
 
 TREE AND NODES SHOULD BE HANDLE IN A CLEANER WAY 
-it's not clear how to fin the nodes related to the tree. 
+it's not clear how to find the nodes related to the tree. 
 when they chang group for exemple 
 the nodes shoul be a simple array of nodes not a GroupeNode object 
 the trees should have a node_map. 
@@ -23,13 +23,11 @@ OO.TreeManager = function(_S){
 	
 	this.module_path = "P:/pipeline/script_modules/TreeMap/TreeMap.tpl";
 	
-	this.load = function(){
-		
-	}
-	
 	
 	// CREATE TREE 
 	
+	
+	//obsolete
 	this.add = function(_code,_nodes){
 		
 		var ntree = new OO.Tree(_code,_nodes);
@@ -64,10 +62,6 @@ OO.TreeManager = function(_S){
 		scene.saveAll();
 		
 		
-
-		
-		
-		
 		
 		// FINDING AND SETTING TOP AND BOTTOM NODES
 		
@@ -88,18 +82,13 @@ OO.TreeManager = function(_S){
 			
 			ntree.set_bottom_node(found_bottom_node);
 		}		
-		
 
-		MessageLog.trace("TREE NODES");
-		MessageLog.trace(tree_nodes);
-		MessageLog.trace("TREE NODE FIRST ");
-		MessageLog.trace(tree_nodes[0]);
-		MessageLog.trace("LINK NODE");
-		MessageLog.trace(node_to_link);
+
 				
 		// parsing node map (list of node with their ids) 
 		
 		var node_map_string = this.stringify_node_list(tree_nodes);
+		
 		
 		
 		// adding linking and setting map module 
@@ -115,8 +104,7 @@ OO.TreeManager = function(_S){
 		ntree.update_map_module("node_list",node_map_string);
 		
 		ntree.update_map_module("node_count",tree_nodes.length);
-	
-				
+			
 			
 		this.list.push(ntree);
 
@@ -125,6 +113,9 @@ OO.TreeManager = function(_S){
 		
 	}	
 	
+	
+	// import the treemap script module from the library and link it to a given node
+	// return oNode object
 
 	this.add_map_module = function(_code,_node_to_link){
 		
@@ -167,11 +158,11 @@ OO.TreeManager = function(_S){
 			
 			script_module.centerBelow(_node_to_link,100,50)
 			
-			// pointing map_module param to the newly created module (for further operations) 
+
 
 		}
 
-		// oNode object
+		
 
 		return script_module; 		
 
@@ -180,13 +171,12 @@ OO.TreeManager = function(_S){
 	}
 	
 	
-	// TREE ID
+	// TREE ID FUNCTIONS :
 	
 	this.add_id_to_nodes = function(_nodes,_override){
 		
-		// mark nodes with unique id and return a formated string list of them
+		// mark nodes with unique id by adding a dynamic attribute 
 
-		
 		for(var s = 0 ; s < _nodes.length ; s++){
 			
 			var curn = _nodes[s];
@@ -198,10 +188,12 @@ OO.TreeManager = function(_S){
 		
 	}
 	
+	// create dynamic attribute "smlayerid" and fill it with ID  
+	// RETURN ID
 	
 	this.add_unique_id_to_onode = function(_onode,_override){
 		
-		// RETURN NODE ID
+		
 		
 		var override = _override != undefined ? _override : false;
 			
@@ -210,6 +202,8 @@ OO.TreeManager = function(_S){
 		// if the node already has an ID we jut read it 
 		
 		if(_onode.hasOwnProperty("smlayerid")==false){
+			
+			//adding a dynamic attribute "smlayerid"
 			
 			node.createDynamicAttr(_onode, "STRING", "smlayerid", "smlayerid", false)
 			
@@ -307,19 +301,28 @@ OO.TreeManager = function(_S){
 		
 	}	
 	
+	this.fetch_nodes_by_id_in_linked_nodes = function(_ID_list,_map_module){
+
+
+	}	
 	
-	this.fetch_nodes_by_id = function(_ID_list){
+	this.fetch_nodes_by_id_in_scene = function(_ID_list){
+		
 		
 		var id_to_find = _ID_list;
 		
-		//var scene_nodes = OO.doc.root.nodes;
-		var scene_nodes = this.get_all_nodes();
-
+		var inspected_nodes = []
+		
 		var found_nodes = []
 		
-		for(var n = 0 ; n < scene_nodes.length ; n ++){
+
+
+		inspected_nodes = this.get_all_nodes();
+	
+		
+		for(var n = 0 ; n < inspected_nodes.length ; n ++){
 			
-			var current_node = OO.doc.getNodeByPath(scene_nodes[n]);
+			var current_node = OO.doc.getNodeByPath(inspected_nodes[n]);
 
 			if(current_node.hasOwnProperty("smlayerid")){
 				
@@ -367,7 +370,6 @@ OO.TreeManager = function(_S){
 		}
 		
 		return false;
-		
 		
 	}
 	
@@ -488,6 +490,11 @@ OO.TreeManager = function(_S){
 		return node_list;
 		
 		
+	}
+	
+	this.get_all_child_nodes = function(){
+
+
 	}
 	
 	this.load_trees_from_scene = function(){
@@ -1186,5 +1193,30 @@ OO.TreeManager = function(_S){
 		return result
 		
 	}		 
+	
+	
+	this.create_tree_file = function(_filepath){
+		
+		
+		var file_test = new $.oFile(_filepath)
+		
+		if(file_test.exists == false){
+			
+			logfile = new PermanentFile(_filepath);
+			var stamp = scene.currentScene()+"**************** NEW LOG >>>>"+Date();
+
+			logfile.open(4);                 // open with write only stream
+			logfile.writeLine(stamp);           // write line to file
+			logfile.close(); 						
+			
+		}
+		
+		this.path = _filepath;
+		
+	}
+	
+	
+	
+	
 }
 

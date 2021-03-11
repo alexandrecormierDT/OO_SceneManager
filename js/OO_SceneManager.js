@@ -225,6 +225,16 @@ function show_layer_ID(){
 }
 
 
+function mark_nodes(){
+	
+	var S = new OO.SceneManager();	
+	
+	var selection = OO.doc.selectedNodes;
+	
+	S.trees.add_id_to_nodes(selection)
+	
+}
+
 
 // SETUP SCRIPTS 
 

@@ -105,10 +105,14 @@ OO.Tree = function(_code,_nodes){
 				
 				map_module.attributes[_attribute].setValue(_value);
 				
+				return true;
+				
 			}
 			
 			
 		}
+		
+		return false; 
 		
 	}
 	
