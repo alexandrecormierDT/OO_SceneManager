@@ -12,8 +12,6 @@ OO.PortalManager = function(_S){
 	
 	this.load_from_scene = function(){
 		
-		////MessageLog.trace("LOAD FROM SCENE");
-		
 		// Detect the script module with "portal" attributes among the scene nodes and fetch the linked nodes to make the tree, read the script module attributes 
 		//add a new portal object to the list. 
 		
@@ -61,12 +59,10 @@ OO.PortalManager = function(_S){
 			
 			var linked_group = OO.doc.getNodeByPath(cur_script_module.linkedInNodes);
 			
-
 			
 			//PORTAL PEG
 			
 			var linked_peg = OO.doc.getNodeByPath(linked_group.linkedInNodes);
-			
 			
 			
 			//TREE
@@ -74,17 +70,13 @@ OO.PortalManager = function(_S){
 			
 			var ntree = S.trees.add(code,[]);
 			
-			ntree.add_node(linked_group);
+			ntree.set_key_node("PORTAL_GROUP",linked_group);
 			
-			ntree.add_node(linked_peg);
+			ntree.set_key_node("PORTAL_PEG",linked_peg);
 			
-			ntree.add_node(cur_script_module);
+			ntree.set_key_node("PORTAL_MODULE",cur_script_module);
+
 			
-			ntree.script_module = cur_script_module;
-			
-			ntree.group = linked_group;
-			
-			ntree.peg = linked_peg;	
 			
 			var nportal = new OO.Portal(code,type,tpl_path,psd_path,png_path,ntree);
 			
@@ -107,13 +99,7 @@ OO.PortalManager = function(_S){
 			
 			case 'psd': 
 			
-				////MessageLog.trace("PULL");
-
 				final_path = _portal.psd_path ;
-				
-				////MessageLog.trace(final_path); 
-				
-				////MessageLog.trace(_portal.tree.group);
 				
 				//we import the tpl inside the portal's group
 				var nodes = S.trees.import_psd_in_group(_portal.code,final_path,_portal.tree.group);
@@ -134,29 +120,33 @@ OO.PortalManager = function(_S){
 				
 
 			break;
-			case 'png': 
 			
-				////MessageLog.trace("PULL");
+			case 'png': 
 
 				final_path = _portal.png_path ;
 				
 				MessageLog.trace(final_path); 
 				
-				var png_node = _portal.tree.group.importImage(final_path);
+				var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
+				
+				var png_node = portal_group.importImage(final_path);
 				
 				S.log.add("import png = "+png_node,"process")
 				
 				png_node.name = _portal.code;
 				
-
+				
 				// we arange the psd nodes
 				var bg_tree = S.trees.add(_portal.code,png_node)
 				
-				_portal.tree.group.multiportIn.linkOutNode(png_node,0,0,true);
-
-				png_node.linkOutNode(_portal.tree.group.multiportOut,0,0,true);				
+				portal_group.multiportIn.linkOutNode(png_node,0,0,true);
 				
-				png_node.centerAbove(_portal.tree.group.multiportOut, 0, -100);
+
+				png_node.linkOutNode(portal_group.multiportOut,0,0,true);				
+				
+				png_node.centerAbove(portal_group.multiportOut, 0, -100);
+				
+				
 				
 				var pbackdrop = _portal.get_backdrop();
 				
@@ -183,9 +173,11 @@ OO.PortalManager = function(_S){
 		var all_composites = []
 		var list_type = []
 		
-		for(var n = 0 ; n < _portal.tree.group.nodes.length ; n ++){
+		var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
+		
+		for(var n = 0 ; n < portal_group.nodes.length ; n ++){
 			
-			var curn = _portal.tree.group.nodes[n]; 
+			var curn = portal_group.nodes[n]; 
 			
 			if(curn.type !== "MULTIPORT_IN" && curn.type !== "MULTIPORT_OUT" ){
 				
@@ -232,13 +224,13 @@ OO.PortalManager = function(_S){
 		
 		//until we can delete backdrops.....
 		
-		if(_portal.tree.group.backdrops[0] != undefined){
+		if(portal_group.backdrops[0] != undefined){
 		
-			_portal.tree.group.backdrops[0].x+=2000; 
-			_portal.tree.group.backdrops[0].width=20;
-			_portal.tree.group.backdrops[0].height=20;
-			_portal.tree.group.backdrops[0].title = "deleteme";
-			_portal.tree.group.backdrops[0].body = "deleteme";
+			portal_group.backdrops[0].x+=2000; 
+			portal_group.backdrops[0].width=20;
+			portal_group.backdrops[0].height=20;
+			portal_group.backdrops[0].title = "deleteme";
+			portal_group.backdrops[0].body = "deleteme";
 		
 		}
 		
@@ -250,14 +242,10 @@ OO.PortalManager = function(_S){
 	}
 	
 	this.push= function(type){
-		
-		
-		
+			
 	}  
 	
 	this.clear = function(){
-		
-		
 		
 	}  	
 	

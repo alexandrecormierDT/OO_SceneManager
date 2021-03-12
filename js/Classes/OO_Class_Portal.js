@@ -1,6 +1,6 @@
 // CLASS OO_Portal
 
-////MessageLog.trace("CLASS OO_Portal")
+MessageLog.trace("CLASS OO_Portal")
 
 /*
 	a portal is a tree with a particular setup to import and export tpl
@@ -44,26 +44,81 @@
 OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 
 	// a tree with a peg a group and a script_module
+	
 	this.tree = _tree;
-	
-	this.tpl_path = _tpl_path;
-	
-	this.psd_path = _psd_path;
-	
-	this.png_path = _png_path;
 	
 	this.code = _code; 
 	
 	this.sg_asset_type = _type; 
-	
-	this.id = 0;
 
 	this.content; 
+	
+	
+	
+
+	this.tpl_path = _tpl_path
+
+	this.psd_path = _psd_path;
+
+	this.png_path = _png_path;
 
 	
+	
+	// PATHS
+	
+	
+
 	this.update_path = function(){
 		
+		this.paths[_key] = _path;
 		
+	}
+	
+	this.add_path = function (_key,_path){
+		
+		this.paths[_key] = _path;
+	}
+	
+	this.get_path = function(_key){
+		
+		return this.paths[_key];
+		
+	}
+	
+	this.path_exist = function(_key){
+		
+		var nfile = new $.oFile(this.paths[_key] )
+		
+		return nfile.exists;		
+	
+	}
+	
+	
+	this.paths = [];
+	this.add_path('tpl',_tpl_path)
+	this.add_path('psd',_tpl_path)
+	this.add_path('png',_tpl_path)		
+	
+	// script_module
+	
+	this.get_script_module = function(){
+		
+		var script_module_name = "PORTAL_"+this.get_code();
+		
+		return OO.doc.getNodeByPath(script_module_name);
+		
+	}
+	
+	
+	this.fetch_data_from_script_module = function(){
+		
+		var script_module = this.get_script_module();
+		
+	}
+	
+	this.set_script_module_attributes = function(){
+		
+		var script_module = this.get_script_module();
 		
 	}
 	
@@ -88,7 +143,8 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		}
 		
 		
-	}
+	}	
+
 	
 	this.tpl_exist = function(){
 		
@@ -116,6 +172,15 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 
 		return png.exists;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	this.set_content = function(tree){
 		

@@ -631,6 +631,8 @@ function fit_bg_to_camera(){
 		
 		var current_portal = S.portals.list[p]
 		
+		var portal_peg = current_portal.tree.get_key_node("PORTAL_PEG");
+		
 		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
 		
 		if(current_portal.png_exist()){
@@ -647,13 +649,13 @@ function fit_bg_to_camera(){
 				
 				if(bg_cadre.hasOwnProperty('rect')==true){
 					
-					S.trees.fit_cadre_to_camera(current_portal.tree.peg,bg_cadre);
+					S.trees.fit_cadre_to_camera(portal_peg,bg_cadre);
 					
 				}else{
 					
 					//we compensate the bg secu
 					
-					S.trees.scale_to_camera(current_portal.tree.peg);
+					S.trees.scale_to_camera(portal_peg);
 					
 				}				
 				

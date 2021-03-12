@@ -219,6 +219,14 @@ OO.SceneManager = function(){
 		}
 	}
 	
+	
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	//FETCHING DATA  FROM SHOTGUN
+	
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	this.load_breakdown = function(inputtype){
 		
 		var asset_list=[];
@@ -276,20 +284,12 @@ OO.SceneManager = function(){
 					for (var l = 1 ; l < line_split.length ; l++){
 						
 						var second_split = line_split[l].split('"');
-
-						////MessageLog.trace(second_split[3]);
 						
 						if(second_split[3] == shot){
 							
 							var assets_string = second_split[5];
 							
 							var assets = assets_string.split(',');
-							
-							////MessageLog.trace("----");
-							////MessageLog.trace("CSV ASSETS");
-							////MessageLog.trace("---'");
-							////MessageLog.trace(assets);
-							////MessageLog.trace("---");
 
 							asset_codes = assets;
 							
@@ -308,10 +308,110 @@ OO.SceneManager = function(){
 						
 						asset.sg_asset_type =this.context.get_type_from_asset_code(asset.code);
 						
-						////MessageLog.trace("CSV");
+						asset_list.push(asset);
 						
-						////MessageLog.trace(asset.code);
-						////MessageLog.trace(asset.sg_asset_type);
+					}
+					
+				}else{
+					
+					Log.add(path+" don't exist");
+				}
+				
+				
+				
+				
+				
+			break;			
+			
+			case ('python'):
+			
+				//python sub process call 
+				
+			break;
+			
+		}
+		
+		for(var a in asset_list){
+			
+			var curItem = asset_list[a];
+			
+			
+			
+			////MessageLog.trace("new asset param : ");
+			////MessageLog.trace(Object.getOwnPropertyNames(curItem));
+			
+			var asset_param = asset_list[a];
+			
+			this.assets.add(asset_param);
+			
+		}
+		
+		
+		
+	}
+	
+	// ASSET
+	
+	this.load_asset_breakdown = function(inputtype){
+		
+		var shot_list=[];
+		
+		var asset_code = this.context.get_asset_code();
+		
+		switch(inputtype){
+			
+			case ('json'):
+				
+			break;
+			
+			case ('xml'):
+			
+
+			break;
+			
+			case ('csv'):
+			
+				// SAMPLE LINE : "1656","pr_rocking_chair_billy","Prop","ep102_pl001, ep102_pl002, ep102_pl005, ep102_pl006, ep102_pl007, ep102_pl009, ep102_pl010","billy",
+				
+				var shot_list = [];
+			
+				var path = OO.sg_path+"/csv/Asset.csv";
+				
+				var csv_file = new $.oFile(path);
+				
+				if(csv_file.exists){
+					
+					var csv_string = new $.oFile(path).read();
+					
+					var line_split = csv_string.split("\n");
+					
+					
+					for (var l = 1 ; l < line_split.length ; l++){
+						
+						var second_split = line_split[l].split('"');
+						
+						if(second_split[3] == shot){
+							
+							var assets_string = second_split[5];
+							
+							var assets = assets_string.split(',');
+
+							asset_codes = assets;
+							
+							break;
+						}
+						
+					}
+					
+					for (var a = 0 ; a < asset_codes.length ; a++){
+						
+						var curac = asset_codes[a]; 
+						
+						var asset = {}
+						
+						asset.code = this.remove_spaces(curac);
+						
+						asset.sg_asset_type =this.context.get_type_from_asset_code(asset.code);
 						
 						asset_list.push(asset);
 						
@@ -361,6 +461,12 @@ OO.SceneManager = function(){
 		
 	}
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	
+	// READING XSTAGES SVG AND PSD
+	
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	
 	
 	this.load_xstage= function(){
 		
@@ -424,7 +530,13 @@ OO.SceneManager = function(){
 
 	}
 	
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 	
+	// P O R T A L S 
+	
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	
+		
 	
 	
 // there is a problem with characters and bg portals. some gap in the list , bg data end up in character 1

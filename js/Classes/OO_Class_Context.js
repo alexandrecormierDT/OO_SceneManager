@@ -231,6 +231,13 @@ OO.Context = function (_type){
 		
 	}
 	
+	this.get_asset_code = function(){
+		
+		this.set_from_scene_path();
+		
+		return this.asset_code;
+		
+	}	
 	
 	this.get_asset_png_dir_path = function(asset){
 		
@@ -260,6 +267,9 @@ OO.Context = function (_type){
 		return dir_path;		
 
 	}
+	
+	
+	
 	this.get_asset_svg_dir_path = function(asset){
 		
 		dir_path = "";
