@@ -420,10 +420,6 @@ OO.SceneManager = function(){
 					Log.add(path+" don't exist");
 				}
 				
-				
-				
-				
-				
 			break;			
 			
 			case ('python'):

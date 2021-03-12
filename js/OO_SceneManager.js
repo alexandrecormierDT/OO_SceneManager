@@ -494,7 +494,7 @@ function pull_selected_portals(_data_type){
 									
 									var cadre = S.load_cadre(full_svg_path);
 									
-									if( cadre.bg != undefined){
+									if( cadre.bg != undefined && current_portal.png_scaled == false){
 										
 										MessageLog.trace("PNG HEIGHT");
 						
@@ -698,7 +698,7 @@ function pull_(_asset_type){
 					// only for png , the image is scaled automaticly on import
 					// to compensate this we put the image back to its original pixel size with the following code :
 					
-					if( bg_cadre.bg != undefined){
+					if( bg_cadre.bg != undefined && current_portal.png_scaled == false){
 						
 						MessageLog.trace("BG HEIGHT");
 						MessageLog.trace(bg_cadre.bg.height);

@@ -159,6 +159,29 @@ OO.PortalManager = function(_S){
 					
 					
 					
+					
+					var xli_resolution =  _portal.get_xli_of_png()
+					
+					if(xli_resolution != false){
+						
+						var final_sy = xli_resolution.height/1080;
+						
+						var final_sx = final_sy;
+						
+						//INJECT SX
+						png_node.attributes.scale.x.setValue(final_sx);
+						
+						//INJECT SY
+						png_node.attributes.scale.y.setValue(final_sy);	
+						
+						_portal.png_scaled = true;
+						
+					}
+					
+					
+					
+					
+		
 					var pbackdrop = _portal.get_backdrop();
 					
 					pbackdrop.color = new $.oColorValue("#5097D8ff");
@@ -179,6 +202,12 @@ OO.PortalManager = function(_S){
 			
 		}
 
+	}
+	
+	this.get_XLI_infos = function(_xli_path){
+		
+		
+		
 	}
 	
 	// should be handled by the tree class
@@ -296,7 +325,6 @@ OO.PortalManager = function(_S){
 				cn.attributes.tpl_path.setValue(tpl_path);
 				cn.attributes.psd_path.setValue(psd_path);
 				cn.attributes.png_path.setValue(png_path);
-				
 				cn.attributes.code.setValue(_code);
 				cn.attributes.sg_asset_type.setValue(_type);
 				

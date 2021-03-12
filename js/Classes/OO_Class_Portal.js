@@ -53,7 +53,7 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 
 	this.content; 
 	
-	
+	var paths; 
 	
 
 	this.tpl_path = _tpl_path
@@ -62,39 +62,41 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 
 	this.png_path = _png_path;
 
+
+	this.png_scaled = false;
 	
 	
 	// PATHS
-	
-	
 
-	this.update_path = function(){
+	this.update_path = function(_key,_path){
 		
-		this.paths[_key] = _path;
+		paths[_key] = _path;
 		
 	}
 	
 	this.add_path = function (_key,_path){
 		
-		this.paths[_key] = _path;
+		paths[_key] = _path;
 	}
 	
 	this.get_path = function(_key){
 		
-		return this.paths[_key];
+		return paths[_key];
 		
 	}
 	
 	this.path_exist = function(_key){
 		
-		var nfile = new $.oFile(this.paths[_key] )
+		var nfile = new $.oFile(paths[_key] )
 		
 		return nfile.exists;		
 	
 	}
 	
+
 	
-	this.paths = [];
+	
+	var paths = [];
 	this.add_path('tpl',_tpl_path)
 	this.add_path('psd',_psd_path)
 	this.add_path('png',_png_path)		
@@ -112,13 +114,16 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 	
 	this.fetch_data_from_script_module = function(){
 		
-		var script_module = this.get_script_module();
+		
 		
 	}
 	
-	this.set_script_module_attributes = function(){
+	this.set_script_module_attributes = function(_attr,_value){
 		
 		var script_module = this.get_script_module();
+		
+		script_module.attributes[_attr].setValue(_value);
+		
 		
 	}
 	
@@ -143,8 +148,65 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		}
 		
 		
+		
 	}	
+	
+	this.get_xli_of_png  = function(){
+		
+		
+		//TRY TO READ THIS : 
+		
+		/*
+				
+		<!DOCTYPE XLI>
+		<XLI>
+		 <LayoutPosition scale="3.000005722045898" translationZFields="0" translationYFields="-8.355551434330707" translationXFields="-10.53332813795944"/>
+		 <ResolutionInfo requiredResolutionX="5760" requiredResolutionY="3240" scaleToRequiredResolution="1" resolutionX="5760" resolutionY="3240"/>
+		</XLI>
+			
+		
+		SPLIT " : 
+		
+		 <ResolutionInfo requiredResolutionX=,5760, requiredResolutionY=,3240, scaleToRequiredResolution=,1, resolutionX=,5760, resolutionY=,3240,/>
+		   0                                   1           2                3                4            5      6         7        8         9
+		*/
+		
+		if(this.path_exist('png')){
 
+			
+			var nfile = new $.oFile(paths['png']+".xli")
+			
+			if(nfile.exists){
+				
+				var xli_content = nfile.read()
+				
+				var resolution = {
+					width: parseFloat(xli_content.split('\n')[3].split('"')[1]),
+					height:  parseFloat(xli_content.split('\n')[3].split('"')[3]),
+				}
+				
+				MessageLog.trace("width");
+				MessageLog.trace(resolution.width);
+				MessageLog.trace("height");
+				MessageLog.trace(resolution.height);
+				
+				return resolution;
+				
+			}
+			
+		}else{
+			
+			return false; 
+			
+		}
+		
+		
+	}
+	
+	
+	
+
+	//obsolete
 	
 	this.tpl_exist = function(){
 		
