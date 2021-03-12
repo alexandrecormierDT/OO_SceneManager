@@ -96,8 +96,8 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 	
 	this.paths = [];
 	this.add_path('tpl',_tpl_path)
-	this.add_path('psd',_tpl_path)
-	this.add_path('png',_tpl_path)		
+	this.add_path('psd',_psd_path)
+	this.add_path('png',_png_path)		
 	
 	// script_module
 	

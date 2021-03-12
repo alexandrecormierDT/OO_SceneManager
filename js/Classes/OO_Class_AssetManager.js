@@ -33,6 +33,8 @@ OO.AssetManager = function(_S){
 			
 		}
 		
+		return false;
+		
 	}
 
 	

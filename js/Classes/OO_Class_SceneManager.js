@@ -15,8 +15,6 @@ OO.SceneManager = function(){
 	this.setups = new OO.SetupManager(this);
 	this.log = new OO.Log(this);
 	
-
-	
 	this.init = function(){
 		
 		
@@ -26,11 +24,11 @@ OO.SceneManager = function(){
 	this.update_render_path = function(writer_node,render_path) {
 		
 			
-			node.setTextAttr(writer_node, "EXPORT_TO_MOVIE",1,"Output Movie")
-			node.setTextAttr(writer_node, "MOVIE_PATH",1,render_path);
-			
-			this.log.add("setting export video to "+render_path,"file");
-			
+		node.setTextAttr(writer_node, "EXPORT_TO_MOVIE",1,"Output Movie")
+		node.setTextAttr(writer_node, "MOVIE_PATH",1,render_path);
+
+		this.log.add("setting export video to "+render_path,"file");
+
 			
 	}
 	
@@ -225,7 +223,7 @@ OO.SceneManager = function(){
 	//FETCHING DATA  FROM SHOTGUN
 	
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 	
 	this.load_breakdown = function(inputtype){
 		

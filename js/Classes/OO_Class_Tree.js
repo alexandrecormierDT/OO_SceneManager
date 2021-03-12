@@ -10,7 +10,9 @@ OO.Tree = function(_code,_nodes){
 	
 	// META 
 	
-	var code = _code
+	var tree_code = _code
+	
+	var tree_id = 0;
 	
 	
 	// NODES
@@ -30,22 +32,16 @@ OO.Tree = function(_code,_nodes){
 	this.bottom_node; 
 	
 	this.backdrop;
-	
-	
-	
-	this.code = _code; 
 
-	this.tree_id = 0;
 	
 	this.map_module = false;
-	
 	
 	
 	// META DATS 
 	
 	this.get_code = function(){
 		
-		return this.code;
+		tree_code;
 		
 	}
 	

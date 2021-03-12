@@ -757,27 +757,23 @@ OO.TreeManager = function(_S){
 	//
 	//
 
-	this.arange_psd_node = function(t){
+	this.arange_psd_node = function(_tree){
 		
 		////MessageLog.trace("ARRANGE PSD NODES");
 		
-		var reads = t.reads
+		var reads = _tree.get_reads();
 		
-		var group = t.get_parent_group();
+		var group = _tree.get_parent_group();
 		
 		var width = this.align_nodes(reads);
 		
 		var top_peg = group.addNode("PEG",t.code+"-P")
 		
-		t.set_top_peg(top_peg);
+		_tree.set_key_node("top_peg",top_peg);
 		
 		var final_comp = group.addNode("COMPOSITE",t.code+"-C");
 		
-		t.set_final_comp(final_comp); 
-		
-		t.add_node(top_peg);
-		
-		t.add_node(final_comp);
+		_tree.set_key_node("final_comp",final_comp); 
 		
 		//linkInNode(nodeToLink, ownPort, destPort, createPorts){bool}
 

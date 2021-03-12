@@ -15,19 +15,33 @@ OO.PortalManager = function(_S){
 		// Detect the script module with "portal" attributes among the scene nodes and fetch the linked nodes to make the tree, read the script module attributes 
 		//add a new portal object to the list. 
 		
+		// init list
+
 		var scene_nodes = OO.doc.root.nodes;
+		
+		this.load_from_node_list(scene_nodes)
+		
+
+	}
+	
+	this.load_from_node_list= function(_node_list){
+		
+		// init list
+		
+		this.list = [];
+		
+		// Detect the script module with "portal" attributes among the selected nodes and fetch the linked nodes to make the tree, read the script module attributes 
+		//add a new portal object to the list. 
 		
 		var scene_PSM = []
 		
-		for(var n = 0 ; n < scene_nodes.length ; n++){
+		for(var n = 0 ; n < _node_list.length ; n++){
 			
-			var cnode = scene_nodes[n];
+			var cnode = OO.doc.getNodeByPath(_node_list[n]);
 			
 			if(cnode.type == "SCRIPT_MODULE"){
 				
 				if(cnode.attributes.hasOwnProperty('portal') == true){
-					
-					//PORTAL SCRIPT MODULE
 					
 					scene_PSM.push(cnode);
 					
@@ -43,6 +57,7 @@ OO.PortalManager = function(_S){
 			var cur_script_module = scene_PSM[sm];
 		
 			// CODE,TYPE AND PATHS
+			
 			
 			var tpl_path = OO.filter_string(cur_script_module.node_map);
 			
@@ -88,80 +103,82 @@ OO.PortalManager = function(_S){
 		}
 		
 
-	}
+	}	
 	
 	
-	this.pull = function(_portal,_type){
+	this.pull = function(_portal,_data_type){
 		
-		////MessageLog.trace("PULL PORTAL");
-		
-		switch (_type){
+		if(_portal.path_exist(_data_type)){
 			
-			case 'psd': 
-			
-				final_path = _portal.psd_path ;
+			switch (_data_type){
 				
-				//we import the tpl inside the portal's group
-				var nodes = S.trees.import_psd_in_group(_portal.code,final_path,_portal.tree.group);
+				case 'psd': 
 				
-				// we arange the psd nodes
-				var bg_tree = S.trees.add(_portal.code,nodes)
+					final_path = _portal.psd_path ;
+					
+					//we import the tpl inside the portal's group
+					var nodes = S.trees.import_psd_in_group(_portal.code,final_path,_portal.tree.group);
+					
+					// we arange the psd nodes
+					var bg_tree = S.trees.add(_portal.code,nodes)
+					
+					//bg_tree.set_parent_group(_portal.tree.group);
+					
+					S.trees.arange_psd_node(bg_tree);
 				
-				//bg_tree.set_parent_group(_portal.tree.group);
-				
-				S.trees.arange_psd_node(bg_tree);
-			
-				_portal.set_content(bg_tree);
-				
-				var pbackdrop = _portal.get_backdrop();
-				
-				pbackdrop.color = new $.oColorValue("#5097D8ff");
-				
-				
+					_portal.set_content(bg_tree);
+					
+					var pbackdrop = _portal.get_backdrop();
+					
+					pbackdrop.color = new $.oColorValue("#5097D8ff");
+					
+					
 
-			break;
-			
-			case 'png': 
+				break;
+				
+				case 'png': 
 
-				final_path = _portal.png_path ;
-				
-				MessageLog.trace(final_path); 
-				
-				var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
-				
-				var png_node = portal_group.importImage(final_path);
-				
-				S.log.add("import png = "+png_node,"process")
-				
-				png_node.name = _portal.code;
-				
-				
-				// we arange the psd nodes
-				var bg_tree = S.trees.add(_portal.code,png_node)
-				
-				portal_group.multiportIn.linkOutNode(png_node,0,0,true);
-				
+					final_path = _portal.png_path ;
+					
+					MessageLog.trace(final_path); 
+					
+					var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
+					
+					var png_node = portal_group.importImage(final_path);
+					
+					S.log.add("import png = "+png_node,"process")
+					
+					png_node.name = _portal.code;
+					
+					
+					portal_group.multiportIn.linkOutNode(png_node,0,0,true);
+					
+					png_node.linkOutNode(portal_group.multiportOut,0,0,true);				
+					
+					png_node.centerAbove(portal_group.multiportOut, 0, -100);
+					
+					
+					
+					var pbackdrop = _portal.get_backdrop();
+					
+					pbackdrop.color = new $.oColorValue("#5097D8ff");
+					
+					return png_node;
 
-				png_node.linkOutNode(portal_group.multiportOut,0,0,true);				
+				break;			
 				
-				png_node.centerAbove(portal_group.multiportOut, 0, -100);
+				case 'tpl':
 				
 				
-				
-				var pbackdrop = _portal.get_backdrop();
-				
-				pbackdrop.color = new $.oColorValue("#5097D8ff");
-				
-				return png_node;
-
-			break;			
+				break;
+			}			
 			
-			case 'tpl':
+		}else{
 			
+			S.log.add("data not found "+_portal.get_path(_data_type),"error");
 			
-			break;
 		}
-		
+
 	}
 	
 	// should be handled by the tree class
@@ -253,7 +270,13 @@ OO.PortalManager = function(_S){
 	// CREATING THE PORTAL TREE
 	
 	
-	this.add = function(_code,_type,tpl_path,psd_path,png_path){ 
+	this.add = function(_code,_type,_tpl_path,_psd_path,_png_path){ 
+	
+		var code = _code != undefined ? _code : "empty"; 
+		var type = _type != undefined ? _code : ""; 
+		var tpl_path = _tpl_path != undefined ? _tpl_path : ""; 
+		var psd_path = _psd_path != undefined ? _psd_path : ""; 
+		var png_path = _png_path != undefined ? _png_path : ""; 
 	
 		////MessageLog.trace("Portal ADD");
 		
@@ -262,7 +285,7 @@ OO.PortalManager = function(_S){
 		var ntree = S.trees.add(_code,pnodes);
 		
 		//OO.Portal(_name,tpl_path,psd_path,_tree)
-		var nportal = new OO.Portal(_code,_type,tpl_path,psd_path,png_path,ntree);
+		var nportal = new OO.Portal(_code,type,tpl_path,psd_path,png_path,ntree);
 		
 		for (var n in pnodes){
 		
@@ -276,24 +299,29 @@ OO.PortalManager = function(_S){
 				
 				cn.attributes.code.setValue(_code);
 				cn.attributes.sg_asset_type.setValue(_type);
-				nportal.tree.script_module = cn; 
 				
 				cn.name = "PORTAL_"+_code
+				
+				nportal.tree.set_key_node("PORTAL_MODULE",cn); 
+				
 				 
 			}
 			
 			if(cn.type == "GROUP"){
 				
 				
-				nportal.tree.group = cn; 
 				cn.name = _code;
+				
+				nportal.tree.set_key_node("PORTAL_GROUP",cn); 
 				
 			}	
 			
 			if(cn.type == "PEG"){
 				
-				nportal.tree.peg = cn; 
+				
 				cn.name = "LT_"+_code;
+				
+				nportal.tree.set_key_node("PORTAL_PEG",cn); 
 			}			
 			
 		} 

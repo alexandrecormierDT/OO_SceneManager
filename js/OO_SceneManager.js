@@ -422,6 +422,127 @@ function load_shot_setup(){
 
 //============================================================================================================================================
 
+
+function create_empty_portal(){
+	
+	var S = new OO.SceneManager();	
+	
+	var nportal = S.portals.add("empty");
+	
+	nportal.tree.ungroup();
+				
+} 
+
+function empty_selected_portals(){
+	
+	var S = new OO.SceneManager();	
+	
+	S.portals.load_from_node_list(OO.doc.selectedNodes);
+
+	for(var p = 0 ; p < S.portals.list.length; p++){
+	
+		var current_portal = S.portals.list[p]
+		
+		S.portals.empty(current_portal);
+
+		
+	}
+
+}
+
+
+function pull_selected_portals(_data_type){
+	
+	////MessageLog.trace("PULL PSD FUNCTION");
+	
+	var S = new OO.SceneManager();	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_portal.html");
+	
+	S.portals.load_from_node_list(OO.doc.selectedNodes);
+	
+	S.context.set_context_type('Shotgun');	
+	
+	S.load_breakdown('csv');
+
+	for(var p = 0 ; p < S.portals.list.length; p++){
+		
+			var current_portal = S.portals.list[p]
+			
+			//we empty the portal first 
+			
+			S.portals.empty(current_portal);
+			
+			var pulled_nodes = S.portals.pull(current_portal,_data_type);	
+			
+			if(pulled_nodes != false){
+				
+				switch (_data_type){
+					
+						case "png":
+						
+								// must find a way to get the size of the png in a different manner. without svg
+						
+								var linked_asset = S.assets.get_asset_by_code(current_portal.code);
+								
+								if(linked_asset != false){
+								
+									var full_svg_path = S.context.get_svg_path(linked_asset);
+									
+									// only for png , the image is scaled automaticly on import
+									// to compensate this we put the image back to its original pixel size with the following code :
+									
+									var cadre = S.load_cadre(full_svg_path);
+									
+									if( cadre.bg != undefined){
+										
+										MessageLog.trace("PNG HEIGHT");
+						
+										MessageLog.trace(cadre.bg.height);
+										
+										var final_sy = cadre.bg.height/1080;
+										
+										var final_sx = final_sy;
+										
+										//INJECT SX
+										pulled_nodes.attributes.scale.x.setValue(final_sx);
+										
+										//INJECT SY
+										pulled_nodes.attributes.scale.y.setValue(final_sy);				
+									
+									}									
+								
+								}
+						
+
+										
+						
+						break; 
+						
+						case "psd": 
+						
+						
+						break; 
+						
+						case "tpl": 
+						
+						
+						break; 				
+					
+				}
+				
+				
+			
+			}
+			
+	}	
+
+	S.log.save();
+	
+} 
+
+// ASSET PORTALS 
+
 function create_portals(_type){
 	
 	var S = new OO.SceneManager();	
@@ -482,7 +603,7 @@ function create_portals(_type){
 }
 
 
-function empty_portals(_type){
+function empty_portals(_asset_type){
 	
 	var S = new OO.SceneManager();	
 	
@@ -500,7 +621,7 @@ function empty_portals(_type){
 		
 		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
 		
-		if(linked_asset.get_type()== _type){
+		if(linked_asset.get_type()== _asset_type){
 			
 			S.portals.empty(current_portal);
 			
@@ -509,8 +630,6 @@ function empty_portals(_type){
 	}
 
 }
-
-
 
 
 function pull_(_asset_type){
@@ -541,65 +660,69 @@ function pull_(_asset_type){
 		
 		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
 		
-		//checking asset type
-		if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
+		if(linked_asset != false){
 			
-			//TODO : switch per asset type
-			
-			//we empty the portal first 
-			
-			S.portals.empty(current_portal);
-			
-			S.log.add("pulling png of - "+current_portal.code,"process");
-			
-			if(current_portal.png_exist()){
+			//checking asset type
+			if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
+				
+				//TODO : switch per asset type
+				
+				//we empty the portal first 
+				
+				S.portals.empty(current_portal);
+				
+				S.log.add("pulling png of - "+current_portal.code,"process");
+				
+				if(current_portal.png_exist()){
 
-				var bg_node = S.portals.pull(current_portal,'png');		
-		
-				var full_svg_path = S.context.get_svg_path(linked_asset);
-				
-				var full_psd_path = S.context.get_psd_path(linked_asset);
-				
-				var full_png_path = S.context.get_png_path(linked_asset);
-				
-				MessageLog.trace("BG_PATH : ");
-				
-				MessageLog.trace(full_psd_path);
-				
-				MessageLog.trace(full_svg_path);
-				
-				MessageLog.trace(full_png_path);
-				
-				// if the bg has cadres that match the shot name. 
-				
-				var bg_cadre = S.load_cadre(full_svg_path);
-				
-				// only for png , the image is scaled automaticly on import
-				// to compensate this we put the image back to its original pixel size with the following code :
-				
-				if( bg_cadre.bg != undefined){
-					
-					MessageLog.trace("BG HEIGHT");
-					MessageLog.trace(bg_cadre.bg.height);
-					
-					var final_sy = bg_cadre.bg.height/1080;
-					var final_sx = final_sy;
-					
-					//INJECT SX
-					bg_node.attributes.scale.x.setValue(final_sx);
-					
-					//INJECT SY
-					bg_node.attributes.scale.y.setValue(final_sy);				
-				
-				}
-
-		
-			}else{
-				
-				S.log.add("png not found - "+S.context.get_png_path(linked_asset),"error");
-				
-			}			
+					var bg_node = S.portals.pull(current_portal,'png');		
 			
+					var full_svg_path = S.context.get_svg_path(linked_asset);
+					
+					var full_psd_path = S.context.get_psd_path(linked_asset);
+					
+					var full_png_path = S.context.get_png_path(linked_asset);
+					
+					MessageLog.trace("BG_PATH : ");
+					
+					MessageLog.trace(full_psd_path);
+					
+					MessageLog.trace(full_svg_path);
+					
+					MessageLog.trace(full_png_path);
+					
+					// if the bg has cadres that match the shot name. 
+					
+					var bg_cadre = S.load_cadre(full_svg_path);
+					
+					// only for png , the image is scaled automaticly on import
+					// to compensate this we put the image back to its original pixel size with the following code :
+					
+					if( bg_cadre.bg != undefined){
+						
+						MessageLog.trace("BG HEIGHT");
+						MessageLog.trace(bg_cadre.bg.height);
+						
+						var final_sy = bg_cadre.bg.height/1080;
+						var final_sx = final_sy;
+						
+						//INJECT SX
+						bg_node.attributes.scale.x.setValue(final_sx);
+						
+						//INJECT SY
+						bg_node.attributes.scale.y.setValue(final_sy);				
+					
+					}
+
+			
+				}else{
+					
+					S.log.add("png not found - "+S.context.get_png_path(linked_asset),"error");
+					
+				}			
+				
+			}
+		
 		}
 		
 
