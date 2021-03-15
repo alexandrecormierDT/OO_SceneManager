@@ -224,6 +224,7 @@ OO.SceneManager = function(){
 	
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	// SHOT SCENE
 	
 	this.load_breakdown = function(inputtype){
 		
@@ -348,7 +349,21 @@ OO.SceneManager = function(){
 		
 	}
 	
-	// ASSET
+	// ASSET SCENE
+	
+	this.load_current_asset = function(){
+		
+		this.context.set_from_scene_path();
+		
+		var asset_param = {
+			code : this.context.code, 
+			sg_asset_type: this.context.sg_asset_type, 
+			
+		};
+			
+		this.assets.add(asset_param);		
+		
+	}
 	
 	this.load_asset_breakdown = function(inputtype){
 		
@@ -534,6 +549,15 @@ OO.SceneManager = function(){
 	
 	
 // there is a problem with characters and bg portals. some gap in the list , bg data end up in character 1
+
+	this.create_asset_portal = function(_asset_code){
+		
+		
+		
+		
+		
+	}
+	
 
 	this.create_asset_portals = function(_type,_point,_composite){
 

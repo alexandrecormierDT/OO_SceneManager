@@ -7,6 +7,9 @@ OO.Asset = function(_param){
 	
 	var attributes = {}
 	
+	//code
+	//sg_asset_type
+	
 	var cameras = [];
 		
 	for (var p in _param){

@@ -138,6 +138,36 @@ OO.ViewManager = function(_S){
 		
 	}
 	
+	this.export_currentframe_png_to = function(_path,_frameScale){
+
+		
+			//openHamrony method of oScene : exportLayoutImage(path, includedNodes, exportFrame,exportCameraFrame,exportBackground,frameScale)
+			
+			OO.doc.exportLayoutImage(_path,[],frame.current(),false,false,_frameScale);
+			this.write_resolution_txt(_path,_frameScale);
+
+
+	}	
+	
+	this.write_resolution_txt = function(_path,_frameScale){
+		
+		var with_ratio = _frameScale*(4/3)
+		
+		var txt_path = _path+".txt"
+		
+		var reso_file = new $.oFile(txt_path);
+		
+		var width = Math.floor(1920*with_ratio );
+		
+		var height =  Math.floor(1080*with_ratio );
+		
+		var content = width+"\n"+height;
+
+		reso_file.write(content);           // write line to file
+		
+	}
+
+
 
 	this.get_views = function(){
 		

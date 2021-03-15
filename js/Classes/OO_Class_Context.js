@@ -15,7 +15,7 @@ OO.Context = function (_type){
 	var PNG_PATH = "";
 	var SVG_PATH = "";
 	var VIDEO_EXPORT_PATH = "";
-	
+
 	
 	this.project ="";
 	this.entity = ""	
@@ -88,10 +88,20 @@ OO.Context = function (_type){
 		//P:,projects,billy,assets,Character,default,ch_mytestchar,work,a-cormier,design_main,toonboom,scenes
 		// 0  1          2      3      4        5      6             7   8             9           10   11
 		
+		
+		// P:,projects,billy,assets,Character,default,ch_mytestchar,work,a-cormier,design_main,toonboom,scenes
+		
 		var scene_path = this.breakdown_scene_path();
 		
 		this.project = scene_path[2];
 		this.entity = scene_path[3];
+		
+		var data = {};
+		data.project = scene_path[2];
+		data.entity = scene_path[3];		
+		
+		MessageLog.trace(scene_path);
+		MessageLog.trace(scene_path[4]);
 		
 		switch (this.entity){
 			
@@ -103,7 +113,15 @@ OO.Context = function (_type){
 				this.user = scene_path[8];				
 				this.task = scene_path[9];				
 				this.software = scene_path[10];				
-				this.tb_file_type = scene_path[11];					
+				this.tb_file_type = scene_path[11];			
+
+				data.sg_asset_type = scene_path[4];
+				data.code = scene_path[6];
+				data.version = scene_path[7];
+				data.user = scene_path[8];				
+				data.task = scene_path[9];				
+				data.software = scene_path[10];				
+				data.tb_file_type = scene_path[11];					
 				
 			break; 
 			
@@ -117,14 +135,29 @@ OO.Context = function (_type){
 				this.software = scene_path[10];				
 				this.tb_file_type = scene_path[11];				
 			
+				data.division = scene_path[4];
+				data.episode = scene_path[6];
+				data.version = scene_path[7];
+				data.user = scene_path[8];				
+				data.task = scene_path[9];				
+				data.software = scene_path[10];				
+				data.tb_file_type = scene_path[11];		
 				
 			break;
 		}
+		
+		return data; 
 
 	}
 	
 	
-	
+	this.get_library_asset_png_path = function(_asset_code,_asset_type){
+		
+		var path =  LIBRARY_PATH+"/assets/"+_asset_type+"/"+_asset_code+"/png/"+_asset_code+".png";
+		
+		return path;
+		
+	}
 	
 	this.get_type_from_asset_code = function(asset_code){
 		
@@ -408,31 +441,50 @@ OO.Context = function (_type){
 	}
 	
 	
-	this.get_png_path = function(asset){
+	this.get_png_path = function(_asset){
 		
-		var dir_path = this.get_asset_png_dir_path(asset);
+		var dir_path = this.get_asset_png_dir_path(_asset);
 		
-		var file_path = dir_path+asset.get_last_publish()+".png";
+		var file_path = ""
 		
-		if(this.file_exist(file_path)){
+		var asset_type = _asset.get_type();
+		var asset_code = _asset.get_code();
+		
+		
+		switch (asset_type){
 			
-			return file_path
-			
-		}else{
-			
-			//maybe the psd starts with lt instead of bg ? 
-			
-			file_path = dir_path+this.get_lt_path(asset)+".png";
-			
-			//if(this.file_exist(file_path)){
+			case ( "Character" ) : 
+			case ( "Prop" ) : 
+			case ( "Fx" ) : 
 				
-				return file_path;
+				var library_asset_path =this.get_library_asset_png_path(asset_code,asset_type);		
 				
-			//}
-			 
+				file_path = library_asset_path ;
+				
+			break; 
+			
+			case ("bg"): 
+			
+				file_path = dir_path+_asset.get_last_publish()+".png";
+			
+				if(this.file_exist(file_path)){
+
+					
+				}else{
+					
+					//maybe the psd starts with lt instead of bg ? 
+					
+					file_path = dir_path+this.get_lt_path(_asset)+".png";
+					 
+				}			
+				
+			break; 
+
 		}
+	
+
 		
-		return "";
+		return file_path;
 		
 		
 	}	
@@ -561,11 +613,11 @@ OO.Context = function (_type){
 			
 			if(nfile.exists){
 				
-				var xli_content = nfile.read()
+				var txti_content = nfile.read()
 				
 				var resolution = {
-					width: parseFloat(xli_content.split('\n')[3].split('"')[1]),
-					height:  parseFloat(xli_content.split('\n')[3].split('"')[3]),
+					width: parseFloat(txti_content.split('\n')[3].split('"')[1]),
+					height:  parseFloat(txti_content.split('\n')[3].split('"')[3]),
 				}
 				
 				MessageLog.trace("width");
@@ -587,6 +639,55 @@ OO.Context = function (_type){
 			
 		}
 		
+		
+	}
+	
+	
+	this.get_txt_of_png = function(_pngpath){
+		
+		//CUSTOM TXT FORMAT CREATED BY THE VIEWS CLASS  : 
+		
+		/*
+				
+		*/
+		
+		var pngfile = new $.oFile(_pngpath)
+		
+		if(pngfile.exists){
+
+			var nfile = new $.oFile(_pngpath+".txt")
+			
+			MessageLog.trace(nfile);
+			
+			if(nfile.exists){
+				
+				var txt_content = nfile.read()
+				MessageLog.trace(txt_content);
+				MessageLog.trace(txt_content.split('\n'));
+				
+				var resolution = {
+					width: parseFloat(txt_content.split('\n')[0]),
+					height: parseFloat(txt_content.split('\n')[1])
+				}
+				
+				MessageLog.trace("width");
+				MessageLog.trace(resolution.width);
+				MessageLog.trace("height");
+				MessageLog.trace(resolution.height);
+				
+				return resolution;
+				
+			}else{
+				
+				return false; 
+				
+			}
+			
+		}else{
+			
+			return false; 
+			
+		}		
 		
 	}
 		

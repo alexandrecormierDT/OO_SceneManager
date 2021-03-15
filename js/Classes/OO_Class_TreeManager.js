@@ -764,7 +764,7 @@ OO.TreeManager = function(_S){
 		
 		if(pngfile.exists){
 
-			var png_node = _group.importImage(_pngpath);
+			var png_node = OO.doc.getNodeByPath(_group.importImage(_pngpath));
 			
 			S.log.add("import png = "+png_node,"process")
 			
@@ -772,11 +772,19 @@ OO.TreeManager = function(_S){
 			
 			var xli_resolution =  S.context.get_xli_of_png(_pngpath)
 			
-			if(xli_resolution != false){
+			var txt_resolution  = S.context.get_txt_of_png(_pngpath)
+			
+			//var resoltuion = this.get_image_resolution(_pngpath);
+			
+			
+			if(txt_resolution != false){
 				
 				// we scale back the png to the pixel size 
 				
-				var final_sy = xli_resolution.height/1080;
+				var final_sy = txt_resolution.height/1080;
+				
+				MessageLog.trace(final_sy);
+				MessageLog.trace(final_sy);
 				
 				var final_sx = final_sy;
 				
@@ -797,6 +805,22 @@ OO.TreeManager = function(_S){
 			
 		}
 							
+	}
+	
+	// TO DO ! 
+	
+	this.get_image_resolution = function(_imagepath){
+		
+		const img = new Image();
+		
+		img.onload = function() {
+			
+			MessageLog.trace(this.width + 'x' + this.height);
+		  
+		}
+		
+		img.src = _imagepath;
+		
 	}
 	
 
@@ -1001,9 +1025,9 @@ OO.TreeManager = function(_S){
 			
 			// if the camera has no key the coords are probably at 0 but it's not 100% sure.. need to check this. 
 			
-			var cam_peg_x = 0
-			var cam_peg_y = 0
-			var cam_peg_z = 0	
+			var cam_peg_x = 0;
+			var cam_peg_y = 0;
+			var cam_peg_z = 0;
 			
 			if(next_3d_key != false){
 				
