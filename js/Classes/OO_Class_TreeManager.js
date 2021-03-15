@@ -756,6 +756,49 @@ OO.TreeManager = function(_S){
 	//
 	//
 	//
+	
+	
+	this.import_png_in_group = function(_pngpath,_group){
+
+		var pngfile = new $.oFile(_pngpath)
+		
+		if(pngfile.exists){
+
+			var png_node = _group.importImage(_pngpath);
+			
+			S.log.add("import png = "+png_node,"process")
+			
+			// if the png has xli data
+			
+			var xli_resolution =  S.context.get_xli_of_png(_pngpath)
+			
+			if(xli_resolution != false){
+				
+				// we scale back the png to the pixel size 
+				
+				var final_sy = xli_resolution.height/1080;
+				
+				var final_sx = final_sy;
+				
+				//INJECT SX
+				png_node.attributes.scale.x.setValue(final_sx);
+				
+				//INJECT SY
+				png_node.attributes.scale.y.setValue(final_sy);	
+				
+				
+			}
+			
+			return png_node;
+			
+		}else{
+		
+			return false;
+			
+		}
+							
+	}
+	
 
 	this.arange_psd_node = function(_tree){
 		
@@ -956,11 +999,20 @@ OO.TreeManager = function(_S){
 			
 			var next_3d_key = get_next_3Dkey(column3D);
 			
+			// if the camera has no key the coords are probably at 0 but it's not 100% sure.. need to check this. 
 			
-			var cam_peg_x = toonboom_coords_to_float(next_3d_key[0]);
-			var cam_peg_y = toonboom_coords_to_float(next_3d_key[1]);
-			var cam_peg_z = toonboom_coords_to_float(next_3d_key[2]);		
+			var cam_peg_x = 0
+			var cam_peg_y = 0
+			var cam_peg_z = 0	
 			
+			if(next_3d_key != false){
+				
+				cam_peg_x = toonboom_coords_to_float(next_3d_key[0]);
+				cam_peg_y = toonboom_coords_to_float(next_3d_key[1]);
+				cam_peg_z = toonboom_coords_to_float(next_3d_key[2]);	
+				
+			}
+
 			
 			MessageLog.trace("CAMERA PEG")
 			MessageLog.trace(cam_peg_x)
@@ -975,17 +1027,6 @@ OO.TreeManager = function(_S){
 			
 			var cam_cy = parseFloat(cam_h/2) ;
 			
-			// camera peg coords : (for later)
-			
-			var campeg_x = 0
-			
-			var campeg_y = 0
-			
-			var campeg_sx = 1
-			
-			var campeg_sy = 1
-			
-
 
 			// position of the top up corner of the camera in bg space 
 			

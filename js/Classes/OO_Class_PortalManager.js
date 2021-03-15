@@ -144,49 +144,29 @@ OO.PortalManager = function(_S){
 					
 					var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
 					
-					var png_node = portal_group.importImage(final_path);
+					var png_node = S.trees.import_png_in_group(final_path,portal_group);
 					
-					S.log.add("import png = "+png_node,"process")
-					
-					png_node.name = _portal.code;
-					
-					
-					portal_group.multiportIn.linkOutNode(png_node,0,0,true);
-					
-					png_node.linkOutNode(portal_group.multiportOut,0,0,true);				
-					
-					png_node.centerAbove(portal_group.multiportOut, 0, -100);
-					
-					
-					
-					
-					var xli_resolution =  _portal.get_xli_of_png()
-					
-					if(xli_resolution != false){
+					if(png_node != false){
 						
-						var final_sy = xli_resolution.height/1080;
+						S.log.add("import png = "+png_node,"process")
 						
-						var final_sx = final_sy;
+						png_node.name = _portal.code;
 						
-						//INJECT SX
-						png_node.attributes.scale.x.setValue(final_sx);
+						portal_group.multiportIn.linkOutNode(png_node,0,0,true);
 						
-						//INJECT SY
-						png_node.attributes.scale.y.setValue(final_sy);	
+						png_node.linkOutNode(portal_group.multiportOut,0,0,true);				
 						
-						_portal.png_scaled = true;
+						png_node.centerAbove(portal_group.multiportOut, 0, -100);
+			
+						var pbackdrop = _portal.get_backdrop();
+						
+						pbackdrop.color = new $.oColorValue("#5097D8ff");
 						
 					}
+
+					return png_node;						
 					
-					
-					
-					
-		
-					var pbackdrop = _portal.get_backdrop();
-					
-					pbackdrop.color = new $.oColorValue("#5097D8ff");
-					
-					return png_node;
+
 
 				break;			
 				

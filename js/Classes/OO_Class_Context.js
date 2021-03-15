@@ -42,6 +42,8 @@ OO.Context = function (_type){
 	this.set_svg_path = function(_sp){
 		
 		SVG_PATH = _sp
+		MessageLog.trace("SVG_PATH");
+		MessageLog.trace(SVG_PATH);
 	}	
 	this.set_png_path = function(_pnp){
 		
@@ -272,7 +274,7 @@ OO.Context = function (_type){
 	
 	this.get_asset_svg_dir_path = function(asset){
 		
-		dir_path = "";
+		dir_path = SVG_PATH;
 		
 		switch(CONTEXT_TYPE){
 			
@@ -292,8 +294,12 @@ OO.Context = function (_type){
 			
 				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/psd/"
 			
-			break;			
+			break;	
+			
 		}
+		
+		MessageLog.trace("DIR PATH : ")
+		MessageLog.trace(dir_path)
 		
 		return dir_path;
 		
@@ -473,27 +479,28 @@ OO.Context = function (_type){
 	}
 	
 	
-	this.get_svg_path = function(asset){
+	this.get_svg_path = function(_asset){
 		
-		var dir_path = this.get_asset_svg_dir_path(asset);
+		var dir_path = this.get_asset_svg_dir_path(_asset);
 		
-		var file_path = dir_path+asset.get_last_publish()+".svg";
+		var file_path = dir_path+_asset.get_last_publish()+".svg";
 		
 		if(this.file_exist(file_path)){
 			
+			
 			return file_path
+			
 			
 		}else{
 			
 			//maybe the psd starts with lt instead of bg ? 
 			
-			file_path = dir_path+this.get_lt_path(asset)+".svg";
+			file_path = dir_path+this.get_lt_path(_asset)+".svg";
 			
-			//if(this.file_exist(file_path)){
+			MessageLog.trace("lt_file_path")
+			MessageLog.trace(file_path)
 				
-				return file_path
-				
-			//}
+			return file_path
 			
 		}
 		
@@ -526,6 +533,63 @@ OO.Context = function (_type){
 	 
 
 	
+	this.get_xli_of_png  = function(_pngpath){
+		
+		//TRY TO READ THIS : 
+		
+		/*
+				
+		<!DOCTYPE XLI>
+		<XLI>
+		 <LayoutPosition scale="3.000005722045898" translationZFields="0" translationYFields="-8.355551434330707" translationXFields="-10.53332813795944"/>
+		 <ResolutionInfo requiredResolutionX="5760" requiredResolutionY="3240" scaleToRequiredResolution="1" resolutionX="5760" resolutionY="3240"/>
+		</XLI>
+			
+		
+		SPLIT " : 
+		
+		 <ResolutionInfo requiredResolutionX=,5760, requiredResolutionY=,3240, scaleToRequiredResolution=,1, resolutionX=,5760, resolutionY=,3240,/>
+		   0                                   1           2                3                4            5      6         7        8         9
+		*/
+		
+		var pngfile = new $.oFile(_pngpath)
+		
+		if(pngfile.exists){
+
+			
+			var nfile = new $.oFile(_pngpath+".xli")
+			
+			if(nfile.exists){
+				
+				var xli_content = nfile.read()
+				
+				var resolution = {
+					width: parseFloat(xli_content.split('\n')[3].split('"')[1]),
+					height:  parseFloat(xli_content.split('\n')[3].split('"')[3]),
+				}
+				
+				MessageLog.trace("width");
+				MessageLog.trace(resolution.width);
+				MessageLog.trace("height");
+				MessageLog.trace(resolution.height);
+				
+				return resolution;
+				
+			}else{
+				
+				return false; 
+				
+			}
+			
+		}else{
+			
+			return false; 
+			
+		}
+		
+		
+	}
+		
 	
 }
 

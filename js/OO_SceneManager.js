@@ -462,6 +462,8 @@ function pull_selected_portals(_data_type){
 	S.portals.load_from_node_list(OO.doc.selectedNodes);
 	
 	S.context.set_context_type('Shotgun');	
+
+	S.context.set_svg_path(OO.svg_path);
 	
 	S.load_breakdown('csv');
 
@@ -494,7 +496,7 @@ function pull_selected_portals(_data_type){
 									
 									var cadre = S.load_cadre(full_svg_path);
 									
-									if( cadre.bg != undefined && current_portal.png_scaled == false){
+									if( cadre.bg != undefined){
 										
 										MessageLog.trace("PNG HEIGHT");
 						
@@ -1032,5 +1034,133 @@ function export_markers_process(){
 		
 	}
 
+}
+
+
+
+function align_selected_nodes(_axe){
+	
+	scene.beginUndoRedoAccum ("align_selected_nodes")
+	
+	var ref_node = OO.doc.getNodeByPath(OO.doc.selectedNodes[1]);
+	
+	for(var i = 0 ; i < OO.doc.selectedNodes.length ; i++){
+		
+		var current_node = OO.doc.getNodeByPath(OO.doc.selectedNodes[i]);
+		
+		switch(_axe){
+		
+			case "x": 
+			
+				current_node.x = ref_node.x; 
+			
+			break;
+			
+			
+			case "y": 
+			
+				current_node.y = ref_node.y; 
+				
+			break;
+			
+			
+		}
+		
+		
+		
+	}
+	
+	scene.endUndoRedoAccum ()
+	
+}
+
+
+function scale_selected_nodes(_axe){
+	
+
+	scene.beginUndoRedoAccum ("align_selected_nodes")
+	
+	var ref_node = OO.doc.getNodeByPath(OO.doc.selectedNodes[1]);
+	
+	var factor =50;
+
+	var onodes = [];
+	
+	for(var i = 0 ; i < OO.doc.selectedNodes.length ; i++){
+		
+		onodes.push(OO.doc.getNodeByPath(OO.doc.selectedNodes[i]));
+		
+	}
+	
+	var sorted_by_axe = onodes.sort(function(a, b) {
+
+		switch(_axe){
+			
+			case "x": 
+			
+				return a.x - b.x;
+			
+			break;
+			
+			case "y": 
+				
+				return a.y - b.y;
+					
+			break;
+		}
+	});
+	
+	var level = 0; 
+	
+	var last_node = sorted_by_axe[sorted_by_axe.length-1]
+	
+	var node_to_modifiy = sorted_by_axe;
+	
+	for(var i =0; i < sorted_by_axe.length ; i++){
+		
+		var current_node = node_to_modifiy[i];
+		
+		var previous_node = {x:0,y:0};
+		
+		if(i > 0 ){
+			
+			var previous_node = sorted_by_axe[i-1];
+			
+		}
+		
+		var current_node = node_to_modifiy[i];
+		
+		switch(_axe){
+			
+			case "x": 
+
+			
+				current_node.x+=level*factor;
+				
+				if(current_node.x != previous_node.x){
+					
+					level++;
+					
+				}
+			
+			break;
+			
+			case "y": 
+			
+				current_node.y+=level*factor;
+			
+				if(current_node.y != previous_node.y){
+					
+					level++;
+					
+				}					
+			break;
+			
+		}
+		
+	}
+	
+	scene.endUndoRedoAccum ()
+	
 }
 
