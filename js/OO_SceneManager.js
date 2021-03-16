@@ -612,6 +612,74 @@ function pull_selected_portals(_data_type){
 	
 } 
 
+
+
+
+function push_selected_portals(_data_type){
+	
+	MessageLog.trace("PUSH PORTAL FUNCTION");
+	
+	var S = new OO.SceneManager();	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/push_portal.html");
+	
+	S.portals.load_from_node_list(OO.doc.selectedNodes);
+	
+	S.context.set_context_type('Shotgun');	
+
+	S.context.set_svg_path(OO.svg_path);
+	
+	S.load_breakdown('csv');
+
+	for(var p = 0 ; p < S.portals.list.length; p++){
+		
+			var current_portal = S.portals.list[p]
+			
+			//we empty the portal first 
+			
+			S.portals.empty(current_portal);
+			
+			//exportTemplate(nodes, exportPath, exportPalettesMode, renameUsedColors, copyOptions)
+			
+			var pushed_nodes = S.portals.pull(current_portal,_data_type);	
+			
+			if(pulled_nodes != false){
+				
+				switch (_data_type){
+					
+						case "png":
+	
+						
+						break; 
+						
+						case "psd": 
+						
+						
+						break; 
+						
+						case "tpl": 
+						
+						
+						break; 				
+					
+				}
+				
+				
+			
+			}
+			
+	}	
+
+	S.log.save();
+	
+} 
+
+
+
+
+
+
+
 // ASSET PORTALS 
 
 function create_portals(_type){
@@ -1183,8 +1251,6 @@ function export_asset_png_process(){
 	//reading scene shotgun context
 	
 
-		
-	
 	MessageLog.trace(S.context.set_from_scene_path()); 
 	
 	var current_asset_code = S.context.code; 
