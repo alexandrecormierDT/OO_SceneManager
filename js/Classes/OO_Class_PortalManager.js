@@ -197,7 +197,16 @@ OO.PortalManager = function(_S){
 			var final_path = _portal.get_path(_data_type);
 			
 			MessageLog.trace("EXPORT PATH");
+			
 			MessageLog.trace(final_path);
+			
+			var dir_path = _portal.get_dir(_data_type);
+			
+			var data_folder = new $.oFolder(dir_path); 
+			
+			MessageLog.trace(dir_path);
+			
+			data_folder.create()
 			
 			var export_process = false;
 			
@@ -303,8 +312,13 @@ OO.PortalManager = function(_S){
 		}
 		
 		var pbackdrop = _portal.get_backdrop();
+		
+		if(pbackdrop != false){
 				
-		pbackdrop.color = new $.oColorValue("#000000ff");
+			pbackdrop.color = new $.oColorValue("#000000ff");		
+		
+		}
+
 		
 		S.log.add("portal is now empty","process");
 	}
@@ -321,13 +335,14 @@ OO.PortalManager = function(_S){
 	// CREATING THE PORTAL TREE
 	
 	
-	this.add = function(_code,_type,_tpl_path,_psd_path,_png_path){ 
+	this.add = function(_code,_type,_tpl_path,_psd_path,_png_path,_departement){ 
 	
 		var code = _code != undefined ? _code : "empty"; 
 		var type = _type != undefined ? _code : ""; 
 		var tpl_path = _tpl_path != undefined ? _tpl_path : ""; 
 		var psd_path = _psd_path != undefined ? _psd_path : ""; 
 		var png_path = _png_path != undefined ? _png_path : ""; 
+		var departement = _departement != undefined ? _departement : ""; 
 	
 		////MessageLog.trace("Portal ADD");
 		
@@ -379,7 +394,45 @@ OO.PortalManager = function(_S){
 		
 		var parent_group = nportal.tree.get_parent_group();
 		
-		nportal.tree.backdrop = parent_group.addBackdropToNodes(pnodes, "PORTAL", _code,new $.oColorValue("#000000ff"), 0, 0, 20, 20)
+		var departement_color = new $.oColorValue(OO.pipe_colors.dt[0]); 
+		
+		switch (departement){
+			
+			case "design" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.design[0])
+				
+			break; 
+			
+			case "rig" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.rig[0])
+				
+			break;
+			
+			case "bg" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.bg[0])
+			
+			break;			
+			case "layout" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.layout[0])
+			
+			break;	
+			case "anim" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.anim[0])
+			
+			break;	
+			case "compo" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.compo[0])
+			
+			break;	
+		}
+		
+		nportal.tree.backdrop = parent_group.addBackdropToNodes(pnodes, " < PORTAL : "+departement+" > ",code,departement_color , 0, 0, 20, 20)
 
 		this.list.push(nportal);
 		

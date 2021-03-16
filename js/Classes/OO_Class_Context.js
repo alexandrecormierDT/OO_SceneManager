@@ -150,15 +150,32 @@ OO.Context = function (_type){
 
 	}
 	
-	
-	this.get_library_asset_png_path = function(_asset_code,_asset_type){
+	this.get_current_asset = function(){
 		
-		var path =  LIBRARY_PATH+"/assets/"+_asset_type+"/"+_asset_code+"/png/"+_asset_code+".png";
+		var data = this.set_from_scene_path();
+		
+		var current_asset = new OO.Asset({
+			code: data.code,
+			sg_asset_type: data.sg_asset_type,
+		
+		})
+		
+		MessageLog.trace(data.code)
+		MessageLog.trace(data.sg_asset_type)
+		
+		return current_asset;
+
+	}
+	
+	
+	this.get_library_asset_path = function(_asset_code,_asset_type){
+		
+		var path =  LIBRARY_PATH+"/"+_departement+"/assets/"+_asset_type+"/"+_asset_code+"/png/"+_asset_code+".png";
 		
 		return path;
 		
 	}
-	
+
 	this.get_type_from_asset_code = function(asset_code){
 		
 		//MessageLog.trace("get_type_with_asset_code");
@@ -274,221 +291,277 @@ OO.Context = function (_type){
 		
 	}	
 	
-	this.get_asset_png_dir_path = function(asset){
+	//OLD FUNCTIONS
+	
+	this.get_asset_png_dir_path = function(_asset){
 		
-		dir_path = "";
-		
-		switch(CONTEXT_TYPE){
-			
-			case("Shotgun"):
-			
-				dir_path = PNG_PATH;
-				
-			break;
-				
-			case("Prototype"): 
-			
-				dir_path = ""
-			
-			break;		
-			
-			case("Server"): 
-			
-				dir_path = ""
-			
-			break;			
-		}
+		var dir_path = this.get_dir_path(_asset,'png');	
 		
 		return dir_path;		
 
 	}
 	
 	
-	
-	this.get_asset_svg_dir_path = function(asset){
+	this.get_asset_svg_dir_path = function(_asset){
 		
-		dir_path = SVG_PATH;
-		
-		switch(CONTEXT_TYPE){
-			
-			case("Shotgun"):
-			
-				dir_path = SVG_PATH;
-				
-			break;
-				
-			case("Prototype"): 
-			
-				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/psd/"
-			
-			break;		
-			
-			case("Server"): 
-			
-				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/psd/"
-			
-			break;	
-			
-		}
-		
-		MessageLog.trace("DIR PATH : ")
-		MessageLog.trace(dir_path)
+		dir_path = this.get_dir_path(_asset,'svg');	
 		
 		return dir_path;
+	}	
+	
+		
+	
+	this.get_lt_path = function(_asset){
+		
+		var asset_code_notype = this.get_asset_code_without_type(_asset.get_last_publish()); 
+		
+		var lt_code = "lt_"+asset_code_notype;
+		
+		return lt_code;
+		
+		
+	}
+	
+	
+	this.get_svg_path = function(_asset){
+		
+		return this.get_asset_data_path(_asset,'svg')
 		
 	}	
-	this.get_asset_psd_dir_path = function(asset){
-		
-		dir_path = "";
-		
-		switch(CONTEXT_TYPE){
-			
-			case("Shotgun"):
-			
-				dir_path = PSD_PATH;
-				
-			break;
-				
-			case("Prototype"): 
-			
-				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/psd/"
-			
-			break;		
-			
-			case("Server"): 
-			
-				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/psd/"
-			
-			break;			
-		}
-		
-		return dir_path;
-		
-	}
 	
-	this.get_asset_tpl_dir_path = function(asset){
-		
-		dir_path = "";
-		
-		switch(CONTEXT_TYPE){
-			
-			case("Shotgun"):
-			
-				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/master/"
-				
-			break;
-				
-			case("Prototype"): 
-			
-				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/master/"
-			
-			break;		
-			
-			case("Server"): 
-			
-				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/master/"
-			
-			break;			
-		}
-		
-		return dir_path;
-		
-	}
+	// FIND DIRECTORY WHERE THE ASSET DATA IS STORED (LIBRARY) 
 	
-	this.get_tpl_path= function(asset){
+	this.get_dir_path = function(_asset,_data_type,_departement){
 		
-		var dir_path = this.get_asset_tpl_dir_path(asset);
-		
-		var file_path = dir_path+asset.get_last_publish()+".tpl";
-		
-		//if(this.file_exist(file_path)){
-			
-			return file_path
-			
-		//}
-		
-		return "";
-		
-	}
-	
-	this.get_psd_path = function(asset){
-		
-		var dir_path = this.get_asset_psd_dir_path(asset);
-		
-		var file_path = dir_path+asset.get_last_publish()+".psd";
-		
-		if(this.file_exist(file_path)){
-			
-			return file_path
-			
-		}else{
-			
-			//maybe the psd starts with lt instead of bg ? 
-			
-			file_path = dir_path+this.get_lt_path(asset)+".psd";
-			
-			//if(this.file_exist(file_path)){
-				
-				return file_path;
-				
-			//}
-			 
-		}
-		
-		return "";
-		
-		
-	}
-	
-	
-	this.get_png_path = function(_asset){
-		
-		var dir_path = this.get_asset_png_dir_path(_asset);
-		
-		var file_path = ""
+		var asset = _asset != undefined ? _asset : false; 
+		var data_type = _data_type != undefined ? _data_type : ""; 
+		var departement = _departement != undefined ? _departement : ""; 
 		
 		var asset_type = _asset.get_type();
-		var asset_code = _asset.get_code();
+		var asset_code = _asset.get_code();	
 		
+		var dir_path = false; 
 		
-		switch (asset_type){
-			
-			case ( "Character" ) : 
-			case ( "Prop" ) : 
-			case ( "Fx" ) : 
-				
-				var library_asset_path =this.get_library_asset_png_path(asset_code,asset_type);		
-				
-				file_path = library_asset_path ;
-				
-			break; 
-			
-			case ("bg"): 
-			
-				file_path = dir_path+_asset.get_last_publish()+".png";
-			
-				if(this.file_exist(file_path)){
+		if(asset != false){
 
-					
-				}else{
-					
-					//maybe the psd starts with lt instead of bg ? 
-					
-					file_path = dir_path+this.get_lt_path(_asset)+".png";
-					 
-				}			
+			switch (data_type){
 				
-			break; 
-
+				case "png": 		
+					
+					switch(CONTEXT_TYPE){
+						
+						case("Shotgun"):
+						
+							if(asset_type =="bg"){
+								
+								dir_path = PNG_PATH;
+								
+							}else{
+								
+								dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/png/"
+								
+							}
+							
+						break;
+							
+						case("Prototype"): 
+						
+							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/png/"
+						
+						break;		
+						
+						case("Server"): 
+						
+							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/png/"
+						
+						break;			
+					}
+								
+				break;
+				case "psd": 	
+				
+					switch(CONTEXT_TYPE){
+						
+						case("Shotgun"):
+						
+							// soon dirctly to shotgun folders in the vault
+							
+							dir_path = PSD_PATH;
+							
+						break;
+							
+						case("Prototype"): 
+						
+							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/psd/"
+						
+						break;		
+						
+						case("Server"): 
+						
+							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/psd/"
+						
+						break;			
+					}			
+					
+				break;		
+				case "tpl": 	
+				
+					switch(CONTEXT_TYPE){
+						
+						case("Shotgun"):
+						
+							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
+							
+						break;
+							
+						case("Prototype"): 
+						
+							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
+						
+						break;		
+						
+						case("Server"): 
+						
+							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
+						
+						break;			
+					}				
+				break;	
+				
+				case "svg": 
+						
+					switch(CONTEXT_TYPE){
+						
+						case("Shotgun"):
+						
+							dir_path = SVG_PATH;
+							
+						break;
+							
+						case("Prototype"): 
+						
+							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type()+"/"+asset_code+"/psd/"
+						
+						break;		
+						
+						case("Server"): 
+						
+							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type()+"/"+asset_code+"/psd/"
+						
+						break;	
+						
+					}
+				
+				break;
+				
+			}
+		
 		}
+		
+		return dir_path; 
+	}
 	
+	// GET THE PATH OF THE REQUESTED ASSET DATA :
+	
+	this.get_asset_data_path = function(_asset,_data_type,_departement){
+		
+		var file_path = false; 
+		
+		var asset = _asset != undefined ? _asset : false; 
+		var data_type = _data_type != undefined ? _data_type : ""; 
+		var departement = _departement != undefined ? _departement : ""; 
+		
+		if(asset != false){
+	
+			var asset_type = _asset.get_type();
+			var asset_code = _asset.get_last_publish()
 
+			var dir_path = 	this.get_dir_path(asset,data_type,departement);
+			
+			switch (data_type){
+				
+				case "png": 
+
+					switch (asset_type){
+						
+						case ( "Character" ) : 
+						case ( "Prop" ) : 
+						case ( "Fx" ) : 
+							
+							file_path = dir_path+"/"+asset_code+".png";
+							
+						break; 
+						
+						case ("bg"): 
+						
+							file_path = dir_path+"/"+asset_code+".png";
+						
+							if(this.file_exist(file_path)){
+
+								
+							}else{
+								
+								//maybe the psd starts with lt instead of bg ? 
+								
+								file_path = dir_path+this.get_lt_path(asset)+".png";
+								 
+							}			
+							
+						break; 
+
+					}
+		
+				
+				break; 
+				
+				case "psd": 
+					
+					file_path = dir_path+"/"+asset_code+".psd";
+					
+					if(this.file_exist(file_path)){
+						
+					}else{
+						
+						//maybe the psd starts with lt instead of bg ? 
+
+						file_path = dir_path+this.get_lt_path(asset)+".psd";
+						 
+					}			
+					
+				break; 	
+				case "svg": 
+				
+					dir_path = this.get_asset_svg_dir_path(asset);
+					
+					file_path = dir_path+"/"+asset_code+".svg";
+					
+					if(this.file_exist(file_path)){
+						
+					}else{
+						
+						//maybe the psd starts with lt instead of bg ? 
+						
+						file_path = dir_path+this.get_lt_path(asset)+".svg";
+						
+						MessageLog.trace("lt_file_path")
+						
+						MessageLog.trace(file_path)
+						
+					}			
+					
+				break; 			
+				case "tpl": 
+					
+					file_path = dir_path+"/"+asset_code+".tpl";
+					
+				break; 			
+			}
+		
+		}
 		
 		return file_path;
-		
-		
-	}	
-	
+	}
+
 	this.get_asset_code_without_type = function(asset_code){
 		
 		// CHANGE   "bg_ep102pl022_ded_ext"   TO   "ep102pl022_ded_ext"  
@@ -517,49 +590,7 @@ OO.Context = function (_type){
 		
 		return result; 
 	}
-		
-	
-	this.get_lt_path = function(asset,_type){
-		
-		var asset_code_notype = this.get_asset_code_without_type(asset.get_last_publish()); 
-		
-		var lt_code = "lt_"+asset_code_notype;
-		
-		return lt_code;
-		
-		
-	}
-	
-	
-	this.get_svg_path = function(_asset){
-		
-		var dir_path = this.get_asset_svg_dir_path(_asset);
-		
-		var file_path = dir_path+_asset.get_last_publish()+".svg";
-		
-		if(this.file_exist(file_path)){
-			
-			
-			return file_path
-			
-			
-		}else{
-			
-			//maybe the psd starts with lt instead of bg ? 
-			
-			file_path = dir_path+this.get_lt_path(_asset)+".svg";
-			
-			MessageLog.trace("lt_file_path")
-			MessageLog.trace(file_path)
-				
-			return file_path
-			
-		}
-		
-		return "";
-		
-	}	
-	
+
 	this.file_exist = function(path){
 		
 		var f = new $.oFile(path)

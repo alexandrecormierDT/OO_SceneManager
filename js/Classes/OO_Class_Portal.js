@@ -66,6 +66,9 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 	this.png_scaled = false;
 	
 	
+	this.department = "";
+	
+	
 	// PATHS
 
 	this.update_path = function(_key,_path){
@@ -85,6 +88,25 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		
 	}
 	
+	this.get_dir = function(_key){
+		
+		var path = paths[_key]; 
+		
+		var slash_split = path.split("\\");
+		
+		MessageLog.trace(slash_split); 
+		var dir = "";
+		
+		for(var i = 0 ; i < slash_split.length-1; i ++){
+			var current_split = slash_split[i] ;
+			dir+=current_split;
+			
+		}
+		
+		return dir; 
+		
+	}
+	
 	this.path_exist = function(_key){
 		
 		var nfile = new $.oFile(paths[_key] )
@@ -93,10 +115,11 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 	
 	}
 	
-
+	
 	
 	
 	var paths = [];
+	
 	this.add_path('tpl',_tpl_path)
 	this.add_path('psd',_psd_path)
 	this.add_path('png',_png_path)		
@@ -146,6 +169,8 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 			}
 
 		}
+		
+		return false;
 		
 		
 		

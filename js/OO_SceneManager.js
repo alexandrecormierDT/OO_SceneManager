@@ -28,6 +28,23 @@ OO.png_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/png/";
 OO.svg_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/svg/";
 OO.video_export_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/ep102/";
 
+// PIPE COLORS :
+
+OO.pipe_colors = {}; 
+OO.pipe_colors.design = ["#246926ff","#4deb53ff"]
+OO.pipe_colors.rig = ["#66571aff","#f0b129"]
+OO.pipe_colors.anim = ["#7d412fff","#fa7f5aff"]
+OO.pipe_colors.bg = ["#244369ff","#4f8edbff"]
+OO.pipe_colors.layout = ["#327480ff","#5fdef5ff"]
+OO.pipe_colors.compo = ["#6f2f80ff","##b248cfff"]
+OO.pipe_colors.board = ["#5c411eff","#9e6d2eff"]
+OO.pipe_colors.director = ["#6e6e6eff","#6e6e6eff"]
+OO.pipe_colors.prod  = ["#ffffffff","#e0dedeff"]
+OO.pipe_colors.dt  = ["#000000ff","#000000ff"]
+
+
+
+
 //PROJECT SETTINGS
 
 OO.project_settings = {
@@ -448,21 +465,31 @@ function create_empty_portal(){
 	userInput2.itemList = ["Character", "Prop", "Fx","bg"];
 	dialog.add( userInput2 );
 	
+	var userInput3 = new ComboBox();
+	userInput3.label = "departement"
+	userInput3.editable = true;
+	userInput3.itemList = ["design", "rig", "anim","bg","layout"];
+	userInput3.currentItem = [""];
+	dialog.add( userInput3 );
+	
 	if (dialog.exec()){
 		
-		asset_code = OO.filter_string(userInput1.text);
+		var asset_code = OO.filter_string(userInput1.text);
 		
-		asset_type = OO.filter_string(userInput2.currentItem);
+		var asset_type = OO.filter_string(userInput2.currentItem);
+		
+		var departement =  OO.filter_string(userInput3.currentItem);
+		
 		
 		var nasset = new OO.Asset({code:asset_code,sg_asset_type:asset_type});
 		
-		var final_tpl_path = S.context.get_tpl_path(nasset);
+		var final_png_path = S.context.get_asset_data_path(nasset,"png",departement);
+		var final_psd_path = S.context.get_asset_data_path(nasset,"psd",departement);
+		var final_tpl_path = S.context.get_asset_data_path(nasset,"tpl",departement);
 			
-		var final_psd_path = S.context.get_psd_path(nasset);
 			
-		var final_png_path = S.context.get_png_path(nasset);
 		
-		var nportal = S.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path,final_png_path);	
+		var nportal = S.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path,final_png_path,departement);	
 	
 		nportal.tree.ungroup();
 		
@@ -476,23 +503,7 @@ function create_empty_portal__old__(){
 	
 	var S = new OO.SceneManager();	
 	
-	var dialog = new Dialog();
-	dialog.title = "asset name (no accents)";
-	dialog.width = 900;
-	
-	var userInput = new TextEdit();
-	userInput.text = ""
-	dialog.add( userInput );
-		
-	if (dialog.exec()){
-		
-		message = OO.filter_string(userInput.text);
-		
-		S.log.add(message,"user message");
-		
-		S.add_entry_to_scene_journal(message)
-		
-	}
+
 	
 	var nportal = S.portals.add("empty");
 	
@@ -516,9 +527,32 @@ function empty_selected_portals(){
 	}
 
 }
+function pull_selected_portals_dialog(){
+	
+	var DATA_TYPE ="png";
 
+	var dialog = new Dialog();
+	dialog.title = "PULL PORTAL ";
+	dialog.width = 200;
 
-function pull_selected_portals(_data_type){
+	
+	var userInput2 = new ComboBox();
+	userInput2.label = "data type to pull : "
+	userInput2.editable = true;
+	userInput2.itemList = ["png","psd","tpl"];
+	dialog.add( userInput2 );		
+	
+	if (dialog.exec()){
+		
+		DATA_TYPE = userInput2.currentItem;
+		
+		pull_selected_portals_process(DATA_TYPE);
+		
+	}
+	
+}
+
+function pull_selected_portals_process(_data_type){
 	
 	////MessageLog.trace("PULL PSD FUNCTION");
 	
@@ -533,7 +567,7 @@ function pull_selected_portals(_data_type){
 	S.context.set_svg_path(OO.svg_path);
 	
 	S.load_breakdown('csv');
-
+	
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
 			var current_portal = S.portals.list[p]
@@ -606,7 +640,14 @@ function pull_selected_portals(_data_type){
 			
 	}	
 
-	S.log.save();
+		
+		
+	
+	
+
+
+	S.log.save();		
+
 	
 } 
 
@@ -1221,11 +1262,10 @@ function export_asset_png_process(){
 
 	MessageLog.trace(S.context.set_from_scene_path()); 
 	
-	var current_asset_code = S.context.code; 
+	var current_asset = S.context.get_current_asset();
 	
-	var current_asset_type = S.context.sg_asset_type;  
 	
-	var library_asset_path = S.context.get_library_asset_png_path(current_asset_code,current_asset_type);
+	var library_asset_path = S.context.get_asset_data_path(current_asset,"png");
 	
 	MessageLog.trace("PATH PNG");
 	
