@@ -566,7 +566,7 @@ function pull_selected_portals_process(_data_type){
 
 	S.context.set_svg_path(OO.svg_path);
 	
-	S.load_breakdown('csv');
+	S.assets.load_breakdown('csv');
 	
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
@@ -666,12 +666,12 @@ function push_selected_portals(_data_type){
 	
 	S.context.set_context_type('Shotgun');	
 	
-	S.load_breakdown('csv');
+	S.assets.load_breakdown('csv');
 
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
-		
-		var current_portal = S.portals.list[p]
+		S.context.get_psd_path
+		var current_portal = S.portals.list[p];
 			
 		MessageLog.trace(current_portal.code);
 		
@@ -704,7 +704,7 @@ function create_portals(_type){
 	S.context.set_png_path(OO.png_path);
 	S.context.set_svg_path(OO.svg_path);
 	
-	S.load_breakdown('csv');
+	S.assets.load_breakdown('csv');
 	
 	var target_backdrop = false;
 	
@@ -759,7 +759,7 @@ function empty_portals(_asset_type){
 	
 	S.context.set_library_path(OO.library_path);
 	
-	S.load_breakdown('csv');
+	S.assets.load_breakdown('csv');
 	
 	S.portals.load_from_scene();
 
@@ -798,7 +798,7 @@ function pull_(_asset_type){
 	
 	S.context.set_svg_path(OO.svg_path);
 	
-	S.load_breakdown('csv');
+	S.assets.load_breakdown('csv');
 	
 	S.portals.load_from_scene();
 
@@ -825,11 +825,11 @@ function pull_(_asset_type){
 
 					var bg_node = S.portals.pull(current_portal,'png');		
 			
-					var full_svg_path = S.context.get_svg_path(linked_asset);
+					var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
 					
-					var full_psd_path = S.context.get_psd_path(linked_asset);
+					var full_psd_path = S.context.get_asset_data_path(linked_asset,"psd");
 					
-					var full_png_path = S.context.get_png_path(linked_asset);
+					var full_png_path = S.context.get_asset_data_path(linked_asset,"png");
 					
 					MessageLog.trace("BG_PATH : ");
 					
@@ -897,7 +897,7 @@ function fit_selected_portals_to_camera(){
 
 	S.context.set_svg_path(OO.svg_path);
 	
-	S.load_breakdown('csv');
+	S.assets.load_breakdown('csv');
 	
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
@@ -959,7 +959,7 @@ function fit_bg_to_camera(){
 	
 	S.context.set_svg_path(OO.svg_path);
 	
-	S.load_breakdown('csv');
+	S.assets.load_breakdown('csv');
 	
 	S.portals.load_from_scene();
 	
@@ -1028,7 +1028,7 @@ function pull_png(){
 	
 	S.context.set_svg_path(OO.svg_path);
 	
-	S.load_breakdown('csv');
+	S.assets.load_breakdown('csv');
 	
 	S.portals.load_from_scene();
 
@@ -1048,11 +1048,11 @@ function pull_png(){
 
 			var bg_node = S.portals.pull(current_portal,'png');		
 	
-			var full_svg_path = S.context.get_svg_path(linked_asset);
+			var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
 			
-			var full_psd_path = S.context.get_psd_path(linked_asset);
+			var full_psd_path = S.context.get_asset_data_path(linked_asset,"psd");
 			
-			var full_png_path = S.context.get_png_path(linked_asset);
+			var full_png_path =S.context.get_asset_data_path(linked_asset,"png");
 			
 			MessageLog.trace("BG_PATH : ");
 			
@@ -1132,7 +1132,7 @@ function pull_psd(){
 	
 	S.context.set_svg_path(OO.svg_path);
 	
-	S.load_breakdown('csv');
+	S.assets.load_breakdown('csv');
 	
 	S.portals.load_from_scene();
 
@@ -1145,12 +1145,12 @@ function pull_psd(){
 		if(current_portal.psd_exist()){
 
 			var bg_node = S.portals.pull(current_portal,'psd');		
-	
-			var full_svg_path = S.context.get_svg_path(linked_asset);
 			
-			var full_psd_path = S.context.get_psd_path(linked_asset);
+			var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
 			
-			var full_png_path = S.context.get_png_path(linked_asset);
+			var full_psd_path = S.context.get_asset_data_path(linked_asset,"psd");
+			
+			var full_png_path =S.context.get_asset_data_path(linked_asset,"png");
 			
 			MessageLog.trace("BG_PATH : ");
 			
@@ -1263,11 +1263,25 @@ function export_asset_png_process(){
 	MessageLog.trace(S.context.set_from_scene_path()); 
 	
 	var current_asset = S.context.get_current_asset();
-	
+	var prefilled_path = ""; 
 	
 	var library_asset_path = S.context.get_asset_data_path(current_asset,"png");
 	
 	MessageLog.trace("PATH PNG");
+	
+	S.portals.load_from_node_list(OO.doc.selectedNodes);
+	
+	S.context.set_context_type('Shotgun');	
+	
+	S.assets.load_breakdown('csv');
+	
+	if(S.portals.list.length > 0 ){
+		
+		var current_portal = S.portals.list[0]
+		
+		library_asset_path = current_portal.get_path('png');
+		
+	}	
 	
 	MessageLog.trace(library_asset_path);
 	
@@ -1297,7 +1311,19 @@ function align_selected_nodes(_axe){
 	
 	scene.beginUndoRedoAccum ("align_selected_nodes")
 	
-	var ref_node = OO.doc.getNodeByPath(OO.doc.selectedNodes[1]);
+	
+	
+	var sumX = 1;
+	var sumY = 1;
+	
+	for(var i = 0 ; i < OO.doc.selectedNodes.length ; i++){
+		
+		var current_node = OO.doc.getNodeByPath(OO.doc.selectedNodes[i]);
+		
+		sumX+=current_node.x;
+		sumY+=current_node.y;
+		
+	}
 	
 	for(var i = 0 ; i < OO.doc.selectedNodes.length ; i++){
 		
@@ -1306,15 +1332,15 @@ function align_selected_nodes(_axe){
 		switch(_axe){
 		
 			case "x": 
-			
-				current_node.x = ref_node.x; 
+
+				current_node.x = (sumX/OO.doc.selectedNodes.length) - (current_node.width/2); 
 			
 			break;
 			
 			
 			case "y": 
 			
-				current_node.y = ref_node.y; 
+				current_node.y = sumY/OO.doc.selectedNodes.length; 
 				
 			break;
 			
@@ -1333,7 +1359,7 @@ function scale_selected_nodes(_axe){
 	
 	var ref_node = OO.doc.getNodeByPath(OO.doc.selectedNodes[1]);
 	
-	var factor =50;
+	var factor =1.1;
 
 	var onodes = [];
 	
@@ -1367,10 +1393,26 @@ function scale_selected_nodes(_axe){
 	var last_node = sorted_by_axe[sorted_by_axe.length-1]
 	
 	var node_to_modifiy = sorted_by_axe;
-	
+	var point_list = [];
+
 	for(var i =0; i < sorted_by_axe.length ; i++){
 		
-		var current_node = node_to_modifiy[i];
+		var current_node = sorted_by_axe[i];
+		
+		var point_data  = {
+			px: current_node.x,
+			py: current_node.y,
+			dx: current_node.x - ref_node.x,
+			dy: current_node.y - ref_node.y,
+		}
+		
+		point_list.push(point_data);
+		
+	}
+	
+	for(var i =0; i < point_list.length ; i++){
+		
+		var current_node = sorted_by_axe[i];
 		
 		var previous_node = {x:0,y:0};
 		
@@ -1387,25 +1429,16 @@ function scale_selected_nodes(_axe){
 			case "x": 
 
 			
-				current_node.x+=level*factor;
+				current_node.x= point_list[i].px+(point_list[i].dx*factor);
 				
-				if(current_node.x != previous_node.x){
-					
-					level++;
-					
-				}
 			
 			break;
 			
 			case "y": 
 			
-				current_node.y+=level*factor;
-			
-				if(current_node.y != previous_node.y){
-					
-					level++;
-					
-				}					
+				current_node.y= point_list[i].py+(point_list[i].dy*factor);
+						
+				
 			break;
 			
 		}

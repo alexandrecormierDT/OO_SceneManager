@@ -352,13 +352,15 @@ OO.Context = function (_type){
 						
 						case("Shotgun"):
 						
+							// png are not affected by departement branches, they need to have only one official version
+							
 							if(asset_type =="bg"){
 								
 								dir_path = PNG_PATH;
 								
 							}else{
 								
-								dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/png/"
+								dir_path = LIBRARY_PATH+"/assets/"+asset_type+"/"+asset_code+"/png/"
 								
 							}
 							
@@ -366,13 +368,13 @@ OO.Context = function (_type){
 							
 						case("Prototype"): 
 						
-							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/png/"
+							dir_path = LIBRARY_PATH+"/assets/"+asset_type+"/"+asset_code+"/png/"
 						
 						break;		
 						
 						case("Server"): 
 						
-							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/png/"
+							dir_path = LIBRARY_PATH+"/assets/"+asset_type+"/"+asset_code+"/png/"
 						
 						break;			
 					}
