@@ -374,19 +374,19 @@ OO.Context = function (_type){
 			
 			case("Shotgun"):
 			
-				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/M/"
+				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/master/"
 				
 			break;
 				
 			case("Prototype"): 
 			
-				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/M/"
+				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/master/"
 			
 			break;		
 			
 			case("Server"): 
 			
-				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/M/"
+				dir_path = LIBRARY_PATH+"assets/"+asset.get_type()+"/"+asset.get_code()+"/master/"
 			
 			break;			
 		}

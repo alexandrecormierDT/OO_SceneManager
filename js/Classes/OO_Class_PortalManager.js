@@ -59,7 +59,7 @@ OO.PortalManager = function(_S){
 			// CODE,TYPE AND PATHS
 			
 			
-			var tpl_path = OO.filter_string(cur_script_module.node_map);
+			var tpl_path = OO.filter_string(cur_script_module.tpl_path);
 			
 			var psd_path = OO.filter_string(cur_script_module.psd_path);
 			
@@ -107,6 +107,8 @@ OO.PortalManager = function(_S){
 	
 	
 	this.pull = function(_portal,_data_type){
+		
+		var final_path = ""; 
 		
 		if(_portal.path_exist(_data_type)){
 			
@@ -184,12 +186,52 @@ OO.PortalManager = function(_S){
 
 	}
 	
-	this.get_XLI_infos = function(_xli_path){
-		
-		
-		
-	}
 	
+	//********************************** P U S H **************************************//
+	
+	
+	this.push_portal = function(_portal,_data_type){
+		
+			MessageLog.trace("PUSH ");
+			
+			var final_path = _portal.get_path(_data_type);
+			
+			MessageLog.trace("EXPORT PATH");
+			MessageLog.trace(final_path);
+			
+			var export_process = false;
+			
+			switch (_data_type){
+				
+				case 'psd': 
+				
+
+				break;
+				
+				case 'png': 					
+					
+
+				break;			
+				
+				case 'tpl':
+				
+					MessageLog.trace("EXPORT TPL");
+				
+					var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
+					
+					S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");
+					
+					export_process = S.trees.export_group_to_path(portal_group,final_path);
+				
+				break;
+			}			
+
+			S.log.add("export status "+export_process,"report");
+			
+
+
+	}	
+
 	// should be handled by the tree class
 	
 	this.empty = function (_portal){

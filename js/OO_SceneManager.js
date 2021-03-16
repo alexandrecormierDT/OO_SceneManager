@@ -462,8 +462,6 @@ function create_empty_portal(){
 			
 		var final_png_path = S.context.get_png_path(nasset);
 		
-		var nportal = S.portals.add(asset_code);
-		
 		var nportal = S.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path,final_png_path);	
 	
 		nportal.tree.ungroup();
@@ -474,7 +472,7 @@ function create_empty_portal(){
 } 
 
 
-function create_empty_portal____(){
+function create_empty_portal__old__(){
 	
 	var S = new OO.SceneManager();	
 	
@@ -626,47 +624,17 @@ function push_selected_portals(_data_type){
 	S.portals.load_from_node_list(OO.doc.selectedNodes);
 	
 	S.context.set_context_type('Shotgun');	
-
-	S.context.set_svg_path(OO.svg_path);
 	
 	S.load_breakdown('csv');
 
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
-			var current_portal = S.portals.list[p]
+		
+		var current_portal = S.portals.list[p]
 			
-			//we empty the portal first 
-			
-			S.portals.empty(current_portal);
-			
-			//exportTemplate(nodes, exportPath, exportPalettesMode, renameUsedColors, copyOptions)
-			
-			var pushed_nodes = S.portals.pull(current_portal,_data_type);	
-			
-			if(pulled_nodes != false){
-				
-				switch (_data_type){
-					
-						case "png":
-	
-						
-						break; 
-						
-						case "psd": 
-						
-						
-						break; 
-						
-						case "tpl": 
-						
-						
-						break; 				
-					
-				}
-				
-				
-			
-			}
+		MessageLog.trace(current_portal.code);
+		
+		S.portals.push_portal(current_portal,_data_type);
 			
 	}	
 

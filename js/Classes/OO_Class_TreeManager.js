@@ -684,13 +684,24 @@ OO.TreeManager = function(_S){
 	}	
 	
 	
+	// E X P O R T    T P L 
+
 	
-	
-	
-	
-	
-	
-	
+	this.export_group_to_path = function(_group,_path){
+		
+		
+		S.log.add("importing psd "+_path,"file")
+		
+		MessageLog.trace("exporting "+_group.nodes)
+		MessageLog.trace(" to "+_path)
+		
+		var exportProcess = OO.doc.exportTemplate(_group,_path); // "createPalette" value will create one palette for all colors
+
+		return exportProcess; 		
+		
+	}
+
+
 	
 	//FUNCTION TO MAKE THE NODEVIEW PRETTY 
 	
@@ -741,21 +752,12 @@ OO.TreeManager = function(_S){
 	}
 	
 	
-	
-	
-	//
-	//
 	//
 	//
 	//	
-	//	B G   T R E A T M E N T
+	//	                  B G   T R E A T M E N T
 	//	
 	//	
-	//
-	//
-	//
-	//
-	//
 	
 	
 	this.import_png_in_group = function(_pngpath,_group){
