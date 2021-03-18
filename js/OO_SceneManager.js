@@ -218,6 +218,25 @@ function fetch_script_prefs(_script_name){
 
 }
 
+// FETCHING DATAS 
+
+
+function get_scene_asset_shot_list(){
+	
+	var S = new OO.SceneManager();		
+	S.context = new OO.Context("Shotgun");
+	
+	S.assets.load_project_assets();
+	
+	var billy_shot_list = S.assets.get_asset_shot_list("ch_billy");
+	
+	MessageLog.trace(billy_shot_list);
+	
+}
+
+
+
+
 // TREE MANIPULATIONS
 
 function create_tree_with_selection(){

@@ -157,8 +157,6 @@ OO.AssetManager = function(_S){
 			
 			var curItem = asset_list[a];
 			
-			
-			
 			////MessageLog.trace("new asset param : ");
 			////MessageLog.trace(Object.getOwnPropertyNames(curItem));
 			
@@ -213,30 +211,36 @@ OO.AssetManager = function(_S){
 					var line_split = csv_string.split("\n");
 					
 					
+					
 					for (var l = 1 ; l < line_split.length ; l++){
 						
 						var second_split = line_split[l].split('"');
 						
 						var asset_param = {
 							
-							id: second_split[1],
-							code:second_split[3],
-							sg_asset_type:second_split[5],
+							id:second_split[1] != undefined ? this.remove_spaces(second_split[1]) : "",
+							code:second_split[3] != undefined ? this.remove_spaces(second_split[3]) : "",
+							sg_asset_type:second_split[5] != undefined ? this.remove_spaces(second_split[5]) : "",
 							shots:[]
 	
 						};
 						
-						var shots_string = second_split[z]
+						if(shot_string != undefined){
 						
-						var shots = shots_string.split(',');
-						
-						for (var s = 0 ; s < shots.length ; s++){
+							var shot_string = second_split[7]
 							
-							var shot = this.remove_spaces(shots[s]);
+							var shots = shot_string.split(',');
 							
-							asset_param.shots.push(shot);
+							for (var s = 0 ; s < shots.length ; s++){
+								
+								var shot = this.remove_spaces(shots[s]);
+								
+								asset_param.shots.push(shot);
+								
+							}							
 							
 						}
+
 						
 						var new_asset  = new OO.Asset(asset_param);
 						
@@ -267,7 +271,7 @@ OO.AssetManager = function(_S){
 		
 	}
 	
-	this.get_asset_shot_list = function(_asset){
+	this.get_asset_shot_list = function(_asset_code){
 		
 		this.load_project_assets('csv'); 
 		
@@ -275,7 +279,9 @@ OO.AssetManager = function(_S){
 			
 			current_asset = this.project_assets[a]; 
 			
-			if(current_asset.get_code() == _asset.get_code()){
+			MessageLog.trace(current_asset.get_code());
+			
+			if(current_asset.get_code() == _asset_code){
 				
 				return current_asset.get_shots();
 				
@@ -285,6 +291,7 @@ OO.AssetManager = function(_S){
 		}
 		
 	}	
+	
 
 	
 }
