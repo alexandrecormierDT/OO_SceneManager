@@ -1468,3 +1468,56 @@ function scale_selected_nodes(_axe){
 	
 }
 
+
+
+
+function copy_node_name_process(){
+	
+	var snodes = selection.selectedNodes(); 
+	
+	MessageLog.trace(snodes);
+	
+	    var d = new Dialog
+	    d.title = "COPY NODE NAME";
+	    d.width = 100;
+
+		var INPUTX = new ComboBox();
+		 INPUTX.label = "SOURCE  : ";
+		 INPUTX.editable = false;
+		 INPUTX.itemList = snodes;
+		d.add(INPUTX);
+			
+		var INPUTY = new ComboBox();
+		 INPUTY.label = "TARGET  : ";
+		 INPUTY.editable = false;
+		 INPUTY.itemList = snodes;
+		d.add(INPUTY);	
+		
+		var INPUTP = new ComboBox();
+		 INPUTP.label = "PREFIX  : ";
+		 INPUTP.editable = true;
+		 INPUTP.itemList = ["","FRONT_","BACK_"];
+		d.add(INPUTP);	
+		
+
+		
+	if ( d.exec() ){
+
+		var source_node = $.scene.getNodeByPath(INPUTX.currentItem);
+		var target_node = $.scene.getNodeByPath(INPUTY.currentItem);				
+		var prefix = INPUTP.currentItem;				
+			
+		var new_name = prefix+source_node.name+"_";
+			
+		target_node.name = new_name
+		
+		selection.clearSelection();
+		selection.addNodeToSelection(INPUTY.currentItem)
+	}
+		
+
+	
+
+	
+}
+
