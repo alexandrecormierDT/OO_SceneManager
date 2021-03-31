@@ -27,6 +27,7 @@ OO.psd_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/psd/";
 OO.png_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/png/";
 OO.svg_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/svg/";
 OO.video_export_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/ep101/";
+OO.vault_path = "P:/.vault/billy/";
 
 // PIPE COLORS :
 
@@ -129,7 +130,7 @@ function show_scene_infos(){
 	
 	var S = new OO.SceneManager();	
 
-	S.context = new OO.Context("Shotgun");	
+	S.context = new OO.Context(this,"Shotgun");	
 	
 	S.context.set_from_scene_path();
 	
@@ -144,7 +145,7 @@ function write_scene_journal(){
 	
 	var S = new OO.SceneManager();	
 	
-	S.context = new OO.Context("Shotgun");	
+	S.context = new OO.Context(this,"Shotgun");	
 	
 	S.context.set_from_scene_path();
 	
@@ -222,7 +223,7 @@ function fetch_script_prefs(_script_name){
 function get_scene_asset_shot_list(){
 	
 	var S = new OO.SceneManager();		
-	S.context = new OO.Context("Shotgun");
+	S.context = new OO.Context(this,"Shotgun");
 	
 	S.assets.load_project_assets();
 	
@@ -360,13 +361,11 @@ function import_setup(_setup_name){
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/import_setup.html");
 	
-	S.context = new OO.Context("Shotgun");
+	S.context = new OO.Context(this,"Shotgun");
 	
 	S.context.set_library_path(OO.library_path);
 	
-	S.context.set_psd_path(OO.psd_path);
-	
-	S.context.set_video_export_path(OO.video_export_path)
+
 	
 	//mark scene path : 
 	
@@ -428,7 +427,7 @@ function load_shot_setup(){
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/load_shot_setup.html");
 	
-	S.context = new OO.Context("Shotgun");
+	S.context = new OO.Context(this,"Shotgun");
 	
 	S.context.set_library_path(OO.library_path);
 	
@@ -463,7 +462,7 @@ function create_empty_portal(){
 	
 	var S = new OO.SceneManager();	
 	
-	S.context = new OO.Context("Shotgun");
+	S.context = new OO.Context(this,"Shotgun");
 	
 	S.context.set_library_path(OO.library_path);
 	
@@ -517,17 +516,6 @@ function create_empty_portal(){
 } 
 
 
-function create_empty_portal__old__(){
-	
-	var S = new OO.SceneManager();	
-	
-
-	
-	var nportal = S.portals.add("empty");
-	
-	nportal.tree.ungroup();
-				
-} 
 
 function empty_selected_portals(){
 	
@@ -728,6 +716,9 @@ function create_portals(_type){
 	
 	S.context.set_svg_path(OO.svg_path);
 	
+	S.context.set_vault_path(OO.vault_path)
+	
+	
 	S.assets.load_breakdown('csv');
 	
 	var target_backdrop = false;
@@ -830,6 +821,8 @@ function pull_(_asset_type){
 	S.context.set_png_path(OO.png_path);
 	
 	S.context.set_svg_path(OO.svg_path);
+	
+	S.context.set_vault_path(OO.vault_path)
 	
 	S.assets.load_breakdown('csv');
 	
@@ -938,7 +931,10 @@ function fit_selected_portals_to_camera(){
 
 	S.context.set_svg_path(OO.svg_path);
 	
+	S.context.set_vault_path(OO.vault_path)
+	
 	S.assets.load_breakdown('csv');
+	
 	
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
@@ -1000,7 +996,11 @@ function fit_bg_to_camera(){
 	
 	S.context.set_svg_path(OO.svg_path);
 	
+	S.context.set_vault_path(OO.vault_path)
+	
 	S.assets.load_breakdown('csv');
+	
+
 	
 	S.portals.load_from_scene();
 	
@@ -1069,6 +1069,8 @@ function pull_png(){
 	S.context.set_png_path(OO.png_path);
 	
 	S.context.set_svg_path(OO.svg_path);
+	
+	S.context.set_vault_path(OO.vault_path)
 	
 	S.assets.load_breakdown('csv');
 	
@@ -1173,6 +1175,8 @@ function pull_psd(){
 	S.context.set_png_path(OO.png_path);
 	
 	S.context.set_svg_path(OO.svg_path);
+
+	S.context.set_vault_path(OO.vault_path)
 	
 	S.assets.load_breakdown('csv');
 	
@@ -1275,6 +1279,7 @@ function export_asset_png_process(){
 	S.context.set_context_type('Shotgun');	
 	
 	S.context.set_library_path(OO.library_path);
+	
 	
 	//reading scene shotgun context
 	
@@ -1547,7 +1552,7 @@ function send_video_as_version(){
 	
 	var S = new OO.SceneManager();	
 	
-	S.context = new OO.Context("Shotgun");	
+	S.context = new OO.Context(this,"Shotgun");	
 	
 	S.context.set_from_scene_path();
 	
@@ -1617,7 +1622,7 @@ function create_asset_dir(){
 			
 			var test_path ="P:/projects/billy/pre_shotgun/batch_pool/directory/test/";
 			
-			S.context.get_last_version_sub_dir(test_path);
+			S.context.get_last_publish_dir(test_path);
 			
 			//var asset_dir = new $.oFolder(final_path).create();
 	

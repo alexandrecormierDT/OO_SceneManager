@@ -4,17 +4,21 @@
 // CLASS TO HANDLE FILES , PATHS , GLOBAL CONTEXT AND INTERACTIONS
 
 
-OO.Context = function (_type){
+OO.Context = function (_S,_type){
 	
 	var CONTEXT_TYPE = _type
 	
 	var LIBRARY_PATH = "none";
+	
+	var S = _S
 	
 	//temporary
 	var PSD_PATH = "";
 	var PNG_PATH = "";
 	var SVG_PATH = "";
 	var VIDEO_EXPORT_PATH = "";
+	
+	var VAULT_PATH = ""; 
 
 	
 	this.project ="";
@@ -26,6 +30,26 @@ OO.Context = function (_type){
 	this.task =""		
 	this.software = ""				
 	this.tb_file_type =""
+	
+	//should later fecth from csv :
+	
+	var BG_TASKS = [
+		"pack_board",
+		"recherche",
+		"bg_layout",
+		"trait_couleur",
+		"fabrication",
+		"numerisation",
+		"retouche_ps",
+		"confo_ps",
+		"psd_to_nodes"
+	]
+	
+	var DESIGN_TASKS = [
+	
+	
+	
+	]
 	
 	
 	
@@ -63,11 +87,19 @@ OO.Context = function (_type){
 		LIBRARY_PATH = _lp;
 		
 	}
+	this.set_vault_path= function(_lp){
 		
+		VAULT_PATH = _lp;
+		
+	}		
 	this.get_context_type = function(){
 		
 		return CONTEXT_TYPE;
 	}
+	
+	
+	
+	
 	
 	this.breakdown_scene_path = function(){
 		
@@ -399,6 +431,14 @@ OO.Context = function (_type){
 							dir_path = PSD_PATH;
 							
 						break;
+						
+						case("Shotgun"):
+						
+							// soon dirctly to shotgun folders in the vault
+							
+							dir_path = PSD_PATH;
+							
+						break;
 							
 						case("Prototype"): 
 						
@@ -415,6 +455,8 @@ OO.Context = function (_type){
 					
 				break;		
 				case "tpl": 	
+				
+					// tpl are fetched from the library 
 				
 					switch(CONTEXT_TYPE){
 						
@@ -545,71 +587,24 @@ OO.Context = function (_type){
 						
 						case ("bg"): 
 						
-							var dir_path = "P:/projects/billy/pre_shotgun/batch_pool/directory/"+asset_type+"/"+asset_code+"/";
+							var asset_type = asset_type.toUpperCase();
+						
+							//TEMPORARY DIRECTORY FIRST : 
+
+							var temp_dir_path = "P:/projects/billy/pre_shotgun/batch_pool/directory/"+asset_type+"/"+asset_code+"/";
 			
-							file_path = this.find_file_by_extension(dir_path,"png");
+							file_path = this.find_file_by_extension(temp_dir_path,data_type);
 							
 							if(this.file_exist(file_path)== false){
 								
+								S.log.add("no png found in temp dir : "+temp_dir_path,"error")
 								
-								//WE SEARCH FOR THE BG INSIDE THE VAULT
+								file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);	
 								
-								MessageLog.trace("can't find ( "+file_path+" )")
-								
-
-								//SAMPLE OF VAULT PATH : P:\.vault\billy\assets\psd\BG\default\bg_ep101pl004_spe_ext_j_a0_bd_jessy_dog\fabrication
-									
-								var vault_dir = "P:/.vault/billy/assets/psd/BG/default/"+asset_code+"/fabrication/"
-									
-								var dir_path = this.get_last_version_sub_dir(vault_dir);
-									
-								file_path = this.find_file_by_extension(dir_path,"png");	
-
-								
-
-								if(this.file_exist(file_path)== false){
-									
-									//WE SEARCH FOR THE LAYOUT INSIDE THE VAULT
-									
-									MessageLog.trace("can't find ( "+file_path+" )")
-	
-									
-									var vault_dir = "P:/.vault/billy/assets/psd/BG/default/"+asset_code+"/bg_layout/"
-									
-									var dir_path = this.get_last_version_sub_dir(vault_dir);
-								
-									file_path = this.find_file_by_extension(dir_path,"png");
-									
-									
-								}								
-								
-							}
-							
+								MessageLog.trace("found png : ");
 						
-							/*file_path = dir_path+"/"+asset_code+".png";
-						
-							if(this.file_exist(file_path)!= true){
-
-								//we just compare the shotcode in the bg name : 
-								
-								
-								//don't work with shotgun scenes. 
-								var shotcode = this.get_shotcode_from_scene_name();
-								
-								var bg_shotcode = this.get_bg_infos_from_name().shot_code
-								
-								//maybe the psd starts with lt instead of bg ? 
-								
-								file_path = dir_path+"/"+asset_code+".png";
-								
-								if(this.file_exist(file_path)!= true){
-									
-									file_path = dir_path+this.get_lt_path(asset)+".png";
-									
-								}
-								
-								 
-							}*/			
+								MessageLog.trace(file_path);				
+							}		
 							
 						break; 
 
@@ -619,63 +614,49 @@ OO.Context = function (_type){
 				break; 
 				
 				case "psd": 
-					
-					file_path = dir_path+"/"+asset_code+".psd";
-					
-					if(this.file_exist(file_path)){
+				
+					switch (asset_type){
 						
-					}else{
+						case ( "Character" ) : 
+						case ( "Prop" ) : 
+						case ( "Fx" ) : 
+							
+							
+							
+						break; 
 						
-						//maybe the psd starts with lt instead of bg ? 
-
-						file_path = dir_path+this.get_lt_path(asset)+".psd";
-						 
-					}			
+						case ("bg"): 
+							
+							file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
+							
+							MessageLog.trace("found psd : ");
+						
+							MessageLog.trace(file_path);						
+						}
+	
 					
 				break; 	
+				
 				case "svg": 
 				
-				
-				
-					/*dir_path = this.get_asset_svg_dir_path(asset);
-					
-					file_path = dir_path+"/"+asset_code+".svg";*/
-					
-					
-					//P:\.vault\billy\assets\psd\BG\default\bg_ep101pl027_jck_ext_j_pc2_pied_arbre\bg_layout\1
-					
-					//P:\.vault\billy\assets\psd\BG\default\bg_ep101pl072_mon_ext_j_a4_riviere_berge\bg_layout
-					//P:/.vault/billy/assets/psd/BG/default/bg_ep101pl072_mon_j_a4_riviere_berge/bg_layout/
-					
-					var vault_dir = "P:/.vault/billy/assets/psd/BG/default/"+asset_code+"/bg_layout/"
-					
-					MessageLog.trace("vault_dir");
-					MessageLog.trace(vault_dir);					
-					
-					
-					var dir_path = this.get_last_version_sub_dir(vault_dir);
-					
-					MessageLog.trace("asset_dir_path");
-					MessageLog.trace(dir_path);
-					
-					file_path = this.find_file_by_extension(dir_path,"svg");
-					
-					MessageLog.trace("found svg");
-					MessageLog.trace(file_path);
-					
-					/*if(this.file_exist(file_path)){
+					switch (asset_type){
 						
-					}else{
+					case ( "Character" ) : 
+					case ( "Prop" ) : 
+					case ( "Fx" ) : 
+								
+					break; 
 						
-						//maybe the psd starts with lt instead of bg ? 
+					case ("bg"): 				
 						
-						file_path = dir_path+this.get_lt_path(asset)+".svg";
+						file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
 						
-						MessageLog.trace("lt_file_path")
+						MessageLog.trace("found svg : ");
 						
-						MessageLog.trace(file_path)
-						
-					}	*/		
+						MessageLog.trace(file_path);
+	
+
+					}
 					
 				break; 			
 				case "tpl": 
@@ -690,15 +671,129 @@ OO.Context = function (_type){
 		return file_path;
 	}
 	
-	this.get_last_version_sub_dir = function(_dir_path){
+	this.get_last_task_publish = function(_asset_code,_asset_type,_data_type,_task){
+		
+		// we look for publish files in the task directory 
+		
+		var asset_code = _asset_code;
+		var asset_type = _asset_type;
+		var data_type = _data_type;		
+		var task = _task;		
+		var dir_type = _data_type;
+		
+		if(_asset_type == "bg" || _asset_type == "BG" ){
+			
+			asset_type = _asset_type.toUpperCase();
+
+		}
+	
+		if(dir_type == "png" || dir_type == "svg"){
+		
+			//all those format are in thepsd directory
+			dir_type = "psd"
+			
+		}			
+		
+		var task_dir_path = VAULT_PATH+"/assets/"+dir_type+"/"+asset_type+"/default/"+asset_code+"/"+task+"/"
+		
+		var task_folder = new $.oFolder(task_dir_path);
+		
+		if(task_folder.exists){
+			
+			var latest_publish_dir = this.get_last_publish_dir(task_dir_path)
+			
+			if(latest_publish_dir!=false){
+				
+				var asked_file = this.find_file_by_extension(latest_publish_dir,data_type);
+				
+				if(asked_file!=false){
+				
+					S.log.add("found ( "+asked_file+" ) for asset ( "+asset_code+" ) ","success");
+					
+					return asked_file;
+					
+				}else{
+					
+					return false;
+				}
+				
+			}else{
+				
+				return false;
+			}
+			
+		}else{
+			
+			return false;
+			
+		}
+		
+		
+	}
+	
+	this.find_latest_bg_file_in_vault = function(_asset_code,_data_type){
+		
+		var asset_code = _asset_code;
+		var asset_type = "BG";
+		var data_type = _data_type;
+		var dir_type = _data_type
+
+		//starting at the last task
+		
+		var empty_dirs = "";
+
+		for(var i = BG_TASKS.length ; i > 0 ; i --){
+			
+			var current_task = BG_TASKS[i]; 
+			
+			var vault_file_path = this.get_last_task_publish(asset_code,asset_type,data_type,current_task)
+			
+			if( vault_file_path != false){
+				
+				return  vault_file_path;
+			}
+
+		}
+		
+		S.log.add("no published bg ( "+_data_type+" ) found for asset ( "+_asset_code+" )","error");
+		
+		return false;
+		
+	}
+	
+	this.get_task_dirs = function(_dir_path){
 		
 		var dir = new $.oFolder(_dir_path); 
 		
-		var sub_folders = dir.folders
+		var sub_folders = dir.folders;
+		
+		if(sub_folders.length > 0){
+		
+			return sub_folders;
+		
+		}
+		
+		return false; 		
+		
+	}
+
+	
+	
+	this.get_last_publish_dir = function(_dir_path){
+		
+		var dir = new $.oFolder(_dir_path); 
+		
+		var sub_folders = dir.folders;
 		
 		MessageLog.trace(sub_folders);
 		
-		return sub_folders[sub_folders.length-1];
+		if(sub_folders.length > 0){
+		
+			return sub_folders[sub_folders.length-1];
+		
+		}
+		
+		return false; 
 		
 	}
 

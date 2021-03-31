@@ -319,7 +319,6 @@ OO.SceneManager = function(){
 
 			if(asset_type == _type || asset_type == "all_type"){
 
-				
 				var nportal = this.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path,final_png_path);	
 
 				MessageLog.trace("*------------> creating portal for asset : ( "+asset_code+" ) TYPE  ( "+asset_type+" )");
