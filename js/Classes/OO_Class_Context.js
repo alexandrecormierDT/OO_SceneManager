@@ -27,6 +27,8 @@ OO.Context = function (_type){
 	this.software = ""				
 	this.tb_file_type =""
 	
+	
+	
 	//TODO MAKE ONE BIG FUNCTION FOR ALL THS : (set_path(type))
 	
 	this.set_video_export_path = function(_vep){
@@ -82,6 +84,8 @@ OO.Context = function (_type){
 		return scene.currentProjectPathRemapped()
 		
 	}
+	
+	
 	
 	this.set_from_scene_path = function(){
 		
@@ -254,6 +258,8 @@ OO.Context = function (_type){
 	
 	this.get_shotcode_from_scene_name = function(){
 		
+			//P:/projects/billy/pre_shotgun/batch_pool/xstages/test_scene/ep101_pl023_animatic_v001
+		
 			var scene_path = scene.currentScene().split("/")
 			var scene_name = scene_path[scene_path.length-1]
 			var shotcode = scene_name.split("_")[0]+"_"+scene_name.split("_")[1];
@@ -357,6 +363,8 @@ OO.Context = function (_type){
 							if(asset_type =="bg"){
 								
 								dir_path = PNG_PATH;
+								
+								
 								
 							}else{
 								
@@ -463,6 +471,47 @@ OO.Context = function (_type){
 		return dir_path; 
 	}
 	
+	this.find_file_by_extension = function(_dir_path,_extension){
+		
+			var folder = new $.oFolder(_dir_path)
+			var file_list = folder.getFiles("*."+_extension);
+			
+			MessageLog.trace(file_list);
+			
+			if(file_list.length == 0){
+			
+				return false;
+				
+			}
+			
+			return file_list
+
+			
+			
+		
+	}
+	
+	this.get_bg_infos_from_name = function(bg_name){
+		
+		
+		// name exemple : bg_ep101pl023_bos_j_a2_chemin_jack
+
+		var firstsplit = bg_name.split("_")[1]
+		
+		var result = {
+			bg_type :  bg_name.split("_")[0],			
+			episode :   firstsplit.substring(0, 5),
+			shot_number : firstsplit.substring(5, 10),
+			shot_code : episode+"_"+shot_number
+		}
+
+		return result; 
+		
+	}
+	
+	
+	
+	
 	// GET THE PATH OF THE REQUESTED ASSET DATA :
 	
 	this.get_asset_data_path = function(_asset,_data_type,_departement){
@@ -476,7 +525,7 @@ OO.Context = function (_type){
 		if(asset != false){
 	
 			var asset_type = _asset.get_type();
-			var asset_code = _asset.get_last_publish()
+			var asset_code = _asset.get_code()
 
 			var dir_path = 	this.get_dir_path(asset,data_type,departement);
 			
@@ -496,18 +545,71 @@ OO.Context = function (_type){
 						
 						case ("bg"): 
 						
-							file_path = dir_path+"/"+asset_code+".png";
-						
-							if(this.file_exist(file_path)){
+							var dir_path = "P:/projects/billy/pre_shotgun/batch_pool/directory/"+asset_type+"/"+asset_code+"/";
+			
+							file_path = this.find_file_by_extension(dir_path,"png");
+							
+							if(this.file_exist(file_path)== false){
+								
+								
+								//WE SEARCH FOR THE BG INSIDE THE VAULT
+								
+								MessageLog.trace("can't find ( "+file_path+" )")
+								
+
+								//SAMPLE OF VAULT PATH : P:\.vault\billy\assets\psd\BG\default\bg_ep101pl004_spe_ext_j_a0_bd_jessy_dog\fabrication
+									
+								var vault_dir = "P:/.vault/billy/assets/psd/BG/default/"+asset_code+"/fabrication/"
+									
+								var dir_path = this.get_last_version_sub_dir(vault_dir);
+									
+								file_path = this.find_file_by_extension(dir_path,"png");	
 
 								
-							}else{
+
+								if(this.file_exist(file_path)== false){
+									
+									//WE SEARCH FOR THE LAYOUT INSIDE THE VAULT
+									
+									MessageLog.trace("can't find ( "+file_path+" )")
+	
+									
+									var vault_dir = "P:/.vault/billy/assets/psd/BG/default/"+asset_code+"/bg_layout/"
+									
+									var dir_path = this.get_last_version_sub_dir(vault_dir);
+								
+									file_path = this.find_file_by_extension(dir_path,"png");
+									
+									
+								}								
+								
+							}
+							
+						
+							/*file_path = dir_path+"/"+asset_code+".png";
+						
+							if(this.file_exist(file_path)!= true){
+
+								//we just compare the shotcode in the bg name : 
+								
+								
+								//don't work with shotgun scenes. 
+								var shotcode = this.get_shotcode_from_scene_name();
+								
+								var bg_shotcode = this.get_bg_infos_from_name().shot_code
 								
 								//maybe the psd starts with lt instead of bg ? 
 								
-								file_path = dir_path+this.get_lt_path(asset)+".png";
+								file_path = dir_path+"/"+asset_code+".png";
+								
+								if(this.file_exist(file_path)!= true){
+									
+									file_path = dir_path+this.get_lt_path(asset)+".png";
+									
+								}
+								
 								 
-							}			
+							}*/			
 							
 						break; 
 
@@ -533,11 +635,35 @@ OO.Context = function (_type){
 				break; 	
 				case "svg": 
 				
-					dir_path = this.get_asset_svg_dir_path(asset);
+				
+				
+					/*dir_path = this.get_asset_svg_dir_path(asset);
 					
-					file_path = dir_path+"/"+asset_code+".svg";
+					file_path = dir_path+"/"+asset_code+".svg";*/
 					
-					if(this.file_exist(file_path)){
+					
+					//P:\.vault\billy\assets\psd\BG\default\bg_ep101pl027_jck_ext_j_pc2_pied_arbre\bg_layout\1
+					
+					//P:\.vault\billy\assets\psd\BG\default\bg_ep101pl072_mon_ext_j_a4_riviere_berge\bg_layout
+					//P:/.vault/billy/assets/psd/BG/default/bg_ep101pl072_mon_j_a4_riviere_berge/bg_layout/
+					
+					var vault_dir = "P:/.vault/billy/assets/psd/BG/default/"+asset_code+"/bg_layout/"
+					
+					MessageLog.trace("vault_dir");
+					MessageLog.trace(vault_dir);					
+					
+					
+					var dir_path = this.get_last_version_sub_dir(vault_dir);
+					
+					MessageLog.trace("asset_dir_path");
+					MessageLog.trace(dir_path);
+					
+					file_path = this.find_file_by_extension(dir_path,"svg");
+					
+					MessageLog.trace("found svg");
+					MessageLog.trace(file_path);
+					
+					/*if(this.file_exist(file_path)){
 						
 					}else{
 						
@@ -549,7 +675,7 @@ OO.Context = function (_type){
 						
 						MessageLog.trace(file_path)
 						
-					}			
+					}	*/		
 					
 				break; 			
 				case "tpl": 
@@ -562,6 +688,18 @@ OO.Context = function (_type){
 		}
 		
 		return file_path;
+	}
+	
+	this.get_last_version_sub_dir = function(_dir_path){
+		
+		var dir = new $.oFolder(_dir_path); 
+		
+		var sub_folders = dir.folders
+		
+		MessageLog.trace(sub_folders);
+		
+		return sub_folders[sub_folders.length-1];
+		
 	}
 
 	this.get_asset_code_without_type = function(asset_code){

@@ -206,7 +206,6 @@ OO.ViewManager = function(_S){
 				
 				curView.is_selected = CB_list[v].checked;
 				
-				
 			}				
 
 			return true;

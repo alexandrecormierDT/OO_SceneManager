@@ -47,11 +47,11 @@ OO.SceneManager = function(){
 		
 			//outputs : 
 		
-			var SCENE_INFOS = "Top/SCENE_INFOS";
-			var SHOT_INFOS = "Top/SHOT_INFOS";
-			var DATE = "Top/DATE";
-			var FRAME = "Top/FRAME";
-			var TIME_CODE = "Top/TIME_CODE";
+			var SCENE_INFOS = "Top/BURNIN_SCENE_INFOS";
+			var SHOT_INFOS = "Top/BURNIN_SHOT_INFOS";
+			var DATE = "Top/BURNIN_DATE";
+			var FRAME = "Top/BURNIN_FRAME";
+			var TIME_CODE = "Top/BURNIN_TIME_CODE";
 			
 			//values : 
 
@@ -322,7 +322,7 @@ OO.SceneManager = function(){
 				
 				var nportal = this.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path,final_png_path);	
 
-				MessageLog.trace("*------------> creating portal for asset : "+asset_code+" type "+asset_type);
+				MessageLog.trace("*------------> creating portal for asset : ( "+asset_code+" ) TYPE  ( "+asset_type+" )");
 				MessageLog.trace("*------------> final_tpl_path : "+final_tpl_path)
 				MessageLog.trace("*------------> final_psd_path : "+final_psd_path)
 				MessageLog.trace("*------------> final_png_path : "+final_png_path)

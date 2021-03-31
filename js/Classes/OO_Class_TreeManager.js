@@ -646,7 +646,7 @@ OO.TreeManager = function(_S){
 
 	}
 	
-	this.import_tpl_in_group = function(_code,_path,_group){
+	this.import_tpl_in_group = function(_path,_group){
 		
 		S.log.add("importing tpl "+_path,"file")
 		
@@ -768,6 +768,17 @@ OO.TreeManager = function(_S){
 
 			var png_node = OO.doc.getNodeByPath(_group.importImage(_pngpath));
 			
+			
+			//shorten the name if it's too long
+			if(png_node.name.length > 30){
+				
+				var new_name = png_node.name.substring(30,-1000)
+				png_node.name = new_name;
+			}
+			
+			node.setLocked(png_node.path, true);
+			 
+			
 			S.log.add("import png = "+png_node,"process")
 			
 			// if the png has xli data
@@ -799,6 +810,12 @@ OO.TreeManager = function(_S){
 				
 			}
 			
+			//png_node
+			
+			// extend exposure. 
+			
+			this.extend_exposition_to_scene_length(png_node);
+			
 			return png_node;
 			
 		}else{
@@ -810,6 +827,24 @@ OO.TreeManager = function(_S){
 	}
 	
 	// TO DO ! 
+	
+	this.extend_exposition_to_scene_length= function(_onode){
+		
+		MessageLog.trace("extend_exposition_to_scene_length");
+		
+		var scene_length = scene.getStopFrame()+1
+ 
+		var dnode = OO.doc.getNodeByPath(_onode);
+		
+		var drawingAttribute = dnode.attributes.drawing.element
+		
+		for(var f = 0 ; f < scene_length ; f++){
+
+			drawingAttribute.setValue ("1", f);   
+			
+		}
+		
+	}
 	
 	this.get_image_resolution = function(_imagepath){
 		

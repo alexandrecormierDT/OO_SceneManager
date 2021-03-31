@@ -26,7 +26,7 @@ OO.sg_path = "P:/projects/billy/pre_shotgun/sg_exports/";
 OO.psd_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/psd/";
 OO.png_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/png/";
 OO.svg_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/svg/";
-OO.video_export_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/ep102/";
+OO.video_export_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/ep101/";
 
 // PIPE COLORS :
 
@@ -41,8 +41,6 @@ OO.pipe_colors.board = ["#5c411eff","#9e6d2eff"]
 OO.pipe_colors.director = ["#6e6e6eff","#6e6e6eff"]
 OO.pipe_colors.prod  = ["#ffffffff","#e0dedeff"]
 OO.pipe_colors.dt  = ["#000000ff","#000000ff"]
-
-
 
 
 //PROJECT SETTINGS
@@ -436,12 +434,13 @@ function load_shot_setup(){
 	
 	S.context.set_psd_path(OO.psd_path);
 	
-	S.context.set_video_export_path(OO.video_export_path)
 	
 	
 	var shot_setup = S.setups.apply('shot');	
 	
 	var RENDER_MOV = "Top/RENDER_MOV";
+	
+	S.context.set_video_export_path(OO.video_export_path)
 	
 	var video_render_path = S.context.generate_render_path();
 	
@@ -546,6 +545,8 @@ function empty_selected_portals(){
 	}
 
 }
+
+
 function pull_selected_portals_dialog(){
 	
 	var DATA_TYPE ="png";
@@ -659,12 +660,6 @@ function pull_selected_portals_process(_data_type){
 			
 	}	
 
-		
-		
-	
-	
-
-
 	S.log.save();		
 
 	
@@ -690,6 +685,7 @@ function push_selected_portals(_data_type){
 	for(var p = 0 ; p < S.portals.list.length; p++){
 		
 		S.context.get_psd_path
+		
 		var current_portal = S.portals.list[p];
 			
 		MessageLog.trace(current_portal.code);
@@ -702,7 +698,13 @@ function push_selected_portals(_data_type){
 	
 } 
 
-
+function udpate_asset_portal(_portal){
+	
+	
+	
+	
+	
+}
 
 
 
@@ -719,8 +721,11 @@ function create_portals(_type){
 	S.context.set_context_type('Shotgun');	
 	
 	S.context.set_library_path(OO.library_path);	
+	
 	S.context.set_psd_path(OO.psd_path);
+	
 	S.context.set_png_path(OO.png_path);
+	
 	S.context.set_svg_path(OO.svg_path);
 	
 	S.assets.load_breakdown('csv');
@@ -767,6 +772,7 @@ function create_portals(_type){
 	}
 
 	S.log.save();
+	
 }
 
 
@@ -796,6 +802,14 @@ function empty_portals(_asset_type){
 		
 	}
 
+}
+
+
+function update_portal_(_asset_type){
+	
+	
+	
+	
 }
 
 
@@ -844,11 +858,20 @@ function pull_(_asset_type){
 
 					var bg_node = S.portals.pull(current_portal,'png');		
 			
-					var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
+					/*var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
 					
 					var full_psd_path = S.context.get_asset_data_path(linked_asset,"psd");
 					
-					var full_png_path = S.context.get_asset_data_path(linked_asset,"png");
+					var full_png_path = S.context.get_asset_data_path(linked_asset,"png");*/
+					
+					
+					// should load the path from the portal and not check again with asset context __ weird logic. 
+					
+					var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
+					
+					var full_psd_path = current_portal.get_path('psd');
+					
+					var full_png_path = current_portal.get_path('png');
 					
 					MessageLog.trace("BG_PATH : ");
 					
@@ -881,11 +904,10 @@ function pull_(_asset_type){
 					
 					}
 
-			
 				}else{
-					
-					S.log.add("png not found - "+S.context.get_png_path(linked_asset),"error");
-					
+
+					S.log.add("png not found - "+S.context.get_asset_data_path(linked_asset,"png"),"error");
+
 				}			
 				
 			}
@@ -930,7 +952,7 @@ function fit_selected_portals_to_camera(){
 			
 			var full_svg_path = S.context.get_svg_path(linked_asset);
 			
-			MessageLog.trace("BG_PATH : ");
+			MessageLog.trace("SVG_PATH : ");
 			
 			MessageLog.trace(full_svg_path);
 
@@ -994,7 +1016,7 @@ function fit_bg_to_camera(){
 			
 			var full_svg_path = S.context.get_svg_path(linked_asset);
 			
-			MessageLog.trace("BG_PATH : ");
+			MessageLog.trace("SVG_PATH : ");
 			
 			MessageLog.trace(full_svg_path);
 
@@ -1004,6 +1026,7 @@ function fit_bg_to_camera(){
 				
 				if(bg_cadre.hasOwnProperty('rect')==true){
 					
+					//S.trees.scale_to_camera(portal_peg);
 					S.trees.fit_cadre_to_camera(portal_peg,bg_cadre);
 					
 				}else{
@@ -1215,29 +1238,6 @@ function pull_psd(){
 //DESIGN SCRIPT : 
 
 
-function Expiew(){
-	
-	var S = new OO.SceneManager();
-	
-	//would need to add a warning message. 
-	
-	////MessageLog.trace("Expiew");
-
-	S.load_xstage();
-	S.views.load(S.stage);
-	S.views.set_output_dir("P:/projects/billy/views");
-	
-	if(S.views.noviews == false){
-		
-		if(S.views.InputDialog()){
-			
-			S.views.export_views();
-			
-		}		
-	}
-
-}
-
 function export_markers_process(){
 	
 	var S = new OO.SceneManager();
@@ -1326,11 +1326,13 @@ function export_asset_png_process(){
 	
 }
 
+
+
+// RIG
+
 function align_selected_nodes(_axe){
 	
 	scene.beginUndoRedoAccum ("align_selected_nodes")
-	
-	
 	
 	var sumX = 1;
 	var sumY = 1;
@@ -1469,8 +1471,6 @@ function scale_selected_nodes(_axe){
 }
 
 
-
-
 function copy_node_name_process(){
 	
 	var snodes = selection.selectedNodes(); 
@@ -1499,8 +1499,6 @@ function copy_node_name_process(){
 		 INPUTP.itemList = ["","FRONT_","BACK_"];
 		d.add(INPUTP);	
 		
-
-		
 	if ( d.exec() ){
 
 		var source_node = $.scene.getNodeByPath(INPUTX.currentItem);
@@ -1509,15 +1507,209 @@ function copy_node_name_process(){
 			
 		var new_name = prefix+source_node.name+"_";
 			
-		target_node.name = new_name
+		target_node.name = new_name 
 		
 		selection.clearSelection();
 		selection.addNodeToSelection(INPUTY.currentItem)
-	}
-		
-
+	} 
 	
+}
+
+
+function update_movie_path(_writer_node,_render_path) {
+	
+		var render_path = generate_render_path()
+
+		//node.setTextAttr(writer_node, "EXPORT_TO_MOVIE",1,"Output Movie")
+		node.setTextAttr(_writer_node, "MOVIE_PATH",1,_render_path);
+		//node.setTextAttr(writer_node, "DRAWING_NAME",1,render_path);
+		
+}
+
+function quick_update_movie_path(_render_path) {
+	
+		var _writer_node = "Top/RENDER_MOV"
+
+		//node.setTextAttr(writer_node, "EXPORT_TO_MOVIE",1,"Output Movie")
+		node.setTextAttr(_writer_node, "MOVIE_PATH",1,_render_path);
+		//node.setTextAttr(writer_node, "DRAWING_NAME",1,render_path);
+		
+}
+
+function get_scene_render_path(){
+	
+		return scene.currentProjectPathRemapped()	
 
 	
 }
 
+function send_video_as_version(){
+	
+	var S = new OO.SceneManager();	
+	
+	S.context = new OO.Context("Shotgun");	
+	
+	S.context.set_from_scene_path();
+	
+	S.write_scene_path_backdrop();
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/send_version_video");
+	
+	
+	MessageLog.trace("send video as version");
+	
+	//$.scene.renderWriteNodes(false,,,,,,"P:/pipeline/alexdev/batch/after_render/after_render.js")
+	
+	var scene_path = S.context.get_scene_path();	
+	
+	var video_name = "video_test"; 
+	
+	var final_path = scene_path+"/frames/"+video_name
+	
+	quick_update_movie_path(final_path);
+	
+	//$.scene.renderWriteNodes(false,"","","","","","MessageLog.trace(render is finished)")
+	$.scene.renderWriteNodes(false,"","","","","","P:/pipeline/alexdev/batch/after_render/after_render.js")
+	
+}
+
+function background_render_scene(){
+	
+	
+	$.scene.renderWriteNodes(false)
+	
+}
+
+function create_asset_dir(){
+	
+	MessageLog.trace("ASSSET DIR");
+	
+	var S = new OO.SceneManager();	
+	
+	S.context.set_context_type('Shotgun');	
+
+	S.context.set_svg_path(OO.svg_path);
+	
+	S.assets.load_project_assets("csv")
+
+	
+	for(var i = 0 ; i < S.assets.project_assets.length ; i ++){
+	//for(var i = 0 ; i < 10; i ++){
+		
+		var current_asset = S.assets.project_assets[i];
+		
+		if(current_asset.get_type() == "BG"){
+			
+			var type = current_asset.get_type();
+			
+			var code = current_asset.get_code();
+			
+			MessageLog.trace(code);
+			
+			
+			var dir_path = "P:/projects/billy/pre_shotgun/batch_pool/directory/"+type+"/"+code+"/";
+			
+			//var files = S.context.find_file_by_extension(dir_path,"png");
+			
+			//MessageLog.trace(dir_path);
+			
+			//MessageLog.trace(files[0]);
+			
+			var test_path ="P:/projects/billy/pre_shotgun/batch_pool/directory/test/";
+			
+			S.context.get_last_version_sub_dir(test_path);
+			
+			//var asset_dir = new $.oFolder(final_path).create();
+	
+		}
+		
+	}
+	
+}
+
+/*
+
+	B A T C H   M O D E
+
+*/
+function batch_preview_bg(){
+		
+	//import_project_settings()
+
+	//import_setup('shot')
+
+	//create_portals('bg')
+	
+	pull_("bg");
+	
+	fit_bg_to_camera();
+	
+	//turnoff_burnin()
+	
+	//check_composite_to_2d()
+
+	background_render_scene()
+
+	MessageLog.trace("SAVING...");
+
+	
+	
+	var saving = scene.saveAll();
+	
+		
+	MessageLog.trace("scene was saved : "+saving);	
+
+
+}
+
+function batch_box_anim(){
+		
+	//import_project_settings()
+
+	//import_setup('shot')
+
+	//create_portals('bg')
+	
+	pull_("anim");
+	
+	fit_bg_to_camera();
+	
+	//turnoff_burnin()
+	
+	//check_composite_to_2d()
+
+	background_render_scene()
+
+	MessageLog.trace("SAVING...");
+
+	
+	
+	var saving = scene.saveAll();
+	
+		
+	MessageLog.trace("scene was saved : "+saving);	
+
+
+}
+
+
+// TO DO : UPDATE PORTALS 
+
+function turnoff_burnin(){
+	
+	 node.setEnable("Top/BURNIN_FRAME",false);
+	 node.setEnable("Top/BURNIN_SCENE_INFOS",false);
+	 node.setEnable("Top/BURNIN_TIME_CODE",false);
+	 node.setEnable("Top/BURNIN_SHOT_INFOS",false);
+	 node.setEnable("Top/BURNIN_DATE",false);
+	
+	
+}
+
+function check_composite_to_2d(){
+	
+	node.setTextAttr("Top/CHECKC", "COMPOSITE_2D", frame.current(),"Y");
+	MessageLog.trace("COMPOSITE_2D to Y ")
+	MessageLog.trace(node.getTextAttr("Top/CHECKC", frame.current(),"COMPOSITE_2D"))
+	
+}

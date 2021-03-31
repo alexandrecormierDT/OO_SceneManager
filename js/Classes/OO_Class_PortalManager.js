@@ -105,12 +105,21 @@ OO.PortalManager = function(_S){
 
 	}	
 	
+	this.update_paths = function (_portal){
+		
+		
+		
+		
+	}
+	
 	
 	this.pull = function(_portal,_data_type){
 		
 		var final_path = ""; 
 		
 		if(_portal.path_exist(_data_type)){
+			
+			var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
 			
 			switch (_data_type){
 				
@@ -143,9 +152,7 @@ OO.PortalManager = function(_S){
 					final_path = _portal.png_path ;
 					
 					MessageLog.trace(final_path); 
-					
-					var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
-					
+
 					var png_node = S.trees.import_png_in_group(final_path,portal_group);
 					
 					if(png_node != false){
@@ -168,11 +175,13 @@ OO.PortalManager = function(_S){
 
 					return png_node;						
 					
-
-
 				break;			
 				
 				case 'tpl':
+				
+					final_path = _portal.tpl_path ;
+
+					S.trees.import_tpl_in_group(final_path,portal_group)
 				
 				
 				break;
@@ -419,7 +428,8 @@ OO.PortalManager = function(_S){
 			
 				departement_color = new $.oColorValue(OO.pipe_colors.layout[0])
 			
-			break;	
+			break;
+			
 			case "anim" : 
 			
 				departement_color = new $.oColorValue(OO.pipe_colors.anim[0])
