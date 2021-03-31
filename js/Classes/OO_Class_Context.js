@@ -52,8 +52,11 @@ OO.Context = function (_S,_type){
 	]
 	
 	
+//---------------------------------------------------------------------------------------------------------------------------
 	
-	//TODO MAKE ONE BIG FUNCTION FOR ALL THS : (set_path(type))
+	// SETTING GLOBAL PATHS : 
+	
+//---------------------------------------------------------------------------------------------------------------------------
 	
 	this.set_video_export_path = function(_vep){
 	
@@ -65,12 +68,14 @@ OO.Context = function (_S,_type){
 		
 		PSD_PATH = _pp
 	}
+	
 	this.set_svg_path = function(_sp){
 		
 		SVG_PATH = _sp
 		MessageLog.trace("SVG_PATH");
 		MessageLog.trace(SVG_PATH);
 	}	
+	
 	this.set_png_path = function(_pnp){
 		
 		PNG_PATH = _pnp
@@ -99,7 +104,17 @@ OO.Context = function (_S,_type){
 	
 	
 	
-	
+
+
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------
+
+	// FETCHING INFOS ABOUT THE SCENE 
+
+//---------------------------------------------------------------------------------------------------------------------------	
 	
 	this.breakdown_scene_path = function(){
 		
@@ -212,64 +227,7 @@ OO.Context = function (_S,_type){
 		
 	}
 
-	this.get_type_from_asset_code = function(asset_code){
 		
-		//MessageLog.trace("get_type_with_asset_code");
-		
-		var short_type = asset_code.split("_")[0];
-		
-		//MessageLog.trace(short_type);
-		
-		var sg_asset_type = "notype";
-		
-		switch(short_type){
-		
-			case "bg":
-			
-				 sg_asset_type =  "bg";
-			
-			break;
-			case "ch":
-			
-				sg_asset_type = "Character";
-			
-			break;			
-			case "p":
-			
-				sg_asset_type = "Posing";
-			
-			break;
-			case "pr":
-			
-				sg_asset_type = "Prop";
-			
-			break;			
-			case "fx":
-			
-				sg_asset_type = "Fx"; 
-			
-			break;				
-		}
-		
-		//MessageLog.trace("FOUND TYPE : ");
-		//MessageLog.trace(sg_asset_type);
-		
-		return sg_asset_type;
-		
-	}
-	
-	this.read_episode_from_bg_code = function (bg_code){
-		
-		var split_underscore = bg_code.split("_");
-		
-		var shot_code = split_underscore[1];
-		
-		var conformed_shot_code = shot_code.splice(5, 0, "_");
-		
-		return conformed_shot_code;
-
-	}
-	
 	
 	this.get_episode = function(){
 		
@@ -329,8 +287,19 @@ OO.Context = function (_S,_type){
 		
 	}	
 	
+
+	
+	
+	
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------
+	
 	//OLD FUNCTIONS
 	
+//---------------------------------------------------------------------------------------------------------------------------
+
 	this.get_asset_png_dir_path = function(_asset){
 		
 		var dir_path = this.get_dir_path(_asset,'png');	
@@ -360,14 +329,23 @@ OO.Context = function (_S,_type){
 		
 	}
 	
-	
 	this.get_svg_path = function(_asset){
 		
 		return this.get_asset_data_path(_asset,'svg')
 		
 	}	
 	
-	// FIND DIRECTORY WHERE THE ASSET DATA IS STORED (LIBRARY) 
+	
+	
+	
+	
+
+
+//---------------------------------------------------------------------------------------------------------------------------
+
+	// FIND DIRECTORY WHERE THE ASSET DATA IS STORED  --- won't be used much later
+	
+//---------------------------------------------------------------------------------------------------------------------------
 	
 	this.get_dir_path = function(_asset,_data_type,_departement){
 		
@@ -527,34 +505,22 @@ OO.Context = function (_S,_type){
 			}
 			
 			return file_list
-
-			
-			
-		
-	}
-	
-	this.get_bg_infos_from_name = function(bg_name){
-		
-		
-		// name exemple : bg_ep101pl023_bos_j_a2_chemin_jack
-
-		var firstsplit = bg_name.split("_")[1]
-		
-		var result = {
-			bg_type :  bg_name.split("_")[0],			
-			episode :   firstsplit.substring(0, 5),
-			shot_number : firstsplit.substring(5, 10),
-			shot_code : episode+"_"+shot_number
-		}
-
-		return result; 
 		
 	}
 	
 	
 	
+	
+	
+	
+//---------------------------------------------------------------------------------------------------------------------------
 	
 	// GET THE PATH OF THE REQUESTED ASSET DATA :
+	
+//---------------------------------------------------------------------------------------------------------------------------
+
+
+	// used in many scripts : 
 	
 	this.get_asset_data_path = function(_asset,_data_type,_departement){
 		
@@ -659,6 +625,7 @@ OO.Context = function (_S,_type){
 					}
 					
 				break; 			
+				
 				case "tpl": 
 					
 					file_path = dir_path+"/"+asset_code+".tpl";
@@ -670,6 +637,20 @@ OO.Context = function (_S,_type){
 		
 		return file_path;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//---------------------------------------------------------------------------------------------------------------------------	
+
+	// SEARCHING IN THE VAULT 
+	
+//---------------------------------------------------------------------------------------------------------------------------
 	
 	this.get_last_task_publish = function(_asset_code,_asset_type,_data_type,_task){
 		
@@ -797,34 +778,16 @@ OO.Context = function (_S,_type){
 		
 	}
 
-	this.get_asset_code_without_type = function(asset_code){
-		
-		// CHANGE   "bg_ep102pl022_ded_ext"   TO   "ep102pl022_ded_ext"  
-		
-		//MessageLog.trace("get_asset_code_without_type");
-		
-		var split1 =  asset_code.split("_");
-		
-		var result = ""; 
-		
-		for(var i = 0 ; i < split1.length ; i++){
-			
-			if(i == 1){
-				result +=split1[i];
-			}
-			if(i > 1){
-				result +="_"
-				result +=split1[i];
-			}
-			
-			//MessageLog.trace(split1[i]);
-			
-		}
-		
-		//MessageLog.trace(result);
-		
-		return result; 
-	}
+
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------
+
+	//OTHER FUNCTIONS 
+
+//---------------------------------------------------------------------------------------------------------------------------
 
 	this.file_exist = function(path){
 		
@@ -956,6 +919,127 @@ OO.Context = function (_S,_type){
 		}		
 		
 	}
+	
+	
+	
+	
+//---------------------------------------------------------------------------------------------------------------------------
+	
+	
+	// PARSING STRING : 
+	
+	
+//---------------------------------------------------------------------------------------------------------------------------
+	
+	
+	
+	this.get_type_from_asset_code = function(asset_code){
+		
+		//MessageLog.trace("get_type_with_asset_code");
+		
+		var short_type = asset_code.split("_")[0];
+		
+		//MessageLog.trace(short_type);
+		
+		var sg_asset_type = "notype";
+		
+		switch(short_type){
+		
+			case "bg":
+			
+				 sg_asset_type =  "bg";
+			
+			break;
+			case "ch":
+			
+				sg_asset_type = "Character";
+			
+			break;			
+			case "p":
+			
+				sg_asset_type = "Posing";
+			
+			break;
+			case "pr":
+			
+				sg_asset_type = "Prop";
+			
+			break;			
+			case "fx":
+			
+				sg_asset_type = "Fx"; 
+			
+			break;				
+		}
+		
+		//MessageLog.trace("FOUND TYPE : ");
+		//MessageLog.trace(sg_asset_type);
+		
+		return sg_asset_type;
+		
+	}
+	
+	this.read_episode_from_bg_code = function (bg_code){
+		
+		var split_underscore = bg_code.split("_");
+		
+		var shot_code = split_underscore[1];
+		
+		var conformed_shot_code = shot_code.splice(5, 0, "_");
+		
+		return conformed_shot_code;
+
+	}
+	
+	this.get_bg_infos_from_name = function(bg_name){
+		
+		
+		// name exemple : bg_ep101pl023_bos_j_a2_chemin_jack
+
+		var firstsplit = bg_name.split("_")[1]
+		
+		var result = {
+			bg_type :  bg_name.split("_")[0],			
+			episode :   firstsplit.substring(0, 5),
+			shot_number : firstsplit.substring(5, 10),
+			shot_code : episode+"_"+shot_number
+		}
+
+		return result; 
+		
+	}
+	
+	this.get_asset_code_without_type = function(asset_code){
+		
+		// CHANGE   "bg_ep102pl022_ded_ext"   TO   "ep102pl022_ded_ext"  
+		
+		//MessageLog.trace("get_asset_code_without_type");
+		
+		var split1 =  asset_code.split("_");
+		
+		var result = ""; 
+		
+		for(var i = 0 ; i < split1.length ; i++){
+			
+			if(i == 1){
+				result +=split1[i];
+			}
+			if(i > 1){
+				result +="_"
+				result +=split1[i];
+			}
+			
+			//MessageLog.trace(split1[i]);
+			
+		}
+		
+		//MessageLog.trace(result);
+		
+		return result; 
+	}	
+	
+	
+	
 		
 	
 }

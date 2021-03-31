@@ -268,11 +268,18 @@ OO.SceneManager = function(){
 				
 				// return false if no mathcing cadre with current shot where found in the svg
 				
+				if(cadre == false){
+					
+					this.log.add("[SVG] no cadre found for shot ( "+shot+" ) in ( "+svg_path+" ) ","error");
+				}
+				
+			
+				
 				return cadre;
 
 			}else{
 				
-				this.log.add("SVG problem with content of "+svg_path,"error");
+				this.log.add("[SVG] problem with content of ( "+svg_path+" ) ","error");
 				
 				return false;	
 				
@@ -280,7 +287,7 @@ OO.SceneManager = function(){
 			
 		}else{
 			
-				this.log.add("SVG can't find svg file - "+svg_path,"error");
+				this.log.add("[SVG] can't find svg file ( "+svg_path+" ) ","error");
 				
 				return false;			
 			

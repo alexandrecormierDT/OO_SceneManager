@@ -223,6 +223,7 @@ function fetch_script_prefs(_script_name){
 function get_scene_asset_shot_list(){
 	
 	var S = new OO.SceneManager();		
+	
 	S.context = new OO.Context(this,"Shotgun");
 	
 	S.assets.load_project_assets();
