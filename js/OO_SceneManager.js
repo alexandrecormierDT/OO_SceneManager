@@ -151,7 +151,7 @@ function write_scene_journal(){
 	
 	S.write_scene_path_backdrop();
 	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/journal");
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/journal.html");
 	
 	var scene_path = S.context.get_scene_path();
 	
@@ -1640,11 +1640,11 @@ function create_asset_dir(){
 */
 function batch_preview_bg(){
 		
-	//import_project_settings()
+	import_project_settings()
 
-	//import_setup('shot')
+	import_setup('shot')
 
-	//create_portals('bg')
+	create_portals('bg')
 	
 	pull_("bg");
 	
@@ -1676,9 +1676,9 @@ function batch_box_anim(){
 
 	//create_portals('bg')
 	
-	pull_("anim");
+	//pull_("anim");
 	
-	fit_bg_to_camera();
+	//fit_bg_to_camera();
 	
 	//turnoff_burnin()
 	
@@ -1688,11 +1688,8 @@ function batch_box_anim(){
 
 	MessageLog.trace("SAVING...");
 
-	
-	
 	var saving = scene.saveAll();
 	
-		
 	MessageLog.trace("scene was saved : "+saving);	
 
 
