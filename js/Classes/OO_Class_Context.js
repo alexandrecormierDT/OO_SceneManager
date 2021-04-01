@@ -491,26 +491,12 @@ OO.Context = function (_S,_type){
 		return dir_path; 
 	}
 	
-	this.find_file_by_extension = function(_dir_path,_extension){
-		
-			var folder = new $.oFolder(_dir_path)
-			var file_list = folder.getFiles("*."+_extension);
-			
-			MessageLog.trace(file_list);
-			
-			if(file_list.length == 0){
-			
-				return false;
-				
-			}
-			
-			return file_list
-		
-	}
 	
 	
 	
 	
+	
+
 	
 	
 //---------------------------------------------------------------------------------------------------------------------------
@@ -639,8 +625,28 @@ OO.Context = function (_S,_type){
 	}
 	
 	
+
+	
+	this.find_file_by_extension = function(_dir_path,_extension){
+		
+			var folder = new $.oFolder(_dir_path)
+			var file_list = folder.getFiles("*."+_extension);
+			
+			MessageLog.trace(file_list);
+			
+			if(file_list.length == 0){
+			
+				return false;
+				
+			}
+			
+			return file_list
+		
+	}
 	
 	
+	
+		
 	
 	
 	
@@ -651,6 +657,8 @@ OO.Context = function (_S,_type){
 	// SEARCHING IN THE VAULT 
 	
 //---------------------------------------------------------------------------------------------------------------------------
+	
+	// search for specified format fil in the specified task. 
 	
 	this.get_last_task_publish = function(_asset_code,_asset_type,_data_type,_task){
 		
@@ -719,9 +727,11 @@ OO.Context = function (_S,_type){
 		var data_type = _data_type;
 		var dir_type = _data_type
 
-		//starting at the last task
+		//starting at the last task by order of fabrication. 
 		
 		var empty_dirs = "";
+		
+		// 
 
 		for(var i = BG_TASKS.length ; i > 0 ; i --){
 			
