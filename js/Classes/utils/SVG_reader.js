@@ -1,4 +1,6 @@
-function SVG_reader(){
+function SVG_reader(_S){
+
+var S = _S != undefined ? _S : new OO.SceneManager();
 
 
 /*typical INPUT : */
@@ -19,7 +21,11 @@ function SVG_reader(){
     </image>
   </g>
 	*/
+	
+	
 	this.get_cadre = function(XMLobj,shot_code){
+		
+		var repport ="";
 		
 		var cadre = {};
 		
@@ -34,21 +40,24 @@ function SVG_reader(){
 			match++;
 			
 			var rect = {
+				
 				width:attr.width,
 				height:attr.height
+				
 			}			
+			
 			cadre.bg = rect;
 			
 		}
-		
-
-		
 		
 		MessageLog.trace("CADRE BG");
 		MessageLog.trace(Object.getOwnPropertyNames(cadre.bg));
 		MessageLog.trace(cadre.bg.width);
 		MessageLog.trace(cadre.bg.height);
 		
+		
+		S.log.add("[SVG] width = "+cadre.bg.width,"process");
+		S.log.add("[SVG] height = "+cadre.bg.height,"process");
 		
 		var groups = XMLobj['g'];
 		
@@ -59,14 +68,16 @@ function SVG_reader(){
 				cg = groups[i]; 
 				
 				var group_title = cg.title;
+				
 				MessageLog.trace(group_title);
 				
 				
-				
-				
+					
 				// possible problems if thee is just one group
 				
-				if(cg.title=="CADRES"){
+				if(group_title=="CADRES"){
+					
+					S.log.add("[SVG] found group : "+group_title,"process");
 					
 					var gimages = cg['image']; 
 					
@@ -78,6 +89,8 @@ function SVG_reader(){
 						MessageLog.trace(gimages[i]);
 						
 						MessageLog.trace("found "+cimage.title);
+						
+						//S.log.add("cadre "+cimage.title,"process");
 						
 						var image_title = "";
 						
@@ -98,8 +111,11 @@ function SVG_reader(){
 						
 						if(image_title == shot_code){
 							
+							S.log.add("[SVG] found layer ( "+cimage.title+" ) for shot  ( "+shot_code+" )","process");
 							
 							MessageLog.trace("CADRE FOUND FOR "+image_title);	
+							
+							
 							
 							var attr = image_attributes;
 							
@@ -118,7 +134,7 @@ function SVG_reader(){
 							
 						}else{
 							
-			
+							
 							
 						}
 						

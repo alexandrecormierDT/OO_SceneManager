@@ -1048,12 +1048,7 @@ OO.TreeManager = function(_S){
 			// camera_peg 
 			
 			var camera_peg = OO.doc.getNodeByPath("Top/Camera_Peg");
-			
-			
-			
-			/*var cam_peg_x = node.getTextAttr(camera_peg,frame.current(),"position.x")
-			var cam_peg_y = node.getTextAttr(camera_peg,frame.current(),"position.y")
-			var cam_peg_z = node.getTextAttr(camera_peg,frame.current(),"position.z")*/
+
 
 			
 			var column3D = get_linked_3D_columns(camera_peg)
@@ -1066,11 +1061,35 @@ OO.TreeManager = function(_S){
 			var cam_peg_y = 0;
 			var cam_peg_z = 0;
 			
+				/*cam_peg_x = node.getTextAttr("Top/Camera_Peg",frame.current(), "position.x");
+				cam_peg_y = node.getTextAttr("Top/Camera_Peg",frame.current(), "position.y");
+				cam_peg_z = node.getTextAttr("Top/Camera_Peg",frame.current(), "position.z");*/
+			
 			if(next_3d_key != false){
 				
 				cam_peg_x = toonboom_coords_to_float(next_3d_key[0]);
 				cam_peg_y = toonboom_coords_to_float(next_3d_key[1]);
 				cam_peg_z = toonboom_coords_to_float(next_3d_key[2]);	
+				
+			}else{
+				
+				MessageLog.trace("reseting camera");
+				
+				S.log.add("reseting camera coords","warning");
+				
+				//we actualy put the camera coords to 0 if there is no camera moves
+				
+				node.setTextAttr("Top/Camera_Peg","POSITION.SEPARATE",frame.current(),"On");
+			
+				//INJECT X
+				camera_peg.attributes.position.x.setValue(0);
+				
+				//INJECT Y
+				camera_peg.attributes.position.y.setValue(0);
+				
+				//INJECT Y
+				camera_peg.attributes.position.z.setValue(0);		
+				
 				
 			}
 

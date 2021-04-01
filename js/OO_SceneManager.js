@@ -16,7 +16,6 @@ OO.XML = require("P:/pipeline/extra_soft/pixl-xml-master/modified_xml.js");
 
 // SVG PARSER CLASS
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/utils/SVG_reader.js");
-OO.SVG = new SVG_reader();
 
 //PATHS TO INJECT IN THE CONTEXT CLASS
 
@@ -1588,8 +1587,7 @@ function send_video_as_version(){
 
 function background_render_scene(){
 	
-	
-	$.scene.renderWriteNodes(false)
+	$.scene.renderWriteNodes(false);
 	
 }
 
@@ -1678,11 +1676,8 @@ function batch_preview_bg(){
 	background_render_scene()
 
 	MessageLog.trace("SAVING...");
-
-	
 	
 	var saving = scene.saveAll();
-	
 		
 	MessageLog.trace("scene was saved : "+saving);	
 

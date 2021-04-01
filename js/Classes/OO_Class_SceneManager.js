@@ -15,6 +15,8 @@ OO.SceneManager = function(){
 	this.setups = new OO.SetupManager(this);
 	this.log = new OO.Log(this);
 	
+	this.svg_reader = new SVG_reader(this);
+	
 	this.init = function(){
 		
 		
@@ -254,6 +256,7 @@ OO.SceneManager = function(){
 		
 		var shot = this.context.get_shot();
 		
+		
 		var svg_file = new $.oFile(svg_path);
 		
 		if(svg_file.exists){
@@ -264,17 +267,19 @@ OO.SceneManager = function(){
 				
 				XMLobj = OO.XML.parse(svg_file_content,{ preserveAttributes: true });
 				
-				var cadre = OO.SVG.get_cadre(XMLobj,shot);
+				this.log.add("[SVG] searching layer cadre for ( "+shot+" ) ","process");
+				
+				var cadre = this.svg_reader.get_cadre(XMLobj,shot);
 				
 				// return false if no mathcing cadre with current shot where found in the svg
 				
 				if(cadre == false){
 					
+					
 					this.log.add("[SVG] no cadre found for shot ( "+shot+" ) in ( "+svg_path+" ) ","error");
+
 				}
-				
-			
-				
+
 				return cadre;
 
 			}else{
