@@ -1168,7 +1168,9 @@ OO.TreeManager = function(_S){
 			//INJECT SY
 			top_peg.attributes.scale.y.setValue(final_sy);
 			
-			S.log.add("fit to camera X = "+final_x+ "Y = "+final_y+ "Z = "+final_z,"process")
+			S.log.add("fit to camera - reading camera peg coords  X = "+cam_peg_x+ " Y = "+cam_peg_y+"  Z = "+cam_peg_z,"process");
+			S.log.add("fit to camera - changing bg scale SX = "+final_sx+ " SY = "+final_sy,"process");
+			S.log.add("fit to camera - changing bg position X = "+final_x+ " Y = "+final_y+ " Z = "+final_z,"process");
 		
 		
 		}

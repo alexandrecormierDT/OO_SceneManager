@@ -26,8 +26,10 @@ OO.sg_path = "P:/projects/billy/pre_shotgun/sg_exports/";
 OO.psd_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/psd/";
 OO.png_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/png/";
 OO.svg_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/svg/";
-OO.video_export_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/ep101/";
+OO.video_export_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/";
 OO.vault_path = "P:/.vault/billy/";
+OO.bg_preview_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/";
+
 
 // PIPE COLORS :
 
@@ -366,7 +368,7 @@ function import_setup(_setup_name){
 	
 	S.context.set_library_path(OO.library_path);
 	
-
+	
 	
 	//mark scene path : 
 	
@@ -381,7 +383,9 @@ function import_setup(_setup_name){
 		
 			var RENDER_MOV = "Top/RENDER_MOV";
 			
-			var video_render_path = S.context.generate_render_path();
+			S.context.set_bg_preview_path(OO.bg_preview_path);
+			
+			var video_render_path = S.context.generate_bg_preview_render_path();
 			
 			S.setups.apply(_setup_name);	
 			
@@ -434,15 +438,13 @@ function load_shot_setup(){
 	
 	S.context.set_psd_path(OO.psd_path);
 	
-	
-	
 	var shot_setup = S.setups.apply('shot');	
 	
 	var RENDER_MOV = "Top/RENDER_MOV";
 	
 	S.context.set_video_export_path(OO.video_export_path)
 	
-	var video_render_path = S.context.generate_render_path();
+	var video_render_path = S.context.generate_preview_render_path();
 	
 	S.update_render_path(RENDER_MOV,video_render_path)
 	
@@ -961,12 +963,15 @@ function fit_selected_portals_to_camera(){
 					
 					S.trees.fit_cadre_to_camera(portal_peg,bg_cadre);
 					
+					S.log.add("[SVG] cadres detected ! ","success");				
+					
 				}else{
 					
 					//we compensate the bg secu
 					
 					S.trees.scale_to_camera(portal_peg);
 					
+					S.log.add("[SVG] no cadre detected , scaling secu by default ","error");					
 				}				
 				
 			}else{
@@ -1001,8 +1006,6 @@ function fit_bg_to_camera(){
 	
 	S.assets.load_breakdown('csv');
 	
-
-	
 	S.portals.load_from_scene();
 	
 	for(var p = 0 ; p < S.portals.list.length; p++){
@@ -1030,11 +1033,15 @@ function fit_bg_to_camera(){
 					//S.trees.scale_to_camera(portal_peg);
 					S.trees.fit_cadre_to_camera(portal_peg,bg_cadre);
 					
+					S.log.add("[SVG] cadres detected ! ","success");
+					
 				}else{
 					
 					//we compensate the bg secu
 					
 					S.trees.scale_to_camera(portal_peg);
+					
+					S.log.add("[SVG] no cadre detected , scaling secu by default ","error");
 					
 				}				
 				
@@ -1592,6 +1599,8 @@ function create_asset_dir(){
 	
 	var S = new OO.SceneManager();	
 	
+	S.context = new OO.Context(this,"Shotgun");	
+	
 	S.context.set_context_type('Shotgun');	
 
 	S.context.set_svg_path(OO.svg_path);
@@ -1638,6 +1647,18 @@ function create_asset_dir(){
 	B A T C H   M O D E
 
 */
+function get_bg_preview_path(){
+	
+	var S = new OO.SceneManager();	
+	
+	S.context = new OO.Context(this,"Shotgun");	
+	
+	S.context.set_bg_preview_path(OO.bg_preview_path)
+	
+	return S.context.generate_bg_preview_render_path()
+	
+}
+
 function batch_preview_bg(){
 		
 	import_project_settings()

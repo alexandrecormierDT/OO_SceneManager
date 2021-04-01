@@ -17,6 +17,7 @@ OO.Context = function (_S,_type){
 	var PNG_PATH = "";
 	var SVG_PATH = "";
 	var VIDEO_EXPORT_PATH = "";
+	var BG_PREVIEW_PATH = "";
 	
 	var VAULT_PATH = ""; 
 
@@ -63,6 +64,12 @@ OO.Context = function (_S,_type){
 		VIDEO_EXPORT_PATH = _vep
 		
 	}
+	
+	this.set_bg_preview_path = function(_bp){
+	
+		BG_PREVIEW_PATH = _bp
+		
+	}	
 	
 	this.set_psd_path = function(_pp){
 		
@@ -126,6 +133,8 @@ OO.Context = function (_S,_type){
 		
 	}
 	
+	
+	
 	this.get_scene_path = function(){
 		
 		return scene.currentProjectPathRemapped()
@@ -133,6 +142,8 @@ OO.Context = function (_S,_type){
 	}
 	
 	
+	
+	// only for shotgun work scenes : 
 	
 	this.set_from_scene_path = function(){
 		
@@ -245,6 +256,58 @@ OO.Context = function (_S,_type){
 		
 	}
 	
+	
+	this.get_episode_from_scene_name = function(){
+		
+		//P:/projects/billy/pre_shotgun/batch_pool/xstages/test_scene/ep104_pl010_animatic_v001-1
+		
+		var scene_split = this.breakdown_scene_path();
+		
+		var scene_name = scene_split[scene_split.length-1] 
+		
+		var name_split = scene_name.split("_");
+		
+		var episode = name_split[0];
+
+		return episode;
+	}
+	
+	this.get_shot_code_from_scene_name = function(){
+		
+		//P:/projects/billy/pre_shotgun/batch_pool/xstages/test_scene/ep104_pl010_animatic_v001-1
+		
+		var scene_split = this.breakdown_scene_path();
+		
+		var scene_name = scene_split[scene_split.length-1] 
+		
+		var name_split = scene_name.split("_");
+		
+		var shot_code = name_split[0]+"_"+name_split[1];
+
+		return shot_code;
+	}
+	
+	this.generate_bg_preview_render_path = function(){
+		
+		var scene_name = scene.currentScene();
+		
+		var episode = this.get_episode_from_scene_name();
+		
+		var render_path =BG_PREVIEW_PATH+"/"+episode+"/"+scene_name+".";		
+		
+		return render_path;
+		
+	}
+	
+	this.generate_render_path = function(){
+		
+		var scene_name = scene.currentScene();
+		
+		var render_path =VIDEO_EXPORT_PATH+scene_name+".";
+		
+		return render_path;
+		
+	}	
 	
 	this.get_shotcode_from_scene_name = function(){
 		
@@ -811,16 +874,7 @@ OO.Context = function (_S,_type){
 		return f.exists;
 		
 	}
-	
-	this.generate_render_path = function(){
-		
-		var scene_name = scene.currentScene();
-		
-		var render_path =VIDEO_EXPORT_PATH+scene_name+".";
-		
-		return render_path;
-		
-	}
+
 	 
 
 	

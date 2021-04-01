@@ -74,10 +74,15 @@ OO.PortalManager = function(_S){
 			
 			var linked_group = OO.doc.getNodeByPath(cur_script_module.linkedInNodes);
 			
+			MessageLog.trace("detected group")
+			MessageLog.trace(linked_peg)
 			
 			//PORTAL PEG
 			
 			var linked_peg = OO.doc.getNodeByPath(linked_group.linkedInNodes);
+			
+			MessageLog.trace("detected peg")
+			MessageLog.trace(linked_peg)
 			
 			
 			//TREE
