@@ -111,7 +111,7 @@ var S = _S != undefined ? _S : new OO.SceneManager();
 						
 						if(image_title == shot_code){
 							
-							S.log.add("[SVG] found layer ( "+cimage.title+" ) for shot  ( "+shot_code+" )","process");
+							S.log.add("[SVG] found layer ( "+image_title+" ) for shot  ( "+shot_code+" )","process");
 							
 							MessageLog.trace("CADRE FOUND FOR "+image_title);	
 							

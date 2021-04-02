@@ -1673,7 +1673,7 @@ function batch_preview_bg(){
 	
 	//check_composite_to_2d()
 
-	background_render_scene()
+	//background_render_scene()
 
 	MessageLog.trace("SAVING...");
 	
