@@ -6,10 +6,8 @@
 
 */
 
-OO.ElementManager = function (_S){
-	
-	var S = _S;
-	
+OO.ElementManager = function (){
+
 	var element_list = [];
 	
 	var scene_elements_directory_path = ""; 

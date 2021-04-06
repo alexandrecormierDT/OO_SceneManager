@@ -233,9 +233,11 @@ function delete_misplaced_sub_files(){
 	
 	var scene_path = S.context.get_scene_path();
 	
-	S.elements.set_scene_path(scene_path);
+	S.scene_files.set_scene_path(scene_path);
 	
-	S.elements.fetch_elements_dir_from_scene_directory();
+	S.scene_files.elements.fetch_elements_dir_from_scene_directory();
+	
+	
 	
 	
 	

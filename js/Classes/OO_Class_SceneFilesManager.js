@@ -10,43 +10,21 @@ OO.SceneFilesManager = function (_S){
 	
 	var scene_path = "";
 	
-	var files_list = [];
-	var folder_list = [];
+	var S = _S;
+
+	this.elements = new OO.ElementManager();
 	
-	//to be implemented : 
+	this.xstage = ""; 
 	
-	// tide up all file scene management here : stages, elements, tvg, palettes. 
-	//this.elements = new OO.ElementManager(_S);
-	
-	this.get_folder = function(_folder_name){
+	this.set_scene_path = function(_scene_path){
 		
+		scene_path = _scene_path+"";
 		
+		this.elements.set_scene_path(scene_path);
 		
 	}
 	
-	this.delete_folder = function(_folder_name){
-		
-		
-		
-	}
-	
-	this.get_file = function(_file_name){
-		
-		
-		
-	}
-	
-	this.add_file = function(_file){
-		
-		
-		
-	}
-	
-	this.delete_file = function(_file){
-		
-		
-		
-	}
+
 
 	
 }
