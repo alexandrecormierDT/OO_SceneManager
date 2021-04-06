@@ -82,6 +82,8 @@ OO.aujourdhui = function(){
 //CLASSES
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Log.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneFilesManager.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_AnimaticFilesManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Stage.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Asset.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_AssetManager.js");
@@ -94,6 +96,9 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Context.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SetupManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Setup.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ElementManager.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ElementFolder.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_TVG.js");
 
 
 
@@ -217,6 +222,45 @@ function fetch_script_prefs(_script_name){
 
 
 }
+
+
+// CLEANING THE SCENE 
+
+function delete_misplaced_sub_files(){
+	
+	var S = new OO.SceneManager();	
+
+	
+	var scene_path = S.context.get_scene_path();
+	
+	S.elements.set_scene_path(scene_path);
+	
+	S.elements.fetch_elements_dir_from_scene_directory();
+	
+	
+	
+	
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // FETCHING DATAS 
 
@@ -1048,9 +1092,6 @@ function fit_bg_to_camera(){
 				
 				
 			}
-
-			
-					
 		}
 	}	
 
@@ -1605,9 +1646,7 @@ function create_asset_dir(){
 	
 	S.assets.load_project_assets("csv")
 
-	
 	for(var i = 0 ; i < S.assets.project_assets.length ; i ++){
-	//for(var i = 0 ; i < 10; i ++){
 		
 		var current_asset = S.assets.project_assets[i];
 		
@@ -1640,11 +1679,15 @@ function create_asset_dir(){
 	
 }
 
+
+
 /*
 
 	B A T C H   M O D E
 
 */
+
+
 function get_bg_preview_path(){
 	
 	var S = new OO.SceneManager();	
@@ -1659,11 +1702,11 @@ function get_bg_preview_path(){
 
 function batch_preview_bg(){
 		
-	import_project_settings()
+	import_project_settings();
 
-	import_setup('shot')
+	import_setup('shot');
 
-	create_portals('bg')
+	create_portals('bg');
 	
 	pull_("bg");
 	
@@ -1708,7 +1751,6 @@ function batch_box_anim(){
 	
 	MessageLog.trace("scene was saved : "+saving);	
 
-
 }
 
 
@@ -1721,7 +1763,6 @@ function turnoff_burnin(){
 	 node.setEnable("Top/BURNIN_TIME_CODE",false);
 	 node.setEnable("Top/BURNIN_SHOT_INFOS",false);
 	 node.setEnable("Top/BURNIN_DATE",false);
-	
 	
 }
 
