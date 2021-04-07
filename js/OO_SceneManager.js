@@ -102,6 +102,8 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 
 
 
+
+
 //FILTERS
 OO.filter_string =function(str){
 
@@ -181,7 +183,6 @@ function write_scene_journal(){
 		
 	}
 
-
 }
 
 
@@ -199,7 +200,6 @@ function print_script_prefs(_script_name,_pref_object){
 	
 	pref_note.attributes.text.setValue(json_string)
 
-	
 }
 
 
@@ -231,15 +231,11 @@ function delete_misplaced_sub_files(){
 	var S = new OO.SceneManager();	
 
 	
-	var scene_path = S.context.get_scene_path();
+	var current_scene_path = S.context.get_scene_path();
 	
-	S.scene_files.set_scene_path(scene_path);
+	S.scene_files.set_scene_path(current_scene_path);
 	
 	S.scene_files.elements.fetch_elements_dir_from_scene_directory();
-	
-	
-	
-	
 	
 	
 

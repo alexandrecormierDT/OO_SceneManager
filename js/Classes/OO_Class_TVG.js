@@ -10,6 +10,10 @@
 
 OO.TVG = function (_path){
 	
+	
+	
+	//PATH
+	
 	var tvg_path = _path+""; 
 
 	this.extract_tvg_name_from_path = function(){
@@ -22,6 +26,9 @@ OO.TVG = function (_path){
 		
 	}
 	
+	
+	//TVG
+	
 	var tvg_name = this.extract_tvg_name_from_path(); 
 	
 	this.extract_sub_name_from_tvg_name = function(){
@@ -31,6 +38,8 @@ OO.TVG = function (_path){
 		var without_extension = last_split.split(".")[0];
 		return last_split;
 	}
+	
+	//SUB
 	
 	var sub_name = this.extract_sub_name_from_tvg_name(); 
 	

@@ -14,7 +14,9 @@ OO.SceneFilesManager = function (_S){
 
 	this.elements = new OO.ElementManager();
 	
-	this.xstage = ""; 
+	this.xstage = new OO.Stage(); 
+	
+	this.palettes = ""; 
 	
 	this.set_scene_path = function(_scene_path){
 		
@@ -23,8 +25,5 @@ OO.SceneFilesManager = function (_S){
 		this.elements.set_scene_path(scene_path);
 		
 	}
-	
-
-
 	
 }
