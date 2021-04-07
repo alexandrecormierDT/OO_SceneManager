@@ -1678,6 +1678,31 @@ function create_asset_dir(){
 }
 
 
+/*==================================================================================================================================================================
+
+	LIPSING
+
+==================================================================================================================================================================*/
+
+
+function import_lipsing_dialog(){
+	
+	import_lipsing_process()
+	
+	
+}
+
+function import_lipsing_process(){
+	
+	var storyboardOutputs = new OO.AnimaticFilesManager()
+	
+	AnimaticFiles.set_animatic_folder_path("P:/projects:billy/pre_shotgun/sbp_exports/");
+	
+	
+
+}
+
+
 
 /*
 
