@@ -238,23 +238,6 @@ OO.Context = function (_S,_type){
 		
 	}
 
-		
-	
-	this.get_episode = function(){
-		
-		this.breakdown_scene_path();
-		
-		switch(CONTEXT_TYPE){
-			
-			case("Shotgun"):
-			
-				return "ep201";
-		
-			break;
-		
-		}
-		
-	}
 	
 	
 	this.get_episode_from_scene_name = function(){
@@ -323,23 +306,15 @@ OO.Context = function (_S,_type){
 	}
 	
 	this.get_shot = function(){
-		
-		switch(CONTEXT_TYPE){
-		
-			case("Shotgun"):
-				//need to reed the csv here
-				return this.get_shotcode_from_scene_name()
-				
-			break;
-				
-			case("Server"): 
-			
-				return this.get_shotcode_from_scene_name()
-			
-			break;		
-		
-		}
-		
+
+		return this.get_shot_code_from_scene_name()
+
+	}
+	
+	this.get_episode = function(){
+
+		return this.get_episode_from_scene_name()
+
 	}
 	
 	this.get_asset_code = function(){

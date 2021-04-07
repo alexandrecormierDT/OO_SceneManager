@@ -12,7 +12,6 @@ OO.SceneManager = function(){
 	this.views = new OO.ViewManager(this);
 	this.context = new OO.Context(this,"Shotgun");
 	this.scene_files = new OO.SceneFilesManager(this);
-	this.animatic_files = new OO.AnimaticFilesManager(this);
 	this.elements = new OO.ElementManager(this);
 	this.portals = new OO.PortalManager(this);
 	this.setups = new OO.SetupManager(this);

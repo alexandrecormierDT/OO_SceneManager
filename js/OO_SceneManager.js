@@ -83,7 +83,6 @@ OO.aujourdhui = function(){
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Log.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneFilesManager.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_AnimaticFilesManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Stage.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Asset.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_AssetManager.js");
@@ -101,6 +100,11 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_TVG.js");
 
 
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_StoryboardOutputManager.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_VoiceTrack.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsDetectionManager.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsDetectionGenerator.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Lipsing.js");
 
 
 
@@ -1692,18 +1696,77 @@ function import_lipsing_dialog(){
 	
 }
 
-function import_lipsing_process(){
+function import_lipsing_for_character_process(_character){
 	
-	var storyboardOutputs = new OO.AnimaticFilesManager()
+	var S = new OO.SceneManager();
 	
-	AnimaticFiles.set_animatic_folder_path("P:/projects:billy/pre_shotgun/sbp_exports/");
+	S.context = new OO.Context(this,"Shotgun");	
 	
+	
+	var current_episode = S.context.get_episode();
+	var current_shot = S.context.get_shot();
+	var current_character = _character;
+
+	var lips_detection = new OO.LipsDetectionManager();
+	
+	lips_detection.set_root_folder_path()
+	lips_detection.set_current_episode(current_episode)
+	lips_detection.set_current_shot(current_shot)
+	lips_detection.set_current_character(current_character)
+		
+	
+	var character_lipsdetec = lips_detection.get_lipsdetection_txt_content_for_character(current_character)
+	
+	if(character_lipsdetec != false){
+			
+		var lipsing_object = new OO.Lipsing();
+		
+		lipsing_object.set_lipsdetec(character_lipsdetec);
+		
+		
+		
+				
+	}
+
 	
 
 }
 
+function generate_lipsdetection_for_character(_character){
+	
+	var S = new OO.SceneManager();
+	
+	S.context = new OO.Context(this,"Shotgun");	
+	
+	var current_episode = S.context.get_episode();
+	var current_shot = S.context.get_shot();
+	var current_character = _character;
+	
+	var storyboard_outputs = new OO.StoryboardOutputManager()
+	
+	storyboard_outputs.set_root_folder_path("P:/projects/billy/pre_shotgun/sbp_exports/");
+	storyboard_outputs.set_current_shot(current_shot);
+	storyboard_outputs.set_current_episode(current_episode);
+	
+	
+	var lips_detection = new OO.LipsDetectionManager();
+	lips_detection.set_root_folder_path()
+	lips_detection.set_current_episode(current_episode)
+	lips_detection.set_current_shot(current_shot)
+	lips_detection.set_current_character(current_character)
+	
+	
+	storyboard_outputs.fetch_current_shot_voice_tracks();
+	var current_voice_track_object = storyboard_outputs.get_voice_track_by_character_name(current_character);
+	var source_wave_file = current_voice_track_object.get_path();	
+	
+	lips_detection.create_shot_lipsdetection_folder()
+	lips_detection.generate_lipsdetection_txt_from_wave(source_wave_file);
+	
+	
+	
 
-
+}
 /*
 
 	B A T C H   M O D E
