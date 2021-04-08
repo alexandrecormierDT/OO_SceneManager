@@ -95,13 +95,15 @@ OO.StoryboardOutputManager = function (){
 	
 	
 	
-	this.get_voice_track_by_character_name  = function(_character){
+	this.get_shot_voice_track_by_character_name  = function(_character){
 		
 		for(var v = 0 ; v < voice_tracks.length ; v++){
 			
-			if(voice_tracks[v].get_character() == _character){
+			var current_voice_track  = voice_tracks[v];
+			
+			if(current_voice_track.get_character() == _character && current_voice_track.get_shot_code() ==  current_shot){
 				
-				return voice_tracks[v];
+				return current_voice_track;
 				
 			}
 		

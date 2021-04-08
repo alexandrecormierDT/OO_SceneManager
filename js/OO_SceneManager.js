@@ -100,11 +100,16 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_TVG.js");
 
 
+//AUTOLISPING CLASSES
+
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_StoryboardOutputManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_VoiceTrack.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsDetectionManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsDetectionGenerator.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Lipsing.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Phoneme.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsInjector.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_HeadAngle.js");
 
 
 
@@ -1691,40 +1696,68 @@ function create_asset_dir(){
 
 function import_lipsing_dialog(){
 	
-	import_lipsing_process()
+	import_lipsing_for_character("ch_billy");
 	
 	
 }
 
-function import_lipsing_for_character_process(_character){
+function import_lipsing_for_character(_character){
 	
 	var S = new OO.SceneManager();
 	
 	S.context = new OO.Context(this,"Shotgun");	
 	
+	var context_episode = S.context.get_episode();
+	var context_shot = S.context.get_shot();
 	
-	var current_episode = S.context.get_episode();
-	var current_shot = S.context.get_shot();
 	var current_character = _character;
 
 	var lips_detection = new OO.LipsDetectionManager();
-	
-	lips_detection.set_root_folder_path()
-	lips_detection.set_current_episode(current_episode)
-	lips_detection.set_current_shot(current_shot)
+	lips_detection.set_root_folder_path("P:/projects/billy/detection/")
+	lips_detection.set_current_episode(context_episode)
+	lips_detection.set_current_shot(context_shot)
 	lips_detection.set_current_character(current_character)
+	
+	var SOURCE_GROUP = "Top/BILLY";
+	
+	var EMOTION = "HAPPY";
 		
 	
-	var character_lipsdetec = lips_detection.get_lipsdetection_txt_content_for_character(current_character)
+	var character_lipsdetec_txt_content = lips_detection.get_lipsdetection_txt_content_for_character(current_character)
 	
-	if(character_lipsdetec != false){
+	if(character_lipsdetec_txt_content != false){
 			
 		var lipsing_object = new OO.Lipsing();
 		
-		lipsing_object.set_lipsdetec(character_lipsdetec);
+		lipsing_object.set_lipsdetec_string(character_lipsdetec_txt_content);
+		lipsing_object.parse_frames_and_phonemes_from_lipsdetec_string(); 
 		
+		var head_angle_object = new OO.HeadAngle(); 
+		head_angle_object.set_source_group(SOURCE_GROUP);
+		head_angle_object.fetch_head_layer_path_in_source_group();
 		
-		
+		for(var f = 0 ; f < scene.getStopFrame(); f++){
+			
+			var HEAD_ANGLE = head_angle_object.get_head_angle_at_frame(f);
+			
+			lipsing_object.set_current_emotion(EMOTION); 
+			lipsing_object.set_current_angle(HEAD_ANGLE); 
+			lipsing_object.generate_lips_sub_name_for_frame(f);
+			
+			var current_sub_name =lipsing_object.get_current_sub_name(); 
+			
+
+			
+			MessageLog.trace(current_sub_name);
+			
+			var lips_injector_object = new OO.LipsInjector(); 
+			
+			lips_injector_object.set_target_layer_path("Top/BILLY/LIPS_1"); 
+			lips_injector_object.set_sub_to_expose(current_sub_name); 
+			lips_injector_object.expose_sub_name_in_target_layer_at_frame(f);
+			
+		}
+
 				
 	}
 
@@ -1732,7 +1765,7 @@ function import_lipsing_for_character_process(_character){
 
 }
 
-function generate_lipsdetection_for_character(_character){
+function generate_shot_lipsdetection_for_character(_character){
 	
 	var S = new OO.SceneManager();
 	
@@ -1750,14 +1783,14 @@ function generate_lipsdetection_for_character(_character){
 	
 	
 	var lips_detection = new OO.LipsDetectionManager();
-	lips_detection.set_root_folder_path()
+	lips_detection.set_root_folder_path("P:/projects/billy/detection/")
 	lips_detection.set_current_episode(current_episode)
 	lips_detection.set_current_shot(current_shot)
 	lips_detection.set_current_character(current_character)
 	
 	
 	storyboard_outputs.fetch_current_shot_voice_tracks();
-	var current_voice_track_object = storyboard_outputs.get_voice_track_by_character_name(current_character);
+	var current_voice_track_object = storyboard_outputs.get_shot_voice_track_by_character_name(current_character);
 	var source_wave_file = current_voice_track_object.get_path();	
 	
 	lips_detection.create_shot_lipsdetection_folder()
@@ -1772,6 +1805,7 @@ function generate_lipsdetection_for_character(_character){
 	B A T C H   M O D E
 
 */
+
 
 
 function get_bg_preview_path(){
@@ -1857,5 +1891,16 @@ function check_composite_to_2d(){
 	node.setTextAttr("Top/CHECKC", "COMPOSITE_2D", frame.current(),"Y");
 	MessageLog.trace("COMPOSITE_2D to Y ")
 	MessageLog.trace(node.getTextAttr("Top/CHECKC", frame.current(),"COMPOSITE_2D"))
+	
+}
+
+
+
+
+
+
+function orwell_sanity_check(){
+
+	return (2+2 == 4); 
 	
 }

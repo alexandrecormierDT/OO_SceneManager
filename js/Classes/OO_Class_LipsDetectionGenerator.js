@@ -3,7 +3,7 @@
 
 OO.LipsDetectionGenerator = function (){
 	
-	var ouput_path = ""; 
+	var output_path = ""; 
 	
 	var source_wave_path = ""; 
 	
@@ -33,12 +33,16 @@ OO.LipsDetectionGenerator = function (){
 	}	
 	
 	function render_command_string(){
-	
-		var command_sring ='"'+rhubarb_path+'" -o "'+ouput_path+' "'+source_wave_path+'" -r '+detect_type+' -f dat --datFrameRate '+dat_frame_rate+' --datUsePrestonBlair';
+
+		var command_string ='"'+rhubarb_path+'" -o "'+output_path+'" "'+source_wave_path+'" -r '+detect_type+' -f dat --datFrameRate '+dat_frame_rate+' --datUsePrestonBlair';
+		
+		MessageLog.trace(command_string);
+		
+		return command_string;
 		
 	}
 	
-	this.generate_detection_file = function(){
+	this.generate_lipsdetection_txt = function(){
 		
 		var process_command_string = render_command_string();
 		

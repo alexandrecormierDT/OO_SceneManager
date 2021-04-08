@@ -11,9 +11,9 @@
 OO.TVG = function (_path){
 	
 	
-	
 	//PATH
 	
+	//to string
 	var tvg_path = _path+""; 
 
 	this.extract_tvg_name_from_path = function(){
