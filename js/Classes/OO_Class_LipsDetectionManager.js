@@ -96,10 +96,11 @@ OO.LipsDetectionManager = function (){
 	
 	
 	
-	this.get_lipsdetection_txt_content_for_character = function(_character){
+	this.get_lipsdetection_txt_content = function(){
 		
 		var lipsdetection_txt_path = render_character_lipsdetection_txt_path();
 		
+		MessageLog.trace("lipsdetection_txt_path");
 		MessageLog.trace(lipsdetection_txt_path);
 		
 		var txt_file_object = new $.oFile(lipsdetection_txt_path);
@@ -111,6 +112,8 @@ OO.LipsDetectionManager = function (){
 			return txt_content; 
 			
 		}
+		
+		MessageLog.trace(lipsdetection_txt_path+" does not exists");
 		
 		return false;
 		

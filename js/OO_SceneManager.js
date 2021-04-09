@@ -109,7 +109,9 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Lipsing.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Phoneme.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsInjector.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_CharacterDetector.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_HeadAngle.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsImporter.js");
 
 
 
@@ -1689,81 +1691,76 @@ function create_asset_dir(){
 
 /*==================================================================================================================================================================
 
-	LIPSING
+	AUTOLIPS
 
 ==================================================================================================================================================================*/
 
 
-function import_lipsing_dialog(){
+function autolips_dialog(){
 	
-	import_lipsing_for_character("ch_billy");
-	
-	
-}
+	// selection and character detection 
 
-function import_lipsing_for_character(_character){
+	var snodes = selection.selectedNodes(); 
 	
-	var S = new OO.SceneManager();
+	var first_selected_node = snodes[0];
 	
-	S.context = new OO.Context(this,"Shotgun");	
+	var character_detector = new OO.CharacterDetector()
+	character_detector.set_source_layer_path(first_selected_node)
+	var detected_character = character_detector.get_character();
 	
-	var context_episode = S.context.get_episode();
-	var context_shot = S.context.get_shot();
+	// user input
 	
-	var current_character = _character;
+	var d = new Dialog
+	d.title = "AUTOLIPS";
+	d.width = 100;
 
-	var lips_detection = new OO.LipsDetectionManager();
-	lips_detection.set_root_folder_path("P:/projects/billy/detection/")
-	lips_detection.set_current_episode(context_episode)
-	lips_detection.set_current_shot(context_shot)
-	lips_detection.set_current_character(current_character)
-	
-	var SOURCE_GROUP = "Top/BILLY";
-	
-	var EMOTION = "HAPPY";
+	var INPUT_CHARACTER = new ComboBox();
+	INPUT_CHARACTER.label = "CHARACTER  : ";
+	INPUT_CHARACTER.editable = false;
+	INPUT_CHARACTER.itemList = [detected_character,"CH_BILLY","CH_JC","CH_SUZIE","CH_SCOTT","CH_JACK"];
+	d.add( INPUT_CHARACTER);
 		
-	
-	var character_lipsdetec_txt_content = lips_detection.get_lipsdetection_txt_content_for_character(current_character)
-	
-	if(character_lipsdetec_txt_content != false){
-			
-		var lipsing_object = new OO.Lipsing();
-		
-		lipsing_object.set_lipsdetec_string(character_lipsdetec_txt_content);
-		lipsing_object.parse_frames_and_phonemes_from_lipsdetec_string(); 
-		
-		var head_angle_object = new OO.HeadAngle(); 
-		head_angle_object.set_source_group(SOURCE_GROUP);
-		head_angle_object.fetch_head_layer_path_in_source_group();
-		
-		for(var f = 0 ; f < scene.getStopFrame(); f++){
-			
-			var HEAD_ANGLE = head_angle_object.get_head_angle_at_frame(f);
-			
-			lipsing_object.set_current_emotion(EMOTION); 
-			lipsing_object.set_current_angle(HEAD_ANGLE); 
-			lipsing_object.generate_lips_sub_name_for_frame(f);
-			
-			var current_sub_name =lipsing_object.get_current_sub_name(); 
-			
+	var INPUT_EMOTION = new ComboBox();
+	INPUT_EMOTION.label = "EMOTION  : ";
+	INPUT_EMOTION.editable = false;
+	INPUT_EMOTION.itemList = ["","HAPPY","SAD"];
+	d.add(INPUT_EMOTION);	
 
-			
-			MessageLog.trace(current_sub_name);
-			
-			var lips_injector_object = new OO.LipsInjector(); 
-			
-			lips_injector_object.set_target_layer_path("Top/BILLY/LIPS_1"); 
-			lips_injector_object.set_sub_to_expose(current_sub_name); 
-			lips_injector_object.expose_sub_name_in_target_layer_at_frame(f);
-			
-		}
+	if ( d.exec() ){
 
-				
+		var selected_character = INPUT_CHARACTER.currentItem;
+		var selected_emotion = INPUT_EMOTION.currentItem;	
+
+		//scene context (to replace with shotgun real infos) 
+		
+		var S = new OO.SceneManager();
+		S.context = new OO.Context(this,"Shotgun");	
+		S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/import_lipsing.html");
+		var context_episode = S.context.get_episode();
+		var context_shot = S.context.get_shot();
+		
+		// lips import process
+		
+		var lips_importer = new OO.LipsImporter()
+		lips_importer.set_source_detec_path("P:/projects/billy/detection/")
+		lips_importer.set_episode(context_episode)
+		lips_importer.set_shot(context_shot)	
+		lips_importer.set_character(selected_character)
+		lips_importer.set_emotion(selected_emotion)
+		
+		lips_importer.import_lips();
+		
+		S.log.add("lips for character "+selected_character+" imported");
+		
+		
 	}
-
-	
-
+		
 }
+
+
+
+
+
 
 function generate_shot_lipsdetection_for_character(_character){
 	
@@ -1796,10 +1793,18 @@ function generate_shot_lipsdetection_for_character(_character){
 	lips_detection.create_shot_lipsdetection_folder()
 	lips_detection.generate_lipsdetection_txt_from_wave(source_wave_file);
 	
-	
-	
-
 }
+
+
+
+
+
+
+
+
+
+
+
 /*
 
 	B A T C H   M O D E

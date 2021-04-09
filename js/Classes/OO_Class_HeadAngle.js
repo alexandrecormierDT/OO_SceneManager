@@ -27,6 +27,7 @@ OO.HeadAngle = function (){
 		head_layer_path = source_group+"/TETE";
 		
 		MessageLog.trace("head_layer_path");
+		
 		MessageLog.trace(head_layer_path);
 		
 	}
@@ -73,6 +74,7 @@ OO.HeadAngle = function (){
 		}
 		
 		MessageLog.trace("head_angle");
+		
 		MessageLog.trace(head_angle);
 		
 	}

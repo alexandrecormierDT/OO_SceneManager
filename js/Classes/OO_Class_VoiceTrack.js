@@ -85,6 +85,8 @@ OO.VoiceTrack = function (_file_path){
 		
 	}
 	
+
+	
 	var character = get_character_from_track_number();
 	
 	
@@ -97,6 +99,11 @@ OO.VoiceTrack = function (_file_path){
 	this.get_character = function(){
 		
 		return character;
+	}
+	
+	this.get_character_uppercase = function(){
+		
+		return character.toUpperCase();
 	}
 	
 	this.get_shot_code = function(){
