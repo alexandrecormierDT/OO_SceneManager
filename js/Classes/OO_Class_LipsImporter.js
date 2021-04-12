@@ -1,5 +1,4 @@
-// CLASS AnimaticFilesManager
-
+//CLASS LipsImporter
 
 OO.LipsImporter = function (){
 	
@@ -13,25 +12,30 @@ OO.LipsImporter = function (){
 	
 	var shot = "";
 	
-	
-	
+
 	this.set_source_detec_path = function(_sdp){
 		
 		source_detec_path = _sdp
 	}
+	
 	this.set_character = function(_ch){
 		
 		character = _ch
+		
 	}
+	
 	this.set_emotion = function(_em){
 		
 		emotion = _em
+		
 	}
+	
 	this.set_episode = function(_ep){
 		
 		episode = _ep
 		
 	}	
+	
 	this.set_shot = function(_sh){
 		
 		shot = _sh
@@ -44,19 +48,19 @@ OO.LipsImporter = function (){
 		var empty_arg = 0; 
 		
 		if(source_detec_path==""){
-			empty_arg ++
+			empty_arg ++;
 		}
 		if(character==""){
-			empty_arg ++
+			empty_arg ++;
 		}	
 		if(emotion==""){
-			empty_arg ++
+			empty_arg ++;
 		}
 		if(episode==""){
-			empty_arg ++
+			empty_arg ++;
 		}
 		if(shot==""){
-			empty_arg ++
+			empty_arg ++;
 		}	
 
 		if(empty_arg > 0){

@@ -69,6 +69,12 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 	this.department = "";
 	
 	
+	this.get_code = function(){
+		
+		return this.code 
+	}
+	
+	
 	// PATHS
 
 	this.update_path = function(_key,_path){

@@ -130,10 +130,13 @@ OO.PortalManager = function(_S){
 				
 				case 'psd': 
 				
-					final_path = _portal.psd_path ;
+					MessageLog.trace("pulling psd")
+				
+					final_path = _portal.get_path('psd'); 
+	
 					
 					//we import the tpl inside the portal's group
-					var nodes = S.trees.import_psd_in_group(_portal.code,final_path,_portal.tree.group);
+					var nodes = S.trees.import_psd_in_group(_portal.code,final_path,portal_group);
 					
 					// we arange the psd nodes
 					var bg_tree = S.trees.add(_portal.code,nodes)
@@ -153,6 +156,8 @@ OO.PortalManager = function(_S){
 				break;
 				
 				case 'png': 
+				
+					MessageLog.trace("pulling png")
 
 					final_path = _portal.png_path ;
 					

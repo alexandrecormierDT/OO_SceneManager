@@ -544,14 +544,24 @@ function create_empty_portal(){
 	userInput3.currentItem = [""];
 	dialog.add( userInput3 );
 	
+	var userInputVersion = new ComboBox();
+	userInputVersion.label = "version"
+	userInputVersion.editable = true;
+	userInputVersion.itemList = ["","v01", "v02", "v03","v04","v04_retake","v04_valid","v04_check"];
+	userInputVersion.currentItem = [""];
+	dialog.add( userInputVersion );
+	
+
+	
 	if (dialog.exec()){
 		
 		var asset_code = OO.filter_string(userInput1.text);
 		
 		var asset_type = OO.filter_string(userInput2.currentItem);
 		
-		var departement =  OO.filter_string(userInput3.currentItem);
+		var departement = OO.filter_string(userInput3.currentItem);
 		
+		var version = OO.filter_string(userInputVersion.currentItem);
 		
 		var nasset = new OO.Asset({code:asset_code,sg_asset_type:asset_type});
 		
@@ -559,8 +569,6 @@ function create_empty_portal(){
 		var final_psd_path = S.context.get_asset_data_path(nasset,"psd",departement);
 		var final_tpl_path = S.context.get_asset_data_path(nasset,"tpl",departement);
 			
-			
-		
 		var nportal = S.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path,final_png_path,departement);	
 	
 		nportal.tree.ungroup();
@@ -1109,112 +1117,6 @@ function fit_bg_to_camera(){
 }
 
 
-function pull_png(){
-	
-	////MessageLog.trace("PULL PSD FUNCTION");
-	
-	var S = new OO.SceneManager();	
-	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_png.html");
-	
-	S.context.set_context_type('Shotgun');	
-	
-	S.context.set_library_path(OO.library_path);
-	
-	S.context.set_psd_path(OO.psd_path);
-	
-	S.context.set_png_path(OO.png_path);
-	
-	S.context.set_svg_path(OO.svg_path);
-	
-	S.context.set_vault_path(OO.vault_path)
-	
-	S.assets.load_breakdown('csv');
-	
-	S.portals.load_from_scene();
-
-	for(var p = 0 ; p < S.portals.list.length; p++){
-		
-		var current_portal = S.portals.list[p]
-		
-		//we empty the portal first 
-		
-		S.portals.empty(current_portal);
-		
-		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
-		
-		S.log.add("pulling png of - "+current_portal.code,"process");
-		
-		if(current_portal.png_exist()){
-
-			var bg_node = S.portals.pull(current_portal,'png');		
-	
-			var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
-			
-			var full_psd_path = S.context.get_asset_data_path(linked_asset,"psd");
-			
-			var full_png_path =S.context.get_asset_data_path(linked_asset,"png");
-			
-			MessageLog.trace("BG_PATH : ");
-			
-			MessageLog.trace(full_psd_path);
-			
-			MessageLog.trace(full_svg_path);
-			
-			MessageLog.trace(full_png_path);
-			
-			// if the bg has cadres that match the shot name. 
-			
-			var bg_cadre = S.load_cadre(full_svg_path);
-			
-			// only for png , the image is scaled automaticly on import
-			// to compensate this we put the image back to its original pixel size with the following code :
-			
-			if( bg_cadre.bg != undefined){
-				
-				MessageLog.trace("BG HEIGHT");
-				MessageLog.trace(bg_cadre.bg.height);
-				
-				var final_sy = bg_cadre.bg.height/1080;
-				var final_sx = final_sy;
-				
-				
-				
-				//INJECT SX
-				bg_node.attributes.scale.x.setValue(final_sx);
-				
-				//INJECT SY
-				bg_node.attributes.scale.y.setValue(final_sy);				
-			
-			}
-
-			
-			//var bg_psd_cadre = S.load_cadre_from_psd(full_psd_path)
-		
-			if(bg_cadre.hasOwnProperty('rect')==true){
-				
-				S.trees.fit_cadre_to_camera(current_portal.tree.peg,bg_cadre);
-				
-			}else{
-				
-				//we compensate the bg secu
-				
-				S.trees.scale_to_camera(current_portal.tree.peg);
-			}
-					
-		}else{
-			
-			S.log.add("png not found - "+S.context.get_png_path(linked_asset),"error");
-			
-		}
-
-	}	
-
-	S.log.save();
-	
-}
-
-
 function pull_psd(){
 	
 	////MessageLog.trace("PULL PSD FUNCTION");
@@ -1223,19 +1125,7 @@ function pull_psd(){
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_psd.html");
 	
-	S.context.set_context_type('Shotgun');	
-	
-	S.context.set_library_path(OO.library_path);
-	
-	S.context.set_psd_path(OO.psd_path);
-	
-	S.context.set_png_path(OO.png_path);
-	
-	S.context.set_svg_path(OO.svg_path);
-
-	S.context.set_vault_path(OO.vault_path)
-	
-	S.assets.load_breakdown('csv');
+	S.context = new OO.Context(this,"Shotgun");	
 	
 	S.portals.load_from_scene();
 
@@ -1243,48 +1133,19 @@ function pull_psd(){
 		
 		var current_portal = S.portals.list[p]
 		
-		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
-		
 		if(current_portal.psd_exist()){
 
-			var bg_node = S.portals.pull(current_portal,'psd');		
-			
-			var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
-			
-			var full_psd_path = S.context.get_asset_data_path(linked_asset,"psd");
-			
-			var full_png_path =S.context.get_asset_data_path(linked_asset,"png");
-			
-			MessageLog.trace("BG_PATH : ");
+
+			var full_psd_path = current_portal.get_path('psd');
 			
 			MessageLog.trace(full_psd_path);
 			
-			MessageLog.trace(full_svg_path);
+			S.log.add(full_psd_path+" --- > pulling","process");
 			
-			MessageLog.trace(full_png_path);
+			var bg_node = S.portals.pull(current_portal,'psd');		
 			
-			// if the bg has cadres that match the shot name. 
-			
-			var bg_cadre = S.load_cadre(full_svg_path);
-
-			
-			//var bg_psd_cadre = S.load_cadre_from_psd(full_psd_path)
+			S.log.add(full_psd_path+" --- > psd pulled","success");
 		
-			if(bg_cadre!=false){
-				
-				S.trees.fit_cadre_to_camera(current_portal.tree.peg,bg_cadre);
-				
-			}else{
-				
-				//we compensate the bg secu
-				
-				S.trees.scale_to_camera(current_portal.tree.peg);
-			}
-					
-		}else{
-			
-			S.log.add("no psd","error");
-			
 		}
 
 	}	

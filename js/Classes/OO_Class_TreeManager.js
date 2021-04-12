@@ -1,4 +1,5 @@
 // CLASS OO_TreeManager
+// CLASS OO_TreeManager
 
 ////MessageLog.trace("CLASS OO_TreeManager")
 
@@ -871,11 +872,11 @@ OO.TreeManager = function(_S){
 		
 		var width = this.align_nodes(reads);
 		
-		var top_peg = group.addNode("PEG",t.code+"-P")
+		var top_peg = group.addNode("PEG",_tree.code+"-P")
 		
 		_tree.set_key_node("top_peg",top_peg);
 		
-		var final_comp = group.addNode("COMPOSITE",t.code+"-C");
+		var final_comp = group.addNode("COMPOSITE",_tree.code+"-C");
 		
 		_tree.set_key_node("final_comp",final_comp); 
 		
@@ -917,7 +918,7 @@ OO.TreeManager = function(_S){
 			
 			npeg.attributes.position.z.setValue(Z);
 			
-			t.add_node(npeg);
+			_tree.add_node(npeg);
 			
 
 		}
@@ -932,7 +933,7 @@ OO.TreeManager = function(_S){
 		group.multiportOut.centerBelow(reads, 0, 500);
 
 		
-		group.addBackdropToNodes( t.get_nodes(), t.code, "", new $.oColorValue("#5097D8ff"), 0, 0, 20, 20);
+		group.addBackdropToNodes( _tree.get_nodes(), _tree.code, "", new $.oColorValue("#5097D8ff"), 0, 0, 20, 20);
 		
 	}
 	
