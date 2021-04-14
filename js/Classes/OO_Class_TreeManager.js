@@ -43,18 +43,15 @@ OO.TreeManager = function(_S){
 	
 	this.add_tree = function(_code,_nodes){
 		
-		
 		// intance of class Tree , see OO_Clas_Tree.js
 		
 		var ntree = new OO.Tree(_code,_nodes);
-		
 		
 		// marking nodes with unique id
 		
 		var tree_nodes = ntree.get_nodes();
 		
-		
-
+	
 		this.add_id_to_nodes(tree_nodes)
 		
 		//for the id to be writen in the xstage 
@@ -164,11 +161,8 @@ OO.TreeManager = function(_S){
 
 		}
 
-		
-
 		return script_module; 		
 
-		
 		
 	}
 	
@@ -303,25 +297,15 @@ OO.TreeManager = function(_S){
 		
 	}	
 	
-	this.fetch_nodes_by_id_in_linked_nodes = function(_ID_list,_map_module){
-
-
-	}	
 	
 	this.fetch_nodes_by_id = function(_ID_list){
 		
-		
 		var id_to_find = _ID_list;
 		
-		var inspected_nodes = []
+		var inspected_nodes = this.get_all_nodes();
 		
 		var found_nodes = []
-		
 
-
-		inspected_nodes = this.get_all_nodes();
-	
-		
 		for(var n = 0 ; n < inspected_nodes.length ; n ++){
 			
 			var current_node = OO.doc.getNodeByPath(inspected_nodes[n]);
@@ -499,6 +483,10 @@ OO.TreeManager = function(_S){
 
 	}
 	
+	
+	
+	
+	
 	this.load_trees_from_scene = function(){
 		
 		var scene_nodes = this.get_all_nodes();
@@ -516,6 +504,8 @@ OO.TreeManager = function(_S){
 		}		
 		
 	}
+	
+	
 	
 	this.get_node_smlayerid = function(_node){
 		
@@ -547,36 +537,27 @@ OO.TreeManager = function(_S){
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// EDITING TREES
-	
-	this.update= function(){
-		
-	}
-	
-	this.remove= function(){
-		
-		
-	}
 
 
-	//DIFFERENT IMPORTING TPL METHODS : 
-	
-	this.import_tpl_ungrouped= function(_path){
+	this.import_tpl_in_temp_group = function(_tpl_file_path){
 		
-		S.log.add("importing tpl "+_path,"file")
-		
-		return OO.doc.root.importTemplate(_path,false,true);
-
-	}	
+		// create a group , import the tpl inside of it and return the nodes contained in this group 
 	
-	this.import_tpl = function(_path){
-	
-		
-		S.log.add("importing tpl "+_path,"file")
+		S.log.add("importing tpl "+_tpl_file_path,"file")
 			
-		var import_group =  OO.doc.root.addNode("GROUP",_path); 	
+		var import_group =  OO.doc.root.addNode("GROUP","TEMP"+_tpl_file_path); 	
 		
-		import_TPL_in_group(_path,import_group.path);
+		copypaste_tpl_in_group(_tpl_file_path,import_group.path);
 
 		var updated_group = OO.doc.getNodeByPath(import_group.path)
 		
@@ -584,7 +565,7 @@ OO.TreeManager = function(_S){
 
 	}	
 	
-	function import_TPL_in_group(tpl_file_path,group_scene_path){
+	function copypaste_tpl_in_group(tpl_file_path,group_scene_path){
 		
 			MessageLog.trace("natif_Import_TPL_in_group");
 			
@@ -606,69 +587,6 @@ OO.TreeManager = function(_S){
 
 	}
 	
-	function natif_Import_TPL(path){
-
-			var myCopyOptions = copyPaste.getCurrentCreateOptions();
-			
-			var myPasteOptions = copyPaste.getCurrentPasteOptions();
-			
-			myPasteOptions.extendScene = false;
-
-			myCopyOptions.addModelsDir = false;
-			
-			var myDragObject = copyPaste.copyFromTemplate(path,0,0,myCopyOptions);
-			
-			copyPaste.pasteNewNodes(myDragObject,"",myPasteOptions);
-			
-			
-
-			return true; 
-
-	}
-	
-	this.import_tpl_grouped = function(_code,_path){
-		
-		S.log.add("importing tpl "+_path,"file")
-		
-		
-		//we create a group with a the path of the tpl as name. 
-		var import_group =  OO.doc.root.addGroup(_path, false, false); 
-		
-		var nodes = import_group.importTemplate(_path,false,true);
-		
-		this.add_layout_peg(import_group);	
-		
-		return nodes; 
-
-	}
-	
-	this.import_tpl_in_group = function(_path,_group){
-		
-		S.log.add("importing tpl "+_path,"file")
-		
-		
-		var nodes = _group.importTemplate(_path,false,true);
-		
-		return nodes; 
-
-	}
-	
-	this.import_psd_grouped = function(_code,_path){
-		
-		S.log.add("importing psd "+_path,"file")
-		
-		
-		var import_group =  OO.doc.root.addGroup(_code, false, false);  
-		
-		import_group.createAttribute("import_path", "string", "path", true)
-		
-		//importPSD(path, separateLayers, addPeg, addComposite, alignment, nodePosition){Array.<$.oNode>}
-		var nodes = import_group.importPSD(_path,true,false,false,"ASIS");  
-
-		return nodes; 		
-		 
-	}
-	
 	this.import_psd_in_group = function(_code,_path,_group){
 		
 		S.log.add("importing psd "+_path,"file")
@@ -680,11 +598,16 @@ OO.TreeManager = function(_S){
 	}	
 	
 	
+	
+	
+	
+	
+	
+	
 	// E X P O R T    T P L 
 
 	
 	this.export_group_to_path = function(_group,_path){
-		
 		
 		S.log.add("importing psd "+_path,"file")
 		
@@ -841,20 +764,7 @@ OO.TreeManager = function(_S){
 		}
 		
 	}
-	
-	this.get_image_resolution = function(_imagepath){
-		
-		const img = new Image();
-		
-		img.onload = function() {
-			
-			//MessageLog.trace(this.width + 'x' + this.height);
-		  
-		}
-		
-		img.src = _imagepath;
-		
-	}
+
 	
 
 	this.arange_psd_node = function(_tree){
@@ -1057,10 +967,6 @@ OO.TreeManager = function(_S){
 			var cam_peg_y = 0;
 			var cam_peg_z = 0;
 			
-				/*cam_peg_x = node.getTextAttr("Top/Camera_Peg",frame.current(), "position.x");
-				cam_peg_y = node.getTextAttr("Top/Camera_Peg",frame.current(), "position.y");
-				cam_peg_z = node.getTextAttr("Top/Camera_Peg",frame.current(), "position.z");*/
-			
 			if(next_3d_key != false){
 				
 				cam_peg_x = toonboom_coords_to_float(next_3d_key[0]);
@@ -1088,13 +994,6 @@ OO.TreeManager = function(_S){
 				
 				
 			}
-
-			
-			//MessageLog.trace("CAMERA PEG")
-			//MessageLog.trace(cam_peg_x)
-			//MessageLog.trace(cam_peg_y)
-			//MessageLog.trace(cam_peg_z)
-			
 
 			
 			// camera center 
@@ -1156,18 +1055,6 @@ OO.TreeManager = function(_S){
 			var final_z =  parseFloat(cam_peg_z);
 			
 			
-			
-			//MessageLog.trace(" ----- FIT TO CAMERA -------------------------------- ");
-			
-				//MessageLog.trace("X = "+final_x);
-			
-				//MessageLog.trace("Y = "+final_y);
-				
-				//MessageLog.trace("Z = "+final_z);
-			
-			//MessageLog.trace(" ------------------------------------------------------ ");
-			
-			
 			//INJECT X
 			top_peg.attributes.position.x.setValue(final_x);
 			
@@ -1204,15 +1091,11 @@ OO.TreeManager = function(_S){
 			
 			var attribute_name = attrList[i]
 			
-			////MessageLog.trace("*****"+attribute_name);
-			
 			if(attribute_name == "POSITION.3DPATH"){
 			
 				var linked_column = node.linkedColumn(_node,attribute_name)
 				
 				if( linked_column !=""){
-					
-					//MessageLog.trace(attribute_name);
 
 					node_columns = (linked_column);
 				}
@@ -1228,8 +1111,6 @@ OO.TreeManager = function(_S){
 	}
   	
 	function getAttributesNameList (snode){
-		
-		////MessageLog.trace(arguments.callee.name)
 		
 		var attrList = node.getAttrList(snode, frame.current(),"");
 		var name_list= Array();
@@ -1251,15 +1132,11 @@ OO.TreeManager = function(_S){
 			
 		}
 		
-		////MessageLog.trace(name_list)
-		
 		return name_list;
 		
 	} 
  	
 	function get_next_3Dkey(_column){
-		
-		////MessageLog.trace(arguments.callee.name)
 
 		sub_column = 4;
 		key = Array();
@@ -1302,8 +1179,6 @@ OO.TreeManager = function(_S){
 		
 		
 		result = parseFloat(result)
-		
-		////MessageLog.trace(" from "+tbv+"  to   "+result)
 
 		return result
 		

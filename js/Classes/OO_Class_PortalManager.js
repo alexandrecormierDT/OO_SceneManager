@@ -380,7 +380,7 @@ OO.PortalManager = function(_S){
 	
 		MessageLog.trace("Portal ADD");
 		
-		var pnodes =  S.trees.import_tpl(this.module_path);
+		var pnodes =  S.trees.import_tpl_in_temp_group(this.module_path);
 		
 		MessageLog.trace("pnodes");
 		MessageLog.trace(pnodes);
