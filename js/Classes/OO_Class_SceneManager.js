@@ -353,16 +353,18 @@ OO.SceneManager = function(){
 				
 				var cportal = this.portals.list[p]
 				
+				var cportal_tree = cportal.get_tree(); 
+				
 				if(p > 0){
 					
 					var pportal = this.portals.list[p-1];
 					
-					this.trees.put_next_to(pportal.tree,cportal.tree,100);
+					this.trees.put_next_to(pportal.get_tree(),cportal.get_tree(),100);
 					
 				}else{
 
 					
-					cportal.tree.moveTo(_point.x,_point.y);
+					cportal_tree.moveTo(_point.x,_point.y);
 
 				}
 				
@@ -373,8 +375,10 @@ OO.SceneManager = function(){
 			for(var p = 0 ; p < this.portals.list.length; p++){
 				
 				var cportal = this.portals.list[p]
+				
+				var cportal_tree = cportal.get_tree(); 
 
-				cportal.tree.ungroup();
+				cportal_tree.ungroup();
 				
 				// i think the nodes pointers are lost after the ungroup; 
 				
@@ -382,7 +386,7 @@ OO.SceneManager = function(){
 
 				if(typeof(_composite) != undefined ){
 
-					var group = OO.doc.getNodeByPath("Top/"+cportal.code);
+					var group = OO.doc.getNodeByPath("Top/"+cportal.get_code());
 					
 					if(group != undefined) {
 						

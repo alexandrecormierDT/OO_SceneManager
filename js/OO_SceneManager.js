@@ -784,7 +784,7 @@ function udpate_portal_paths_from_vault(_portal){
 		tpl_path :S.context.get_asset_data_path(linked_asset,"tpl")
 	}
 	
-	S.portals.update_portal_attributes(_portal,path_attributes_object); 
+	S.portals.update_portal_script_module_attributes(_portal,path_attributes_object); 
 	
 }
 

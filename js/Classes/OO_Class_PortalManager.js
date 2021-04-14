@@ -111,24 +111,9 @@ OO.PortalManager = function(_S){
 
 	}	
 	
-	this.update_portal_attributes = function (_portal,_attributes_object){
+	this.update_portal_script_module_attributes = function (_portal,_attributes_object){
 		
-		var attributes_names = Object.getOwnPropertyNames(_attributes_object); 
-		
-		for (var a = 0 ;  a <attributes_names.length ; a++){
-			
-			
-			var cur_attr_name = attributes_names[a]
-			
-			var cur_attr_val = _attributes_object[cur_attr_name]
-			
-			MessageLog.trace(cur_attr_name);
-			MessageLog.trace(cur_attr_val);
-			
-			_portal.set_script_module_attributes(cur_attr_name,cur_attr_val);
-			
-		}
-		
+		_portal.set_several_script_module_attributes(_attributes_object);
 		
 	}
 	
@@ -377,34 +362,45 @@ OO.PortalManager = function(_S){
 		var psd_path = _psd_path != undefined ? _psd_path : ""; 
 		var png_path = _png_path != undefined ? _png_path : ""; 
 		var departement = _departement != undefined ? _departement : ""; 
+		
+
 	
 		MessageLog.trace("Portal ADD");
 		
 		var pnodes =  S.trees.import_tpl_in_temp_group(this.module_path);
 		
-		MessageLog.trace("pnodes");
-		MessageLog.trace(pnodes);
-		
-		var ntree = S.trees.add(_code,pnodes);
+		var ntree = S.trees.add(code,pnodes);
 		
 		//OO.Portal(_name,tpl_path,psd_path,_tree)
-		var nportal = new OO.Portal(_code,type,tpl_path,psd_path,png_path,ntree);
+		var nportal = new OO.Portal(code,type,tpl_path,psd_path,png_path,ntree);
+		
+		var nportal_tree = nportal.get_tree();
 		
 		for (var n in pnodes){
 		
 			var cn = pnodes[n]; 
 			
 			if(cn.type == "SCRIPT_MODULE"){
+						
+						
+				cn.name = "PORTAL_"+code
+
+				nportal_tree.set_key_node("PORTAL_MODULE",cn); 
 				
-				cn.attributes.tpl_path.setValue(tpl_path);
-				cn.attributes.psd_path.setValue(psd_path);
-				cn.attributes.png_path.setValue(png_path);
-				cn.attributes.code.setValue(_code);
-				cn.attributes.sg_asset_type.setValue(_type);
+				MessageLog.trace("PORTAL_MODULE");
 				
-				cn.name = "PORTAL_"+_code
+				MessageLog.trace(nportal_tree.get_key_node("PORTAL_MODULE"));
 				
-				nportal.tree.set_key_node("PORTAL_MODULE",cn); 
+				var attributes_object = {
+					code: code,
+					departement: departement,
+					sg_asset_type:type, 
+					tpl_path:tpl_path,
+					psd_path:psd_path,
+					png_path:png_path			
+				}
+				
+				nportal.set_several_script_module_attributes(attributes_object);
 				
 				 
 			}
@@ -414,7 +410,7 @@ OO.PortalManager = function(_S){
 				
 				cn.name = _code;
 				
-				nportal.tree.set_key_node("PORTAL_GROUP",cn); 
+				nportal_tree.set_key_node("PORTAL_GROUP",cn); 
 				
 			}	
 			
@@ -423,13 +419,13 @@ OO.PortalManager = function(_S){
 				
 				cn.name = "LT_"+_code;
 				
-				nportal.tree.set_key_node("PORTAL_PEG",cn); 
+				nportal_tree.set_key_node("PORTAL_PEG",cn); 
 			}			
 			
 		} 
 		
 		
-		var parent_group = nportal.tree.get_parent_group();
+		var parent_group = nportal_tree.get_parent_group();
 		
 		var departement_color = new $.oColorValue(OO.pipe_colors.dt[0]); 
 		
@@ -470,7 +466,8 @@ OO.PortalManager = function(_S){
 			break;	
 		}
 		
-		nportal.tree.backdrop = parent_group.addBackdropToNodes(pnodes, " < PORTAL : "+departement+" > ",code,departement_color , 0, 0, 20, 20)
+		
+		nportal_tree.set_backdrop (parent_group.addBackdropToNodes(pnodes, " < PORTAL : "+departement+" > ",code,departement_color , 0, 0, 20, 20))
 
 		this.list.push(nportal);
 		

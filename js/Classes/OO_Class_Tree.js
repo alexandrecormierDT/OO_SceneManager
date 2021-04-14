@@ -15,6 +15,9 @@ OO.Tree = function(_code,_nodes){
 	var tree_id = 0;
 	
 	
+	
+	
+	
 	// NODES
 	
 	var tree_nodes = _nodes
@@ -24,24 +27,24 @@ OO.Tree = function(_code,_nodes){
 	
 	var key_nodes = []
 	
+	// BACKDROP 
 	
-	// ANATOMY 
+	var tree_backdrop = ""; 
 	
-	this.top_node;
 	
-	this.bottom_node; 
 	
-	this.backdrop;
-
 	
-	this.map_module = false;
+	
+	
+	
+	var map_module = false;
 	
 	
 	// META DATS 
 	
 	this.get_code = function(){
 		
-		tree_code;
+		return tree_code;
 		
 	}
 	
@@ -50,21 +53,16 @@ OO.Tree = function(_code,_nodes){
 
 	this.set_map_module = function(_script_module){
 		
-		this.map_module  = _script_module;
+		map_module  = _script_module;
 		
 	}
 	
 	this.get_map_module = function(){
 
-		return this.map_module;
+		return map_module;
 		
 	}
-	
-	this.fetch_map_module = function(){
 
-		
-	}
-		
 	// update attributes of the map module
 	
 	this.update_map_module = function(_attribute,_value){
@@ -97,7 +95,7 @@ OO.Tree = function(_code,_nodes){
 		
 		if(this.map_module != false){
 			
-			return this.map_module.node_list;
+			return map_module.node_list;
 			
 		}
 		
@@ -113,7 +111,7 @@ OO.Tree = function(_code,_nodes){
 		
 		if(this.map_module != false){
 			
-			return this.map_module.node_list;
+			return map_module.node_list;
 			
 		}
 		
@@ -174,13 +172,9 @@ OO.Tree = function(_code,_nodes){
 	
 	this.select_nodes = function(){
 		
-		var nodes = this.get_nodes();
-		
-		//MessageLog.trace(nodes);
-		
-		for(var n = 0 ; n < nodes.length ; n ++){
+		for(var n = 0 ; n < tree_nodes.length ; n ++){
 			
-			selection.addNodeToSelection (nodes[n].path)
+			selection.addNodeToSelection (tree_nodes[n].path)
 		}
 		
 	}
@@ -188,13 +182,13 @@ OO.Tree = function(_code,_nodes){
 	
 	// KEY NODES 
 	
-	this.set_key_node = function(_key,_node){
+	this.set_key_node = function(_key,_node_path){
 		
-		key_nodes[_key] = _node;
+		key_nodes[_key] = _node_path;
 		
-		if(tree_nodes.indexOf(_node) == -1){
+		if(tree_nodes.indexOf(_node_path) == -1){
 			
-			tree_nodes.push(_node);
+			tree_nodes.push(_node_path);
 			
 		}
 		
@@ -205,7 +199,7 @@ OO.Tree = function(_code,_nodes){
 		
 	this.get_key_node = function(_key){
 		
-		return OO.doc.getNodeByPath(key_nodes[_key]);
+		return key_nodes[_key];
 
 	}
 	
@@ -238,15 +232,13 @@ OO.Tree = function(_code,_nodes){
 	}
 	
 	
-	this.find_node_by_prefix = function(_prefix){
+	function find_node_by_prefix(_prefix){
 		
 		for(var n = 0 ; n < tree_nodes.length  ; n ++){
 			
 			var current_node = OO.doc.getNodeByPath(tree_nodes[n]); 
 			
 			var name_split = current_node.name.split('_');
-			
-			//MessageLog.trace(name_split);
 			
 			if(name_split[0] == _prefix){
 			
@@ -265,7 +257,7 @@ OO.Tree = function(_code,_nodes){
 		
 		var top_prefix = "TOP";
 		
-		var found_node =  this.find_node_by_prefix(top_prefix);
+		var found_node =  find_node_by_prefix(top_prefix);
 
 		return found_node;
 		
@@ -275,7 +267,7 @@ OO.Tree = function(_code,_nodes){
 		
 		var top_prefix = "BOTTOM";
 		
-		return this.find_node_by_prefix(top_prefix);
+		return find_node_by_prefix(top_prefix);
 		
 	}	
 	
@@ -297,32 +289,35 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_parent_group = function(){
 		
-		var _tree_nodes = this.get_nodes();
-		
-		if(_tree_nodes != null  && _tree_nodes.length > 0){
+		if(tree_nodes != null  && tree_nodes.length > 0){
 			
-			return tree_nodes[0].parent;
+			return $.scn.getNodeByPath(tree_nodes[0]).parent;
 			
 		}
 		
 		return false; 
 		
 	}
-
-	this.get_group = function(){
-
-
+	
+	
+	// BACKDROP
+	
+	this.get_backdrop = function(){
+		
+		return tree_backdrop; 
+		
 	}
 	
-	
-	// SCRIPT MODULE
-
-
+	this.set_backdrop = function(_bd){
+		
+		tree_backdrop = _bd; 
+		
+	}
 	this.get_width = function(){
 		
-		if(this.backdrop.width != undefined){
+		if(tree_backdrop.width != undefined){
 			
-			return this.backdrop.width;
+			return tree_backdrop.width;
 			
 		}else{
 			
@@ -334,17 +329,11 @@ OO.Tree = function(_code,_nodes){
 
 	}
 	
-	this.main_group = function(){
-		
-		
-		
-	}
-	
 	this.get_height = function(){
 		
-		if(this.backdrop.width != undefined){
+		if(tree_backdrop.width != undefined){
 			
-			return this.backdrop.width
+			return tree_backdrop.width
 			
 		}else{
 			
@@ -356,9 +345,9 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_X = function(){
 		
-		if(this.backdrop.x != undefined){
+		if(tree_backdrop.x != undefined){
 			
-			return this.backdrop.x;
+			return tree_backdrop.x;
 			
 		}
 		
@@ -368,15 +357,17 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_Y = function(){
 		
-		if(this.backdrop.y != undefined){
+		if(tree_backdrop.y != undefined){
 			
-			return this.backdrop.y;
+			return tree_backdrop.y;
 			
 		}
 		
 		return 0;
 
 	}		
+	
+	
 	this.move = function(_x,_y){
 		
 		for(var on in tree_nodes){
@@ -388,8 +379,8 @@ OO.Tree = function(_code,_nodes){
 			
 		}
 		
-		this.backdrop.x+=x
-		this.backdrop.y+=y
+		tree_backdrop.x+=x
+		tree_backdrop.y+=y
 
 	}
 	
@@ -400,11 +391,11 @@ OO.Tree = function(_code,_nodes){
 		
 			var cn = OO.doc.getNodeByPath(tree_nodes[n]);
 			
-			if(this.backdrop != undefined){
+			if(tree_backdrop != undefined){
 			
-				var diffX =   cn.x - this.backdrop.x
+				var diffX =   cn.x - tree_backdrop.x
 			
-				var diffY =  cn.y - this.backdrop.y 
+				var diffY =  cn.y - tree_backdrop.y 
 			
 				cn.x = _x + diffX
 				cn.y = _y + diffY
@@ -413,10 +404,10 @@ OO.Tree = function(_code,_nodes){
 			
 		}
 		
-		if(this.backdrop != undefined){
+		if(tree_backdrop != undefined){
 		
-			this.backdrop.x=_x
-			this.backdrop.y=_y
+			tree_backdrop.x=_x
+			tree_backdrop.y=_y
 		
 		}
 
@@ -433,8 +424,8 @@ OO.Tree = function(_code,_nodes){
 			
 		}
 		
-		this.backdrop.x*=sx
-		this.backdrop.y*=sy
+		tree_backdrop.x*=sx
+		tree_backdrop.y*=sy
 
 	}	
 
