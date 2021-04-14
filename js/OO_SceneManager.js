@@ -1,4 +1,4 @@
-MessageLog.trace("SCENE MANAGER loading classes");
+//MessageLog.trace("SCENE MANAGER loading classes");
 //IMPORT CLASSES : 
 
 //object to store class without conflict
@@ -284,7 +284,7 @@ function get_scene_asset_shot_list(){
 	
 	var billy_shot_list = S.assets.get_asset_shot_list("ch_billy");
 	
-	MessageLog.trace(billy_shot_list);
+	//MessageLog.trace(billy_shot_list);
 	
 }
 
@@ -305,7 +305,7 @@ function create_tree_with_selection(){
 	
 	var TREE_CODE = "";
 	
-	MessageLog.trace(selected_nodes);
+	//MessageLog.trace(selected_nodes);
 	
 	
 	
@@ -340,9 +340,9 @@ function select_tree_nodes(){
 	
 	var fetched_map_modules = S.trees.find_map_modules_in_nodes(selected_nodes)
 	
-	MessageLog.trace("MODULES");
+	//MessageLog.trace("MODULES");
 	
-	MessageLog.trace(fetched_map_modules);
+	//MessageLog.trace(fetched_map_modules);
 	
 	selection.clearSelection ()
 	
@@ -358,7 +358,7 @@ function select_tree_nodes(){
 		
 	}
 	
-	MessageLog.trace(selected_nodes);
+	//MessageLog.trace(selected_nodes);
 	
 }
 
@@ -370,7 +370,7 @@ function show_layer_ID(){
 	
 	var selection = OO.doc.selectedNodes;
 	
-	MessageLog.trace(S.trees.get_node_smlayerid(selection[0]));
+	//MessageLog.trace(S.trees.get_node_smlayerid(selection[0]));
 	
 	MessageBox.information(S.trees.get_node_smlayerid(selection[0]));
 	
@@ -625,7 +625,7 @@ function pull_selected_portals_dialog(){
 
 function pull_selected_portals_process(_data_type){
 	
-	////MessageLog.trace("PULL PSD FUNCTION");
+	//////MessageLog.trace("PULL PSD FUNCTION");
 	
 	var S = new OO.SceneManager();	
 	
@@ -647,7 +647,14 @@ function pull_selected_portals_process(_data_type){
 			
 			S.portals.empty(current_portal);
 			
+			
+			//  !
+			
 			var pulled_nodes = S.portals.pull(current_portal,_data_type);	
+			
+			
+			
+			//after pull code ___ to be cleaned __ should be a separate function
 			
 			if(pulled_nodes != false){
 				
@@ -670,9 +677,9 @@ function pull_selected_portals_process(_data_type){
 									
 									if( cadre.bg != undefined){
 										
-										MessageLog.trace("PNG HEIGHT");
+										//MessageLog.trace("PNG HEIGHT");
 						
-										MessageLog.trace(cadre.bg.height);
+										//MessageLog.trace(cadre.bg.height);
 										
 										var final_sy = cadre.bg.height/1080;
 										
@@ -721,7 +728,7 @@ function pull_selected_portals_process(_data_type){
 
 function push_selected_portals(_data_type){
 	
-	MessageLog.trace("PUSH PORTAL FUNCTION");
+	//MessageLog.trace("PUSH PORTAL FUNCTION");
 	
 	var S = new OO.SceneManager();	
 	
@@ -739,7 +746,7 @@ function push_selected_portals(_data_type){
 		
 		var current_portal = S.portals.list[p];
 			
-		MessageLog.trace(current_portal.code);
+		//MessageLog.trace(current_portal.code);
 		
 		S.portals.push_portal(current_portal,_data_type);
 			
@@ -749,11 +756,25 @@ function push_selected_portals(_data_type){
 	
 } 
 
-function udpate_asset_portal(_portal){
+function udpate_portal_paths_from_vault(_portal){
 	
+	var S = new OO.SceneManager();	
+		
+	S.context.set_context_type('Shotgun');	
 	
+	S.context.set_vault_path(OO.vault_path)	
 	
+	S.assets.load_breakdown('csv');
+
+	var linked_asset = S.assets.get_asset_by_code(_portal.get_code());
 	
+	var path_attributes_object = {
+		psd_path :S.context.get_asset_data_path(linked_asset,"psd"),
+		png_path :S.context.get_asset_data_path(linked_asset,"png"),
+		tpl_path :S.context.get_asset_data_path(linked_asset,"tpl")
+	}
+	
+	S.portals.update_portal_attributes(_portal,path_attributes_object); 
 	
 }
 
@@ -761,9 +782,60 @@ function udpate_asset_portal(_portal){
 
 
 
+function update_portals_paths_by_type(_asset_type){
+	
+	//MessageLog.trace("update_portals_paths_by_type")
+	
+	var S = new OO.SceneManager();	
+		
+	
+	S.context.set_library_path(OO.library_path);	
+	
+	S.context.set_psd_path(OO.psd_path);
+	
+	S.context.set_png_path(OO.png_path);
+	
+	S.context.set_svg_path(OO.svg_path);
+	
+	S.context.set_vault_path(OO.vault_path)
+	
+	S.assets.load_breakdown('csv');
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/update_portals_path.html");
+	
+	
+	S.portals.load_from_scene();
+
+	for(var p = 0 ; p < S.portals.list.length; p++){
+		
+		var current_portal = S.portals.list[p]
+		
+		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
+		
+		if(linked_asset != false){
+
+			if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
+				
+				S.log.add("updating paths of portal - "+current_portal.get_code(),"process");
+				
+				udpate_portal_paths_from_vault(current_portal);
+				
+			}
+		
+		}
+		
+	}	
+
+	S.log.save();
+	
+	
+};
+
+
+
 // ASSET PORTALS 
 
-function create_portals(_type){
+function create_portals(_asset_type){
 	
 	var S = new OO.SceneManager();	
 	
@@ -789,7 +861,7 @@ function create_portals(_type){
 	var target_composite = false;
 	
 	
-	switch(_type){
+	switch(_asset_type){
 		
 		case ('bg'):
 		
@@ -821,7 +893,7 @@ function create_portals(_type){
 	
 	if(target_composite != undefined){
 		
-		S.create_asset_portals(_type,point,target_composite);
+		S.create_asset_portals(_asset_type,point,target_composite);
 		
 	}
 
@@ -867,9 +939,10 @@ function update_portal_(_asset_type){
 }
 
 
+
 function pull_(_asset_type){
 	
-	////MessageLog.trace("PULL PSD FUNCTION");
+	//////MessageLog.trace("PULL PSD FUNCTION");
 	
 	var S = new OO.SceneManager();	
 	
@@ -895,7 +968,7 @@ function pull_(_asset_type){
 		
 		var current_portal = S.portals.list[p]
 		
-		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
+		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
 		
 		if(linked_asset != false){
 			
@@ -906,36 +979,22 @@ function pull_(_asset_type){
 				
 				//we empty the portal first 
 				
-				S.portals.empty(current_portal);
+				//S.portals.empty(current_portal);
 				
 				S.log.add("pulling png of - "+current_portal.code,"process");
 				
 				if(current_portal.png_exist()){
 
 					var bg_node = S.portals.pull(current_portal,'png');		
-			
-					/*var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
-					
-					var full_psd_path = S.context.get_asset_data_path(linked_asset,"psd");
-					
-					var full_png_path = S.context.get_asset_data_path(linked_asset,"png");*/
-					
-					
+
 					// should load the path from the portal and not check again with asset context __ weird logic. 
 					
 					var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
-					
-					var full_psd_path = current_portal.get_path('psd');
-					
-					var full_png_path = current_portal.get_path('png');
-					
-					MessageLog.trace("BG_PATH : ");
-					
-					MessageLog.trace(full_psd_path);
-					
-					MessageLog.trace(full_svg_path);
-					
-					MessageLog.trace(full_png_path);
+
+					//MessageLog.trace("BG_PATH : ");
+
+					//MessageLog.trace(full_svg_path);
+
 					
 					// if the bg has cadres that match the shot name. 
 					
@@ -946,8 +1005,8 @@ function pull_(_asset_type){
 					
 					if( bg_cadre.bg != undefined && current_portal.png_scaled == false){
 						
-						MessageLog.trace("BG HEIGHT");
-						MessageLog.trace(bg_cadre.bg.height);
+						//MessageLog.trace("BG HEIGHT");
+						//MessageLog.trace(bg_cadre.bg.height);
 						
 						var final_sy = bg_cadre.bg.height/1080;
 						var final_sx = final_sy;
@@ -1011,9 +1070,9 @@ function fit_selected_portals_to_camera(){
 			
 			var full_svg_path = S.context.get_svg_path(linked_asset);
 			
-			MessageLog.trace("SVG_PATH : ");
+			//MessageLog.trace("SVG_PATH : ");
 			
-			MessageLog.trace(full_svg_path);
+			//MessageLog.trace(full_svg_path);
 
 			var bg_cadre = S.load_cadre(full_svg_path);
 			
@@ -1080,9 +1139,9 @@ function fit_bg_to_camera(){
 			
 			var full_svg_path = S.context.get_svg_path(linked_asset);
 			
-			MessageLog.trace("SVG_PATH : ");
+			//MessageLog.trace("SVG_PATH : ");
 			
-			MessageLog.trace(full_svg_path);
+			//MessageLog.trace(full_svg_path);
 
 			var bg_cadre = S.load_cadre(full_svg_path);
 			
@@ -1119,7 +1178,7 @@ function fit_bg_to_camera(){
 
 function pull_psd(){
 	
-	////MessageLog.trace("PULL PSD FUNCTION");
+	//////MessageLog.trace("PULL PSD FUNCTION");
 	
 	var S = new OO.SceneManager();	
 	
@@ -1138,7 +1197,7 @@ function pull_psd(){
 
 			var full_psd_path = current_portal.get_path('psd');
 			
-			MessageLog.trace(full_psd_path);
+			//MessageLog.trace(full_psd_path);
 			
 			S.log.add(full_psd_path+" --- > pulling","process");
 			
@@ -1202,14 +1261,14 @@ function export_asset_png_process(){
 	//reading scene shotgun context
 	
 
-	MessageLog.trace(S.context.set_from_scene_path()); 
+	//MessageLog.trace(S.context.set_from_scene_path()); 
 	
 	var current_asset = S.context.get_current_asset();
 	var prefilled_path = ""; 
 	
 	var library_asset_path = S.context.get_asset_data_path(current_asset,"png");
 	
-	MessageLog.trace("PATH PNG");
+	//MessageLog.trace("PATH PNG");
 	
 	S.portals.load_from_node_list(OO.doc.selectedNodes);
 	
@@ -1225,7 +1284,7 @@ function export_asset_png_process(){
 		
 	}	
 	
-	MessageLog.trace(library_asset_path);
+	//MessageLog.trace(library_asset_path);
 	
 	var dialog = new Dialog();
 	dialog.title = "EXPORT ASSET PNG";
@@ -1398,7 +1457,7 @@ function copy_node_name_process(){
 	
 	var snodes = selection.selectedNodes(); 
 	
-	MessageLog.trace(snodes);
+	//MessageLog.trace(snodes);
 	
 	    var d = new Dialog
 	    d.title = "COPY NODE NAME";
@@ -1479,7 +1538,7 @@ function send_video_as_version(){
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/send_version_video");
 	
 	
-	MessageLog.trace("send video as version");
+	//MessageLog.trace("send video as version");
 	
 	//$.scene.renderWriteNodes(false,,,,,,"P:/pipeline/alexdev/batch/after_render/after_render.js")
 	
@@ -1491,7 +1550,7 @@ function send_video_as_version(){
 	
 	quick_update_movie_path(final_path);
 	
-	//$.scene.renderWriteNodes(false,"","","","","","MessageLog.trace(render is finished)")
+	//$.scene.renderWriteNodes(false,"","","","","","//MessageLog.trace(render is finished)")
 	$.scene.renderWriteNodes(false,"","","","","","P:/pipeline/alexdev/batch/after_render/after_render.js")
 	
 }
@@ -1504,7 +1563,7 @@ function background_render_scene(){
 
 function create_asset_dir(){
 	
-	MessageLog.trace("ASSSET DIR");
+	//MessageLog.trace("ASSSET DIR");
 	
 	var S = new OO.SceneManager();	
 	
@@ -1526,16 +1585,16 @@ function create_asset_dir(){
 			
 			var code = current_asset.get_code();
 			
-			MessageLog.trace(code);
+			//MessageLog.trace(code);
 			
 			
 			var dir_path = "P:/projects/billy/pre_shotgun/batch_pool/directory/"+type+"/"+code+"/";
 			
 			//var files = S.context.find_file_by_extension(dir_path,"png");
 			
-			//MessageLog.trace(dir_path);
+			////MessageLog.trace(dir_path);
 			
-			//MessageLog.trace(files[0]);
+			////MessageLog.trace(files[0]);
 			
 			var test_path ="P:/projects/billy/pre_shotgun/batch_pool/directory/test/";
 			
@@ -1704,7 +1763,7 @@ function batch_preview_bg(){
 
 	//background_render_scene()
 
-	MessageLog.trace("SAVING...");
+	//MessageLog.trace("SAVING...");
 	
 	var saving = scene.saveAll();
 		
@@ -1712,6 +1771,49 @@ function batch_preview_bg(){
 
 
 }
+
+
+// BG LAYOUT 
+
+function batch_update_bg_paths(){
+		
+	MessageLog.trace("BATCH UPDATE BG PATHS FROM VAULT ...");
+
+	update_portals_paths_by_type('bg');
+
+	var saving = scene.saveAll();
+		
+	MessageLog.trace("scene was saved : "+saving);
+
+}
+
+function batch_empty_bg_portals(){
+		
+	MessageLog.trace("BATCH EMPTY BG PORTALS...");
+	
+	empty_portals('bg')
+
+	var saving = scene.saveAll();
+		
+	MessageLog.trace("scene was saved : "+saving);
+}
+
+
+function batch_pull_png_bg_portals(){
+		
+	MessageLog.trace("BATCH PULL PNG ON BG PORTALS...");
+	
+	pull_('bg')
+	
+	var saving = scene.saveAll();
+		
+	MessageLog.trace("scene was saved : "+saving);	
+
+}
+
+
+
+
 
 function batch_box_anim(){
 		
@@ -1731,11 +1833,11 @@ function batch_box_anim(){
 
 	background_render_scene()
 
-	MessageLog.trace("SAVING...");
+	//MessageLog.trace("SAVING...");
 
 	var saving = scene.saveAll();
 	
-	MessageLog.trace("scene was saved : "+saving);	
+	//MessageLog.trace("scene was saved : "+saving);	
 
 }
 
@@ -1755,8 +1857,8 @@ function turnoff_burnin(){
 function check_composite_to_2d(){
 	
 	node.setTextAttr("Top/CHECKC", "COMPOSITE_2D", frame.current(),"Y");
-	MessageLog.trace("COMPOSITE_2D to Y ")
-	MessageLog.trace(node.getTextAttr("Top/CHECKC", frame.current(),"COMPOSITE_2D"))
+	//MessageLog.trace("COMPOSITE_2D to Y ")
+	//MessageLog.trace(node.getTextAttr("Top/CHECKC", frame.current(),"COMPOSITE_2D"))
 	
 }
 

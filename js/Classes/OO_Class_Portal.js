@@ -1,6 +1,6 @@
 // CLASS OO_Portal
 
-MessageLog.trace("CLASS OO_Portal")
+//MessageLog.trace("CLASS OO_Portal")
 
 /*
 	a portal is a tree with a particular setup to import and export tpl
@@ -100,7 +100,7 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		
 		var slash_split = path.split("\\");
 		
-		MessageLog.trace(slash_split); 
+		//MessageLog.trace(slash_split); 
 		var dir = "";
 		
 		for(var i = 0 ; i < slash_split.length-1; i ++){
@@ -134,7 +134,7 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 	
 	this.get_script_module = function(){
 		
-		var script_module_name = "PORTAL_"+this.get_code();
+		var script_module_name = "Top/PORTAL_"+this.get_code();
 		
 		return OO.doc.getNodeByPath(script_module_name);
 		
@@ -146,7 +146,7 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		
 		
 	}
-	
+
 	this.set_script_module_attributes = function(_attr,_value){
 		
 		var script_module = this.get_script_module();
@@ -199,8 +199,8 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		
 		var psd = new $.oFile(this.psd_path)
 		
-		////MessageLog.trace("PSD EXIST");
-		////MessageLog.trace(psd.exists);
+		//////MessageLog.trace("PSD EXIST");
+		//////MessageLog.trace(psd.exists);
 
 		return psd.exists;
 	}
@@ -208,8 +208,8 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		
 		var png = new $.oFile(this.png_path)
 		
-		////MessageLog.trace("PSD EXIST");
-		////MessageLog.trace(psd.exists);
+		//////MessageLog.trace("PSD EXIST");
+		//////MessageLog.trace(psd.exists);
 
 		return png.exists;
 	}

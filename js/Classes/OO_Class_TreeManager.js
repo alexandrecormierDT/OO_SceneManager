@@ -1,7 +1,7 @@
 // CLASS OO_TreeManager
 // CLASS OO_TreeManager
 
-////MessageLog.trace("CLASS OO_TreeManager")
+//////MessageLog.trace("CLASS OO_TreeManager")
 
 
 /*
@@ -120,9 +120,9 @@ OO.TreeManager = function(_S){
 
 	this.add_map_module = function(_code,_node_to_link){
 		
-		MessageLog.trace("TOP NODE");
+		//MessageLog.trace("TOP NODE");
 		
-		MessageLog.trace(_node_to_link)
+		//MessageLog.trace(_node_to_link)
 		
 		var script_module = false;
 
@@ -136,7 +136,7 @@ OO.TreeManager = function(_S){
 				
 			}
 			
-			MessageLog.trace(parent_group)
+			//MessageLog.trace(parent_group)
 			
 			// importing tpl as oNode object
 			
@@ -596,9 +596,9 @@ OO.TreeManager = function(_S){
 			
 			var myDragObject = copyPaste.copyFromTemplate(path,0,0,myCopyOptions);
 			
-			MessageLog.trace(myDragObject);
+			//MessageLog.trace(myDragObject);
 			
-			MessageLog.trace(copyPaste.pasteTemplateIntoGroup(path,group,0));	
+			//MessageLog.trace(copyPaste.pasteTemplateIntoGroup(path,group,0));	
 
 			selection.clearSelection();
 			
@@ -618,7 +618,7 @@ OO.TreeManager = function(_S){
 			
 			var myDragObject = copyPaste.copyFromTemplate(path,0,0,myCopyOptions);
 			
-			MessageLog.trace(myDragObject);
+			//MessageLog.trace(myDragObject);
 			
 			copyPaste.pasteNewNodes(myDragObject,"",myPasteOptions);
 
@@ -693,8 +693,8 @@ OO.TreeManager = function(_S){
 		
 		S.log.add("importing psd "+_path,"file")
 		
-		MessageLog.trace("exporting "+_group.nodes)
-		MessageLog.trace(" to "+_path)
+		//MessageLog.trace("exporting "+_group.nodes)
+		//MessageLog.trace(" to "+_path)
 		
 		var exportProcess = OO.doc.exportTemplate(_group,_path); // "createPalette" value will create one palette for all colors
 
@@ -797,8 +797,8 @@ OO.TreeManager = function(_S){
 				
 				var final_sy = txt_resolution.height/1080;
 				
-				MessageLog.trace(final_sy);
-				MessageLog.trace(final_sy);
+				//MessageLog.trace(final_sy);
+				//MessageLog.trace(final_sy);
 				
 				var final_sx = final_sy;
 				
@@ -831,7 +831,7 @@ OO.TreeManager = function(_S){
 	
 	this.extend_exposition_to_scene_length= function(_onode){
 		
-		MessageLog.trace("extend_exposition_to_scene_length");
+		//MessageLog.trace("extend_exposition_to_scene_length");
 		
 		var scene_length = scene.getStopFrame()+1
  
@@ -853,7 +853,7 @@ OO.TreeManager = function(_S){
 		
 		img.onload = function() {
 			
-			MessageLog.trace(this.width + 'x' + this.height);
+			//MessageLog.trace(this.width + 'x' + this.height);
 		  
 		}
 		
@@ -864,7 +864,7 @@ OO.TreeManager = function(_S){
 
 	this.arange_psd_node = function(_tree){
 		
-		////MessageLog.trace("ARRANGE PSD NODES");
+		//////MessageLog.trace("ARRANGE PSD NODES");
 		
 		var reads = _tree.get_reads();
 		
@@ -994,9 +994,9 @@ OO.TreeManager = function(_S){
 		
 		if(cadre.hasOwnProperty('rect')==true){
 			
-			MessageLog.trace("FIT TO CAMERA");
+			//MessageLog.trace("FIT TO CAMERA");
 			
-			MessageLog.trace("CADRE "+cadre);
+			//MessageLog.trace("CADRE "+cadre);
 			
 			var EVIL_RATIO = parseFloat(4/3)
 
@@ -1074,7 +1074,7 @@ OO.TreeManager = function(_S){
 				
 			}else{
 				
-				MessageLog.trace("reseting camera");
+				//MessageLog.trace("reseting camera");
 				
 				S.log.add("reseting camera coords","warning");
 				
@@ -1095,10 +1095,10 @@ OO.TreeManager = function(_S){
 			}
 
 			
-			MessageLog.trace("CAMERA PEG")
-			MessageLog.trace(cam_peg_x)
-			MessageLog.trace(cam_peg_y)
-			MessageLog.trace(cam_peg_z)
+			//MessageLog.trace("CAMERA PEG")
+			//MessageLog.trace(cam_peg_x)
+			//MessageLog.trace(cam_peg_y)
+			//MessageLog.trace(cam_peg_z)
 			
 
 			
@@ -1162,15 +1162,15 @@ OO.TreeManager = function(_S){
 			
 			
 			
-			MessageLog.trace(" ----- FIT TO CAMERA -------------------------------- ");
+			//MessageLog.trace(" ----- FIT TO CAMERA -------------------------------- ");
 			
-				MessageLog.trace("X = "+final_x);
+				//MessageLog.trace("X = "+final_x);
 			
-				MessageLog.trace("Y = "+final_y);
+				//MessageLog.trace("Y = "+final_y);
 				
-				MessageLog.trace("Z = "+final_z);
+				//MessageLog.trace("Z = "+final_z);
 			
-			MessageLog.trace(" ------------------------------------------------------ ");
+			//MessageLog.trace(" ------------------------------------------------------ ");
 			
 			
 			//INJECT X
@@ -1209,7 +1209,7 @@ OO.TreeManager = function(_S){
 			
 			var attribute_name = attrList[i]
 			
-			//MessageLog.trace("*****"+attribute_name);
+			////MessageLog.trace("*****"+attribute_name);
 			
 			if(attribute_name == "POSITION.3DPATH"){
 			
@@ -1217,7 +1217,7 @@ OO.TreeManager = function(_S){
 				
 				if( linked_column !=""){
 					
-					MessageLog.trace(attribute_name);
+					//MessageLog.trace(attribute_name);
 
 					node_columns = (linked_column);
 				}
@@ -1234,7 +1234,7 @@ OO.TreeManager = function(_S){
   	
 	function getAttributesNameList (snode){
 		
-		//MessageLog.trace(arguments.callee.name)
+		////MessageLog.trace(arguments.callee.name)
 		
 		var attrList = node.getAttrList(snode, frame.current(),"");
 		var name_list= Array();
@@ -1256,7 +1256,7 @@ OO.TreeManager = function(_S){
 			
 		}
 		
-		//MessageLog.trace(name_list)
+		////MessageLog.trace(name_list)
 		
 		return name_list;
 		
@@ -1264,7 +1264,7 @@ OO.TreeManager = function(_S){
  	
 	function get_next_3Dkey(_column){
 		
-		//MessageLog.trace(arguments.callee.name)
+		////MessageLog.trace(arguments.callee.name)
 
 		sub_column = 4;
 		key = Array();
@@ -1308,7 +1308,7 @@ OO.TreeManager = function(_S){
 		
 		result = parseFloat(result)
 		
-		//MessageLog.trace(" from "+tbv+"  to   "+result)
+		////MessageLog.trace(" from "+tbv+"  to   "+result)
 
 		return result
 		

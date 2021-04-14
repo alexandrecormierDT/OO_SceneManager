@@ -1,6 +1,6 @@
 // CLASS OO_Tree
 
-////MessageLog.trace("CLASS OO_Tree")
+//////MessageLog.trace("CLASS OO_Tree")
 
 
 OO.Tree = function(_code,_nodes){
@@ -69,15 +69,15 @@ OO.Tree = function(_code,_nodes){
 	
 	this.update_map_module = function(_attribute,_value){
 		
-		MessageLog.trace("update_map_module")
-		MessageLog.trace(_attribute)
-		MessageLog.trace(_value)
+		//MessageLog.trace("update_map_module")
+		//MessageLog.trace(_attribute)
+		//MessageLog.trace(_value)
 		
 		var map_module = this.get_map_module();
 		
-		MessageLog.trace(map_module.path)
-		MessageLog.trace(map_module.name)
-		MessageLog.trace(map_module[_attribute])
+		//MessageLog.trace(map_module.path)
+		//MessageLog.trace(map_module.name)
+		//MessageLog.trace(map_module[_attribute])
 		
 		if(map_module != false){
 			
@@ -184,7 +184,7 @@ OO.Tree = function(_code,_nodes){
 		
 		var nodes = this.get_nodes();
 		
-		MessageLog.trace(nodes);
+		//MessageLog.trace(nodes);
 		
 		for(var n = 0 ; n < nodes.length ; n ++){
 			
@@ -254,7 +254,7 @@ OO.Tree = function(_code,_nodes){
 			
 			var name_split = current_node.name.split('_');
 			
-			MessageLog.trace(name_split);
+			//MessageLog.trace(name_split);
 			
 			if(name_split[0] == _prefix){
 			

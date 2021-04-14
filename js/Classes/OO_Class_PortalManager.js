@@ -24,6 +24,7 @@ OO.PortalManager = function(_S){
 
 	}
 	
+
 	this.load_from_node_list= function(_node_list){
 		
 		// init list
@@ -110,9 +111,23 @@ OO.PortalManager = function(_S){
 
 	}	
 	
-	this.update_paths = function (_portal){
+	this.update_portal_attributes = function (_portal,_attributes_object){
 		
+		var attributes_names = Object.getOwnPropertyNames(_attributes_object); 
 		
+		for (var a = 0 ;  a <attributes_names.length ; a++){
+			
+			
+			var cur_attr_name = attributes_names[a]
+			
+			var cur_attr_val = _attributes_object[cur_attr_name]
+			
+			MessageLog.trace(cur_attr_name);
+			MessageLog.trace(cur_attr_val);
+			
+			_portal.set_script_module_attributes(cur_attr_name,cur_attr_val);
+			
+		}
 		
 		
 	}
@@ -159,7 +174,7 @@ OO.PortalManager = function(_S){
 				
 					MessageLog.trace("pulling png")
 
-					final_path = _portal.png_path ;
+					final_path = _portal.get_path('png'); ;
 					
 					MessageLog.trace(final_path); 
 
@@ -189,7 +204,7 @@ OO.PortalManager = function(_S){
 				
 				case 'tpl':
 				
-					final_path = _portal.tpl_path ;
+					final_path = _portal.get_path('tpl') ;
 
 					S.trees.import_tpl_in_group(final_path,portal_group)
 				
@@ -463,7 +478,17 @@ OO.PortalManager = function(_S){
 	
 
 	
-	this.update= function(){
+	this.update= function(_portal,_new_values_object){
+		
+		var property_list = Object.getOwnPropertyNames(_new_values_object); 
+		
+		
+		for( var p = 0 ; p < property_list ; p++){
+			
+			MessageLog.trace(property_list[p]);
+			
+		}
+		
 		
 	}
 	
