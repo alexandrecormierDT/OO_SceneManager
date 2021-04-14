@@ -69,16 +69,8 @@ OO.Tree = function(_code,_nodes){
 	
 	this.update_map_module = function(_attribute,_value){
 		
-		//MessageLog.trace("update_map_module")
-		//MessageLog.trace(_attribute)
-		//MessageLog.trace(_value)
-		
 		var map_module = this.get_map_module();
-		
-		//MessageLog.trace(map_module.path)
-		//MessageLog.trace(map_module.name)
-		//MessageLog.trace(map_module[_attribute])
-		
+
 		if(map_module != false){
 			
 			if(map_module.hasOwnProperty(_attribute)){
@@ -150,7 +142,7 @@ OO.Tree = function(_code,_nodes){
 		
 		for(var n = 0 ; n < tree_nodes.length ; n ++){
 			
-			onode_list.push(OO.doc.getNodeByPath(tree_nodes[n]));
+			onode_list.push($.scene.getNodeByPath(tree_nodes[n]));
 			
 		}	
 
@@ -305,11 +297,15 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_parent_group = function(){
 		
-		if(tree_nodes != null){
+		var _tree_nodes = this.get_nodes();
+		
+		if(_tree_nodes != null  && _tree_nodes.length > 0){
 			
 			return tree_nodes[0].parent;
 			
 		}
+		
+		return false; 
 		
 	}
 

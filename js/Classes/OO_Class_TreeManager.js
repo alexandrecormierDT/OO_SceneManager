@@ -49,7 +49,6 @@ OO.TreeManager = function(_S){
 		var ntree = new OO.Tree(_code,_nodes);
 		
 		
-		
 		// marking nodes with unique id
 		
 		var tree_nodes = ntree.get_nodes();
@@ -62,52 +61,54 @@ OO.TreeManager = function(_S){
 		
 		scene.saveAll();
 		
-		
-		
 		// FINDING AND SETTING TOP AND BOTTOM NODES
 		
-		var node_to_link = tree_nodes[0];
+		if(tree_nodes.length > 0){
 		
-		var found_top_node = ntree.find_top_node();
-		
-		if(found_top_node != false){
+			var node_to_link = tree_nodes[0];
 			
-			ntree.set_top_node(found_top_node);
+			var found_top_node = ntree.find_top_node();
 			
-			node_to_link = found_top_node;
-		}
-		
-		var found_bottom_node = ntree.find_bottom_node();
-		
-		if(found_bottom_node != false){
-			
-			ntree.set_bottom_node(found_bottom_node);
-		}		
-
-
+			if(found_top_node != false){
 				
-		// parsing node map (list of node with their ids) 
-		
-		var node_map_string = this.stringify_node_list(tree_nodes);
-		
-		
-		
-		// adding linking and setting map module 
-		
-		var map_module = this.add_map_module(_code,node_to_link);
-		
-		map_module.name = "TreeMap_"+_code
-		
-		ntree.set_map_module(map_module);
-		
-		ntree.update_map_module("code",_code);
-		
-		ntree.update_map_module("node_list",node_map_string);
-		
-		ntree.update_map_module("node_count",tree_nodes.length);
+				ntree.set_top_node(found_top_node);
+				
+				node_to_link = found_top_node;
+			}
+			
+			var found_bottom_node = ntree.find_bottom_node();
+			
+			if(found_bottom_node != false){
+				
+				ntree.set_bottom_node(found_bottom_node);
+			}		
+
+
+					
+			// parsing node map (list of node with their ids) 
+			
+			var node_map_string = this.stringify_node_list(tree_nodes);
 			
 			
-		this.list.push(ntree);
+			
+			// adding linking and setting map module 
+			
+			var map_module = this.add_map_module(_code,node_to_link);
+			
+			map_module.name = "TreeMap_"+_code
+			
+			ntree.set_map_module(map_module);
+			
+			ntree.update_map_module("code",_code);
+			
+			ntree.update_map_module("node_list",node_map_string);
+			
+			ntree.update_map_module("node_count",tree_nodes.length);
+				
+				
+			this.list.push(ntree);
+		
+		}
 
 		return ntree;			
 
@@ -568,23 +569,26 @@ OO.TreeManager = function(_S){
 
 	}	
 	
-	this.import_tpl= function(_path){
+	this.import_tpl = function(_path){
 	
 		
 		S.log.add("importing tpl "+_path,"file")
 			
 		var import_group =  OO.doc.root.addNode("GROUP",_path); 	
 		
-		natif_Import_TPL_in_group(_path,import_group.path);
+		import_TPL_in_group(_path,import_group.path);
 
-	
-		var updated_group = OO.doc.$node(import_group.path)
+		var updated_group = OO.doc.getNodeByPath(import_group.path)
 		
 		return updated_group.nodes; 
 
 	}	
 	
-	function natif_Import_TPL_in_group(path,group){
+	function import_TPL_in_group(tpl_file_path,group_scene_path){
+		
+			MessageLog.trace("natif_Import_TPL_in_group");
+			
+			MessageLog.trace(tpl_file_path);
 
 			var myCopyOptions = copyPaste.getCurrentCreateOptions();
 			
@@ -592,15 +596,11 @@ OO.TreeManager = function(_S){
 			
 			myPasteOptions.extendScene = false;
 
-			//myCopyOptions.addModelsDir = false;
+			var myDragObject = copyPaste.copyFromTemplate(tpl_file_path,0,0,myCopyOptions);
 			
-			var myDragObject = copyPaste.copyFromTemplate(path,0,0,myCopyOptions);
-			
-			//MessageLog.trace(myDragObject);
-			
-			//MessageLog.trace(copyPaste.pasteTemplateIntoGroup(path,group,0));	
-
-			selection.clearSelection();
+			copyPaste.pasteNewNodes(myDragObject,group_scene_path,myPasteOptions);
+						
+			//copyPaste.pasteTemplateIntoGroup(path,group,0)				
 			
 			return true; 
 
@@ -618,15 +618,10 @@ OO.TreeManager = function(_S){
 			
 			var myDragObject = copyPaste.copyFromTemplate(path,0,0,myCopyOptions);
 			
-			//MessageLog.trace(myDragObject);
-			
 			copyPaste.pasteNewNodes(myDragObject,"",myPasteOptions);
-
-			selection.clearSelection();
-
+			
 			
 
-			
 			return true; 
 
 	}

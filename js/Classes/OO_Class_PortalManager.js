@@ -378,9 +378,12 @@ OO.PortalManager = function(_S){
 		var png_path = _png_path != undefined ? _png_path : ""; 
 		var departement = _departement != undefined ? _departement : ""; 
 	
-		////MessageLog.trace("Portal ADD");
+		MessageLog.trace("Portal ADD");
 		
 		var pnodes =  S.trees.import_tpl(this.module_path);
+		
+		MessageLog.trace("pnodes");
+		MessageLog.trace(pnodes);
 		
 		var ntree = S.trees.add(_code,pnodes);
 		
