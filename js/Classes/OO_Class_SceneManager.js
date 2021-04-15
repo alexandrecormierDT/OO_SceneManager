@@ -329,41 +329,50 @@ OO.SceneManager = function(){
 			var asset_code = cura.get_code()
 			
 			var asset_type = cura.get_type()
-			
 
 			if(asset_type == _type || asset_type == "all_type"){
-
-				var nportal = this.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path,final_png_path);	
-
+				
+				this.portals.creator.set_code( asset_code )
+				this.portals.creator.set_sg_asset_type( asset_type )
+				this.portals.creator.set_tpl_path( final_tpl_path )
+				this.portals.creator.set_psd_path( final_psd_path )
+				this.portals.creator.set_png_path( final_png_path )
+				
+				var nportal = this.portals.creator.create_portal(); 
+				
+				if(nportal!=false){
+					
+					this.portals.add(nportal); 
+					
+				}
+				
 				MessageLog.trace("*------------> creating portal for asset : ( "+asset_code+" ) TYPE  ( "+asset_type+" )");
-				MessageLog.trace("*------------> final_tpl_path : "+final_tpl_path)
-				MessageLog.trace("*------------> final_psd_path : "+final_psd_path)
-				MessageLog.trace("*------------> final_png_path : "+final_png_path)
 				
 			}
 
 		}
+		
+		var portal_list = this.portals.get_list()
 
 
-		if(this.portals.list.length > 0){
+		if(portal_list.length > 0){
 			
 			//Placing portal trees in nodeview : 
 
-			for(var p = 0 ; p < this.portals.list.length; p++){
+			for(var p = 0 ; p < portal_list.length; p++){
 				
-				var cportal = this.portals.list[p]
+				var cportal = portal_list[p]
 				
 				var cportal_tree = cportal.get_tree(); 
 				
 				if(p > 0){
 					
-					var pportal = this.portals.list[p-1];
+					var pportal = portal_list[p-1];
 					
 					this.trees.put_next_to(pportal.get_tree(),cportal.get_tree(),100);
 					
 				}else{
 
-					
 					cportal_tree.moveTo(_point.x,_point.y);
 
 				}
@@ -372,9 +381,9 @@ OO.SceneManager = function(){
 			
 			//	ungrouping them 
 			
-			for(var p = 0 ; p < this.portals.list.length; p++){
+			for(var p = 0 ; p < portal_list.length; p++){
 				
-				var cportal = this.portals.list[p]
+				var cportal = portal_list[p]
 				
 				var cportal_tree = cportal.get_tree(); 
 
@@ -383,16 +392,25 @@ OO.SceneManager = function(){
 				// i think the nodes pointers are lost after the ungroup; 
 				
 				//fix this with an id ? 
+				
 
 				if(typeof(_composite) != undefined ){
+					
 
 					var group = OO.doc.getNodeByPath("Top/"+cportal.get_code());
 					
+					
+					MessageLog.trace("((((((((((((group"); 
+					MessageLog.trace("Top/"+cportal.get_code()); 
+					MessageLog.trace(group); 
+					
 					if(group != undefined) {
 						
+						MessageLog.trace("node linked"); 
 						group.linkOutNode(_composite)
 						
 					}
+					
 
 				}
 

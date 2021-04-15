@@ -41,82 +41,109 @@
 	</specs>
 	*/
 
-OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
+OO.Portal = function (){
 
-	// a tree with a peg a group and a script_module
 	
+	var portal_code = null;
 	
-	var portal_code = _code; 
+	var portal_sg_asset_type = null
 	
-	var portal_sg_asset_type = _type; 
+	var portal_departement = null;
+
+	var portal_tpl_version = null;
+	
+	var portal_status = null; 
 	
 	var portal_paths = [];
 	
-	/*portal_paths['tpl'] = _tpl_path;
-	portal_paths['psd'] = _psd_path;
-	portal_paths['png'] = _png_path;*/
-	
-	var portal_tree = _tree;
-
-	var portal_department = "";
-	
-	var portal_content = ""; 
-	
-	var portal_script_module_object = null; 
 	
 	
+	// TREE
+	var portal_tree = null;
 	
-	this.get_tree = function(){
 	
-		return portal_tree; 
 		
-	}
 	
+	//SETTERS
 	
-	this.get_code = function(){
-		
-		return portal_code 
-	}
+	this.set_code = function(_pc){
+		portal_code = _pc;
+	}	
 	
-	
-	this.get_department = function(){
-	
-		return portal_department; 
-		
-	}
-	
-	this.get_sg_asset_type = function(){
-	
-		return portal_sg_asset_type; 
-		
-	}
-	
-	
-	this.get_path = function(_key){
-		
-		return portal_paths[_key];
+	this.set_sg_asset_type = function(_c){
+		portal_sg_asset_type = _c;
+	}	
+				
+	this.set_path = function(_key,_path){
+		portal_paths[_key] = _path;
 		
 	}	
 	
 
-	this.set_content = function(_tree){
-		
-		portal_content = _tree;
-		
-	}
+	this.set_departement = function(_d){
+		portal_departement = _d;
+	}	
 	
-	this.get_content = function(){
+	this.set_tpl_version = function(_tv){
+		portal_tpl_version = _tv;
+	}	
 	
-		return portal_content;
-		
-	}
+	this.set_status = function(_tv){
+		portal_status = _tv;
+	}	
 
+	// TREE
+	this.set_tree = function(_pt){
+		portal_tree = _pt;
 		
+	}
 	
+	
+	
+	
+	//GETTERS
+
+	this.get_tree = function(){
+		return portal_tree; 
+		
+	}
+	
+	this.get_code = function(){
+		return portal_code;
+	}
+	
+	this.get_departement = function(){
+		return portal_departement; 
+		
+	}
+	
+	this.get_sg_asset_type = function(){
+		return portal_sg_asset_type; 
+		
+	}
+	
+	this.get_tpl_version = function(){
+		return portal_tpl_version; 
+		
+	}
+	
+	this.get_status_version = function(){
+		return portal_status; 
+		
+	}		
+	
+	this.get_path = function(_key){
+		if(portal_paths.hasOwnProperty(_key) == true){
+			return portal_paths[_key];
+		}
+		return false; 
+		
+	}	
+
 	// PATHS
 
 	this.update_path = function(_key,_path){
-		
+	
 		if(portal_paths.hasOwnProperty(_key) == true){
 			
 			portal_paths[_key] = _path;
@@ -135,7 +162,6 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 			
 			var slash_split = path.split("\\");
 			
-			//MessageLog.trace(slash_split); 
 			var dir = "";
 			
 			for(var i = 0 ; i < slash_split.length-1; i ++){
@@ -147,10 +173,9 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 			return dir; 
 			
 		}
-		
 
-		
 	}
+	
 	
 	this.path_exist = function(_key){
 		
@@ -162,28 +187,38 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 	
 	
 
-	
-	
-	
 	// script_module
 	
-
-	function set_script_module_attribute(_attr,_value){
+	var portal_script_module_object = null; 
+	
+	
+	function add_attributes_to_script_module(_attribute_name){
 		
-		var portal_script_module_path = portal_tree.get_key_node("PORTAL_MODULE");
 		
-		MessageLog.trace("portal_script_module_path")
-		MessageLog.trace(portal_script_module_path)
+	}
+	
+	this.update_script_module_attributes_from_current_instance = function(){
 		
-		var portal_script_module_object = $.scn.getNodeByPath(portal_script_module_path)
+		var attributes_object = get_attributes_object_from_current_instance()
 		
-		if(portal_script_module_object.attributes.hasOwnProperty(_attr)){
-			
-			portal_script_module_object.attributes[_attr].setValue(_value);
-			
+		this.set_several_script_module_attributes(attributes_object);
+		
+	}
+	
+	function get_attributes_object_from_current_instance(){
+		
+		var attr_object = {
+			code: portal_code,
+			tpl_version: portal_tpl_version,
+			sg_asset_type: portal_sg_asset_type,
+			departement: portal_departement,
+			tpl_path: portal_paths['tpl'],
+			psd_path: portal_paths['psd'],
+			png_path: portal_paths['png'],
+			svg_path: portal_paths['svg']
 		}
 		
-		
+		return attr_object;
 		
 	}
 
@@ -203,6 +238,32 @@ OO.Portal = function (_code,_type,_tpl_path,_psd_path,_png_path,_tree){
 		
 	}
 	
+	function set_script_module_attribute(_attr,_value){
+		
+		var portal_script_module_path = portal_tree.get_key_node("PORTAL_MODULE");
+		
+		MessageLog.trace("portal_script_module_path")
+		
+		MessageLog.trace(portal_script_module_path)
+		
+		var portal_script_module_object = $.scn.getNodeByPath(portal_script_module_path)
+		
+		if(portal_script_module_object.attributes.hasOwnProperty(_attr)){
+			
+			portal_script_module_object.attributes[_attr].setValue(_value);
+			
+		}
+		
+	}
+	
+
+	
+
+	
+	
+	
+	
+			
 	this.get_backdrop = function (){
 		
 		var scene_backdrops = OO.doc.root.backdrops; 

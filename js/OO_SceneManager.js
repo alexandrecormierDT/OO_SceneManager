@@ -84,15 +84,23 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Log.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneFilesManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Stage.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Context.js");
+
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Asset.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_AssetManager.js");
+
+
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Tree.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_TreeManager.js");
+
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Portal.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_PortalManager.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_PortalCreator.js");
+
+
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ViewManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_View.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Context.js");
+
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SetupManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Setup.js");
 
@@ -100,8 +108,6 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ElementManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ElementFolder.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_TVG.js");
-
-
 
 
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LibraryManager.js");
@@ -536,52 +542,78 @@ function create_empty_portal(){
 	dialog.title = "CREATE PORTAL";
 	dialog.width = 200;
 	
-	var userInput1 = new LineEdit();
-	userInput1.label = "asset code";
-	userInput1.text = "";
-	dialog.add( userInput1 );
+	var userCode = new ComboBox();
+	userCode.label = "Asset code";
+	userCode.editable = true;
+	userCode.itemList = ["ch_", "pr_", "fx_","bg_"];
+	userCode.currentItem = [""];
+	dialog.add( userCode );
 	
-	var userInput2 = new ComboBox();
-	userInput2.label = "asset type"
-	userInput2.editable = true;
-	userInput2.itemList = ["Character", "Prop", "Fx","bg"];
-	dialog.add( userInput2 );
+	var userType = new ComboBox();
+	userType.label = "Asset type"
+	userType.editable = true;
+	userType.itemList = ["Character", "Prop", "Fx","bg"];
+	dialog.add( userType );
 	
-	var userInput3 = new ComboBox();
-	userInput3.label = "departement"
-	userInput3.editable = true;
-	userInput3.itemList = ["design", "rig", "anim","bg","layout"];
-	userInput3.currentItem = [""];
-	dialog.add( userInput3 );
+	var userDepartement = new ComboBox();
+	userDepartement.label = "Departement"
+	userDepartement.editable = true;
+	userDepartement.itemList = ["design", "rig", "anim","bg","layout"];
+	userDepartement.currentItem = [""];
+	dialog.add( userDepartement );
 	
 	var userInputVersion = new ComboBox();
-	userInputVersion.label = "version"
+	userInputVersion.label = "Version"
 	userInputVersion.editable = true;
-	userInputVersion.itemList = ["","v01", "v02", "v03","v04","v04_retake","v04_valid","v04_check"];
+	userInputVersion.itemList = ["v01", "v02", "v03","v04","v04_retake","v04_valid","v04_check"];
 	userInputVersion.currentItem = [""];
 	dialog.add( userInputVersion );
 	
-
+	var userInputStatus = new ComboBox();
+	userInputStatus.label = "Status"
+	userInputStatus.editable = true;
+	userInputStatus.itemList = ["wip","valid", "check"];
+	userInputStatus.currentItem = [""];
+	dialog.add( userInputStatus );
 	
 	if (dialog.exec()){
 		
-		var asset_code = OO.filter_string(userInput1.text);
+		var asset_code = OO.filter_string(userCode.currentItem);
 		
-		var asset_type = OO.filter_string(userInput2.currentItem);
+		var asset_type = OO.filter_string(userType.currentItem);
 		
-		var departement = OO.filter_string(userInput3.currentItem);
+		var departement = OO.filter_string(userDepartement.currentItem);
 		
-		var version = OO.filter_string(userInputVersion.currentItem);
+		var tpl_version = OO.filter_string(userInputVersion.currentItem);
+		
+		var status = OO.filter_string(userInputStatus.currentItem);
 		
 		var nasset = new OO.Asset({code:asset_code,sg_asset_type:asset_type});
 		
 		var final_png_path = S.context.get_asset_data_path(nasset,"png",departement);
 		var final_psd_path = S.context.get_asset_data_path(nasset,"psd",departement);
 		var final_tpl_path = S.context.get_asset_data_path(nasset,"tpl",departement);
+		
+		S.portals.creator.set_code( asset_code )
+		S.portals.creator.set_sg_asset_type( asset_type )
+		S.portals.creator.set_departement( departement )
+		S.portals.creator.set_tpl_version( tpl_version )
+		S.portals.creator.set_status( status )
+		S.portals.creator.set_png_path( final_png_path )
+		S.portals.creator.set_psd_path( final_psd_path )
+		S.portals.creator.set_tpl_path( final_tpl_path )
+		
+		var nportal = S.portals.creator.create_portal(); 
+		
+		if(nportal!=false){
 			
-		var nportal = S.portals.add(asset_code,asset_type,final_tpl_path,final_psd_path,final_png_path,departement);	
+			S.portals.add(nportal); 
+			
+		}		
+
+		var nportal_tree = nportal.get_tree(); 
 	
-		nportal.tree.ungroup();
+		nportal_tree.ungroup();
 		
 	}
 
@@ -617,15 +649,15 @@ function pull_selected_portals_dialog(){
 	dialog.width = 200;
 
 	
-	var userInput2 = new ComboBox();
-	userInput2.label = "data type to pull : "
-	userInput2.editable = true;
-	userInput2.itemList = ["png","psd","tpl"];
-	dialog.add( userInput2 );		
+	var userType = new ComboBox();
+	userType.label = "data type to pull : "
+	userType.editable = true;
+	userType.itemList = ["png","psd","tpl"];
+	dialog.add( userType );		
 	
 	if (dialog.exec()){
 		
-		DATA_TYPE = userInput2.currentItem;
+		DATA_TYPE = userType.currentItem;
 		
 		pull_selected_portals_process(DATA_TYPE);
 		
@@ -784,6 +816,10 @@ function udpate_portal_paths_from_vault(_portal){
 		tpl_path :S.context.get_asset_data_path(linked_asset,"tpl")
 	}
 	
+	//set var 
+	
+	//udpate 
+	
 	S.portals.update_portal_script_module_attributes(_portal,path_attributes_object); 
 	
 }
@@ -863,7 +899,6 @@ function create_portals(_asset_type){
 	
 	S.context.set_vault_path(OO.vault_path)
 	
-	
 	S.assets.load_breakdown('csv');
 	
 	var target_backdrop = false;
@@ -902,6 +937,9 @@ function create_portals(_asset_type){
 	}
 	
 	if(target_composite != undefined){
+		
+		
+		//responability problem 
 		
 		S.create_asset_portals(_asset_type,point,target_composite);
 		
@@ -973,10 +1011,12 @@ function pull_(_asset_type){
 	S.assets.load_breakdown('csv');
 	
 	S.portals.load_from_scene();
+	
+	var portal_list = S.portals.get_list();
 
-	for(var p = 0 ; p < S.portals.list.length; p++){
+	for(var p = 0 ; p < portal_list.length; p++){
 		
-		var current_portal = S.portals.list[p]
+		var current_portal = portal_list[p]
 		
 		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
 		
@@ -985,27 +1025,17 @@ function pull_(_asset_type){
 			//checking asset type
 			if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
 				
-				//TODO : switch per asset type
 				
-				//we empty the portal first 
-				
-				//S.portals.empty(current_portal);
-				
-				S.log.add("pulling png of - "+current_portal.code,"process");
+				S.log.add("pulling png of - "+current_portal.get_code(),"process");
 				
 				if(current_portal.png_exist()){
 
-					var bg_node = S.portals.pull(current_portal,'png');		
+					var png_node = S.portals.pull(current_portal,'png');		
 
 					// should load the path from the portal and not check again with asset context __ weird logic. 
 					
 					var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
 
-					//MessageLog.trace("BG_PATH : ");
-
-					//MessageLog.trace(full_svg_path);
-
-					
 					// if the bg has cadres that match the shot name. 
 					
 					var bg_cadre = S.load_cadre(full_svg_path);
@@ -1013,19 +1043,17 @@ function pull_(_asset_type){
 					// only for png , the image is scaled automaticly on import
 					// to compensate this we put the image back to its original pixel size with the following code :
 					
-					if( bg_cadre.bg != undefined && current_portal.png_scaled == false){
-						
-						//MessageLog.trace("BG HEIGHT");
-						//MessageLog.trace(bg_cadre.bg.height);
+					if(bg_cadre.bg != undefined){
 						
 						var final_sy = bg_cadre.bg.height/1080;
+						
 						var final_sx = final_sy;
 						
 						//INJECT SX
-						bg_node.attributes.scale.x.setValue(final_sx);
+						png_node.attributes.scale.x.setValue(final_sx);
 						
 						//INJECT SY
-						bg_node.attributes.scale.y.setValue(final_sy);				
+						png_node.attributes.scale.y.setValue(final_sy);				
 					
 					}
 
@@ -1067,12 +1095,16 @@ function fit_selected_portals_to_camera(){
 	
 	S.assets.load_breakdown('csv');
 	
+	var portal_list = S.portals.get_list(); 
 	
-	for(var p = 0 ; p < S.portals.list.length; p++){
+	
+	for(var p = 0 ; p < portal_list.length; p++){
 		
-		var current_portal = S.portals.list[p]
+		var current_portal = portal_list[p]
 		
-		var portal_peg = current_portal.tree.get_key_node("PORTAL_PEG");
+		var current_portal_tree = current_portal.get_tree();
+		
+		var portal_peg = current_portal_tree.get_key_node("PORTAL_PEG");
 		
 		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
 		
@@ -1137,13 +1169,17 @@ function fit_bg_to_camera(){
 	
 	S.portals.load_from_scene();
 	
-	for(var p = 0 ; p < S.portals.list.length; p++){
+	var portal_list = S.portals.get_list(); 
+	
+	for(var p = 0 ; p < portal_list.length; p++){
 		
-		var current_portal = S.portals.list[p]
+		var current_portal = portal_list[p]
 		
-		var portal_peg = current_portal.tree.get_key_node("PORTAL_PEG");
+		var current_portal_tree = current_portal.get_tree(); 
 		
-		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
+		var portal_peg = current_portal_tree.get_key_node("PORTAL_PEG");
+		
+		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
 		
 		if(current_portal.png_exist()){
 			
@@ -1159,7 +1195,7 @@ function fit_bg_to_camera(){
 				
 				if(bg_cadre.hasOwnProperty('rect')==true){
 					
-					//S.trees.scale_to_camera(portal_peg);
+
 					S.trees.fit_cadre_to_camera(portal_peg,bg_cadre);
 					
 					S.log.add("[SVG] cadres detected ! ","success");
@@ -1300,19 +1336,19 @@ function export_asset_png_process(){
 	dialog.title = "EXPORT ASSET PNG";
 	dialog.width = 400;
 	
-	var userInput1 = new LineEdit();
-	userInput1.label = "png path";
-	userInput1.text = library_asset_path;
-	dialog.add( userInput1 );	
+	var userCode = new LineEdit();
+	userCode.label = "png path";
+	userCode.text = library_asset_path;
+	dialog.add( userCode );	
 	
-	var userInput2 = new LineEdit();
-	userInput2.label = "scale image";
-	userInput2.text = 1.5;
-	dialog.add( userInput2 );	
+	var userType = new LineEdit();
+	userType.label = "scale image";
+	userType.text = 1.5;
+	dialog.add( userType );	
 	
 	if (dialog.exec()){
 		
-		S.views.export_currentframe_png_to(userInput1.text,userInput2.text);
+		S.views.export_currentframe_png_to(userCode.text,userType.text);
 
 	}
 	

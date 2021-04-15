@@ -232,6 +232,7 @@ OO.Tree = function(_code,_nodes){
 	}
 	
 	
+	
 	function find_node_by_prefix(_prefix){
 		
 		for(var n = 0 ; n < tree_nodes.length  ; n ++){
@@ -440,6 +441,7 @@ OO.Tree = function(_code,_nodes){
 			var current_node = OO.doc.getNodeByPath(tree_nodes[i]);
 
 			node_name_list.push(current_node);
+			
 		}
 		
 
@@ -451,6 +453,8 @@ OO.Tree = function(_code,_nodes){
 
 
 	}
+	
+	
 	
 	this.udpate_onode_with_new_group = function(newgroup,node_name){
 		

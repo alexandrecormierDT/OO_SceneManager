@@ -4,11 +4,24 @@
 
 OO.PortalManager = function(_S){
 	
-	this.module_path = "P:/pipeline/script_modules/Portals/Portal.tpl";
-	
 	var S = _S;
 	
-	this.list = [];
+	this.creator = new OO.PortalCreator(S); 
+	
+	var list = [];
+	
+	this.get_list = function(){
+	
+		return list;
+		
+	}
+	
+	
+	this.add = function(_portal){
+		
+		list.push(_portal);
+		
+	}
 	
 	this.load_from_scene = function(){
 		
@@ -29,7 +42,7 @@ OO.PortalManager = function(_S){
 		
 		// init list
 		
-		this.list = [];
+		list = [];
 		
 		// Detect the script module with "portal" attributes among the selected nodes and fetch the linked nodes to make the tree, read the script module attributes 
 		//add a new portal object to the list. 
@@ -76,6 +89,7 @@ OO.PortalManager = function(_S){
 			var linked_group = OO.doc.getNodeByPath(cur_script_module.linkedInNodes);
 			
 			MessageLog.trace("detected group")
+			
 			MessageLog.trace(linked_peg)
 			
 			//PORTAL PEG
@@ -83,11 +97,11 @@ OO.PortalManager = function(_S){
 			var linked_peg = OO.doc.getNodeByPath(linked_group.linkedInNodes);
 			
 			MessageLog.trace("detected peg")
+			
 			MessageLog.trace(linked_peg)
 			
 			
 			//TREE
-			
 			
 			var ntree = S.trees.add(code,[]);
 			
@@ -97,14 +111,20 @@ OO.PortalManager = function(_S){
 			
 			ntree.set_key_node("PORTAL_MODULE",cur_script_module);
 
+		
+			var nportal = new OO.Portal();
 			
-			
-			var nportal = new OO.Portal(code,type,tpl_path,psd_path,png_path,ntree);
+			nportal.set_tree(ntree)
+			nportal.set_code(code)
+			nportal.set_sg_asset_type(type)
+			nportal.set_path('tpl',tpl_path)
+			nportal.set_path('png',png_path)
+			nportal.set_path('psd',psd_path)
+
 			
 			//we gathered all informations expect the backdrop. 
 
-			
-			this.list.push(nportal);
+			this.add(nportal);
 
 		}
 		
@@ -122,9 +142,11 @@ OO.PortalManager = function(_S){
 		
 		var final_path = ""; 
 		
+		var portal_tree  = _portal.get_tree();
+		
 		if(_portal.path_exist(_data_type)){
 			
-			var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
+			var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 			
 			switch (_data_type){
 				
@@ -169,7 +191,7 @@ OO.PortalManager = function(_S){
 						
 						S.log.add("import png = "+png_node,"process")
 						
-						png_node.name = _portal.code;
+						png_node.name = _portal.get_code();
 						
 						portal_group.multiportIn.linkOutNode(png_node,0,0,true);
 						
@@ -213,19 +235,15 @@ OO.PortalManager = function(_S){
 		
 			MessageLog.trace("PUSH ");
 			
+			var portal_tree = _portal.get_tree()
+			
+			
 			var final_path = _portal.get_path(_data_type);
-			
-			MessageLog.trace("EXPORT PATH");
-			
-			MessageLog.trace(final_path);
-			
 			var dir_path = _portal.get_dir(_data_type);
-			
 			var data_folder = new $.oFolder(dir_path); 
-			
-			MessageLog.trace(dir_path);
-			
 			data_folder.create()
+			
+			
 			
 			var export_process = false;
 			
@@ -245,7 +263,7 @@ OO.PortalManager = function(_S){
 				
 					MessageLog.trace("EXPORT TPL");
 				
-					var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
+					var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 					
 					S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");
 					
@@ -269,7 +287,9 @@ OO.PortalManager = function(_S){
 		var all_composites = []
 		var list_type = []
 		
-		var portal_group = _portal.tree.get_key_node("PORTAL_GROUP");
+		var portal_tree = _portal.get_tree()
+		
+		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 		
 		for(var n = 0 ; n < portal_group.nodes.length ; n ++){
 			
@@ -354,127 +374,7 @@ OO.PortalManager = function(_S){
 	// CREATING THE PORTAL TREE
 	
 	
-	this.add = function(_code,_type,_tpl_path,_psd_path,_png_path,_departement){ 
 	
-		var code = _code != undefined ? _code : "empty"; 
-		var type = _type != undefined ? _code : ""; 
-		var tpl_path = _tpl_path != undefined ? _tpl_path : ""; 
-		var psd_path = _psd_path != undefined ? _psd_path : ""; 
-		var png_path = _png_path != undefined ? _png_path : ""; 
-		var departement = _departement != undefined ? _departement : ""; 
-		
-
-	
-		MessageLog.trace("Portal ADD");
-		
-		var pnodes =  S.trees.import_tpl_in_temp_group(this.module_path);
-		
-		var ntree = S.trees.add(code,pnodes);
-		
-		//OO.Portal(_name,tpl_path,psd_path,_tree)
-		var nportal = new OO.Portal(code,type,tpl_path,psd_path,png_path,ntree);
-		
-		var nportal_tree = nportal.get_tree();
-		
-		for (var n in pnodes){
-		
-			var cn = pnodes[n]; 
-			
-			if(cn.type == "SCRIPT_MODULE"){
-						
-						
-				cn.name = "PORTAL_"+code
-
-				nportal_tree.set_key_node("PORTAL_MODULE",cn); 
-				
-				MessageLog.trace("PORTAL_MODULE");
-				
-				MessageLog.trace(nportal_tree.get_key_node("PORTAL_MODULE"));
-				
-				var attributes_object = {
-					code: code,
-					departement: departement,
-					sg_asset_type:type, 
-					tpl_path:tpl_path,
-					psd_path:psd_path,
-					png_path:png_path			
-				}
-				
-				nportal.set_several_script_module_attributes(attributes_object);
-				
-				 
-			}
-			
-			if(cn.type == "GROUP"){
-				
-				
-				cn.name = _code;
-				
-				nportal_tree.set_key_node("PORTAL_GROUP",cn); 
-				
-			}	
-			
-			if(cn.type == "PEG"){
-				
-				
-				cn.name = "LT_"+_code;
-				
-				nportal_tree.set_key_node("PORTAL_PEG",cn); 
-			}			
-			
-		} 
-		
-		
-		var parent_group = nportal_tree.get_parent_group();
-		
-		var departement_color = new $.oColorValue(OO.pipe_colors.dt[0]); 
-		
-		switch (departement){
-			
-			case "design" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.design[0])
-				
-			break; 
-			
-			case "rig" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.rig[0])
-				
-			break;
-			
-			case "bg" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.bg[0])
-			
-			break;			
-			case "layout" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.layout[0])
-			
-			break;
-			
-			case "anim" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.anim[0])
-			
-			break;	
-			case "compo" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.compo[0])
-			
-			break;	
-		}
-		
-		
-		nportal_tree.set_backdrop (parent_group.addBackdropToNodes(pnodes, " < PORTAL : "+departement+" > ",code,departement_color , 0, 0, 20, 20))
-
-		this.list.push(nportal);
-		
-		return nportal;
-		
-			
-	}
 	
 
 	
