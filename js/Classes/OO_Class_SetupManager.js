@@ -22,7 +22,7 @@ OO.SetupManager = function(_S){
 
 			var setup_script_path = this.dir+setup_name+"/js/script_"+setup_name+".js";
 				
-			var setup_nodes = S.trees.import_tpl(setup_tpl_path);
+			var setup_nodes = S.trees.import_tpl_in_temp_group(setup_tpl_path);
 			
 			var setup_tree = S.trees.add(setup_name,setup_nodes);
 			

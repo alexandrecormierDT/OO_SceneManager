@@ -811,6 +811,7 @@ OO.TreeManager = function(_S){
 			cr.linkOutNode(final_comp);
 			
 			var Z = (reads.length-r)*z_factor;
+			var Z = (reads.length-r)*z_factor;
 			
 			npeg.linkOutNode(cr);
 			

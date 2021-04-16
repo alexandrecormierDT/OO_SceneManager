@@ -1334,7 +1334,7 @@ function export_asset_png_process(){
 	
 	S.assets.load_breakdown('csv');
 	
-	var portal_list = S.portals.list.get_list(); 
+	var portal_list = S.portals.get_list(); 
 	
 	if(portal_list.length > 0 ){
 		

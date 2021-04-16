@@ -13,10 +13,7 @@ OO.Tree = function(_code,_nodes){
 	var tree_code = _code
 	
 	var tree_id = 0;
-	
-	
-	
-	
+
 	
 	// NODES
 	

@@ -313,6 +313,8 @@ OO.SceneManager = function(){
 	
 // there is a problem with characters and bg portals. some gap in the list , bg data end up in character 1
 
+	
+
 
 	this.create_asset_portals = function(_type,_point,_composite){
 
