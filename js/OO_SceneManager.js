@@ -963,16 +963,10 @@ function create_master_asset_portal(){
 	
 	var S = new OO.SceneManager();	
 	
-	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/create_master_asset_portal.html");
-	
 	S.context.set_context_type('Shotgun');	
-	
 	S.context.set_library_path(OO.library_path);	
-
 	S.context.set_vault_path(OO.vault_path)
-	
-
 	
 	var target_backdrop = false;
 	var target_composite = false;
@@ -1010,18 +1004,17 @@ function push_master_asset_portal_to_folder(){
 	// context detection 
 	
 	var S = new OO.SceneManager();	
+	
+	
 
 	S.context.set_context_type('Shotgun');	
-	
 	S.context.set_library_path(OO.library_path);	
-	
 	S.log.create_new_log_file("P:/projects/billy/logs/push_master_asset_portal.html");
 	
 	var master_asset = S.get_scene_master_asset();
 	var tpl_export_path  = S.context.get_asset_data_path(master_asset,'tpl');
 	
-	S.log.add(S.context.get_scene_path(),"SCENE"); 
-	S.log.add(master_asset.get_code(),"ASSET CODE"); 
+	S.log.add(master_asset.get_code(),"ASSET_CODE"); 
 	S.log.add(tpl_export_path ,"PIPELINE");
 	S.log.add(branch,"branch")
 	S.log.save();	

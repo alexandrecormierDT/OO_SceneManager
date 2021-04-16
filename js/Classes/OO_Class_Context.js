@@ -400,7 +400,7 @@ OO.Context = function (_S,_type){
 		
 		}
 		
-		return dir_path; 
+		return clean_path_slashes(dir_path); 
 	}
 	
 	
@@ -533,7 +533,7 @@ OO.Context = function (_S,_type){
 		
 		}
 		
-		return file_path;
+		return clean_path_slashes(file_path);
 	}
 	
 	
@@ -555,9 +555,7 @@ OO.Context = function (_S,_type){
 			return file_list
 		
 	}
-	
-	
-	
+
 		
 	
 	
@@ -888,6 +886,14 @@ OO.Context = function (_S,_type){
 	
 	
 	
+	function clean_path_slashes(_dirty_path){
+		
+		var string = _dirty_path+"";
+		
+		return string.replace(/([^:]\/)\/+/g, "$1");
+		
+	}
+		
 		
 	
 }
