@@ -322,15 +322,15 @@ OO.SceneManager = function(){
 
 		for(var a in this.assets.list){
 			
-			var cura = this.assets.list[a]; 
+			var current_asset = this.assets.list[a]; 
 			
-			var final_psd_path = this.context.get_asset_data_path(cura,'psd');
-			var final_png_path = this.context.get_asset_data_path(cura,'png');
-			var final_tpl_path = this.context.get_asset_data_path(cura,'tpl');
+			var final_psd_path = this.context.get_asset_data_path(current_asset,'psd');
+			var final_png_path = this.context.get_asset_data_path(current_asset,'png');
+			var final_tpl_path = this.context.get_asset_data_path(current_asset,'tpl');
 			
-			var asset_code = cura.get_code()
+			var asset_code = current_asset.get_code()
 			
-			var asset_type = cura.get_type()
+			var asset_type = current_asset.get_type()
 
 			if(asset_type == _type || asset_type == "all_type"){
 				
@@ -418,6 +418,72 @@ OO.SceneManager = function(){
 		}	 
 
 	}
+	
+	this.get_scene_master_asset = function(){
+		
+		this.context.set_from_scene_path();
+		
+		var scene_master_asset = new OO.Asset({
+			code: this.context.get_master_asset_code(),
+			sg_asset_type:this.context.get_master_sg_asset_type()
+		})
+		
+		return scene_master_asset;
+		
+	}
+	
+	this.create_single_asset_portal = function(_asset,_point,_composite){
+
+		// fetching assets and creating portals; 
+		
+			
+
+			var current_asset  = _asset; 
+			
+			var final_psd_path = this.context.get_asset_data_path(current_asset,'psd');
+			var final_png_path = this.context.get_asset_data_path(current_asset,'png');
+			var final_tpl_path = this.context.get_asset_data_path(current_asset,'tpl');
+			var asset_code = current_asset.get_code()
+			var asset_type = current_asset.get_type()
+			
+			this.portals.creator.set_code( asset_code )
+			this.portals.creator.set_sg_asset_type( asset_type )
+			this.portals.creator.set_tpl_path( final_tpl_path )
+			this.portals.creator.set_psd_path( final_psd_path )
+			this.portals.creator.set_png_path( final_png_path )
+			
+			var nportal = this.portals.creator.create_portal(); 
+			
+			if(nportal!=false){
+				
+				this.portals.add(nportal); 
+				
+				MessageLog.trace("*------------> creating portal for asset : ( "+asset_code+" ) TYPE  ( "+asset_type+" )");
+				
+				var nportal_tree = nportal.get_tree(); 
+			
+				nportal_tree.moveTo(_point.x,_point.y);
+
+				nportal_tree.ungroup();
+
+				var ungrouped_portal_group = OO.doc.getNodeByPath("Top/"+nportal.get_code());
+					
+				if(ungrouped_portal_group != undefined){
+					
+					MessageLog.trace("node linked"); 
+					
+					ungrouped_portal_group.linkOutNode(_composite)
+					
+				}					
+				
+				
+			}
+				
+			
+			
+		}	 
+
+	
 
 }
 

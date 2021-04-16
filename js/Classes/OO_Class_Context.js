@@ -109,11 +109,22 @@ OO.Context = function (_S,_type){
 		return CONTEXT_TYPE;
 	}
 	
+	this.get_master_asset_code = function(){
+		
+		
+		return this.code; 
+		
+	}
 	
-	
 
 
-
+	this.get_master_sg_asset_type = function(){
+		
+		
+		return this.sg_asset_type; 
+		
+		
+	}
 
 
 
@@ -292,6 +303,9 @@ OO.Context = function (_S,_type){
 		
 	}	
 	
+	
+	
+	////// REPEAT !! 
 	this.get_shotcode_from_scene_name = function(){
 		
 			//P:/projects/billy/pre_shotgun/batch_pool/xstages/test_scene/ep101_pl023_animatic_v001
@@ -326,54 +340,6 @@ OO.Context = function (_S,_type){
 	}	
 	
 
-	
-	
-	
-
-
-
-//---------------------------------------------------------------------------------------------------------------------------
-	
-	//OLD FUNCTIONS
-	
-//---------------------------------------------------------------------------------------------------------------------------
-
-	this.get_asset_png_dir_path = function(_asset){
-		
-		var dir_path = this.get_dir_path(_asset,'png');	
-		
-		return dir_path;		
-
-	}
-	
-	
-	this.get_asset_svg_dir_path = function(_asset){
-		
-		dir_path = this.get_dir_path(_asset,'svg');	
-		
-		return dir_path;
-	}	
-	
-		
-	
-	this.get_lt_path = function(_asset){
-		
-		var asset_code_notype = this.get_asset_code_without_type(_asset.get_last_publish()); 
-		
-		var lt_code = "lt_"+asset_code_notype;
-		
-		return lt_code;
-		
-		
-	}
-	
-	this.get_svg_path = function(_asset){
-		
-		return this.get_asset_data_path(_asset,'svg')
-		
-	}	
-	
-	
 	
 	
 	
@@ -758,66 +724,6 @@ OO.Context = function (_S,_type){
 		
 	}
 
-	 
-
-	
-	this.get_xli_of_png  = function(_pngpath){
-		
-		//TRY TO READ THIS : 
-		
-		/*
-				
-		<!DOCTYPE XLI>
-		<XLI>
-		 <LayoutPosition scale="3.000005722045898" translationZFields="0" translationYFields="-8.355551434330707" translationXFields="-10.53332813795944"/>
-		 <ResolutionInfo requiredResolutionX="5760" requiredResolutionY="3240" scaleToRequiredResolution="1" resolutionX="5760" resolutionY="3240"/>
-		</XLI>
-			
-		
-		SPLIT " : 
-		
-		 <ResolutionInfo requiredResolutionX=,5760, requiredResolutionY=,3240, scaleToRequiredResolution=,1, resolutionX=,5760, resolutionY=,3240,/>
-		   0                                   1           2                3                4            5      6         7        8         9
-		*/
-		
-		var pngfile = new $.oFile(_pngpath)
-		
-		if(pngfile.exists){
-
-			
-			var nfile = new $.oFile(_pngpath+".xli")
-			
-			if(nfile.exists){
-				
-				var txti_content = nfile.read()
-				
-				var resolution = {
-					width: parseFloat(txti_content.split('\n')[3].split('"')[1]),
-					height:  parseFloat(txti_content.split('\n')[3].split('"')[3]),
-				}
-				
-				MessageLog.trace("width");
-				MessageLog.trace(resolution.width);
-				MessageLog.trace("height");
-				MessageLog.trace(resolution.height);
-				
-				return resolution;
-				
-			}else{
-				
-				return false; 
-				
-			}
-			
-		}else{
-			
-			return false; 
-			
-		}
-		
-		
-	}
-	
 	
 	this.get_txt_path_from_png_path = function(_png_path){
 
@@ -974,11 +880,8 @@ OO.Context = function (_S,_type){
 				result +=split1[i];
 			}
 			
-			//MessageLog.trace(split1[i]);
-			
 		}
 		
-		//MessageLog.trace(result);
 		
 		return result; 
 	}	

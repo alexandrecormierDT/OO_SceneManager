@@ -892,7 +892,7 @@ function create_portals(_asset_type){
 	
 	var S = new OO.SceneManager();	
 	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/create_portals.html");
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/create_asset_portals.html");
 	
 	S.context.set_context_type('Shotgun');	
 	
@@ -955,6 +955,84 @@ function create_portals(_asset_type){
 	S.log.save();
 	
 }
+
+
+function create_master_asset_portal(){
+	
+	// context detection 
+	
+	var S = new OO.SceneManager();	
+	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/create_master_asset_portal.html");
+	
+	S.context.set_context_type('Shotgun');	
+	
+	S.context.set_library_path(OO.library_path);	
+
+	S.context.set_vault_path(OO.vault_path)
+	
+
+	
+	var target_backdrop = false;
+	var target_composite = false;
+	
+	target_backdrop = S.get_backdrop_by_name('TPL_EXPORT');
+	target_composite = OO.doc.getNodeByPath("Top/TPL_EXPORT_C");	
+	
+	if(target_backdrop == false){
+		
+		target_backdrop = {x:0,y:0};
+		
+	}
+
+	var point = {
+		
+		x:target_backdrop.x + 400,
+		y:target_backdrop.y + 400 
+	}
+	
+	if(target_composite != undefined){
+		
+		var master_asset = S.get_scene_master_asset();
+		
+		S.create_single_asset_portal(master_asset,point,target_composite)
+		
+	}
+
+	S.log.save();	
+	
+	
+}
+
+function push_master_asset_portal_to_folder(){
+	
+	// context detection 
+	
+	var S = new OO.SceneManager();	
+
+	S.context.set_context_type('Shotgun');	
+	
+	S.context.set_library_path(OO.library_path);	
+	
+	S.log.create_new_log_file("P:/projects/billy/logs/push_master_asset_portal.html");
+	
+	var master_asset = S.get_scene_master_asset();
+	
+	S.log.add("push_master_asset_portal _  launched on scene "+S.context.get_scene_path(),"info"); 
+	
+	S.log.add("push master asset portal _ for asset "+master_asset.get_code(),"info"); 
+	
+	var tpl_export_path  = S.context.get_asset_data_path(master_asset,'tpl');
+	
+	S.log.add(tpl_export_path ,"PIPELINE");
+	
+	S.log.add(branch,"branch")
+	
+	S.log.save();	
+	
+}
+
 
 
 function empty_portals(_asset_type){
