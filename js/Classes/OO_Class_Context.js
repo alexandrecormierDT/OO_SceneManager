@@ -401,124 +401,32 @@ OO.Context = function (_S,_type){
 			switch (data_type){
 				
 				case "png": 		
-					
-					switch(CONTEXT_TYPE){
 						
-						case("Shotgun"):
-						
-							// png are not affected by departement branches, they need to have only one official version
-							
-							if(asset_type =="bg"){
+					departement = "boxanim";
 								
-								dir_path = PNG_PATH;
-								
-								
-								
-							}else{
-								
-								dir_path = LIBRARY_PATH+"/assets/"+asset_type+"/"+asset_code+"/png/"
-								
-							}
-							
-						break;
-							
-						case("Prototype"): 
-						
-							dir_path = LIBRARY_PATH+"/assets/"+asset_type+"/"+asset_code+"/png/"
-						
-						break;		
-						
-						case("Server"): 
-						
-							dir_path = LIBRARY_PATH+"/assets/"+asset_type+"/"+asset_code+"/png/"
-						
-						break;			
-					}
+					dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/png/"
+		
 								
 				break;
 				case "psd": 	
 				
-					switch(CONTEXT_TYPE){
-						
-						case("Shotgun"):
-						
-							// soon dirctly to shotgun folders in the vault
-							
-							dir_path = PSD_PATH;
-							
-						break;
-						
-						case("Shotgun"):
-						
-							// soon dirctly to shotgun folders in the vault
-							
-							dir_path = PSD_PATH;
-							
-						break;
-							
-						case("Prototype"): 
-						
-							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/psd/"
-						
-						break;		
-						
-						case("Server"): 
-						
-							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/psd/"
-						
-						break;			
-					}			
-					
+
+					dir_path = PSD_PATH;
+
+
 				break;		
 				case "tpl": 	
-				
-					// tpl are fetched from the library 
-				
-					switch(CONTEXT_TYPE){
+
 						
-						case("Shotgun"):
-						
-							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
-							
-						break;
-							
-						case("Prototype"): 
-						
-							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
-						
-						break;		
-						
-						case("Server"): 
-						
-							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
-						
-						break;			
-					}				
+					dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
+	
+			
 				break;	
 				
 				case "svg": 
-						
-					switch(CONTEXT_TYPE){
-						
-						case("Shotgun"):
-						
-							dir_path = SVG_PATH;
-							
-						break;
-							
-						case("Prototype"): 
-						
-							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type()+"/"+asset_code+"/psd/"
-						
-						break;		
-						
-						case("Server"): 
-						
-							dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type()+"/"+asset_code+"/psd/"
-						
-						break;	
-						
-					}
+
+					dir_path = SVG_PATH;
+
 				
 				break;
 				
