@@ -559,7 +559,11 @@ OO.TreeManager = function(_S){
 
 	}	
 	
-	
+	this.import_tpl_in_group = function(_tpl_file_path,_group_scene_path){
+		
+		copypaste_tpl_in_group(_tpl_file_path,_group_scene_path);
+		
+	}
 	
 	function copypaste_tpl_in_group(tpl_file_path,group_scene_path){
 		

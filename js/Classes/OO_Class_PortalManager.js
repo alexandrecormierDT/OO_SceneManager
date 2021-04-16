@@ -157,7 +157,6 @@ OO.PortalManager = function(_S){
 					MessageLog.trace("pulling psd")
 				
 					final_path = _portal.get_path('psd'); 
-	
 					
 					//we import the tpl inside the portal's group
 					var nodes = S.trees.import_psd_in_group(_portal.get_code(),final_path,portal_group);
@@ -218,6 +217,8 @@ OO.PortalManager = function(_S){
 					var tpl_nodes = S.trees.import_tpl_in_group(final_path,portal_group)
 					
 					pulled_nodes = tpl_nodes;
+					
+					// ungroup nodes. 
 				
 				
 				break;
