@@ -627,10 +627,12 @@ function empty_selected_portals(){
 	var S = new OO.SceneManager();	
 	
 	S.portals.load_from_node_list(OO.doc.selectedNodes);
-
-	for(var p = 0 ; p < S.portals.list.length; p++){
 	
-		var current_portal = S.portals.list[p]
+	var portal_list = S.portals.get_list()
+
+	for(var p = 0 ; p < portal_list.length; p++){
+	
+		var current_portal = portal_list[p]
 		
 		S.portals.empty(current_portal);
 
@@ -681,9 +683,11 @@ function pull_selected_portals_process(_data_type){
 	
 	S.assets.load_breakdown('csv');
 	
-	for(var p = 0 ; p < S.portals.list.length; p++){
+	var portal_list = S.portals.get_list()
+	
+	for(var p = 0 ; p <  portal_list.length; p++){
 		
-			var current_portal = S.portals.list[p]
+			var current_portal =  portal_list[p]
 			
 			//we empty the portal first 
 			
@@ -781,12 +785,14 @@ function push_selected_portals(_data_type){
 	S.context.set_context_type('Shotgun');	
 	
 	S.assets.load_breakdown('csv');
+	
+	var portal_list = S.portals.get_list()
 
-	for(var p = 0 ; p < S.portals.list.length; p++){
+	for(var p = 0 ; p < portal_list.length; p++){
 		
 		S.context.get_psd_path
 		
-		var current_portal = S.portals.list[p];
+		var current_portal = portal_list[p];
 			
 		//MessageLog.trace(current_portal.code);
 		
@@ -851,10 +857,12 @@ function update_portals_paths_by_type(_asset_type){
 	
 	
 	S.portals.load_from_scene();
+	
+	var portal_list = S.portals.get_list()
 
-	for(var p = 0 ; p < S.portals.list.length; p++){
+	for(var p = 0 ; p < portal_list.length; p++){
 		
-		var current_portal = S.portals.list[p]
+		var current_portal = portal_list[p]
 		
 		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
 		
@@ -961,10 +969,12 @@ function empty_portals(_asset_type){
 	S.assets.load_breakdown('csv');
 	
 	S.portals.load_from_scene();
-
-	for(var p = 0 ; p < S.portals.list.length; p++){
 	
-		var current_portal = S.portals.list[p]
+	var portal_list = S.portals.get_list(); 
+
+	for(var p = 0 ; p < portal_list.length; p++){
+	
+		var current_portal = portal_list[p]
 		
 		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
 		
@@ -1233,10 +1243,12 @@ function pull_psd(){
 	S.context = new OO.Context(this,"Shotgun");	
 	
 	S.portals.load_from_scene();
+	
+	var portal_list = S.portals.get_list();
 
-	for(var p = 0 ; p < S.portals.list.length; p++){
+	for(var p = 0 ; p < portal_list.length; p++){
 		
-		var current_portal = S.portals.list[p]
+		var current_portal = portal_list[p]
 		
 		if(current_portal.psd_exist()){
 
@@ -1322,9 +1334,11 @@ function export_asset_png_process(){
 	
 	S.assets.load_breakdown('csv');
 	
-	if(S.portals.list.length > 0 ){
+	var portal_list = S.portals.list.get_list(); 
+	
+	if(portal_list.length > 0 ){
 		
-		var current_portal = S.portals.list[0]
+		var current_portal = portal_list[0]
 		
 		library_asset_path = current_portal.get_path('png');
 		

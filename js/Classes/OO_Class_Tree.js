@@ -29,7 +29,7 @@ OO.Tree = function(_code,_nodes){
 	
 	// BACKDROP 
 	
-	var tree_backdrop = ""; 
+	var tree_backdrop_object = ""; 
 	
 	
 	
@@ -66,8 +66,6 @@ OO.Tree = function(_code,_nodes){
 	// update attributes of the map module
 	
 	this.update_map_module = function(_attribute,_value){
-		
-		var map_module = this.get_map_module();
 
 		if(map_module != false){
 			
@@ -91,8 +89,6 @@ OO.Tree = function(_code,_nodes){
 	
 	this.fetch_node_list = function(){
 		
-		var map_module = this.get_map_module();
-		
 		if(this.map_module != false){
 			
 			return map_module.node_list;
@@ -106,8 +102,6 @@ OO.Tree = function(_code,_nodes){
 	//this is bad
 	
 	this.get_node_list = function(){
-		
-		var map_module = this.get_map_module();
 		
 		if(this.map_module != false){
 			
@@ -221,7 +215,7 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_top_node= function(){
 		
-		return OO.doc.getNodeByPath(this.get_key_node("top_node"));
+		return OO.doc.getNodeByPath(key_nodes["top_node"]);
 		
 	}	
 	
@@ -305,20 +299,20 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_backdrop = function(){
 		
-		return tree_backdrop; 
+		return tree_backdrop_object; 
 		
 	}
 	
-	this.set_backdrop = function(_bd){
+	this.set_backdrop = function(_bdo){
 		
-		tree_backdrop = _bd; 
+		tree_backdrop_object = _bdo; 
 		
 	}
 	this.get_width = function(){
 		
-		if(tree_backdrop.width != undefined){
+		if(tree_backdrop_object.width != undefined){
 			
-			return tree_backdrop.width;
+			return tree_backdrop_object.width;
 			
 		}else{
 			
@@ -332,9 +326,9 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_height = function(){
 		
-		if(tree_backdrop.width != undefined){
+		if(tree_backdrop_object.width != undefined){
 			
-			return tree_backdrop.width
+			return tree_backdrop_object.width
 			
 		}else{
 			
@@ -346,9 +340,9 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_X = function(){
 		
-		if(tree_backdrop.x != undefined){
+		if(tree_backdrop_object.x != undefined){
 			
-			return tree_backdrop.x;
+			return tree_backdrop_object.x;
 			
 		}
 		
@@ -358,9 +352,9 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_Y = function(){
 		
-		if(tree_backdrop.y != undefined){
+		if(tree_backdrop_object.y != undefined){
 			
-			return tree_backdrop.y;
+			return tree_backdrop_object.y;
 			
 		}
 		
@@ -380,8 +374,8 @@ OO.Tree = function(_code,_nodes){
 			
 		}
 		
-		tree_backdrop.x+=x
-		tree_backdrop.y+=y
+		tree_backdrop_object.x+=x
+		tree_backdrop_object.y+=y
 
 	}
 	
@@ -392,11 +386,11 @@ OO.Tree = function(_code,_nodes){
 		
 			var cn = OO.doc.getNodeByPath(tree_nodes[n]);
 			
-			if(tree_backdrop != undefined){
+			if(tree_backdrop_object != undefined){
 			
-				var diffX =   cn.x - tree_backdrop.x
+				var diffX =   cn.x - tree_backdrop_object.x
 			
-				var diffY =  cn.y - tree_backdrop.y 
+				var diffY =  cn.y - tree_backdrop_object.y 
 			
 				cn.x = _x + diffX
 				cn.y = _y + diffY
@@ -405,10 +399,10 @@ OO.Tree = function(_code,_nodes){
 			
 		}
 		
-		if(tree_backdrop != undefined){
+		if(tree_backdrop_object != undefined){
 		
-			tree_backdrop.x=_x
-			tree_backdrop.y=_y
+			tree_backdrop_object.x=_x
+			tree_backdrop_object.y=_y
 		
 		}
 
@@ -425,8 +419,8 @@ OO.Tree = function(_code,_nodes){
 			
 		}
 		
-		tree_backdrop.x*=sx
-		tree_backdrop.y*=sy
+		tree_backdrop_object.x*=sx
+		tree_backdrop_object.y*=sy
 
 	}	
 
@@ -454,17 +448,6 @@ OO.Tree = function(_code,_nodes){
 
 	}
 	
-	
-	
-	this.udpate_onode_with_new_group = function(newgroup,node_name){
-		
-		var updated_onode  = OO.doc.getNodeByPath(newgroup+"/"+node_name);
-		
-		return updated_onode;
-		
-	}
-
-
 }
 
 
