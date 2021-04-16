@@ -152,7 +152,7 @@ OO.Portal = function (){
 
 	}
 	
-	
+	// used in push portal , to find where to export the tpl for exemple 
 	
 	this.get_dir = function(_key){
 		
@@ -160,15 +160,11 @@ OO.Portal = function (){
 
 			var path = portal_paths[_key]; 
 			
-			var slash_split = path.split("\\");
+			var slash_split = path.split("/");
 			
-			var dir = "";
+			var file = slash_split[slash_split.length-1]
 			
-			for(var i = 0 ; i < slash_split.length-1; i ++){
-				var current_split = slash_split[i] ;
-				dir+=current_split;
-				 
-			}
+			var dir = path.split(file)[0]
 			
 			return dir; 
 			
@@ -185,6 +181,7 @@ OO.Portal = function (){
 	
 	}
 	
+
 	
 
 	// script_module

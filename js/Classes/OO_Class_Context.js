@@ -372,28 +372,27 @@ OO.Context = function (_S,_type){
 								
 					dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/png/"
 		
-								
 				break;
+				
 				case "psd": 	
 				
-
 					dir_path = PSD_PATH;
 
-
 				break;		
+				
 				case "tpl": 	
+				
+					departement = "boxanim";
 
-						
 					dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
 	
 			
 				break;	
 				
-				case "svg": 
+				case "svg":
 
 					dir_path = SVG_PATH;
 
-				
 				break;
 				
 			}
@@ -401,6 +400,7 @@ OO.Context = function (_S,_type){
 		}
 		
 		return clean_path_slashes(dir_path); 
+		
 	}
 	
 	

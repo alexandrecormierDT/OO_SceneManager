@@ -241,17 +241,17 @@ OO.PortalManager = function(_S){
 		
 			MessageLog.trace("PUSH ");
 			
-			var portal_tree = _portal.get_tree()
+			var export_path = _portal.get_path(_data_type);
 			
+			var export_folder_path = _portal.get_dir(_data_type);
 			
-			var final_path = _portal.get_path(_data_type);
-			var dir_path = _portal.get_dir(_data_type);
-			var data_folder = new $.oFolder(dir_path); 
-			data_folder.create()
+			var export_folder_object = new $.oFolder(export_folder_path); 
 			
-			
+			export_folder_object.create()
 			
 			var export_process = false;
+			
+			var portal_tree = _portal.get_tree();
 			
 			switch (_data_type){
 				
@@ -267,13 +267,24 @@ OO.PortalManager = function(_S){
 				
 				case 'tpl':
 				
-					MessageLog.trace("EXPORT TPL");
+
+					var tpl_name = _portal.get_code();
 				
 					var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 					
+					
+					MessageLog.trace("EXPORT TPL");
+					MessageLog.trace("export_folder_path");
+					MessageLog.trace(export_folder_path);
+					MessageLog.trace("portal_group");
+					MessageLog.trace(portal_group);
+					MessageLog.trace("tpl_name");
+					MessageLog.trace(tpl_name);
+					
+					
 					S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");
 					
-					export_process = S.trees.export_group_to_path(portal_group,final_path);
+					export_process = S.trees.export_group_to_path(portal_group,export_folder_path,tpl_name);
 				
 				break;
 			}			

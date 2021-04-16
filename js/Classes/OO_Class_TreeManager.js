@@ -678,18 +678,27 @@ OO.TreeManager = function(_S){
 	
 	
 	// E X P O R T    T P L 
+	
 
 	
-	this.export_group_to_path = function(_group,_path){
+	this.export_group_to_path = function(_group,_path,_tpl_name){
 		
-		S.log.add("importing psd "+_path,"file")
+		
+		S.log.add("exporting tpl to "+_path,"file")
+		
+		var tpl_name = ""; 
+		var tpl_name = ""; 
+		
+		selection.addNodeToSelection(_group)
+		
+		copyPaste.createTemplateFromSelection(_tpl_name,_path)	
 		
 		//MessageLog.trace("exporting "+_group.nodes)
 		//MessageLog.trace(" to "+_path)
 		
-		var exportProcess = OO.doc.exportTemplate(_group,_path); // "createPalette" value will create one palette for all colors
+		//var exportProcess = $.scene.exportTemplate(_group,_path); // "createPalette" value will create one palette for all colors
 
-		return exportProcess; 		
+		//return exportProcess; 		
 		
 	}
 
