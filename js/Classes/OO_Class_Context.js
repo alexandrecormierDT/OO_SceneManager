@@ -819,54 +819,52 @@ OO.Context = function (_S,_type){
 	}
 	
 	
-	this.get_txt_of_png = function(_pngpath){
-		
-		//CUSTOM TXT FORMAT CREATED BY THE VIEWS CLASS  : 
-		
-		/*
-				
-		*/
-		
-		var pngfile = new $.oFile(_pngpath)
-		
-		if(pngfile.exists){
+	this.get_txt_path_from_png_path = function(_png_path){
 
-			var nfile = new $.oFile(_pngpath+".txt")
+		var txt_file_path = _png_path+".txt"
+		
+		var txt_file_object = new $.oFile(txt_file_path)
+		
+		if(txt_file_object.exists){
 			
-			MessageLog.trace(nfile);
+			return txt_file_path;
 			
-			if(nfile.exists){
-				
-				var txt_content = nfile.read()
+		}else{
+			
+			return false;  
+			
+		}
+			
+	
+	}
+	
+	
+	this.get_resolution_object_from_txt = function(_txt_path){
+		
+		var txt_file_object = new $.oFile(_txt_path)
+		
+		if(txt_file_object.exists){
+
+				var txt_content = txt_file_object.read()
 				MessageLog.trace(txt_content);
 				MessageLog.trace(txt_content.split('\n'));
 				
-				var resolution = {
+				var resolution_object = {
 					width: parseFloat(txt_content.split('\n')[0]),
 					height: parseFloat(txt_content.split('\n')[1])
 				}
 				
-				MessageLog.trace("width");
-				MessageLog.trace(resolution.width);
-				MessageLog.trace("height");
-				MessageLog.trace(resolution.height);
-				
-				return resolution;
-				
-			}else{
-				
-				return false; 
-				
-			}
+				return resolution_object;
 			
 		}else{
 			
+			S.log.add("can't find txt resoltion file ( "+_txt_path+" )","error"); 
+			
 			return false; 
 			
-		}		
+		}	
 		
 	}
-	
 	
 	
 	

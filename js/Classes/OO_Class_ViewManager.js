@@ -144,6 +144,8 @@ OO.ViewManager = function(_S){
 			//openHamrony method of oScene : exportLayoutImage(path, includedNodes, exportFrame,exportCameraFrame,exportBackground,frameScale)
 			
 			OO.doc.exportLayoutImage(_path,[],frame.current(),false,false,_frameScale);
+			
+			
 			this.write_resolution_txt(_path,_frameScale);
 
 

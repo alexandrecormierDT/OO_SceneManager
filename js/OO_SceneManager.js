@@ -20,7 +20,6 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/ut
 //PATHS TO INJECT IN THE CONTEXT CLASS
 
 OO.library_path = "P:/projects/billy/library/";
-//OO.library_path = "P:/pipeline/alexDT/Harmony20/Context_library/";
 OO.sg_path = "P:/projects/billy/pre_shotgun/sg_exports/";
 OO.psd_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/psd/";
 OO.png_path = "P:/projects/billy/pre_shotgun/batch_pool/bg/png/";
@@ -1315,56 +1314,70 @@ function export_asset_png_process(){
 	
 	S.context.set_library_path(OO.library_path);
 	
-	
-	//reading scene shotgun context
-	
-
-	//MessageLog.trace(S.context.set_from_scene_path()); 
-	
-	var current_asset = S.context.get_current_asset();
-	var prefilled_path = ""; 
-	
-	var library_asset_path = S.context.get_asset_data_path(current_asset,"png");
-	
-	//MessageLog.trace("PATH PNG");
-	
 	S.portals.load_from_node_list(OO.doc.selectedNodes);
 	
 	S.context.set_context_type('Shotgun');	
 	
 	S.assets.load_breakdown('csv');
 	
+	
+	
 	var portal_list = S.portals.get_list(); 
 	
 	if(portal_list.length > 0 ){
 		
-		var current_portal = portal_list[0]
+		var current_portal = portal_list[0];
 		
-		library_asset_path = current_portal.get_path('png');
+		current_asset = new OO.Asset({
+			code: current_portal.get_code(),
+			sg_asset_type:current_portal.get_sg_asset_type()
+		})
 		
+
+		library_asset_png_path = S.context.get_asset_data_path(current_asset,"png");
+		
+		library_asset_png_folder_path = S.context.get_dir_path(current_asset,"png");
+
+		
+		var dialog = new Dialog();
+		dialog.title = "EXPORT ASSET PNG";
+		dialog.width = 400;
+		
+		var userCode = new LineEdit();
+		userCode.label = "png path";
+		userCode.text = library_asset_png_path;
+		dialog.add( userCode );	
+		
+		var userScale = new LineEdit();
+		userScale.label = "scale image";
+		userScale.text = 1.5;
+		dialog.add( userScale );	
+		
+		if (dialog.exec()){
+			
+			var dir_object = new $.oFolder(library_asset_png_folder_path)
+			
+			if(dir_object.exists == false){
+				
+				dir_object.create();
+				
+			}
+			
+			var user_png_path = OO.filter_string(userCode.text)
+			
+			var user_scale = OO.filter_string(userScale.text)
+			
+			var user_png_path
+			
+			S.views.export_currentframe_png_to(user_png_path,user_scale);
+
+		}		
+		
+		
+	
 	}	
 	
-	//MessageLog.trace(library_asset_path);
-	
-	var dialog = new Dialog();
-	dialog.title = "EXPORT ASSET PNG";
-	dialog.width = 400;
-	
-	var userCode = new LineEdit();
-	userCode.label = "png path";
-	userCode.text = library_asset_path;
-	dialog.add( userCode );	
-	
-	var userType = new LineEdit();
-	userType.label = "scale image";
-	userType.text = 1.5;
-	dialog.add( userType );	
-	
-	if (dialog.exec()){
-		
-		S.views.export_currentframe_png_to(userCode.text,userType.text);
 
-	}
 	
 }
 

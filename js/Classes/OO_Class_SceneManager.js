@@ -397,34 +397,28 @@ OO.SceneManager = function(){
 				
 
 				if(typeof(_composite) != undefined ){
-					
-
+				
 					var group = OO.doc.getNodeByPath("Top/"+cportal.get_code());
-					
 					
 					MessageLog.trace("((((((((((((group"); 
 					MessageLog.trace("Top/"+cportal.get_code()); 
 					MessageLog.trace(group); 
 					
-					if(group != undefined) {
+					if(group != undefined){
 						
 						MessageLog.trace("node linked"); 
 						group.linkOutNode(_composite)
 						
 					}
 					
-
 				}
 
 			}
 
 		}	 
 
-
 	}
 
-	
-	
 }
 
 

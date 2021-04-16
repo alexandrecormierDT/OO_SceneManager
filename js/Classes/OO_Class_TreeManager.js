@@ -363,7 +363,6 @@ OO.TreeManager = function(_S){
 	
 	this.add_key_node_to_tree = function(_key,_node,_tree){
 		
-		
 		var node_id = this.get_node_id(_node);
 		
 		var key_node = {key:_key,node:node_id};
@@ -373,11 +372,6 @@ OO.TreeManager = function(_S){
 		key_node_list.push(key_node);
 		
 		var key_node_list_string = this.stringify_key_nodes_list(key_node_list);
-		
-		
-		
-		
-		
 		
 	}
 	
@@ -441,6 +435,8 @@ OO.TreeManager = function(_S){
 		
 	}
 	
+	
+	
 	this.fetch_trees_from_nodes = function(){
 		
 		
@@ -479,7 +475,8 @@ OO.TreeManager = function(_S){
 	}
 	
 	this.get_all_child_nodes = function(){
-
+		
+		
 
 	}
 	
@@ -519,6 +516,8 @@ OO.TreeManager = function(_S){
 		
 	}
 	
+	
+	
 	this.find_node_by_smlayerid = function(_smlayerid){
 		
 		var scene_nodes = OO.doc.root.nodes;
@@ -541,11 +540,6 @@ OO.TreeManager = function(_S){
 	
 	
 	
-	
-	
-	
-	
-	
 	// EDITING TREES
 
 
@@ -553,7 +547,7 @@ OO.TreeManager = function(_S){
 		
 		// create a group , import the tpl inside of it and return the nodes contained in this group 
 	
-		S.log.add("importing tpl "+_tpl_file_path,"file")
+		S.log.add("importing tpl "+_tpl_file_path,"file");
 			
 		var import_group =  OO.doc.root.addNode("GROUP","TEMP"+_tpl_file_path); 	
 		
@@ -565,27 +559,29 @@ OO.TreeManager = function(_S){
 
 	}	
 	
+	
+	
 	function copypaste_tpl_in_group(tpl_file_path,group_scene_path){
 		
-			MessageLog.trace("natif_Import_TPL_in_group");
+		MessageLog.trace("natif_Import_TPL_in_group");
 			
-			MessageLog.trace(tpl_file_path);
+		MessageLog.trace(tpl_file_path);
 
-			var myCopyOptions = copyPaste.getCurrentCreateOptions();
+		var myCopyOptions = copyPaste.getCurrentCreateOptions();
 			
-			var myPasteOptions = copyPaste.getCurrentPasteOptions();
+		var myPasteOptions = copyPaste.getCurrentPasteOptions();
 			
-			myPasteOptions.extendScene = false;
+		myPasteOptions.extendScene = false;
 
-			var myDragObject = copyPaste.copyFromTemplate(tpl_file_path,0,0,myCopyOptions);
+		var myDragObject = copyPaste.copyFromTemplate(tpl_file_path,0,0,myCopyOptions);
 			
-			copyPaste.pasteNewNodes(myDragObject,group_scene_path,myPasteOptions);
-						
-			//copyPaste.pasteTemplateIntoGroup(path,group,0)				
+		copyPaste.pasteNewNodes(myDragObject,group_scene_path,myPasteOptions);		
 			
-			return true; 
+		return true; 
 
 	}
+	
+	
 	
 	this.import_psd_in_group = function(_code,_path,_group){
 		
@@ -599,6 +595,83 @@ OO.TreeManager = function(_S){
 	
 	
 	
+	this.import_png_in_group = function(_png_path,_group){
+
+		var png_file_object = new $.oFile(_png_path)
+		
+		if(png_file_object.exists){
+
+			var png_node = OO.doc.getNodeByPath(_group.importImage(_png_path));
+			
+			
+			//shorten the name if it's too long
+			if(png_node.name.length > 30){
+				
+				var new_name = png_node.name.substring(30,-1000)
+				
+				png_node.name = new_name;
+				
+			}
+			
+			node.setLocked(png_node.path, true);
+			 
+			S.log.add("import png = "+png_node,"process")
+
+			var txt_path = S.context.get_txt_path_from_png_path(_png_path); 
+
+			if(txt_path != false){
+				
+				var txt_resolution_object = S.context.get_resolution_object_from_txt(txt_path); 
+				// we scale back the png to the pixel size 
+				
+				//billy project param ? 
+				var final_sy = txt_resolution_object.height/1080;
+				
+				var final_sx = final_sy;
+				
+				//INJECT SX
+				png_node.attributes.scale.x.setValue(final_sx);
+				
+				//INJECT SY
+				png_node.attributes.scale.y.setValue(final_sy);	
+				
+			}
+			
+			//png_node
+			
+			// extend exposure. 
+			
+			this.extend_exposition_to_scene_length(png_node);
+			
+			return png_node;
+			
+		}else{
+		
+			return false;
+			
+		}
+							
+	}
+	
+	// TO DO ! 
+	
+	this.extend_exposition_to_scene_length= function(_onode){
+		
+		//MessageLog.trace("extend_exposition_to_scene_length");
+		
+		var scene_length = scene.getStopFrame()+1
+ 
+		var dnode = OO.doc.getNodeByPath(_onode);
+		
+		var drawingAttribute = dnode.attributes.drawing.element
+		
+		for(var f = 0 ; f < scene_length ; f++){
+
+			drawingAttribute.setValue ("1", f);   
+			
+		}
+		
+	}
 	
 	
 	
@@ -678,92 +751,6 @@ OO.TreeManager = function(_S){
 	//	
 	//	
 	
-	
-	this.import_png_in_group = function(_pngpath,_group){
-
-		var pngfile = new $.oFile(_pngpath)
-		
-		if(pngfile.exists){
-
-			var png_node = OO.doc.getNodeByPath(_group.importImage(_pngpath));
-			
-			
-			//shorten the name if it's too long
-			if(png_node.name.length > 30){
-				
-				var new_name = png_node.name.substring(30,-1000)
-				png_node.name = new_name;
-			}
-			
-			node.setLocked(png_node.path, true);
-			 
-			
-			S.log.add("import png = "+png_node,"process")
-			
-			// if the png has xli data
-			
-			var xli_resolution =  S.context.get_xli_of_png(_pngpath)
-			
-			var txt_resolution  = S.context.get_txt_of_png(_pngpath)
-			
-			//var resoltuion = this.get_image_resolution(_pngpath);
-			
-			
-			if(txt_resolution != false){
-				
-				// we scale back the png to the pixel size 
-				
-				var final_sy = txt_resolution.height/1080;
-				
-				//MessageLog.trace(final_sy);
-				//MessageLog.trace(final_sy);
-				
-				var final_sx = final_sy;
-				
-				//INJECT SX
-				png_node.attributes.scale.x.setValue(final_sx);
-				
-				//INJECT SY
-				png_node.attributes.scale.y.setValue(final_sy);	
-				
-				
-			}
-			
-			//png_node
-			
-			// extend exposure. 
-			
-			this.extend_exposition_to_scene_length(png_node);
-			
-			return png_node;
-			
-		}else{
-		
-			return false;
-			
-		}
-							
-	}
-	
-	// TO DO ! 
-	
-	this.extend_exposition_to_scene_length= function(_onode){
-		
-		//MessageLog.trace("extend_exposition_to_scene_length");
-		
-		var scene_length = scene.getStopFrame()+1
- 
-		var dnode = OO.doc.getNodeByPath(_onode);
-		
-		var drawingAttribute = dnode.attributes.drawing.element
-		
-		for(var f = 0 ; f < scene_length ; f++){
-
-			drawingAttribute.setValue ("1", f);   
-			
-		}
-		
-	}
 
 	
 
