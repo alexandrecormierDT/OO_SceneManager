@@ -1018,17 +1018,12 @@ function push_master_asset_portal_to_folder(){
 	S.log.create_new_log_file("P:/projects/billy/logs/push_master_asset_portal.html");
 	
 	var master_asset = S.get_scene_master_asset();
-	
-	S.log.add("push_master_asset_portal _  launched on scene "+S.context.get_scene_path(),"info"); 
-	
-	S.log.add("push master asset portal _ for asset "+master_asset.get_code(),"info"); 
-	
 	var tpl_export_path  = S.context.get_asset_data_path(master_asset,'tpl');
 	
+	S.log.add(S.context.get_scene_path(),"SCENE"); 
+	S.log.add(master_asset.get_code(),"ASSET CODE"); 
 	S.log.add(tpl_export_path ,"PIPELINE");
-	
 	S.log.add(branch,"branch")
-	
 	S.log.save();	
 	
 }
