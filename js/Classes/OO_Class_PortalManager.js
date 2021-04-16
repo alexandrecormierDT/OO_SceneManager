@@ -144,6 +144,8 @@ OO.PortalManager = function(_S){
 		
 		var portal_tree  = _portal.get_tree();
 		
+		var pulled_nodes = []; 
+		
 		if(_portal.path_exist(_data_type)){
 			
 			var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
@@ -158,20 +160,20 @@ OO.PortalManager = function(_S){
 	
 					
 					//we import the tpl inside the portal's group
-					var nodes = S.trees.import_psd_in_group(_portal.code,final_path,portal_group);
+					var nodes = S.trees.import_psd_in_group(_portal.get_code(),final_path,portal_group);
 					
 					// we arange the psd nodes
-					var bg_tree = S.trees.add(_portal.code,nodes)
+					var bg_tree = S.trees.add(_portal.get_code(),nodes)
 					
 					//bg_tree.set_parent_group(_portal.tree.group);
 					
 					S.trees.arange_psd_node(bg_tree);
-				
-					_portal.set_content(bg_tree);
-					
+
 					var pbackdrop = _portal.get_backdrop();
 					
 					pbackdrop.color = new $.oColorValue("#5097D8ff");
+					
+					pulled_nodes.push(nodes); 
 					
 					
 
@@ -205,7 +207,7 @@ OO.PortalManager = function(_S){
 						
 					}
 
-					return png_node;						
+					pulled_nodes =  png_node;						
 					
 				break;			
 				
@@ -213,7 +215,9 @@ OO.PortalManager = function(_S){
 				
 					final_path = _portal.get_path('tpl') ;
 
-					S.trees.import_tpl_in_group(final_path,portal_group)
+					var tpl_nodes = S.trees.import_tpl_in_group(final_path,portal_group)
+					
+					pulled_nodes = tpl_nodes;
 				
 				
 				break;
@@ -224,6 +228,8 @@ OO.PortalManager = function(_S){
 			S.log.add("data not found "+_portal.get_path(_data_type),"error");
 			
 		}
+		
+		return pulled_nodes; 
 
 	}
 	

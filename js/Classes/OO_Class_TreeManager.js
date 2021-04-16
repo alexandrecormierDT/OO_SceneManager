@@ -777,11 +777,11 @@ OO.TreeManager = function(_S){
 		
 		var width = this.align_nodes(reads);
 		
-		var top_peg = group.addNode("PEG",_tree.code+"-P")
+		var top_peg = group.addNode("PEG",_tree.get_code()+"-P")
 		
 		_tree.set_key_node("top_peg",top_peg);
 		
-		var final_comp = group.addNode("COMPOSITE",_tree.code+"-C");
+		var final_comp = group.addNode("COMPOSITE",_tree.get_code()+"-C");
 		
 		_tree.set_key_node("final_comp",final_comp); 
 		
@@ -838,7 +838,7 @@ OO.TreeManager = function(_S){
 		group.multiportOut.centerBelow(reads, 0, 500);
 
 		
-		group.addBackdropToNodes( _tree.get_nodes(), _tree.code, "", new $.oColorValue("#5097D8ff"), 0, 0, 20, 20);
+		//group.addBackdropToNodes( _tree.get_nodes(), _tree.get_code(), "", new $.oColorValue("#5097D8ff"), 0, 0, 20, 20);
 		
 	}
 	

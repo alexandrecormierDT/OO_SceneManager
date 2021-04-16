@@ -146,10 +146,7 @@ OO.PortalCreator = function(_S){
 		return created_portal;
 		
 	}
-	
-	
-	
-	
+
 	function get_departement_color(){
 		
 		var departement_color = new $.oColorValue(OO.pipe_colors.dt[0]); 

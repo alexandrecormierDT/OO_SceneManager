@@ -976,9 +976,9 @@ function empty_portals(_asset_type){
 	
 		var current_portal = portal_list[p]
 		
-		var linked_asset = S.assets.get_asset_by_code(current_portal.code);
+		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
 		
-		if(linked_asset.get_type()== _asset_type){
+		if(linked_asset.get_type() == _asset_type){
 			
 			S.portals.empty(current_portal);
 			
@@ -1259,7 +1259,7 @@ function pull_psd(){
 			
 			S.log.add(full_psd_path+" --- > pulling","process");
 			
-			var bg_node = S.portals.pull(current_portal,'psd');		
+			var bg_nodes = S.portals.pull(current_portal,'psd');		
 			
 			S.log.add(full_psd_path+" --- > psd pulled","success");
 		
