@@ -549,17 +549,19 @@ OO.TreeManager = function(_S){
 	
 		S.log.add("importing tpl "+_tpl_file_path,"file");
 			
-		var import_group =  OO.doc.root.addNode("GROUP","TEMP"+_tpl_file_path); 	
+		var import_group =  $.scene.root.addNode("GROUP","TEMP"+_tpl_file_path); 	
 		
 		copypaste_tpl_in_group(_tpl_file_path,import_group.path);
 
-		var updated_group = OO.doc.getNodeByPath(import_group.path)
+		var updated_group = $.scene.getNodeByPath(import_group.path)
 		
 		return updated_group.nodes; 
 
 	}	
 	
 	this.import_tpl_in_group = function(_tpl_file_path,_group_scene_path){
+		
+		// should also be in a temp group 
 		
 		copypaste_tpl_in_group(_tpl_file_path,_group_scene_path);
 		

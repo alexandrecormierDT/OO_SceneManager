@@ -1258,11 +1258,7 @@ function fit_bg_to_camera(){
 		
 		if(current_portal.png_exist()){
 			
-			var full_svg_path = S.context.get_svg_path(linked_asset);
-			
-			//MessageLog.trace("SVG_PATH : ");
-			
-			//MessageLog.trace(full_svg_path);
+			var full_svg_path = S.context.get_asset_data_path(linked_asset,'svg');
 
 			var bg_cadre = S.load_cadre(full_svg_path);
 			

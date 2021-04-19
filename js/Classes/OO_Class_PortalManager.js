@@ -182,7 +182,7 @@ OO.PortalManager = function(_S){
 				
 					MessageLog.trace("pulling png")
 
-					final_path = _portal.get_path('png'); ;
+					final_path = _portal.get_path('png');
 					
 					MessageLog.trace(final_path); 
 

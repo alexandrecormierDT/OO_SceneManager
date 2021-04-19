@@ -18,10 +18,7 @@ OO.PortalCreator = function(_S){
 	var current_tpl_version = null;		
 	var current_status =  null;
 
-	
 	var created_portal = null; 
-	
-	
 	
 	this.set_sg_asset_type = function(_sat){
 		current_sg_asset_type = _sat
