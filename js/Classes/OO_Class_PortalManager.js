@@ -184,6 +184,57 @@ OO.PortalManager = function(_S){
 		
 	}
 	
+
+	
+	this.pull_scene_portal_tpl_by_asset_type = function(_sg_asset_type){
+		
+		this.load_from_scene(); 
+		
+		for(var p = 0 ; p < list.length ; p++){
+			
+			var current_portal = list[p]; 
+			
+			if(portal_match_sg_asset_type(current_portal,_sg_asset_type)){
+				
+				var tpl_group = this.pull(current_portal,'tpl');
+				
+				
+				
+			}
+			
+		}
+		
+		return false; 		
+		
+		
+	}
+	
+	
+	
+	function portal_match_sg_asset_type(_portal,_sg_asset_type){
+		
+		var current_type = _portal.get_sg_asset_type(); 
+		
+		var anim_equivalent = ["FX","Character", "Prop","Vehicle"];
+		
+		if(current_type == _sg_asset_type ){
+			
+			return true;
+		}
+		
+		if(_sg_asset_type == "anim" && anim_equivalent.indexOf(current_type) != -1){
+			
+			return true;
+			
+		}
+		
+		return false; 
+		
+	}
+	
+	
+	
+
 	
 	this.pull = function(_portal,_data_type){
 		
@@ -261,9 +312,32 @@ OO.PortalManager = function(_S){
 				
 					final_path = _portal.get_path('tpl') ;
 
-					var tpl_nodes = S.trees.import_tpl_in_group(final_path,portal_group)
+					S.trees.import_tpl_in_group(final_path,portal_group)
 					
-					pulled_nodes = tpl_nodes;
+					var tpl_group = S.trees.get_first_sub_group_in_group(portal_group); 
+					
+					if(tpl_group != false){
+					
+						portal_group.multiportIn.linkOutNode(tpl_group,0,0,true);
+						
+						tpl_group.linkOutNode(portal_group.multiportOut,0,0,true);
+						
+						tpl_group.centerAbove(portal_group.multiportOut, 0, -500);
+						
+						node.explodeGroup(tpl_group);
+						
+						S.trees.replace_goup_multiports(portal_group);
+						
+						pulled_nodes = portal_group.nodes;
+						
+						MessageLog.trace(pulled_nodes);		
+						
+					}else{
+						
+						S.log.add("data not found "+_portal.get_path(_data_type),"error");
+						
+					}
+
 					
 					// ungroup nodes. 
 				

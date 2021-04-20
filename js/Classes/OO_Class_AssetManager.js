@@ -281,6 +281,22 @@ OO.AssetManager = function(_S){
 		
 	}	
 	
+	this.get_asset_code_string_list = function(){
+		
+		var asset_code_string_list = [];
+		
+		this.load_project_assets('csv'); 
+		
+		for(var a = 0 ; a < this.project_assets.length; a++){
+			
+			current_asset = this.project_assets[a]; 
+			
+			asset_code_string_list.push(current_asset.get_code());
 
+			
+		}		
+		
+		return asset_code_string_list
+	}
 	
 }

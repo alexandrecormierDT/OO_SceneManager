@@ -548,20 +548,20 @@ function create_empty_portal(){
 	var userCode = new ComboBox();
 	userCode.label = "Asset code";
 	userCode.editable = true;
-	userCode.itemList = [asset_code_list];
-	userCode.currentItem = [""];
+	userCode.itemList = asset_code_list;
+	userCode.currentItem = "";
 	dialog.add( userCode );
 	
 	var userType = new ComboBox();
 	userType.label = "Asset type"
 	userType.editable = true;
-	userType.itemList = ["Character", "Prop", "Fx","bg"];
+	userType.itemList = ["Character", "Prop", "Fx","bg","Vehicle"];
 	dialog.add( userType );
 	
 	var userDepartement = new ComboBox();
 	userDepartement.label = "Departement"
 	userDepartement.editable = true;
-	userDepartement.itemList = ["design", "rig", "anim","bg","layout"];
+	userDepartement.itemList = ["design", "rig", "anim","bg","layout","boxanim"];
 	userDepartement.currentItem = [""];
 	dialog.add( userDepartement );
 	
@@ -1042,15 +1042,15 @@ function push_master_asset_portal_to_folder(){
 	
 	var master_asset = S.get_scene_master_asset();
 	
-	var master_asset_portal = S.portals.get_scene_portal_by_asset(master_asset); 
-	
 	S.log.add(branch,"branch")
 	S.log.add(master_asset.get_code(),"ASSET_CODE"); 
+	
+	
+	var master_asset_portal = S.portals.get_scene_portal_by_asset(master_asset); 
 	
 	if(master_asset_portal != false){
 		
 		S.portals.push_portal(master_asset_portal,'tpl')
-		
 		var tpl_export_path  = master_asset_portal.get_path('tpl');
 		S.log.add(tpl_export_path ,"PIPELINE");
 		
@@ -1142,7 +1142,6 @@ function pull_(_asset_type){
 			
 			//checking asset type
 			if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
-				
 				
 				S.log.add("pulling png of - "+current_portal.get_code(),"process");
 				
@@ -1982,6 +1981,33 @@ function batch_pull_png_bg_portals(){
 	MessageLog.trace("BATCH PULL PNG ON BG PORTALS...");
 	
 	pull_('bg')
+	
+	var saving = scene.saveAll();
+		
+	MessageLog.trace("scene was saved : "+saving);	
+
+}
+
+
+
+function batch_create_anim_portals(){
+		
+	MessageLog.trace("BATCH CREATE ANIM PORTALS...");
+
+	create_portals('anim');
+
+	var saving = scene.saveAll();
+		
+	MessageLog.trace("scene was saved : "+saving);
+
+}
+
+
+function batch_pull_tpl_anim_portals(){
+		
+	MessageLog.trace("BATCH PULL TPL ON ANIM PORTALS...");
+	
+	pull_scene_portal_tpl_by_asset_type('anim')
 	
 	var saving = scene.saveAll();
 		

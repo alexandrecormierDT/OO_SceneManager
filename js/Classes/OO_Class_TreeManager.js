@@ -479,9 +479,7 @@ OO.TreeManager = function(_S){
 		
 
 	}
-	
-	
-	
+
 	
 	
 	this.load_trees_from_scene = function(){
@@ -566,6 +564,44 @@ OO.TreeManager = function(_S){
 		copypaste_tpl_in_group(_tpl_file_path,_group_scene_path);
 		
 	}
+	
+	this.get_first_sub_group_in_group = function(_group_scene_path){
+		
+		var recever_group_object = $.scene.getNodeByPath(_group_scene_path)
+		
+		group_content = recever_group_object.nodes
+		
+		for(var no = 0 ; no < group_content.length ; no++){
+			
+			var current_node_object = group_content[no];
+			
+			if(current_node_object.type == "GROUP"){
+				
+				return current_node_object;
+			}
+			
+		}
+		
+		return false; 
+		
+	}
+	
+	
+	this.replace_goup_multiports = function(_group_scene_path){
+		
+		var recever_group_object = $.scene.getNodeByPath(_group_scene_path)
+		
+		var multiport_out_object = recever_group_object.multiportOut
+		var multiport_in_object = recever_group_object.multiportIn
+		var multiport_out_linkin_node = multiport_in_object.outs[0]
+		var multiport_in_linkout_node = multiport_out_object.ins[0]
+		
+		multiport_in_object.centerAbove(multiport_in_linkout_node, 0, -800);
+		multiport_out_object.centerBelow(multiport_out_linkin_node, 0, 800);
+		
+		
+	}
+		
 	
 	function copypaste_tpl_in_group(tpl_file_path,group_scene_path){
 		
