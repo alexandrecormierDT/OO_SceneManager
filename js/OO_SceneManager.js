@@ -1105,6 +1105,26 @@ function update_portal_(_asset_type){
 }
 
 
+function pull_scene_portal_tpl_by_asset_type(_asset_type){
+	
+	var S = new OO.SceneManager();	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_asset_tpl.html");
+	
+	S.context.set_context_type('Shotgun');	
+	
+	S.context.set_library_path(OO.library_path);	
+	
+	S.context.set_vault_path(OO.vault_path)
+	
+	S.assets.load_breakdown('csv');
+	
+	S.portals.pull_scene_portal_tpl_by_asset_type(_asset_type)
+	
+	
+}
+
+
 
 function pull_(_asset_type){
 	
