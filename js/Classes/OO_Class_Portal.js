@@ -133,6 +133,7 @@ OO.Portal = function (){
 	}		
 	
 	this.get_path = function(_key){
+		
 		if(portal_paths.hasOwnProperty(_key) == true){
 			return portal_paths[_key];
 		}
@@ -252,14 +253,7 @@ OO.Portal = function (){
 		}
 		
 	}
-	
 
-	
-
-	
-	
-	
-	
 			
 	this.get_backdrop = function (){
 		

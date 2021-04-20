@@ -132,6 +132,9 @@ OO.AssetManager = function(_S){
 						
 						asset_list.push(asset);
 						
+						MessageLog.trace(asset.code)
+						MessageLog.trace(asset.sg_asset_type)
+						
 					}
 					
 				}else{
@@ -139,17 +142,7 @@ OO.AssetManager = function(_S){
 					Log.add(path+" don't exist");
 				}
 				
-				
-				
-				
-				
 			break;			
-			
-			case ('python'):
-			
-				//python sub process call 
-				
-			break;
 			
 		}
 		
@@ -199,7 +192,6 @@ OO.AssetManager = function(_S){
 				// SAMPLE LINE : "1656","pr_rocking_chair_billy","Prop","ep102_pl001, ep102_pl002, ep102_pl005, ep102_pl006, ep102_pl007, ep102_pl009, ep102_pl010","billy",
 				//              0   1  2         3              4   5  6    7                                                                                      8  9     10
 				
-			
 				var path = OO.sg_path+"/csv/Asset.csv";
 				
 				var csv_file = new $.oFile(path);
@@ -278,8 +270,6 @@ OO.AssetManager = function(_S){
 		for(var a = 0 ; a < this.project_assets.length; a++){
 			
 			current_asset = this.project_assets[a]; 
-			
-			MessageLog.trace(current_asset.get_code());
 			
 			if(current_asset.get_code() == _asset_code){
 				

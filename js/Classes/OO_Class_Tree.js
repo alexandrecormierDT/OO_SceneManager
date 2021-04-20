@@ -281,9 +281,16 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_parent_group = function(){
 		
-		if(tree_nodes != null  && tree_nodes.length > 0){
+		if(tree_nodes[0] != null){
 			
-			return $.scn.getNodeByPath(tree_nodes[0]).parent;
+			var first_node = $.scene.getNodeByPath(tree_nodes[0]) 
+			
+			if(first_node != null){
+				
+				return first_node.parent;	
+				
+			}
+
 			
 		}
 		

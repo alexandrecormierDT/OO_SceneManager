@@ -314,48 +314,12 @@ OO.SceneManager = function(){
 // there is a problem with characters and bg portals. some gap in the list , bg data end up in character 1
 
 	
-
-
-	this.create_asset_portals = function(_type,_point,_composite){
-
-		// fetching assets and creating portals; 
-
-		for(var a in this.assets.list){
-			
-			var current_asset = this.assets.list[a]; 
-			
-			var final_psd_path = this.context.get_asset_data_path(current_asset,'psd');
-			var final_png_path = this.context.get_asset_data_path(current_asset,'png');
-			var final_tpl_path = this.context.get_asset_data_path(current_asset,'tpl');
-			
-			var asset_code = current_asset.get_code()
-			
-			var asset_type = current_asset.get_type()
-
-			if(asset_type == _type || asset_type == "all_type"){
-				
-				this.portals.creator.set_code( asset_code )
-				this.portals.creator.set_sg_asset_type( asset_type )
-				this.portals.creator.set_tpl_path( final_tpl_path )
-				this.portals.creator.set_psd_path( final_psd_path )
-				this.portals.creator.set_png_path( final_png_path )
-				
-				var nportal = this.portals.creator.create_portal(); 
-				
-				if(nportal!=false){
-					
-					this.portals.add(nportal); 
-					
-				}
-				
-				MessageLog.trace("*------------> creating portal for asset : ( "+asset_code+" ) TYPE  ( "+asset_type+" )");
-				
-			}
-
-		}
+	this.place_portal_list_in_setup = function(_point,_composite){
 		
-		var portal_list = this.portals.get_list()
-
+		var portal_list = this.portals.get_list();
+		
+		MessageLog.trace("portal_list");
+		MessageLog.trace(portal_list);
 
 		if(portal_list.length > 0){
 			
@@ -401,7 +365,9 @@ OO.SceneManager = function(){
 					var group = OO.doc.getNodeByPath("Top/"+cportal.get_code());
 					
 					MessageLog.trace("((((((((((((group"); 
+					
 					MessageLog.trace("Top/"+cportal.get_code()); 
+					
 					MessageLog.trace(group); 
 					
 					if(group != undefined){
@@ -415,7 +381,48 @@ OO.SceneManager = function(){
 
 			}
 
-		}	 
+		}		
+		
+	}
+
+	this.load_asset_portals_by_type = function(_asset_type){
+
+		// fetching assets and creating portals; 
+
+		for(var a in this.assets.list){
+			
+			var current_asset = this.assets.list[a]; 
+			
+			var final_psd_path = this.context.get_asset_data_path(current_asset,'psd');
+			var final_png_path = this.context.get_asset_data_path(current_asset,'png');
+			var final_tpl_path = this.context.get_asset_data_path(current_asset,'tpl');
+			
+			var asset_code = current_asset.get_code()
+		
+			var asset_type = current_asset.get_type()
+			
+
+			if(asset_type == _asset_type || asset_type == "all_type"){
+				
+				this.portals.creator.set_code( asset_code )
+				this.portals.creator.set_sg_asset_type( asset_type )
+				this.portals.creator.set_tpl_path( final_tpl_path )
+				this.portals.creator.set_psd_path( final_psd_path )
+				this.portals.creator.set_png_path( final_png_path )
+				
+				var nportal = this.portals.creator.create_portal(); 
+				
+				if(nportal!=false){
+					
+					this.portals.add(nportal); 
+					
+				}
+				
+				MessageLog.trace("*------------> creating portal for asset : ( "+asset_code+" ) TYPE  ( "+asset_type+" )");
+				
+			}
+
+		}
 
 	}
 	

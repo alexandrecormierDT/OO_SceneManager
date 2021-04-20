@@ -537,14 +537,18 @@ function create_empty_portal(){
 	S.context.set_library_path(OO.library_path);
 	
 	
+	var asset_code_list = S.assets.get_asset_code_string_list(); 
+	
 	var dialog = new Dialog();
 	dialog.title = "CREATE PORTAL";
 	dialog.width = 200;
 	
+	// put the whole list of asset here. 
+	
 	var userCode = new ComboBox();
 	userCode.label = "Asset code";
 	userCode.editable = true;
-	userCode.itemList = ["ch_", "pr_", "fx_","bg_"];
+	userCode.itemList = [asset_code_list];
 	userCode.currentItem = [""];
 	dialog.add( userCode );
 	
@@ -890,6 +894,7 @@ function update_portals_paths_by_type(_asset_type){
 
 function create_portals(_asset_type){
 	
+
 	var S = new OO.SceneManager();	
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/create_asset_portals.html");
@@ -912,17 +917,24 @@ function create_portals(_asset_type){
 	
 	var target_composite = false;
 	
+	MessageLog.trace("_asset_type");
+	MessageLog.trace(_asset_type);
 	
 	switch(_asset_type){
 		
 		case ('bg'):
+		case ('BG'):
 		
+			
 			target_backdrop = S.get_backdrop_by_name('BG');
 			target_composite = OO.doc.getNodeByPath("Top/BG-C");
 		
 		break; 
 		
 		case('Character'):
+		case('Prop'):
+		case('FX'):
+		case('anim'):
 		
 			target_backdrop = S.get_backdrop_by_name('ANIM');
 			target_composite = OO.doc.getNodeByPath("Top/ANIM-C");
@@ -947,8 +959,27 @@ function create_portals(_asset_type){
 		
 		
 		//responability problem 
+		S.portals.reset_list();
 		
-		S.create_asset_portals(_asset_type,point,target_composite);
+		S.load_asset_portals_by_type(_asset_type);
+		
+		MessageLog.trace("S.portals.get_list()");
+		MessageLog.trace(S.portals.get_list());
+	
+		
+		if(_asset_type == "anim"){
+			
+			//this is dirty i know
+			S.portals.reset_list();
+			S.load_asset_portals_by_type("Character");
+			S.load_asset_portals_by_type("Prop");
+			S.load_asset_portals_by_type("FX");
+			
+		}
+			
+
+		
+		S.place_portal_list_in_setup(point,target_composite);
 		
 	}
 
@@ -1005,18 +1036,30 @@ function push_master_asset_portal_to_folder(){
 	
 	var S = new OO.SceneManager();	
 	
-	
-
 	S.context.set_context_type('Shotgun');	
 	S.context.set_library_path(OO.library_path);	
 	S.log.create_new_log_file("P:/projects/billy/logs/push_master_asset_portal.html");
 	
 	var master_asset = S.get_scene_master_asset();
-	var tpl_export_path  = S.context.get_asset_data_path(master_asset,'tpl');
 	
-	S.log.add(master_asset.get_code(),"ASSET_CODE"); 
-	S.log.add(tpl_export_path ,"PIPELINE");
+	var master_asset_portal = S.portals.get_scene_portal_by_asset(master_asset); 
+	
 	S.log.add(branch,"branch")
+	S.log.add(master_asset.get_code(),"ASSET_CODE"); 
+	
+	if(master_asset_portal != false){
+		
+		S.portals.push_portal(master_asset_portal,'tpl')
+		
+		var tpl_export_path  = master_asset_portal.get_path('tpl');
+		S.log.add(tpl_export_path ,"PIPELINE");
+		
+	}else{
+		
+		S.log.add("no portal found in the nodeview for  "+master_asset.get_code(),"ERROR");
+	}
+	
+	
 	S.log.save();	
 	
 }

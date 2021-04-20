@@ -16,6 +16,11 @@ OO.PortalManager = function(_S){
 		
 	}
 	
+	this.reset_list= function(){
+		
+		list = []; 
+	}
+	
 	
 	this.add = function(_portal){
 		
@@ -35,6 +40,49 @@ OO.PortalManager = function(_S){
 		this.load_from_node_list(scene_nodes)
 		
 
+	}
+	
+	this.get_scene_portal_by_asset =  function(_asset){
+		
+		this.load_from_scene(); 
+		
+		for(var p = 0 ; p < list.length ; p++){
+			
+			var current_portal = list[p]; 
+			
+			if(portal_correspond_to_asset(current_portal,_asset)){
+				
+				return current_portal;
+				
+			}
+			
+		}
+		
+		return false; 
+		
+		
+	}
+	
+	function portal_correspond_to_asset(_portal,_asset){
+		
+		var match = 0; 
+
+		if(_portal.get_code() == _asset.get_code() ){
+			match++;
+		}
+		if(_portal.get_sg_asset_type() == _asset.get_sg_asset_type()){
+			match++;
+		}
+		
+		if( match == 2){
+			
+			return true
+			
+		}
+		
+		return false;
+		
+		
 	}
 	
 
@@ -71,7 +119,6 @@ OO.PortalManager = function(_S){
 			var cur_script_module = scene_PSM[sm];
 		
 			// CODE,TYPE AND PATHS
-			
 			
 			var tpl_path = OO.filter_string(cur_script_module.tpl_path);
 			

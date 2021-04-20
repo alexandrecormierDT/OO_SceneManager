@@ -57,7 +57,13 @@ OO.Asset = function(_param){
 		return	this.get_field_value("sg_asset_type");
 	
 	}
+	this.get_sg_asset_type = function(){
+		
+
+		return	this.get_field_value("sg_asset_type");
 	
+	}
+		
 
 	this.get_last_publish = function(){
 		

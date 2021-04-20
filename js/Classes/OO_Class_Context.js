@@ -816,7 +816,7 @@ OO.Context = function (_S,_type){
 			break;			
 			case "fx":
 			
-				sg_asset_type = "Fx"; 
+				sg_asset_type = "FX"; 
 			
 			break;				
 		}
