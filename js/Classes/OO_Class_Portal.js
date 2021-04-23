@@ -1,6 +1,6 @@
 // CLASS OO_Portal
 
-//MessageLog.trace("CLASS OO_Portal")
+////MessageLog.trace("CLASS OO_Portal")
 
 /*
 	a portal is a tree with a particular setup to import and export tpl
@@ -240,9 +240,9 @@ OO.Portal = function (){
 		
 		var portal_script_module_path = portal_tree.get_key_node("PORTAL_MODULE");
 		
-		MessageLog.trace("portal_script_module_path")
+		//MessageLog.trace("portal_script_module_path")
 		
-		MessageLog.trace(portal_script_module_path)
+		//MessageLog.trace(portal_script_module_path)
 		
 		var portal_script_module_object = $.scn.getNodeByPath(portal_script_module_path)
 		

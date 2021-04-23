@@ -1,6 +1,6 @@
 // CLASS OO_Portal
 
-////MessageLog.trace("CLASS OO_PortalManager")
+//////MessageLog.trace("CLASS OO_PortalManager")
 
 OO.PortalManager = function(_S){
 	
@@ -135,17 +135,17 @@ OO.PortalManager = function(_S){
 			
 			var linked_group = OO.doc.getNodeByPath(cur_script_module.linkedInNodes);
 			
-			MessageLog.trace("detected group")
+			//MessageLog.trace("detected group")
 			
-			MessageLog.trace(linked_peg)
+			//MessageLog.trace(linked_peg)
 			
 			//PORTAL PEG
 			
 			var linked_peg = OO.doc.getNodeByPath(linked_group.linkedInNodes);
 			
-			MessageLog.trace("detected peg")
+			//MessageLog.trace("detected peg")
 			
-			MessageLog.trace(linked_peg)
+			//MessageLog.trace(linked_peg)
 			
 			
 			//TREE
@@ -252,7 +252,7 @@ OO.PortalManager = function(_S){
 				
 				case 'psd': 
 				
-					MessageLog.trace("pulling psd")
+					//MessageLog.trace("pulling psd")
 				
 					final_path = _portal.get_path('psd'); 
 					
@@ -278,17 +278,14 @@ OO.PortalManager = function(_S){
 				
 				case 'png': 
 				
-					MessageLog.trace("pulling png")
-
 					final_path = _portal.get_path('png');
-					
-					MessageLog.trace(final_path); 
 
 					var png_node = S.trees.import_png_in_group(final_path,portal_group);
 					
 					if(png_node != false){
 						
-						S.log.add("import png = "+png_node,"process")
+						S.log.add("[PORTAL PULL] png node created ","process")
+						S.log.add("[PORTAL PULL] importing png = "+png_node,"process")
 						
 						png_node.name = _portal.get_code();
 						
@@ -328,13 +325,11 @@ OO.PortalManager = function(_S){
 						
 						S.trees.replace_goup_multiports(portal_group);
 						
-						pulled_nodes = portal_group.nodes;
-						
-						MessageLog.trace(pulled_nodes);		
+						pulled_nodes = portal_group.nodes;	
 						
 					}else{
 						
-						S.log.add("data not found "+_portal.get_path(_data_type),"error");
+						S.log.add("[PORTAL PULL] data not found "+_portal.get_path(_data_type),"error");
 						
 					}
 
@@ -347,7 +342,7 @@ OO.PortalManager = function(_S){
 			
 		}else{
 			
-			S.log.add("data not found "+_portal.get_path(_data_type),"error");
+			S.log.add("[PORTAL PULL] data not found "+_portal.get_path(_data_type),"error");
 			
 		}
 		
@@ -361,7 +356,7 @@ OO.PortalManager = function(_S){
 	
 	this.push_portal = function(_portal,_data_type){
 		
-			MessageLog.trace("PUSH ");
+			//MessageLog.trace("PUSH ");
 			
 			var export_path = _portal.get_path(_data_type);
 			
@@ -395,13 +390,13 @@ OO.PortalManager = function(_S){
 					var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 					
 					
-					MessageLog.trace("EXPORT TPL");
-					MessageLog.trace("export_folder_path");
-					MessageLog.trace(export_folder_path);
-					MessageLog.trace("portal_group");
-					MessageLog.trace(portal_group);
-					MessageLog.trace("tpl_name");
-					MessageLog.trace(tpl_name);
+					//MessageLog.trace("EXPORT TPL");
+					//MessageLog.trace("export_folder_path");
+					//MessageLog.trace(export_folder_path);
+					//MessageLog.trace("portal_group");
+					//MessageLog.trace(portal_group);
+					//MessageLog.trace("tpl_name");
+					//MessageLog.trace(tpl_name);
 					
 					
 					S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");
@@ -524,7 +519,7 @@ OO.PortalManager = function(_S){
 		
 		for( var p = 0 ; p < property_list ; p++){
 			
-			MessageLog.trace(property_list[p]);
+			//MessageLog.trace(property_list[p]);
 			
 		}
 		

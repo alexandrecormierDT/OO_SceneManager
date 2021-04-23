@@ -129,6 +129,38 @@ OO.ViewManager = function(_S){
 		
 					//openHamrony method of oScene : exportLayoutImage(path, includedNodes, exportFrame,exportCameraFrame,exportBackground,frameScale)
 					OO.doc.exportLayoutImage(final_path,[],CV.exportFrame,CV.exportBackground,CV.exportCameraFrame,CV.frameScale);
+					
+					//QUICK TEST OF JHONIE BAT SCRIPT
+					
+					var project_name = "billy"; 
+					
+					var asset_name = CV.asset;
+					var version_name = CV.version;
+					var file_path = final_path;
+					var task_name = CV.task;
+					var task_status = "psr";
+					
+					var bat_file = 'P:/pipeline/extra_scripts/python3.x/pnguploader/bin/pngupload.bat';
+					
+					var command = '"'+bat_file+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+file_path+'"  -n "'+version_name+'" -t "'+task_name+'" -s "'+task_status+'"';
+					
+					MessageLog.trace("command");
+					MessageLog.trace(command);
+					
+					p1 = new Process2(command );           // create process from single string
+
+					;
+					
+					MessageLog.trace(p1.launch());
+					MessageLog.trace(p1.errorMessage());
+					MessageLog.trace(p1);
+					
+					
+					
+					//
+				
+					
+					
 				
 				}
 				

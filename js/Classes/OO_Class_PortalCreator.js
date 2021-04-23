@@ -1,6 +1,6 @@
 // CLASS OO_Portal
 
-////MessageLog.trace("CLASS OO_PortalManager")
+//////MessageLog.trace("CLASS OO_PortalManager")
 
 OO.PortalCreator = function(_S){
 	
@@ -60,7 +60,7 @@ OO.PortalCreator = function(_S){
 	
 	this.create_portal = function(){ 
 	
-		MessageLog.trace("Portal ADD");
+		//MessageLog.trace("Portal ADD");
 		
 		var nportal = new OO.Portal();
 		

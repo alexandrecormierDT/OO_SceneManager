@@ -1,6 +1,6 @@
 // CLASS OO_Tree
 
-//////MessageLog.trace("CLASS OO_Tree")
+////////MessageLog.trace("CLASS OO_Tree")
 
 
 OO.Tree = function(_code,_nodes){

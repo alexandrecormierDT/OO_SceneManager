@@ -1,6 +1,6 @@
 // CLASS OO_AssetManager
 
-//MessageLog.trace("CLASS OO_AssetManager")
+////MessageLog.trace("CLASS OO_AssetManager")
 
 OO.AssetManager = function(_S){
 	
@@ -55,25 +55,27 @@ OO.AssetManager = function(_S){
 		
 		var shot = S.context.get_shot();
 		
-		////MessageLog.trace("DETECTED SHOT");
+		S.log.add("loading breakdown from "+inputtype,"info");
 		
-		////MessageLog.trace(shot);
+		//////MessageLog.trace("DETECTED SHOT");
+		
+		//////MessageLog.trace(shot);
 		
 		switch(inputtype){
 			
 			case ('json'):
 			
-				////MessageLog.trace("LOAD JSON");
+				//////MessageLog.trace("LOAD JSON");
 				
 				var path = OO.sg_path+"/json/"+shot+".json";
 
-				////MessageLog.trace(path);
+				//////MessageLog.trace(path);
 				
 				var json_string = new $.oFile(path).read();
 				
 				var obj_list = 	JSON.parse(json_string);
 		
-				////MessageLog.trace(Object.getOwnPropertyNames(obj_list));
+				//////MessageLog.trace(Object.getOwnPropertyNames(obj_list));
 				
 				asset_list = obj_list.Assets;
 				
@@ -132,9 +134,6 @@ OO.AssetManager = function(_S){
 						
 						asset_list.push(asset);
 						
-						MessageLog.trace(asset.code)
-						MessageLog.trace(asset.sg_asset_type)
-						
 					}
 					
 				}else{
@@ -150,8 +149,8 @@ OO.AssetManager = function(_S){
 			
 			var curItem = asset_list[a];
 			
-			////MessageLog.trace("new asset param : ");
-			////MessageLog.trace(Object.getOwnPropertyNames(curItem));
+			//////MessageLog.trace("new asset param : ");
+			//////MessageLog.trace(Object.getOwnPropertyNames(curItem));
 			
 			var asset_param = asset_list[a];
 			

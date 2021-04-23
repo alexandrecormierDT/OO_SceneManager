@@ -1,6 +1,6 @@
 // CLASS OO_SceneManager
 
-////MessageLog.trace("CLASS OO_SceneManager imported")
+//////MessageLog.trace("CLASS OO_SceneManager imported")
 
 OO.SceneManager = function(){
 	
@@ -199,7 +199,7 @@ OO.SceneManager = function(){
 
 		var backdrops = OO.doc.root.backdrops;
 
-		////MessageLog.trace("BACKDROP");
+		//////MessageLog.trace("BACKDROP");
 		
 		var match = 0; 
 
@@ -244,13 +244,13 @@ OO.SceneManager = function(){
 	
 	this.load_cadre_from_psd = function(psd_path){
 		
-		MessageLog.trace("LOAD FROM PSD");
+		//MessageLog.trace("LOAD FROM PSD");
 		
 		var shot = this.context.get_shot();
 		
 		var group_info = CELIO.getLayerGroupInformation (psd_path);
 		
-		MessageLog.trace(group_info);
+		//MessageLog.trace(group_info);
 		
 	}
 	
@@ -318,8 +318,8 @@ OO.SceneManager = function(){
 		
 		var portal_list = this.portals.get_list();
 		
-		MessageLog.trace("portal_list");
-		MessageLog.trace(portal_list);
+		//MessageLog.trace("portal_list");
+		//MessageLog.trace(portal_list);
 
 		if(portal_list.length > 0){
 			
@@ -364,15 +364,15 @@ OO.SceneManager = function(){
 				
 					var group = OO.doc.getNodeByPath("Top/"+cportal.get_code());
 					
-					MessageLog.trace("((((((((((((group"); 
+					//MessageLog.trace("((((((((((((group"); 
 					
-					MessageLog.trace("Top/"+cportal.get_code()); 
+					//MessageLog.trace("Top/"+cportal.get_code()); 
 					
-					MessageLog.trace(group); 
+					//MessageLog.trace(group); 
 					
 					if(group != undefined){
 						
-						MessageLog.trace("node linked"); 
+						//MessageLog.trace("node linked"); 
 						group.linkOutNode(_composite)
 						
 					}
@@ -418,7 +418,7 @@ OO.SceneManager = function(){
 					
 				}
 				
-				MessageLog.trace("*------------> creating portal for asset : ( "+asset_code+" ) TYPE  ( "+asset_type+" )");
+				//MessageLog.trace("*------------> creating portal for asset : ( "+asset_code+" ) TYPE  ( "+asset_type+" )");
 				
 			}
 
@@ -465,7 +465,7 @@ OO.SceneManager = function(){
 				
 				this.portals.add(nportal); 
 				
-				MessageLog.trace("*------------> creating portal for asset : ( "+asset_code+" ) TYPE  ( "+asset_type+" )");
+				//MessageLog.trace("*------------> creating portal for asset : ( "+asset_code+" ) TYPE  ( "+asset_type+" )");
 				
 				var nportal_tree = nportal.get_tree(); 
 			
@@ -477,7 +477,7 @@ OO.SceneManager = function(){
 					
 				if(ungrouped_portal_group != undefined){
 					
-					MessageLog.trace("node linked"); 
+					//MessageLog.trace("node linked"); 
 					
 					ungrouped_portal_group.linkOutNode(_composite)
 					

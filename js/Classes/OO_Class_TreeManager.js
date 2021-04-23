@@ -1,7 +1,7 @@
 // CLASS OO_TreeManager
 // CLASS OO_TreeManager
 
-//////MessageLog.trace("CLASS OO_TreeManager")
+////////MessageLog.trace("CLASS OO_TreeManager")
 
 
 /*
@@ -118,9 +118,9 @@ OO.TreeManager = function(_S){
 
 	this.add_map_module = function(_code,_node_to_link){
 		
-		//MessageLog.trace("TOP NODE");
+		////MessageLog.trace("TOP NODE");
 		
-		//MessageLog.trace(_node_to_link)
+		////MessageLog.trace(_node_to_link)
 		
 		var script_module = false;
 
@@ -134,7 +134,7 @@ OO.TreeManager = function(_S){
 				
 			}
 			
-			//MessageLog.trace(parent_group)
+			////MessageLog.trace(parent_group)
 			
 			// importing tpl as oNode object
 			
@@ -605,9 +605,7 @@ OO.TreeManager = function(_S){
 	
 	function copypaste_tpl_in_group(tpl_file_path,group_scene_path){
 		
-		MessageLog.trace("natif_Import_TPL_in_group");
-			
-		MessageLog.trace(tpl_file_path);
+		//MessageLog.trace("natif_Import_TPL_in_group");
 
 		var myCopyOptions = copyPaste.getCurrentCreateOptions();
 			
@@ -644,16 +642,6 @@ OO.TreeManager = function(_S){
 		if(png_file_object.exists){
 
 			var png_node = OO.doc.getNodeByPath(_group.importImage(_png_path));
-			
-			
-			//shorten the name if it's too long
-			if(png_node.name.length > 30){
-				
-				var new_name = png_node.name.substring(30,-1000)
-				
-				png_node.name = new_name;
-				
-			}
 			
 			node.setLocked(png_node.path, true);
 			 
@@ -699,7 +687,7 @@ OO.TreeManager = function(_S){
 	
 	this.extend_exposition_to_scene_length= function(_onode){
 		
-		//MessageLog.trace("extend_exposition_to_scene_length");
+		////MessageLog.trace("extend_exposition_to_scene_length");
 		
 		var scene_length = scene.getStopFrame()+1
  
@@ -733,14 +721,7 @@ OO.TreeManager = function(_S){
 		
 		selection.addNodeToSelection(_group)
 		
-		copyPaste.createTemplateFromSelection(_tpl_name,_path)	
-		
-		//MessageLog.trace("exporting "+_group.nodes)
-		//MessageLog.trace(" to "+_path)
-		
-		//var exportProcess = $.scene.exportTemplate(_group,_path); // "createPalette" value will create one palette for all colors
-
-		//return exportProcess; 		
+		copyPaste.createTemplateFromSelection(_tpl_name,_path)		
 		
 	}
 
@@ -807,7 +788,7 @@ OO.TreeManager = function(_S){
 
 	this.arange_psd_node = function(_tree){
 		
-		//////MessageLog.trace("ARRANGE PSD NODES");
+		////////MessageLog.trace("ARRANGE PSD NODES");
 		
 		var reads = _tree.get_reads();
 		
@@ -938,9 +919,9 @@ OO.TreeManager = function(_S){
 		
 		if(cadre.hasOwnProperty('rect')==true){
 			
-			//MessageLog.trace("FIT TO CAMERA");
+			////MessageLog.trace("FIT TO CAMERA");
 			
-			//MessageLog.trace("CADRE "+cadre);
+			////MessageLog.trace("CADRE "+cadre);
 			
 			var EVIL_RATIO = parseFloat(4/3)
 
@@ -1014,7 +995,7 @@ OO.TreeManager = function(_S){
 				
 			}else{
 				
-				//MessageLog.trace("reseting camera");
+				////MessageLog.trace("reseting camera");
 				
 				S.log.add("reseting camera coords","warning");
 				

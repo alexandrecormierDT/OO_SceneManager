@@ -13,8 +13,10 @@ OO.SetupManager = function(_S){
 	this.apply = function(setup_name){ 
 	
 		MessageLog.trace("apply "+setup_name)
+		
+		var current_setup = this.get_current_setup(setup_name)
 	
-		if(this.get_current_setup(setup_name) == false){
+		if(current_setup == false){
 			
 			S.log.add("installing "+setup_name+" ","check");
 			
@@ -40,6 +42,10 @@ OO.SetupManager = function(_S){
 
 			return setup_tree;
 			
+		}else{
+		
+			S.log.add("setup "+current_setup+" already imported","check");
+			
 		}
 
 		
@@ -55,8 +61,6 @@ OO.SetupManager = function(_S){
 			return false;
 			
 		}else{
-			
-			S.log.add("setup "+setup_name+" already imported","error");
 			
 			return CSB.body;
 			

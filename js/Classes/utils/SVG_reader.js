@@ -50,28 +50,19 @@ var S = _S != undefined ? _S : new OO.SceneManager();
 			
 		}
 		
-		MessageLog.trace("CADRE BG");
-		MessageLog.trace(Object.getOwnPropertyNames(cadre.bg));
-		MessageLog.trace(cadre.bg.width);
-		MessageLog.trace(cadre.bg.height);
-		
-		
-		S.log.add("[SVG] width = "+cadre.bg.width,"process");
-		S.log.add("[SVG] height = "+cadre.bg.height,"process");
+		S.log.add("[SVG] Dimentions du psd","process");
+		S.log.add("[SVG] bg width = "+cadre.bg.width,"process");
+		S.log.add("[SVG] bg height = "+cadre.bg.height,"process");
 		
 		var groups = XMLobj['g'];
 		
-		MessageLog.trace("SEARCHING FOR "+shot_code);	
+		//MessageLog.trace("SEARCHING FOR "+shot_code);	
 			
 			for(var i in groups){
 				
 				cg = groups[i]; 
 				
 				var group_title = cg.title;
-				
-				MessageLog.trace(group_title);
-				
-				
 					
 				// possible problems if thee is just one group
 				
@@ -84,12 +75,6 @@ var S = _S != undefined ? _S : new OO.SceneManager();
 					for(var i in gimages){
 						
 						var cimage = gimages[i]; 
-						
-						MessageLog.trace("GIMAGE"+i);
-						MessageLog.trace(gimages[i]);
-						
-						MessageLog.trace("found "+cimage.title);
-						
 						//S.log.add("cadre "+cimage.title,"process");
 						
 						var image_title = "";
@@ -100,7 +85,6 @@ var S = _S != undefined ? _S : new OO.SceneManager();
 								
 							image_title = gimages[i];
 							image_attributes = gimages._Attribs;
-							MessageLog.trace(Object.getOwnPropertyNames(image_attributes));
 								
 						}else{
 							
@@ -112,11 +96,7 @@ var S = _S != undefined ? _S : new OO.SceneManager();
 						if(image_title == shot_code){
 							
 							S.log.add("[SVG] found layer ( "+image_title+" ) for shot  ( "+shot_code+" )","process");
-							
-							MessageLog.trace("CADRE FOUND FOR "+image_title);	
-							
-							
-							
+	
 							var attr = image_attributes;
 							
 							var rect = {
@@ -126,7 +106,13 @@ var S = _S != undefined ? _S : new OO.SceneManager();
 								y:attr.y
 							}
 								
-							MessageLog.trace(attr);	
+								
+							S.log.add("[SVG] cadre ( "+image_title+" )","process");
+							S.log.add("[SVG] width ( "+attr.width+" )","process");
+							S.log.add("[SVG] height ( "+attr.height+" )","process");
+							S.log.add("[SVG] x ( "+attr.x+" )","process");
+							S.log.add("[SVG] y ( "+attr.y+" )","process");
+
 								
 							cadre.rect = rect;
 							
@@ -149,7 +135,7 @@ var S = _S != undefined ? _S : new OO.SceneManager();
 								height:attr.height,
 							}
 								
-							MessageLog.trace(attr);	
+							//MessageLog.trace(attr);	
 								
 							cadre.bg = rect;
 						}
@@ -166,7 +152,7 @@ var S = _S != undefined ? _S : new OO.SceneManager();
 			
 		}else{
 			
-			MessageLog.trace("NO CADRE FOUND")
+			//MessageLog.trace("NO CADRE FOUND")
 			
 			return false ;
 			

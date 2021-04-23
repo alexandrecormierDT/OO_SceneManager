@@ -1,5 +1,5 @@
 // CLASS OO_Stage
-//MessageLog.trace("CLASS OO_Context")
+////MessageLog.trace("CLASS OO_Context")
 
 // CLASS TO HANDLE FILES , PATHS , GLOBAL CONTEXT AND INTERACTIONS
 
@@ -79,8 +79,8 @@ OO.Context = function (_S,_type){
 	this.set_svg_path = function(_sp){
 		
 		SVG_PATH = _sp
-		MessageLog.trace("SVG_PATH");
-		MessageLog.trace(SVG_PATH);
+		//MessageLog.trace("SVG_PATH");
+		//MessageLog.trace(SVG_PATH);
 	}	
 	
 	this.set_png_path = function(_pnp){
@@ -144,6 +144,24 @@ OO.Context = function (_S,_type){
 		
 	}
 	
+	function is_inside_the_vault(){
+		
+		var scene_path = scene.currentProjectPathRemapped()
+		
+		var slash_split = scene_path.split("\\");
+
+		
+		if(slash_split[0] == "P:" && slash_split[1] == ".vault"){
+			
+			return true; 
+			
+		}
+		
+		return false;
+				
+		
+	}
+	
 	
 	
 	this.get_scene_path = function(){
@@ -152,18 +170,72 @@ OO.Context = function (_S,_type){
 		
 	}
 	
-	
-	
+
 	// only for shotgun work scenes : 
 	
+	function get_data_from_project_scene_path(){
+		
+		
+	}
+	
+	function get_data_from_vault_scene_path(){
+		
+		
+	}	
+	
 	this.set_from_scene_path = function(){
+		
+		
+		// PATH EXEMPLES
+		
+		
+		//P R O J E C T 
+		
+		//ASSET
 		
 		//P:,projects,billy,assets,Character,default,ch_mytestchar,work,a-cormier,design_main,toonboom,scenes
 		// 0  1          2      3      4        5      6             7   8             9           10   11
 		
+		//SHOT
 		
 		// P:,projects,billy,assets,Character,default,ch_mytestchar,work,a-cormier,design_main,toonboom,scenes
 		
+		
+		
+		
+		//V A U L T
+		
+		//ASSET
+		
+		//P:,.vault,billy,assets,tbscene,Character,default,ch_mytestchar,puppet_rig,1
+		// 0     1    2      3      4         5       6           7           8      9
+		
+		//SHOT
+		
+		//P:\.vault\billy\saison1\tbscene\ep101_chdor\ep101_sq020\ep101_pl019\blocking\2
+		//0      2    3      4         5      6              7        8           9     10
+		
+		var scene_path = this.breakdown_scene_path();
+		
+		var indexes ={
+			project:0,
+			entity:0,
+			sg_asset_type:0,
+			code:0,
+			version:0,
+			user:0,
+			task:0,
+			software:0,
+			tb_file_type:0,
+			division:0,
+			episode:0,
+			publish:0,
+			sequence:0,
+			branch:0
+
+		}
+		
+
 		var scene_path = this.breakdown_scene_path();
 		
 		this.project = scene_path[2];
@@ -173,9 +245,10 @@ OO.Context = function (_S,_type){
 		data.project = scene_path[2];
 		data.entity = scene_path[3];		
 		
-		MessageLog.trace(scene_path);
-		MessageLog.trace(scene_path[4]);
+		//MessageLog.trace(scene_path);
+		//MessageLog.trace(scene_path[4]);
 		
+
 		switch (this.entity){
 			
 			case 'assets': 
@@ -233,8 +306,8 @@ OO.Context = function (_S,_type){
 		
 		})
 		
-		MessageLog.trace(data.code)
-		MessageLog.trace(data.sg_asset_type)
+		//MessageLog.trace(data.code)
+		//MessageLog.trace(data.sg_asset_type)
 		
 		return current_asset;
 
@@ -313,8 +386,8 @@ OO.Context = function (_S,_type){
 			var scene_path = scene.currentScene().split("/")
 			var scene_name = scene_path[scene_path.length-1]
 			var shotcode = scene_name.split("_")[0]+"_"+scene_name.split("_")[1];
-			//MessageLog.trace("SHOTCODE")
-			//MessageLog.trace(shotcode)
+			////MessageLog.trace("SHOTCODE")
+			////MessageLog.trace(shotcode)
 			return shotcode;
 		
 	}
@@ -465,9 +538,9 @@ OO.Context = function (_S,_type){
 								
 								file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);	
 								
-								MessageLog.trace("found png : ");
+								//MessageLog.trace("found png : ");
 						
-								MessageLog.trace(file_path);				
+								//MessageLog.trace(file_path);				
 							}		
 							
 						break; 
@@ -493,9 +566,9 @@ OO.Context = function (_S,_type){
 							
 							file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
 							
-							MessageLog.trace("found psd : ");
+							//MessageLog.trace("found psd : ");
 						
-							MessageLog.trace(file_path);						
+							//MessageLog.trace(file_path);						
 						}
 	
 					
@@ -515,9 +588,9 @@ OO.Context = function (_S,_type){
 						
 						file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
 						
-						MessageLog.trace("found svg : ");
+						//MessageLog.trace("found svg : ");
 						
-						MessageLog.trace(file_path);
+						//MessageLog.trace(file_path);
 	
 
 					}
@@ -544,7 +617,7 @@ OO.Context = function (_S,_type){
 			var folder = new $.oFolder(_dir_path)
 			var file_list = folder.getFiles("*."+_extension);
 			
-			MessageLog.trace(file_list);
+			//MessageLog.trace(file_list);
 			
 			if(file_list.length == 0){
 			
@@ -686,7 +759,7 @@ OO.Context = function (_S,_type){
 		
 		var sub_folders = dir.folders;
 		
-		MessageLog.trace(sub_folders);
+		//MessageLog.trace(sub_folders);
 		
 		if(sub_folders.length > 0){
 		
@@ -715,8 +788,8 @@ OO.Context = function (_S,_type){
 		
 		//OO.log.add(path+" exist ="+f.exists)
 		
-		//MessageLog.trace("FILE CHECK");
-		//MessageLog.trace(path+" exist ="+f.exists);
+		////MessageLog.trace("FILE CHECK");
+		////MessageLog.trace(path+" exist ="+f.exists);
 		
 		return f.exists;
 		
@@ -750,8 +823,8 @@ OO.Context = function (_S,_type){
 		if(txt_file_object.exists){
 
 				var txt_content = txt_file_object.read()
-				MessageLog.trace(txt_content);
-				MessageLog.trace(txt_content.split('\n'));
+				//MessageLog.trace(txt_content);
+				//MessageLog.trace(txt_content.split('\n'));
 				
 				var resolution_object = {
 					width: parseFloat(txt_content.split('\n')[0]),
@@ -784,11 +857,11 @@ OO.Context = function (_S,_type){
 	
 	this.get_type_from_asset_code = function(asset_code){
 		
-		//MessageLog.trace("get_type_with_asset_code");
+		////MessageLog.trace("get_type_with_asset_code");
 		
 		var short_type = asset_code.split("_")[0];
 		
-		//MessageLog.trace(short_type);
+		////MessageLog.trace(short_type);
 		
 		var sg_asset_type = "notype";
 		
@@ -821,8 +894,8 @@ OO.Context = function (_S,_type){
 			break;				
 		}
 		
-		//MessageLog.trace("FOUND TYPE : ");
-		//MessageLog.trace(sg_asset_type);
+		////MessageLog.trace("FOUND TYPE : ");
+		////MessageLog.trace(sg_asset_type);
 		
 		return sg_asset_type;
 		
@@ -862,7 +935,7 @@ OO.Context = function (_S,_type){
 		
 		// CHANGE   "bg_ep102pl022_ded_ext"   TO   "ep102pl022_ded_ext"  
 		
-		//MessageLog.trace("get_asset_code_without_type");
+		////MessageLog.trace("get_asset_code_without_type");
 		
 		var split1 =  asset_code.split("_");
 		
