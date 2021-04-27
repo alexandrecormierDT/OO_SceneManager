@@ -53,6 +53,8 @@ OO.AssetManager = function(_S){
 		
 		var asset_list=[];
 		
+		S.context.set_from_scene_path();
+		
 		var shot = S.context.get_shot();
 		
 		S.log.add("loading breakdown from "+inputtype,"info");
@@ -111,7 +113,7 @@ OO.AssetManager = function(_S){
 						
 						if(second_split[3] == shot){
 							
-							var assets_string = second_split[5];
+							var assets_string = second_split[5]+"";
 							
 							var assets = assets_string.split(',');
 

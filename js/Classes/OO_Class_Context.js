@@ -144,6 +144,13 @@ OO.Context = function (_S,_type){
 		
 	}
 	
+	function is_in_shotgun(){
+		
+		
+		
+		
+	}
+	
 	function is_inside_the_vault(){
 		
 		var scene_path = scene.currentProjectPathRemapped()
@@ -198,9 +205,9 @@ OO.Context = function (_S,_type){
 		
 		//SHOT
 		
-		// P:,projects,billy,assets,Character,default,ch_mytestchar,work,a-cormier,design_main,toonboom,scenes
+		// P:/projects/billy/pre_production_test/pipeline_dev/seuqence_test/ep222_pl001/animation/work/a-cormier/toonboom/scenes
 		
-		
+		// 0    1        2        3                4              5             6            7       8     9        10      11
 		
 		
 		//V A U L T
@@ -217,42 +224,15 @@ OO.Context = function (_S,_type){
 		
 		var scene_path = this.breakdown_scene_path();
 		
-		var indexes ={
-			project:0,
-			entity:0,
-			sg_asset_type:0,
-			code:0,
-			version:0,
-			user:0,
-			task:0,
-			software:0,
-			tb_file_type:0,
-			division:0,
-			episode:0,
-			publish:0,
-			sequence:0,
-			branch:0
-
-		}
+		var data = {};	
 		
-
-		var scene_path = this.breakdown_scene_path();
-		
-		this.project = scene_path[2];
-		this.entity = scene_path[3];
-		
-		var data = {};
-		data.project = scene_path[2];
-		data.entity = scene_path[3];		
-		
-		//MessageLog.trace(scene_path);
-		//MessageLog.trace(scene_path[4]);
-		
-
-		switch (this.entity){
+			if(scene_path[3] == 'assets'){
+				
+				//P:,projects,billy,assets,Character,default,ch_mytestchar,work,a-cormier,design_main,toonboom,scenes
+				// 0  1          2      3      4        5      6             7   8             9           10   11
 			
-			case 'assets': 
-			
+				this.entity == 'asset'; 
+				this.project = scene_path[2];
 				this.sg_asset_type = scene_path[4];
 				this.code = scene_path[6];
 				this.version = scene_path[7];
@@ -269,33 +249,74 @@ OO.Context = function (_S,_type){
 				data.software = scene_path[10];				
 				data.tb_file_type = scene_path[11];					
 				
-			break; 
-			
-			case 'shots': 
-			
-				this.division = scene_path[4];
-				this.episode = scene_path[6];
-				this.version = scene_path[7];
-				this.user = scene_path[8];				
-				this.task = scene_path[9];				
-				this.software = scene_path[10];				
-				this.tb_file_type = scene_path[11];				
-			
-				data.division = scene_path[4];
-				data.episode = scene_path[6];
-				data.version = scene_path[7];
-				data.user = scene_path[8];				
-				data.task = scene_path[9];				
-				data.software = scene_path[10];				
-				data.tb_file_type = scene_path[11];		
+			}else{
+
+				//SHOT
 				
-			break;
-		}
+				this.entity = "shot"; 
+			
+				if(scene_path[3] == "pre_shotgun"){
+					
+					//P:/projects/billy/pre_shotgun/batch_pool/xstages/saison1/ep101/ep101_pl105_animatic_v001
+					//0  1          2      3           4          5       6       7    8 
+					
+					this.project = scene_path[2];
+					this.division = scene_path[6];
+					this.episode = scene_path[7];
+					this.shot_code = scene_path[6];						
+					this.scene_folder = scene_path[8];	
+					this.shot_code = this.get_shot_code_from_scene_name();
+					
+				
+					
+				}else{
+					
+					// P:/projects/billy/pre_production_test/pipeline_dev/seuqence_test/ep222_pl001/animation/work/a-cormier/toonboom/scenes
+					
+					// 0    1        2        3                4              5             6            7       8     9        10      11
+						
+					this.project = scene_path[2];
+					this.division = scene_path[3];
+					this.episode = scene_path[4];
+					this.sequence = scene_path[5];
+					this.shot_code = scene_path[6];
+					this.task = scene_path[7];				
+					this.section = scene_path[8];				
+					this.user = scene_path[9];				
+					this.software = scene_path[10];				
+					this.scene_folder = scene_path[11];				
+				
+					data.project = scene_path[2];
+					data.division = scene_path[3];
+					data.episode = scene_path[4];
+					data.sequence = scene_path[5];
+					data.shot = scene_path[6];
+					data.task = scene_path[7];				
+					data.section = scene_path[8];				
+					data.user = scene_path[9];				
+					data.software = scene_path[10];				
+					data.scene_folder = scene_path[11];							
+					
+				}
+				
+				
 		
+				
+			}
+			
+	
+
 		return data; 
 
 	}
 	
+	this.get_task = function(){
+	
+		return this.task; 
+		
+	}
+	
+
 	this.get_current_asset = function(){
 		
 		var data = this.set_from_scene_path();
@@ -394,13 +415,13 @@ OO.Context = function (_S,_type){
 	
 	this.get_shot = function(){
 
-		return this.get_shot_code_from_scene_name()
+		return this.shot_code;
 
 	}
 	
 	this.get_episode = function(){
 
-		return this.get_episode_from_scene_name()
+		return this.episode;
 
 	}
 	

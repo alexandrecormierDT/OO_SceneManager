@@ -16,6 +16,9 @@ OO.SceneManager = function(){
 	this.portals = new OO.PortalManager(this);
 	this.setups = new OO.SetupManager(this);
 	this.log = new OO.Log(this);
+	this.render = new OO.RenderManager(this);
+	this.version = new OO.SGVersion(this);
+	
 	
 	this.svg_reader = new SVG_reader(this);
 	
@@ -388,6 +391,8 @@ OO.SceneManager = function(){
 	this.load_asset_portals_by_type = function(_asset_type){
 
 		// fetching assets and creating portals; 
+		
+		// portal_won't be created if it's aldready in the scene. 
 
 		for(var a in this.assets.list){
 			
@@ -401,7 +406,6 @@ OO.SceneManager = function(){
 		
 			var asset_type = current_asset.get_type()
 			
-
 			if(asset_type == _asset_type || asset_type == "all_type"){
 				
 				this.portals.creator.set_code( asset_code )
@@ -424,6 +428,14 @@ OO.SceneManager = function(){
 
 		}
 
+	}
+	
+	this.portals_already_in_the_scene = function(_portal){
+		
+		this.portals.load_from_scene();
+		
+		
+		
 	}
 	
 	this.get_scene_master_asset = function(){

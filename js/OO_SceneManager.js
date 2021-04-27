@@ -81,6 +81,7 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneFilesManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Stage.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Context.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_RenderManager.js");
 
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Asset.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_AssetManager.js");
@@ -96,6 +97,7 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ViewManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_View.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SGVersion.js");
 
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SetupManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Setup.js");
@@ -130,8 +132,9 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 //FILTERS
 OO.filter_string =function(str){
 
+	//removing spaces
 	var forbidden_chars = [];
-	var clean_str = str;	
+	var clean_str = str.replace(/\s/g, '');	
 	return  clean_str;
 
 }
@@ -504,14 +507,13 @@ function load_shot_setup(){
 	
 	var shot_setup = S.setups.apply('shot');	
 	
-	var RENDER_MOV = "Top/RENDER_MOV";
-	
 	S.context.set_video_export_path(OO.video_export_path)
+	var video_render_path = S.context.generate_bg_preview_render_path();
 	
-	var video_render_path = S.context.generate_preview_render_path();
 	
-	S.update_render_path(RENDER_MOV,video_render_path)
-	
+	S.render.set_movie_render_path(video_render_path)
+	S.render.update_movie_render_path()
+
 	S.log.save();
 
 } 
@@ -753,18 +755,14 @@ function pull_selected_portals_process(_data_type){
 						
 						
 						break; 				
-					
+		
 				}
 				
-				
-			
 			}
-			
 	}	
 
 	S.log.save();		
 
-	
 } 
 
 
@@ -874,7 +872,6 @@ function update_portals_paths_by_type(_asset_type){
 
 	S.log.save();
 	
-	
 };
 
 
@@ -937,6 +934,8 @@ function create_portals(_asset_type){
 		x:target_backdrop.x + 400,
 		y:target_backdrop.y + 400 
 	}
+	
+	S.portals.load_from_scene();
 	
 	if(target_composite != undefined){
 		
@@ -1373,8 +1372,6 @@ function pull_psd(){
 }
 
 
-
-
 //DESIGN SCRIPT : 
 
 
@@ -1405,6 +1402,8 @@ function export_markers_process(){
 	}
 
 }
+
+
 
 function export_asset_png_process(){
 	
@@ -1673,15 +1672,152 @@ function copy_node_name_process(){
 }
 
 
-function update_movie_path(_writer_node,_render_path) {
-	
-		var render_path = generate_render_path()
 
-		//node.setTextAttr(writer_node, "EXPORT_TO_MOVIE",1,"Output Movie")
-		node.setTextAttr(_writer_node, "MOVIE_PATH",1,_render_path);
-		//node.setTextAttr(writer_node, "DRAWING_NAME",1,render_path);
+
+
+
+
+/*------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+		UPLOAD PREVIEW TO SHOTGUN 
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+
+
+// for users
+
+function upload_render_as_SG_version_dialog(){
+	
+	MessageLog.trace("UPLOAD PREVIEW TO SHOTGUN");
+	
+	var S = new OO.SceneManager();	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/upload_render_as_SG_version.html");
+	S.context = new OO.Context(this,"Shotgun");	
+	
+	
+	S.context.set_from_scene_path();
+	var input_task_name = S.context.get_task()
+	var input_version_name = "versioname";
+	var input_task_status = "psr";
+	var input_shot_name = S.context.get_shot()
+	
+	var d = new Dialog
+	d.title = "UPLOAD PREVIEW TO SHOTGUN";
+	d.width = 500;
+
+
+	var INPUT_SHOT_NAME= new ComboBox();
+	 INPUT_SHOT_NAME.label = "SHOT NAME : ";
+	 INPUT_SHOT_NAME.editable = true;
+	 INPUT_SHOT_NAME.itemList = [];
+	 INPUT_SHOT_NAME.currentItem = input_shot_name;
+	d.add(INPUT_SHOT_NAME);
 		
+	var INPUT_TASK_NAME= new ComboBox();
+	 INPUT_TASK_NAME.label = "TASK NAME : ";
+	 INPUT_TASK_NAME.editable = false;
+	 INPUT_TASK_NAME.itemList = ["layout_bg","pl_box_anim","blocking","animation","compositing"];
+	 INPUT_TASK_NAME.currentItem = input_task_name;
+	d.add(INPUT_TASK_NAME);	
+	
+	var INPUT_TASK_STATUS= new ComboBox();
+	 INPUT_TASK_STATUS.label = "TASK_STATUS : ";
+	 INPUT_TASK_STATUS.editable = false;
+	 INPUT_TASK_STATUS.itemList = ["psr","ret","pdr","ip"];
+	 INPUT_TASK_STATUS.currentItem = input_task_status;
+	d.add(INPUT_TASK_STATUS);		
+	
+	var INPUT_VERSION_NAME= new ComboBox();
+	INPUT_VERSION_NAME.label = "VERSION NAME : ";
+	INPUT_VERSION_NAME.editable = true;
+	INPUT_VERSION_NAME.itemList = [""];
+	INPUT_VERSION_NAME.currentItem = input_version_name;
+	d.add(INPUT_VERSION_NAME);
+
+		
+	if ( d.exec() ){	
+
+		var selected_shot_name = OO.filter_string( INPUT_SHOT_NAME.currentItem)
+		var selected_version_name = OO.filter_string(INPUT_VERSION_NAME.currentItem)
+		var selected_task_name = OO.filter_string(INPUT_TASK_NAME.currentItem)
+		var selected_task_status = OO.filter_string(INPUT_TASK_STATUS.currentItem)
+
+		S.render.set_movie_render_path_to_frames_folder_with_name("output");
+		S.render.update_write_movie_render_path();
+		S.render.render_write_nodes();
+		
+		var rendered_movie_path = S.render.get_rendered_movie_path()
+		
+		
+		//do the render with process command line ? "
+		
+	
+		S.version.set_shot_name(selected_shot_name) ;
+		S.version.set_version_name(selected_version_name);
+		S.version.set_task_name(selected_task_name);
+		S.version.set_task_status (selected_task_status );
+		S.version.set_movie_file_path(rendered_movie_path);	
+		
+		S.log.add("uploading version for "+selected_shot_name,"process");
+		S.log.add("version name "+selected_version_name,"process");
+		S.log.add("task name "+selected_task_name,"process");
+		S.log.add("task status "+selected_task_status,"process");
+		S.log.add("movie file path "+rendered_movie_path,"process");
+		
+		S.version.upload_movie_as_version(); 
+		
+		S.log.add(S.version.get_upload_repport(),"repport"); 
+		S.log.save();
+		
+	}
+
+	
 }
+
+
+
+function upload_render_as_SG_version_for_task(_task_name){
+	
+	MessageLog.trace("UPLOAD PREVIEW TO SHOTGUN");
+	
+	var S = new OO.SceneManager();	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/upload_render_as_SG_version.html");
+	S.context = new OO.Context(this,"Shotgun");	
+	
+	
+	S.context.set_from_scene_path();
+
+	var random_serial = Math.random(100);
+	var generated_version_name = _task+"_"+random_serial.toString();
+	
+
+	S.render.set_movie_render_path_to_frames_folder_with_name("output");
+	S.render.update_write_movie_render_path();
+	S.render.render_write_nodes();
+		
+	var rendered_movie_path = S.render.get_rendered_movie_path()
+		
+
+	S.version.set_shot_name(S.context.get_shot()) ;
+	S.version.set_version_name(generated_version_name);
+	S.version.set_task_name(_task_name);
+	S.version.set_task_status ("pdr");
+	S.version.set_movie_file_path(rendered_movie_path);	
+
+	S.version.upload_movie_as_version(); 
+	S.log.add(S.version.get_upload_repport(),"repport"); 
+	S.log.save();
+		
+	
+}
+
+
 
 function quick_update_movie_path(_render_path) {
 	
@@ -1693,76 +1829,8 @@ function quick_update_movie_path(_render_path) {
 		
 }
 
-function get_scene_render_path(){
-	
-		return scene.currentProjectPathRemapped()	
 
-	
-}
 
-function send_video_as_version(){
-	
-	var S = new OO.SceneManager();	
-	
-	S.context = new OO.Context(this,"Shotgun");	
-	
-	S.context.set_from_scene_path();
-	
-	S.write_scene_path_backdrop();
-	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/send_version_video");
-	
-	
-	////MessageLog.trace("send video as version");
-	
-	//$.scene.renderWriteNodes(false,,,,,,"P:/pipeline/alexdev/batch/after_render/after_render.js")
-	
-	var scene_path = S.context.get_scene_path();	
-	
-	var video_name = "output.mov"; 
-	
-	var final_path = scene_path+"/frames/"+video_name
-	
-	quick_update_movie_path(final_path);
-
-	$.scene.renderWriteNodes(false);
-
-	// JHONIE EXPORT VIDEO TEST 
-	
-	/*
-	'\ntbmovieupload -p <project name> '
-'-s <shot name> -n <version name> -m <movie_path>
-	
-	
-	
-	*/
-	
-	var project_name = "billy"; 
-	
-	var shot_name = "ep999_pl001";
-	var version_name = "more_cats_retake";
-	var file_path = final_path;
-	var task_name = "blocking";
-	var task_status = "psr";
-	
-	var bat_file = 'P:/pipeline/extra_scripts/python3.x/tbmovieupload/bin/tbmovieupload.bat';
-	
-	//var command = '"'+bat_file+'" -p "'+project_name+'" -s "'+shot_name+'" -m "'+file_path+'"  -n "'+version_name+'" -t "'+task_name+'" -s "'+task_status+'"';
-	var command = '"'+bat_file+'" -p "'+project_name+'" -s "'+shot_name+'" -m "'+file_path+'"  -n "'+version_name+'"';
-	
-	MessageLog.trace("command");
-	MessageLog.trace(command);
-	
-	p1 = new Process2(command );           // create process from single string
-
-	;
-	
-	MessageLog.trace(p1.launch());
-	MessageLog.trace(p1.errorMessage());
-	MessageLog.trace(p1);	
-
-	
-}
 
 function background_render_scene(){
 	
@@ -1770,50 +1838,9 @@ function background_render_scene(){
 	
 }
 
-function create_asset_dir(){
-	
-	////MessageLog.trace("ASSSET DIR");
-	
-	var S = new OO.SceneManager();	
-	
-	S.context = new OO.Context(this,"Shotgun");	
-	
-	S.context.set_context_type('Shotgun');	
-	
-	S.assets.load_project_assets("csv")
 
-	for(var i = 0 ; i < S.assets.project_assets.length ; i ++){
-		
-		var current_asset = S.assets.project_assets[i];
-		
-		if(current_asset.get_type() == "BG"){
-			
-			var type = current_asset.get_type();
-			
-			var code = current_asset.get_code();
-			
-			////MessageLog.trace(code);
-			
-			
-			var dir_path = "P:/projects/billy/pre_shotgun/batch_pool/directory/"+type+"/"+code+"/";
-			
-			//var files = S.context.find_file_by_extension(dir_path,"png");
-			
-			//////MessageLog.trace(dir_path);
-			
-			//////MessageLog.trace(files[0]);
-			
-			var test_path ="P:/projects/billy/pre_shotgun/batch_pool/directory/test/";
-			
-			S.context.get_last_publish_dir(test_path);
-			
-			//var asset_dir = new $.oFolder(final_path).create();
-	
-		}
-		
-	}
-	
-}
+
+
 
 
 /*==================================================================================================================================================================
@@ -1964,17 +1991,7 @@ function batch_preview_bg(){
 	
 	fit_bg_to_camera();
 	
-	//turnoff_burnin()
-	
-	//check_composite_to_2d()
-
-	//background_render_scene()
-
-	////MessageLog.trace("SAVING...");
-	
 	var saving = scene.saveAll();
-		
-	//MessageLog.trace("scene was saved : "+saving);	
 
 
 }
@@ -2012,8 +2029,34 @@ function batch_import_shot_setup(){
 	import_project_settings()
 
 	import_setup('shot')
+	
+	var saving = scene.saveAll();
 		
 	//MessageLog.trace("scene was saved : "+saving);
+
+}
+
+function batch_import_anim_setup(){
+		
+	var S = new OO.SceneManager();	
+	
+	S.context = new OO.Context(this,"Shotgun");	
+	
+	S.context.set_from_scene_path();
+	
+	var video_name = S.context.get_shot();
+	
+	if(video_name == undefined){
+		
+		video_name = "output"; 
+	}
+	
+	MessageLog.trace("output");
+	
+	S.render.set_movie_render_path_to_frames_folder_with_name("output");
+	S.render.update_movie_render_path();
+	
+	var saving = scene.saveAll();
 
 }
 
@@ -2059,8 +2102,6 @@ function batch_empty_bg_portals(){
 	empty_portals('bg')
 
 	var saving = scene.saveAll();
-		
-	//MessageLog.trace("scene was saved : "+saving);
 }
 
 
@@ -2071,8 +2112,6 @@ function batch_pull_png_bg_portals(){
 	pull_('bg')
 	
 	var saving = scene.saveAll();
-		
-	//MessageLog.trace("scene was saved : "+saving);	
 
 }
 
@@ -2082,9 +2121,7 @@ function batch_fit_bg_to_camera(){
 	
 	fit_bg_to_camera();
 	
-	var saving = scene.saveAll();
-		
-	//MessageLog.trace("scene was saved : "+saving);	
+	var saving = scene.saveAll();	
 
 }
 
@@ -2134,34 +2171,15 @@ function batch_increase_atq_filter_brightness(){
 
 
 
+function batch_upload_version_for_task_bg(){
 
+	upload_render_as_SG_version_for_task('bg');
 
+}
 
+function batch_upload_version_for_task_layout(){
 
-
-function batch_box_anim(){
-		
-	//import_project_settings()
-
-	//import_setup('shot')
-
-	//create_portals('bg')
-	
-	//pull_("anim");
-	
-	//fit_bg_to_camera();
-	
-	//turnoff_burnin()
-	
-	//check_composite_to_2d()
-
-	background_render_scene()
-
-	////MessageLog.trace("SAVING...");
-
-	var saving = scene.saveAll();
-	
-	////MessageLog.trace("scene was saved : "+saving);	
+	upload_render_as_SG_version_for_task('layout_bg');
 
 }
 

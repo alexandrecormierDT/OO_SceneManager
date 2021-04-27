@@ -42,6 +42,12 @@ OO.PortalManager = function(_S){
 
 	}
 	
+	this.allready_loaded = function(_portal){
+		
+		
+		
+	}
+	
 	this.get_scene_portal_by_asset =  function(_asset){
 		
 		this.load_from_scene(); 
