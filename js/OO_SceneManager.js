@@ -1,9 +1,8 @@
-// S C E N E  M A N A G E R //
+// S C E N E  M A N A G E R ---- TBSCRIPTS //
 
 var OO = {}
 $.batchMode = true;
 OO.doc = $.scn;
-
 
 //CLASSES
 
@@ -55,6 +54,15 @@ function log_test(){
 	S.log.save();
 	
 }
+
+
+
+
+
+
+
+
+
 
 // SCRIPT HELP 
 
@@ -114,7 +122,7 @@ function write_scene_journal(){
 
 function print_script_prefs(_script_name,_pref_object){
 	
-	var note_name = "pref_"+_script_name
+	var note_name = "pref_"+_script_name;
 
 	node.add("Top",note_name,"NOTE");
 	
@@ -122,7 +130,7 @@ function print_script_prefs(_script_name,_pref_object){
 	
 	var json_string = JSON.stringify(_pref_object);
 	
-	pref_note.attributes.text.setValue(json_string)
+	pref_note.attributes.text.setValue(json_string);
 
 }
 
@@ -148,6 +156,14 @@ function fetch_script_prefs(_script_name){
 }
 
 
+
+
+
+
+
+
+
+
 // CLEANING THE SCENE 
 
 function delete_misplaced_sub_files(){
@@ -170,7 +186,6 @@ function delete_misplaced_sub_files(){
 
 // FETCHING DATAS 
 
-
 function get_scene_asset_shot_list(){
 	
 	var S = new OO.SceneManager();		
@@ -184,6 +199,17 @@ function get_scene_asset_shot_list(){
 	////MessageLog.trace(billy_shot_list);
 	
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -289,6 +315,14 @@ function mark_nodes(){
 
 
 
+
+
+
+
+
+
+
+
 //============================================================================================================================================
 
 // SETUP SCRIPTS 
@@ -303,6 +337,8 @@ function import_project_settings(_project){
 	
 	S.log.create_new_log_file("P:/projects/"+project+"/pre_shotgun/batch_pool/logs/import_project_settings.html");
 	
+	
+	//see OO_config.js
 	S.set_scene_settings(OO.project_settings);
 	
 }
@@ -392,6 +428,30 @@ function load_shot_setup(){
 	S.context.set_video_export_path(OO.video_export_path)
 	var video_render_path = S.context.generate_bg_preview_render_path();
 	
+	
+	S.render.set_movie_render_path(video_render_path)
+	S.render.update_movie_render_path()
+
+	S.log.save();
+
+} 
+
+function load_anim_setup(){
+	
+	var S = new OO.SceneManager();	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/load_anim_setup.html");
+	
+	S.context = new OO.Context(this,"Shotgun");
+	
+	S.context.set_library_path(OO.library_path);
+	
+	S.context.set_psd_path(OO.psd_path);
+	
+	var shot_setup = S.setups.apply('shot');	
+	
+	S.context.set_video_export_path(OO.video_export_path)
+	var video_render_path = S.context.generate_bg_preview_render_path();
 	
 	S.render.set_movie_render_path(video_render_path)
 	S.render.update_movie_render_path()
@@ -1254,7 +1314,17 @@ function pull_psd(){
 }
 
 
-//DESIGN SCRIPT : 
+/*------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+		DESIGN
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+
 
 
 function export_markers_process(){
@@ -1363,6 +1433,32 @@ function export_asset_png_process(){
 
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+		RIG
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
 
 
 
