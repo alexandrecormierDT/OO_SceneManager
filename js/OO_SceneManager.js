@@ -76,6 +76,10 @@ OO.aujourdhui = function(){
 // FOLDER should be declared in previous include : OO_SceneManager_proto or master    enable to switch from folders proto(dev) and master(for users) 
 
 //CLASSES
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Sanitizer.js");
+
+
+
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneManager.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Log.js");
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneFilesManager.js");
@@ -135,13 +139,13 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 
 //FILTERS
 OO.filter_string =function(_str){
-
-	//removing spaces
-	var string = _str+"";
-	var clean_str = string.replace(/\s/g,'');	
-	return  _str;
+	
+	var sanitizer = new OO.Sanitizer();  
+	return  sanitizer.clean_string_general(_str); ;
 
 }
+
+
 
 //LOG
 
@@ -1704,6 +1708,8 @@ function upload_render_as_SG_version_dialog(){
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/upload_render_as_SG_version.html");
 	S.context = new OO.Context(this,"Shotgun");	
 	
+	var sanitizer = new OO.Sanitizer();
+	
 	
 	S.context.set_from_scene_path();
 	var input_task_name = S.context.get_task()
@@ -1747,10 +1753,10 @@ function upload_render_as_SG_version_dialog(){
 		
 	if ( d.exec() ){	
 
-		var selected_shot_name = OO.filter_string( INPUT_SHOT_NAME.currentItem)
-		var selected_version_name = OO.filter_string(INPUT_VERSION_NAME.currentItem)
-		var selected_task_name = OO.filter_string(INPUT_TASK_NAME.currentItem)
-		var selected_task_status = OO.filter_string(INPUT_TASK_STATUS.currentItem)
+		var selected_shot_name = sanitizer.clean_string_for_command_line( INPUT_SHOT_NAME.currentItem)
+		var selected_version_name = sanitizer.clean_string_for_command_line(INPUT_VERSION_NAME.currentItem)
+		var selected_task_name = sanitizer.clean_string_for_command_line(INPUT_TASK_NAME.currentItem)
+		var selected_task_status = sanitizer.clean_string_for_command_line(INPUT_TASK_STATUS.currentItem)
 
 		S.render.set_movie_render_path_to_frames_folder_with_name("output");
 		S.render.update_write_movie_render_path();

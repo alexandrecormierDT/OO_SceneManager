@@ -12,6 +12,8 @@ OO.Context = function (_S,_type){
 	
 	var S = _S
 	
+	var sanitizer = new OO.Sanitizer();
+	
 	//temporary
 	var PSD_PATH = "";
 	var PNG_PATH = "";
@@ -79,8 +81,7 @@ OO.Context = function (_S,_type){
 	this.set_svg_path = function(_sp){
 		
 		SVG_PATH = _sp
-		//MessageLog.trace("SVG_PATH");
-		//MessageLog.trace(SVG_PATH);
+		
 	}	
 	
 	this.set_png_path = function(_pnp){
@@ -221,6 +222,7 @@ OO.Context = function (_S,_type){
 		
 		//P:\.vault\billy\saison1\tbscene\ep101_chdor\ep101_sq020\ep101_pl019\blocking\2
 		//0      2    3      4         5      6              7        8           9     10
+		
 		
 		var scene_path = this.breakdown_scene_path();
 		
@@ -493,7 +495,7 @@ OO.Context = function (_S,_type){
 		
 		}
 		
-		return clean_path_slashes(dir_path); 
+		return sanitizer.clean_path_slashes(dir_path); 
 		
 	}
 	
@@ -627,7 +629,7 @@ OO.Context = function (_S,_type){
 		
 		}
 		
-		return clean_path_slashes(file_path);
+		return sanitizer.clean_path_slashes(file_path);
 	}
 	
 	
@@ -977,16 +979,7 @@ OO.Context = function (_S,_type){
 		
 		return result; 
 	}	
-	
-	
-	
-	function clean_path_slashes(_dirty_path){
-		
-		var string = _dirty_path+"";
-		
-		return string.replace(/([^:]\/)\/+/g, "$1");
-		
-	}
+
 		
 		
 	
