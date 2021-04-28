@@ -3,17 +3,11 @@
 OO.HeadAngle = function (){
 	
 	var source_group = ""
-	
 	var current_frame = 0; 
-	
 	var head_layer_drawing_column = ""; 
-	
 	var head_layer_current_sub_name = ""; 
-	
 	var head_layer_path = ""; 
-	
 	var head_angle = ""; 
-	
 	
 	
 	this.set_source_group = function(_sg){
@@ -63,8 +57,9 @@ OO.HeadAngle = function (){
 		fetch_head_layer_current_sub_name()
 		
 		underscore_split = head_layer_current_sub_name.split("_"); 
+		MessageLog.trace(underscore_split.length);
 		
-		if(underscore_split.length > 0){
+		if(underscore_split.length > 1){
 			
 			head_angle = head_layer_current_sub_name[0];
 			

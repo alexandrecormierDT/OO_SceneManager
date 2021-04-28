@@ -8,6 +8,8 @@ OO.CharacterDetector = function (){
 	
 	var detected_character = ""; 
 	
+	var character_group = ""; 
+	
 	
 	this.set_source_layer_path = function(_slp){
 		
@@ -33,11 +35,15 @@ OO.CharacterDetector = function (){
 			
 			if( before_underscore == uppercase_marker){
 			
+				MessageLog.trace("current_split");
+				MessageLog.trace(current_split);
 				return current_split; 
 			
 			}
 			
 		}
+		
+
 		
 	}
 	
@@ -49,6 +55,18 @@ OO.CharacterDetector = function (){
 		detected_character = find_character_in_source_layer_path();
 		
 		return detected_character;
+		
+	}
+	
+	this.get_character_group = function(){
+		
+		detected_character = find_character_in_source_layer_path();
+		
+		var before_character = source_layer_path.split(detected_character)[0];
+		
+		var character_group = before_character+detected_character
+		
+		return character_group;
 		
 	}
 	

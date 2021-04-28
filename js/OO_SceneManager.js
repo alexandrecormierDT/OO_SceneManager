@@ -112,6 +112,10 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_TPL.js");
 
 
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_MasterControler.js");
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_MCManager.js");
+
+
 
 
 //AUTOLISPING CLASSES
@@ -130,12 +134,12 @@ include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO
 
 
 //FILTERS
-OO.filter_string =function(str){
+OO.filter_string =function(_str){
 
 	//removing spaces
-	var forbidden_chars = [];
-	var clean_str = str.replace(/\s/g, '');	
-	return  clean_str;
+	var string = _str+"";
+	var clean_str = string.replace(/\s/g,'');	
+	return  _str;
 
 }
 
@@ -1819,29 +1823,6 @@ function upload_render_as_SG_version_for_task(_task_name){
 
 
 
-function quick_update_movie_path(_render_path) {
-	
-		var _writer_node = "Top/RENDER_MOV"
-
-		//node.setTextAttr(writer_node, "EXPORT_TO_MOVIE",1,"Output Movie")
-		node.setTextAttr(_writer_node, "MOVIE_PATH",1,_render_path);
-		//node.setTextAttr(writer_node, "DRAWING_NAME",1,render_path);
-		
-}
-
-
-
-
-function background_render_scene(){
-	
-	$.scene.renderWriteNodes(false);
-	
-}
-
-
-
-
-
 
 /*==================================================================================================================================================================
 
@@ -1955,6 +1936,45 @@ function generate_shot_lipsdetection_for_character(_character){
 
 
 
+/*==================================================================================================================================================================
+
+	show_current_angle_eye_mc
+
+==================================================================================================================================================================*/
+
+function show_current_angle_eye_mc(){
+	
+	var snodes = selection.selectedNodes(); 
+	
+	var first_selected_node = snodes[0];
+	
+	var character_detector = new OO.CharacterDetector()
+	character_detector.set_source_layer_path(first_selected_node)
+	var detected_character = character_detector.get_character();	
+	
+	var character_group = character_detector.get_character_group()
+	
+	var head_angle_object = new OO.HeadAngle(); 
+	head_angle_object.set_source_group(character_group);
+	head_angle_object.fetch_head_layer_path_in_source_group();	
+	
+	var current_head_angle = head_angle_object.get_head_angle_at_frame(frame.current())
+	
+	var mc_node_path = character_group+"/mc_LOOK_"+current_head_angle;
+	
+	MessageLog.trace("mc_node_path");
+	MessageLog.trace(mc_node_path);
+	
+	var MCM = new OO.MCManager();
+	MCM.fetch_scene_mcs(); 
+	MCM.hide_all_mcs(); 
+	
+	var eye_mc = new OO.MasterControler(mc_node_path);
+	eye_mc.show_controls();
+
+	
+	
+}
 
 
 
