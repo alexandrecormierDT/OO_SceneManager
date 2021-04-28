@@ -158,12 +158,6 @@ function fetch_script_prefs(_script_name){
 
 
 
-
-
-
-
-
-
 // CLEANING THE SCENE 
 
 function delete_misplaced_sub_files(){
@@ -1649,6 +1643,43 @@ function copy_node_name_process(){
 	
 }
 
+function add_sub_folder_to_selected_mcs_dialog(){
+	
+	var S = new OO.SceneManager();	
+	
+	S.context = new OO.Context(this,"Shotgun");
+	var asset_code_list = S.assets.get_asset_code_string_list(); 
+	
+	var selected_nodes = selection.selectedNodes(); 
+	
+	var MCM = new OO.MCManager();
+	
+	MCM.fetch_mcs_from_node_list(selected_nodes); 
+	
+	var d = new Dialog
+	d.title = "COPY NODE NAME";
+	d.width = 100;
+	
+	
+	
+	var INPUT_SUB_FOLDER_NAME = new ComboBox();
+	INPUT_SUB_FOLDER_NAME.label = "SUB FOLDER NAME : ";
+	INPUT_SUB_FOLDER_NAME.editable = true;
+	INPUT_SUB_FOLDER_NAME.itemList = asset_code_list;
+	d.add(INPUT_SUB_FOLDER_NAME);	
+		
+	if ( d.exec() ){
+		
+		var sub_folder_name = INPUT_SUB_FOLDER_NAME.currentItem
+		
+		MCM.add_sub_folder_to_mcs(sub_folder_name); 
+		
+	}
+
+
+	
+	
+}
 
 
 
