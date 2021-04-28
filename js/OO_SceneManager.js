@@ -1,57 +1,17 @@
-////MessageLog.trace("SCENE MANAGER loading classes");
-//IMPORT CLASSES : 
+// S C E N E  M A N A G E R //
 
-//object to store class without conflict
 var OO = {}
-
 $.batchMode = true;
-//OpenHamrony class
 OO.doc = $.scn;
 
 
+//CLASSES
 
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/OO_class_import.js");
 
-//handy xml and svg parser 
-OO.XML = require("P:/pipeline/extra_soft/pixl-xml-master/modified_xml.js");
+//CONFIG
 
-// SVG PARSER CLASS
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/utils/SVG_reader.js");
-
-//PATHS TO INJECT IN THE CONTEXT CLASS
-
-OO.library_path = "P:/projects/billy/library/";
-OO.sg_path = "P:/projects/billy/pre_shotgun/sg_exports/";
-OO.video_export_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/";
-OO.vault_path = "P:/.vault/billy/";
-OO.bg_preview_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/";
-
-
-// PIPE COLORS :
-
-OO.pipe_colors = {}; 
-OO.pipe_colors.design = ["#246926ff","#4deb53ff"]
-OO.pipe_colors.rig = ["#66571aff","#f0b129"]
-OO.pipe_colors.anim = ["#7d412fff","#fa7f5aff"]
-OO.pipe_colors.bg = ["#244369ff","#4f8edbff"]
-OO.pipe_colors.layout = ["#327480ff","#5fdef5ff"]
-OO.pipe_colors.compo = ["#6f2f80ff","##b248cfff"]
-OO.pipe_colors.board = ["#5c411eff","#9e6d2eff"]
-OO.pipe_colors.director = ["#6e6e6eff","#6e6e6eff"]
-OO.pipe_colors.prod  = ["#ffffffff","#e0dedeff"]
-OO.pipe_colors.dt  = ["#000000ff","#000000ff"]
-
-
-//PROJECT SETTINGS
-
-OO.project_settings = {
-	
-	NAMED_RES:"BILLY",
-	FRAME_RATE : 25,
-	RES_X : 1920,
-	RES_Y : 1080,		
-	FOV : 41.112	
-	
-}
+include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/OO_config.js");
 
 
 OO.aujourdhui = function(){
@@ -73,84 +33,14 @@ OO.aujourdhui = function(){
 
 
 
-// FOLDER should be declared in previous include : OO_SceneManager_proto or master    enable to switch from folders proto(dev) and master(for users) 
-
-//CLASSES
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Sanitizer.js");
-
-
-
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneManager.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Log.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SceneFilesManager.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Stage.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Context.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_RenderManager.js");
-
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Asset.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_AssetManager.js");
-
-
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Tree.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_TreeManager.js");
-
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Portal.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_PortalManager.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_PortalCreator.js");
-
-
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ViewManager.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_View.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SGVersion.js");
-
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_SetupManager.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Setup.js");
-
-
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ElementManager.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_ElementFolder.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_TVG.js");
-
-
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LibraryManager.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_TPL.js");
-
-
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_MasterControler.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_MCManager.js");
-
-
-
-
-//AUTOLISPING CLASSES
-
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_StoryboardOutputManager.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_VoiceTrack.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsDetectionManager.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsDetectionGenerator.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Lipsing.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_Phoneme.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsInjector.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_CharacterDetector.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_HeadAngle.js");
-include("P:/pipeline/alexdev/"+FOLDER+"/OO_SceneManager_"+FOLDER+"/js/Classes/OO_Class_LipsImporter.js");
-
-
-
 //FILTERS
+
 OO.filter_string =function(_str){
 	
 	var sanitizer = new OO.Sanitizer();  
 	return  sanitizer.clean_string_general(_str); ;
 
 }
-
-
-
-//LOG
-
-OO.log = new OO.Log("scenemanager_");
-
 
 
 function log_test(){
@@ -274,22 +164,6 @@ function delete_misplaced_sub_files(){
 	
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
