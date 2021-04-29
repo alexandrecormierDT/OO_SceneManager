@@ -1,4 +1,5 @@
 //SCENE MANAGER MIRROR MASTER
+MessageLog.trace("SCENE MANAGER MIRROR - MASTER");
 
 var FOLDER = "master"; 
 

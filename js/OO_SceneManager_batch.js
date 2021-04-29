@@ -1,5 +1,5 @@
 //SCENE MANAGER MIRROR PROTO
-MessageLog.trace("SCENE MANAGER MIRROR - PROTO");
+MessageLog.trace("SCENE MANAGER MIRROR - BATCH");
 
 var FOLDER = "batch"; 
 

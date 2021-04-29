@@ -21,21 +21,21 @@ OO.Asset = function(_param){
 	
 	this.get_code = function(){
 	
-		return	this.get_field_value("code");
+		return	get_field_value("code");
 	
 	}
 	
 	this.get_id = function(){
 	
-		return	this.get_field_value("id");
+		return	get_field_value("id");
 	
 	}	
 	
-	this.get_field_value = function(an){
+	function get_field_value(_an){
 	
 		
-		if(fields.hasOwnProperty(an)){
-			return fields[an];
+		if(fields.hasOwnProperty(_an)){
+			return fields[_an];
 			
 		}
 		
@@ -47,27 +47,27 @@ OO.Asset = function(_param){
 	
 	this.get_shots = function(){
 		
-		return	this.get_field_value("shots");
+		return	get_field_value("shots");
 		
 	}
 	
 	this.get_type = function(){
 		
 
-		return	this.get_field_value("sg_asset_type");
+		return	get_field_value("sg_asset_type");
 	
 	}
 	this.get_sg_asset_type = function(){
 		
 
-		return	this.get_field_value("sg_asset_type");
+		return	get_field_value("sg_asset_type");
 	
 	}
 		
 
 	this.get_last_publish = function(){
 		
-		return	this.get_field_value("code");
+		return	get_field_value("code");
 		
 	}
 
