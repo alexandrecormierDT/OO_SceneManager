@@ -457,7 +457,7 @@ function load_shot_setup(){
 	var video_render_path = S.context.generate_bg_preview_render_path();
 	
 	S.render.set_movie_render_path(video_render_path)
-	S.render.update_movie_render_path()
+	S.render.update_write_movie_render_path()
 
 	S.log.save();
 	S.log.save_scene_script_log_file()
@@ -482,7 +482,7 @@ function load_anim_setup(){
 	var video_render_path = S.context.generate_bg_preview_render_path();
 	
 	S.render.set_movie_render_path(video_render_path)
-	S.render.update_movie_render_path()
+	S.render.update_write_movie_render_path()
 
 	S.log.save();
 

@@ -97,7 +97,7 @@ function batch_import_anim_setup(){
 	MessageLog.trace("output");
 	
 	S.render.set_movie_render_path_to_frames_folder_with_name("output");
-	S.render.update_movie_render_path();
+	S.render.update_write_movie_render_path();
 	
 	var saving = scene.saveAll();
 
