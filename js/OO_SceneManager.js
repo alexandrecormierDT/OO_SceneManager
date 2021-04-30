@@ -1901,7 +1901,7 @@ function upload_render_as_SG_version_dialog(){
 
 
 
-function upload_render_as_SG_version_for_task(_task_name){
+function upload_render_as_SG_version_for_task(_task_name,_version_name){
 	
 	MessageLog.trace("UPLOAD PREVIEW TO SHOTGUN");
 	
@@ -1922,7 +1922,7 @@ function upload_render_as_SG_version_for_task(_task_name){
 	var rendered_movie_path = S.render.get_rendered_movie_path()
 		
 	S.version.set_shot_name(S.context.get_shot()) ;
-	S.version.set_version_name('bab_bg_2');
+	S.version.set_version_name(_version_name);
 	S.version.set_task_name(_task_name);
 	S.version.set_task_status ("pdr");
 	S.version.set_movie_file_path(rendered_movie_path);	
@@ -1940,7 +1940,7 @@ function upload_render_as_SG_version_for_task(_task_name){
 
 function upload_bg_preview_to_SG(){
 	
-	var log_object = upload_render_as_SG_version_for_task('bg'); 
+	var log_object = upload_render_as_SG_version_for_task('bg','bab'); 
 	
 	log_object.set_script_tag("OO_upload_bg_preview_to_SG"); 
 	log_object.create_scene_script_log_file_and_folder(); 
@@ -1950,7 +1950,7 @@ function upload_bg_preview_to_SG(){
 
 function upload_layout_preview_to_SG(){
 	
-	var log_object = upload_render_as_SG_version_for_task('layout_bg'); 
+	var log_object = upload_render_as_SG_version_for_task('layout_bg','bab'); 
 	
 	log_object.set_script_tag("OO_upload_layout_preview_to_SG"); 
 	log_object.create_scene_script_log_file_and_folder(); 
@@ -1959,7 +1959,10 @@ function upload_layout_preview_to_SG(){
 
 function upload_box_anim_preview_to_SG(){
 	
-	var log_object = upload_render_as_SG_version_for_task('pl_box_anim'); 
+	var log_object = upload_render_as_SG_version_for_task('pl_box_anim','bab'); 
+	log_object.set_script_tag("OO_upload_box_anim_preview_to_SG"); 
+	log_object.create_scene_script_log_file_and_folder(); 
+	log_object.save_scene_script_log_file(); 
 	
 }
 /*==================================================================================================================================================================

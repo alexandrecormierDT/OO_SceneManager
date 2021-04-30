@@ -181,9 +181,9 @@ function batch_create_anim_portals(){
 		
 	//MessageLog.trace("BATCH CREATE ANIM PORTALS...");
 
-	create_portals('anim');
+	create_anim_portals();
 
-	var saving = scene.saveAll();
+	scene.saveAll();
 		
 	//MessageLog.trace("scene was saved : "+saving);
 
@@ -221,14 +221,5 @@ function batch_increase_atq_filter_brightness(){
 
 
 
-function batch_upload_version_for_task_bg(){
+	
 
-	upload_render_as_SG_version_for_task('bg');
-
-}
-
-function batch_upload_version_for_task_layout(){
-
-	upload_render_as_SG_version_for_task('layout_bg');
-
-}

@@ -37,13 +37,13 @@ OO.MCManager = function (){
 	
 	
 	
-	this.add_sub_folder_to_mcs = function(_input_mc_list,_sub_folder_name){
+	this.add_sub_folder_to_mcs = function(_sub_folder_name){
 		
 		for(var m = 0 ; m < mc_list.length ; m++){
 		
 			var current_mc = new OO.MasterControler(mc_list[m])
 			current_mc.init(); 
-			current_mc.add_subfolder_to_tbsates_path('ch_billly');
+			current_mc.add_subfolder_to_tbsates_path(_sub_folder_name);
 			current_mc.update_node_attributes();
 
 		}		
