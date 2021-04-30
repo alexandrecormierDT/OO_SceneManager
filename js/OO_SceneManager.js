@@ -1853,20 +1853,24 @@ function upload_render_as_SG_version_dialog(){
 	 INPUT_TASK_STATUS.currentItem = input_task_status;
 	d.add(INPUT_TASK_STATUS);		
 	
-	var INPUT_VERSION_NAME= new ComboBox();
-	INPUT_VERSION_NAME.label = "VERSION NAME : ";
-	INPUT_VERSION_NAME.editable = true;
-	INPUT_VERSION_NAME.itemList = [""];
-	INPUT_VERSION_NAME.currentItem = input_version_name;
-	d.add(INPUT_VERSION_NAME);
+	var INPUT_VERSION_SUFFIX= new ComboBox();
+	INPUT_VERSION_SUFFIX.label = "VERSION SUFFIX (keep it short) : ";
+	INPUT_VERSION_SUFFIX.editable = true;
+	INPUT_VERSION_SUFFIX.itemList = [""];
+	INPUT_VERSION_SUFFIX.currentItem = input_version_name;
+	d.add(INPUT_VERSION_SUFFIX);
 
 		
 	if ( d.exec() ){	
 
 		var selected_shot_name = sanitizer.clean_string_for_command_line( INPUT_SHOT_NAME.currentItem)
-		var selected_version_name = sanitizer.clean_string_for_command_line(INPUT_VERSION_NAME.currentItem)
+		var selected_version_suffix = sanitizer.clean_string_for_command_line(INPUT_VERSION_SUFFIX.currentItem)
 		var selected_task_name = sanitizer.clean_string_for_command_line(INPUT_TASK_NAME.currentItem)
 		var selected_task_status = sanitizer.clean_string_for_command_line(INPUT_TASK_STATUS.currentItem)
+		
+		
+		var formated_version_name = selected_shot_name+"_"+selected_task_name+"_"+selected_version_suffix
+		
 
 		S.render.set_movie_render_path_to_frames_folder_with_name("output");
 		S.render.update_write_movie_render_path();
@@ -1879,13 +1883,13 @@ function upload_render_as_SG_version_dialog(){
 		
 	
 		S.version.set_shot_name(selected_shot_name) ;
-		S.version.set_version_name(selected_version_name);
+		S.version.set_version_name(formated_version_name);
 		S.version.set_task_name(selected_task_name);
 		S.version.set_task_status (selected_task_status );
 		S.version.set_movie_file_path(rendered_movie_path);	
 		
 		S.log.add("uploading version for "+selected_shot_name,"process");
-		S.log.add("version name "+selected_version_name,"process");
+		S.log.add("version name "+formated_version_name,"process");
 		S.log.add("task name "+selected_task_name,"process");
 		S.log.add("task status "+selected_task_status,"process");
 		S.log.add("movie file path "+rendered_movie_path,"process");

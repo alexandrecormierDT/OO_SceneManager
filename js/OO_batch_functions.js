@@ -132,6 +132,21 @@ function batch_empty_update_and_pull_bg(){
 	
 }
 
+function  batch_empty_update_pull_upload_layout(){
+	
+	empty_bg_portals()
+	
+	update_bg_portals_paths()
+	
+	pull_bg();
+	
+	scene.saveAll();
+	
+	upload_layout_preview_to_SG()	
+	
+	
+}
+
 
 function batch_update_bg_paths(){
 		
