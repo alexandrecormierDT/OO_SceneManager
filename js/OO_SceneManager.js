@@ -1754,6 +1754,8 @@ function copy_node_name_process(){
 
 function add_sub_folder_to_selected_mcs_dialog(){
 	
+	MessageLog.trace("add_sub_folder_to_selected_mcs_dialog");
+	
 	var S = new OO.SceneManager();	
 	
 	S.context = new OO.Context(this,"Shotgun");
@@ -1769,8 +1771,6 @@ function add_sub_folder_to_selected_mcs_dialog(){
 	d.title = "COPY NODE NAME";
 	d.width = 100;
 	
-	
-	
 	var INPUT_SUB_FOLDER_NAME = new ComboBox();
 	INPUT_SUB_FOLDER_NAME.label = "SUB FOLDER NAME : ";
 	INPUT_SUB_FOLDER_NAME.editable = true;
@@ -1781,12 +1781,12 @@ function add_sub_folder_to_selected_mcs_dialog(){
 		
 		var sub_folder_name = INPUT_SUB_FOLDER_NAME.currentItem
 		
+		MessageLog.trace("sub_folder_name");
+		MessageLog.trace(sub_folder_name);
+		
 		MCM.add_sub_folder_to_mcs(sub_folder_name); 
 		
 	}
-
-
-	
 	
 }
 
@@ -1901,7 +1901,9 @@ function upload_render_as_SG_version_dialog(){
 
 
 
-function upload_render_as_SG_version_for_task(_task_name,_version_name){
+
+
+function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	
 	MessageLog.trace("UPLOAD PREVIEW TO SHOTGUN");
 	
@@ -1910,10 +1912,11 @@ function upload_render_as_SG_version_for_task(_task_name,_version_name){
 	S.context = new OO.Context(this,"Shotgun");	
 	
 	S.context.set_from_scene_path();
-
-	var random_serial = Math.random(100);
-	var generated_version_name = _task_name+"_"+random_serial.toString();
 	
+	var shot_code = S.context.get_shot()
+	var version_name = shot_code+"_"+_task_name+"_"+_version_suffix;
+	var task_name = _task_name
+	var task_status = "pdr"
 
 	S.render.set_movie_render_path_to_frames_folder_with_name("output");
 	S.render.update_write_movie_render_path();
@@ -1921,10 +1924,10 @@ function upload_render_as_SG_version_for_task(_task_name,_version_name){
 		
 	var rendered_movie_path = S.render.get_rendered_movie_path()
 		
-	S.version.set_shot_name(S.context.get_shot()) ;
-	S.version.set_version_name(_version_name);
-	S.version.set_task_name(_task_name);
-	S.version.set_task_status ("pdr");
+	S.version.set_shot_name(shot_code) ;
+	S.version.set_version_name(version_name);
+	S.version.set_task_name(task_name);
+	S.version.set_task_status (task_status);
 	S.version.set_movie_file_path(rendered_movie_path);	
 
 	S.version.upload_movie_as_version(); 
