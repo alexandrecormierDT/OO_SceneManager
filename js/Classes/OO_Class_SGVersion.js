@@ -92,10 +92,10 @@ OO.SGVersion = function(){
 		MessageLog.clearLog ()
 		MessageLog.trace(movie_command)
 		
-		p1 = new Process2(movie_command);
-		MessageLog.trace(p1.launch());
-		MessageLog.trace(p1.errorMessage());
-		MessageLog.trace(p1);		
+		var process_movie = new Process2(movie_command);
+		MessageLog.trace(process_movie.launch());
+		MessageLog.trace(process_movie.errorMessage());
+		MessageLog.trace(process_movie);		
 		
 
 		//upload_repport = MessageLog.getLog()+"";		
@@ -107,10 +107,10 @@ OO.SGVersion = function(){
 		format_png_upload_command_string()
 		MessageLog.clearLog ()
 		
-		p1 = new Process2(png_command  );
-		MessageLog.trace(p1.launch());
-		MessageLog.trace(p1.errorMessage());
-		MessageLog.trace(p1);		
+		var process_png = new Process2(png_command  );
+		MessageLog.trace(process_png.launch());
+		MessageLog.trace(process_png.errorMessage());
+		MessageLog.trace(process_png);		
 
 		//upload_repport = MessageLog.getLog()+"";
 		
