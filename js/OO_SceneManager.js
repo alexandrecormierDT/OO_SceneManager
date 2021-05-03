@@ -1052,15 +1052,23 @@ function create_master_asset_portal(){
 
 
 
+
+
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+
+	// WARINING !  this function is runned when publishing an asset scene by jhonie shotgun python script
+
+
 function push_master_asset_portal_to_folder(){
 	
 	// context detection 
-	
+
 	var S = new OO.SceneManager();	
 	
 	S.context.set_context_type('Shotgun');	
 	S.context.set_library_path(OO.library_path);	
-	S.log.create_new_log_file("P:/projects/billy/logs/push_master_asset_portal.html");
 	
 	var master_asset = S.get_scene_master_asset();
 	
@@ -1078,13 +1086,34 @@ function push_master_asset_portal_to_folder(){
 		
 	}else{
 		
-		S.log.add("no portal found in the nodeview for  "+master_asset.get_code(),"ERROR");
+		S.log.add("no portal found in the nodeview for  "+master_asset.get_code(),"error");
 	}
 	
+	//LOG
 	
+	S.log.create_new_log_file("P:/projects/billy/logs/push_master_asset_portal.html");
 	S.log.save();	
 	
+	S.log.set_script_tag("OO_push_master_asset_portal_to_folder"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file(); 	
+	
 }
+
+
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1895,6 +1924,7 @@ function upload_render_as_SG_version_dialog(){
 		S.log.add("movie file path "+rendered_movie_path,"process");
 		
 		S.version.upload_movie_as_version(); 
+		
 		S.log.add(S.version.get_upload_repport(),"repport"); 
 		S.log.save();
 		

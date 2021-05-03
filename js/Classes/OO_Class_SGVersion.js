@@ -97,8 +97,6 @@ OO.SGVersion = function(){
 		MessageLog.trace(process_movie.errorMessage());
 		MessageLog.trace(process_movie);		
 		
-
-		//upload_repport = MessageLog.getLog()+"";		
 		
 	}
 	
@@ -107,12 +105,10 @@ OO.SGVersion = function(){
 		format_png_upload_command_string()
 		MessageLog.clearLog ()
 		
-		var process_png = new Process2(png_command  );
+		var process_png = new Process2(png_command);
 		MessageLog.trace(process_png.launch());
 		MessageLog.trace(process_png.errorMessage());
 		MessageLog.trace(process_png);		
-
-		//upload_repport = MessageLog.getLog()+"";
 		
 	}
 	

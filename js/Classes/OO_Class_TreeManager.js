@@ -551,6 +551,7 @@ OO.TreeManager = function(_S){
 		
 		copypaste_tpl_in_group(_tpl_file_path,import_group.path);
 
+
 		var updated_group = $.scene.getNodeByPath(import_group.path)
 		
 		return updated_group.nodes; 
@@ -615,7 +616,18 @@ OO.TreeManager = function(_S){
 
 		var myDragObject = copyPaste.copyFromTemplate(tpl_file_path,0,0,myCopyOptions);
 			
-		copyPaste.pasteNewNodes(myDragObject,group_scene_path,myPasteOptions);		
+
+		try{
+		
+			copyPaste.pasteNewNodes(myDragObject,group_scene_path,myPasteOptions);
+		
+		}catch(import_error){
+		
+			S.log.add("[TPL] pasteNewNodes "+import_error,"error");
+			
+			return false; 
+			
+		}
 			
 		return true; 
 
@@ -721,7 +733,21 @@ OO.TreeManager = function(_S){
 		
 		selection.addNodeToSelection(_group)
 		
-		copyPaste.createTemplateFromSelection(_tpl_name,_path)		
+		try{
+		
+			copyPaste.createTemplateFromSelection(_tpl_name,_path)
+		
+		}catch(export_error){
+		
+			S.log.add("[TPL] createTemplateFromSelection "+export_error,"error");
+			
+			return false; 
+			
+		}
+		
+		return true; 
+			
+		
 		
 	}
 

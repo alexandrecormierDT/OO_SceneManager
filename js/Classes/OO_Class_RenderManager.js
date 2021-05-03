@@ -74,7 +74,16 @@ OO.RenderManager = function(_S){
 	
 	this.render_write_nodes = function(){
 		
-		$.scene.renderWriteNodes(false);
+		try{
+		
+			$.scene.renderWriteNodes(false);
+		
+		}catch(error){
+			
+			S.log.add("[RENDER] "+error,"error");
+			
+		}
+		
 		
 	}
 	
