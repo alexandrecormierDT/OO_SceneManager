@@ -118,7 +118,7 @@ function batch_create_bg_portals(){
 }
 
 
-function batch_empty_update_and_pull_bg(){
+function batch_empty_update_pull_upload_bg(){
 	
 	empty_bg_portals()
 	
@@ -144,6 +144,12 @@ function  batch_empty_update_pull_upload_layout(){
 	
 	upload_layout_preview_to_SG()	
 	
+	
+}
+
+function batch_upload_layout(){
+	
+	upload_layout_preview_to_SG()
 	
 }
 

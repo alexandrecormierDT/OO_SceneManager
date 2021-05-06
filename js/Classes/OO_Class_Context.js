@@ -6,11 +6,11 @@
 
 OO.Context = function (_S,_type){
 	
-	var CONTEXT_TYPE = _type
+	var CONTEXT_TYPE = _type == undefined ? "Shotgun" : _type;
 	
 	var LIBRARY_PATH = "none";
 	
-	var S = _S
+	var S = _S;
 	
 	var sanitizer = new OO.Sanitizer();
 	

@@ -503,9 +503,6 @@ function create_empty_portal(){
 	
 	S.log.set_script_tag("OO_create_empty_portal"); 
 	S.log.create_scene_script_log_file_and_folder()
-	
-	S.context = new OO.Context(this,"Shotgun");
-	
 	S.context.set_library_path(OO.library_path);
 	
 	var asset_code_list = S.assets.get_asset_code_string_list(); 
