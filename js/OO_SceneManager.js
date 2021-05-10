@@ -332,18 +332,27 @@ function import_project_settings(_project){
 	
 	S.log.create_new_log_file("P:/projects/"+project+"/pre_shotgun/batch_pool/logs/import_project_settings.html");
 	
-	
 	//see OO_config.js
 	S.set_scene_settings(OO.project_settings);
-	
 	
 	S.log.save();
 	
 	var log_object = S.log;
 	
-	return log_object 
+	return log_object;
 	
 }
+
+function  import_billy_settings(){
+	
+	var log_object = import_project_settings("billy");
+	
+	log_object.set_script_tag("OO_import_billy_settings"); 
+	log_object.create_scene_script_log_file_and_folder(); 
+	log_object.save_scene_script_log_file();	
+	
+}
+
 
 function import_setup(_setup_name){
 	
@@ -411,9 +420,7 @@ function import_setup(_setup_name){
 	
 	S.log.save();
 	
-	var log_object = S.log;
-	
-	return log_object 
+	return S.log 
 	
 
 } 
@@ -421,7 +428,7 @@ function import_setup(_setup_name){
 
 function import_layout_setup(){
 	
-	var log_object = import_setup('shot')
+	var log_object = import_setup('shot');
 	
 	log_object.set_script_tag("OO_import_layout_setup"); 
 	log_object.create_scene_script_log_file_and_folder(); 
@@ -1042,7 +1049,9 @@ function create_master_asset_portal(){
 
 	S.log.save();	
 	
-	
+	S.log.set_script_tag("OO_create_master_asset_portal"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file(); 	
 }
 
 
@@ -1413,8 +1422,13 @@ function fit_bg_to_camera(){
 			}
 		}
 	}	
+	
+	S.log.save();	
+	
+	S.log.set_script_tag("OO_fit_bg_to_camera"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file();
 
-	S.log.save();
 	
 }
 

@@ -16,7 +16,9 @@ OO.Log =function (){
 		
 		var scene_script_log_path = null; 
 		
-		var script_tag = null 
+		var script_tag = null;
+		
+		var time_stamp = null;
 		
 		this.add = function(line,tag){
 			
@@ -127,6 +129,8 @@ OO.Log =function (){
 
 		}
 		
+		
+		
 		this.getERROR_count =function(){
 			
 			var nb =0;
@@ -146,13 +150,16 @@ OO.Log =function (){
 		this.create_scene_script_log_file_and_folder = function(){
 			
 			if(script_tag != null){
-					
+				
+				var timestamp = get_time_stamp_string();	
 				var scene_log_dir = create_scene_log_folder_if_missing()
-				var file_path = scene_log_dir+"/"+script_tag+".html"; 
+				var file_path = scene_log_dir+"/"+timestamp+"_"+script_tag+".html"; 
 				var file_test = new $.oFile(file_path)
 				
 				if(file_test.exists == false){
 					
+					MessageLog.trace("file_path");
+					MessageLog.trace(file_path);
 					logfile = new PermanentFile(file_path);						
 					
 				}
@@ -161,12 +168,16 @@ OO.Log =function (){
 			
 			}
 			
-		}		
+		}
+
+			
 		
 		
 		this.set_script_tag = function(_st){
 			
 			script_tag = _st
+			MessageLog.trace("script_tag");
+			MessageLog.trace(script_tag);
 			
 		}
 		
@@ -186,6 +197,15 @@ OO.Log =function (){
 			
 			return log_dir_path;
 			
+			
+		}
+		
+		function get_time_stamp_string(){
+			
+			var ts = Math.round(+new Date() / 100)+""
+			//we keep it short
+			var str = ts.substring(5);
+			return str;			
 			
 		}
 		

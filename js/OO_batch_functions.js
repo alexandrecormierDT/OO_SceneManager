@@ -22,22 +22,7 @@ function get_bg_preview_path(){
 	
 }
 
-function batch_preview_bg(){
-		
-	import_project_settings();
 
-	import_setup('shot');
-
-	create_portals('bg');
-	
-	pull_("bg");
-	
-	fit_bg_to_camera();
-	
-	var saving = scene.saveAll();
-
-
-}
 
 
 // BG LAYOUT 
@@ -71,7 +56,7 @@ function batch_import_shot_setup(){
 	
 	import_project_settings()
 
-	import_setup('shot')
+	import_layout_setup()
 	
 	var saving = scene.saveAll();
 		

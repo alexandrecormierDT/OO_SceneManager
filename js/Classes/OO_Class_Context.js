@@ -196,32 +196,31 @@ OO.Context = function (_S,_type){
 		
 		// PATH EXEMPLES
 		
+		// P R O J E C T 
 		
-		//P R O J E C T 
+		// ASSET
 		
-		//ASSET
-		
-		//P:,projects,billy,assets,Character,default,ch_mytestchar,work,a-cormier,design_main,toonboom,scenes
+		// P:,projects,billy,assets,Character,default,ch_mytestchar,work,a-cormier,design_main,toonboom,scenes
 		// 0  1          2      3      4        5      6             7   8             9           10   11
 		
-		//SHOT
+		// SHOT
 		
 		// P:/projects/billy/pre_production_test/pipeline_dev/seuqence_test/ep222_pl001/animation/work/a-cormier/toonboom/scenes
 		
 		// 0    1        2        3                4              5             6            7       8     9        10      11
 		
 		
-		//V A U L T
+		// V A U L T
 		
-		//ASSET
+		// ASSET
 		
-		//P:,.vault,billy,assets,tbscene,Character,default,ch_mytestchar,puppet_rig,1
+		// P:,.vault,billy,assets,tbscene,Character,default,ch_mytestchar,puppet_rig,1
 		// 0     1    2      3      4         5       6           7           8      9
 		
-		//SHOT
+		// SHOT
 		
-		//P:\.vault\billy\saison1\tbscene\ep101_chdor\ep101_sq020\ep101_pl019\blocking\2
-		//0      2    3      4         5      6              7        8           9     10
+		// P:\.vault\billy\saison1\tbscene\ep101_chdor\ep101_sq020\ep101_pl019\blocking\2
+		// 0      2    3      4         5      6              7        8           9     10
 		
 		
 		var scene_path = this.breakdown_scene_path();
@@ -274,7 +273,6 @@ OO.Context = function (_S,_type){
 				}else{
 					
 					// P:/projects/billy/pre_production_test/pipeline_dev/seuqence_test/ep222_pl001/animation/work/a-cormier/toonboom/scenes
-					
 					// 0    1        2        3                4              5             6            7       8     9        10      11
 						
 					this.project = scene_path[2];
