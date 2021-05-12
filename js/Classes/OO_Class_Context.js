@@ -36,17 +36,7 @@ OO.Context = function (_S,_type){
 	
 	//should later fecth from csv :
 	
-	var BG_TASKS = [
-		"pack_board",
-		"recherche",
-		"bg_layout",
-		"trait_couleur",
-		"fabrication",
-		"numerisation",
-		"retouche_ps",
-		"confo_ps",
-		"psd_to_nodes"
-	]
+	var BG_TASKS = ["pack_board","recherche","bg_layout","trait_couleur","fabrication","numerisation","retouche_ps","confo_ps","psd_to_nodes"]
 	
 	var DESIGN_TASKS = [
 	
@@ -73,21 +63,6 @@ OO.Context = function (_S,_type){
 		
 	}	
 	
-	this.set_psd_path = function(_pp){
-		
-		PSD_PATH = _pp
-	}
-	
-	this.set_svg_path = function(_sp){
-		
-		SVG_PATH = _sp
-		
-	}	
-	
-	this.set_png_path = function(_pnp){
-		
-		PNG_PATH = _pnp
-	}	
 	
 	this.set_context_type = function(_ctype){
 		
@@ -544,26 +519,9 @@ OO.Context = function (_S,_type){
 						break; 
 						
 						case ("bg"): 
-						
-							var asset_type = asset_type.toUpperCase();
-						
-							//TEMPORARY DIRECTORY FIRST : 
 
-							var temp_dir_path = "P:/projects/billy/pre_shotgun/batch_pool/directory/"+asset_type+"/"+asset_code+"/";
-			
-							file_path = this.find_file_by_extension(temp_dir_path,data_type);
-							
-							if(this.file_exist(file_path)== false){
-								
-								S.log.add("no png found in temp dir : "+temp_dir_path,"error")
-								
-								file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);	
-								
-								//MessageLog.trace("found png : ");
-						
-								//MessageLog.trace(file_path);				
-							}		
-							
+							file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);	
+
 						break; 
 
 					}
@@ -586,10 +544,7 @@ OO.Context = function (_S,_type){
 						case ("bg"): 
 							
 							file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
-							
-							//MessageLog.trace("found psd : ");
-						
-							//MessageLog.trace(file_path);						
+				
 						}
 	
 					
@@ -608,12 +563,6 @@ OO.Context = function (_S,_type){
 					case ("bg"): 				
 						
 						file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
-						
-						//MessageLog.trace("found svg : ");
-						
-						//MessageLog.trace(file_path);
-	
-
 					}
 					
 				break; 			
@@ -674,15 +623,15 @@ OO.Context = function (_S,_type){
 		var task = _task;		
 		var dir_type = _data_type;
 		
-		if(_asset_type == "bg" || _asset_type == "BG" ){
+		if(_asset_type == "bg"){
 			
-			asset_type = _asset_type.toUpperCase();
+			asset_type = "BG";
 
 		}
 	
 		if(dir_type == "png" || dir_type == "svg"){
 		
-			//all those format are in thepsd directory
+			//all those format are in the psd directory
 			dir_type = "psd"
 			
 		}			
@@ -690,6 +639,8 @@ OO.Context = function (_S,_type){
 		var task_dir_path = VAULT_PATH+"/assets/"+dir_type+"/"+asset_type+"/default/"+asset_code+"/"+task+"/"
 		
 		var task_folder = new $.oFolder(task_dir_path);
+		
+		var return_message = ""; 
 		
 		if(task_folder.exists){
 			
@@ -705,21 +656,18 @@ OO.Context = function (_S,_type){
 					
 					return asked_file;
 					
-				}else{
-					
-					return false;
 				}
 				
-			}else{
-				
-				return false;
 			}
 			
 		}else{
 			
-			return false;
+			S.log.add("dir not found ( "+task_dir_path+" ) for asset ( "+asset_code+" ) ","error");
 			
 		}
+		
+		
+		return false;
 		
 		
 	}
@@ -727,21 +675,19 @@ OO.Context = function (_S,_type){
 	this.find_latest_bg_file_in_vault = function(_asset_code,_data_type){
 		
 		var asset_code = _asset_code;
-		var asset_type = "BG";
 		var data_type = _data_type;
-		var dir_type = _data_type
+		var asset_type = "BG";
 
 		//starting at the last task by order of fabrication. 
-		
-		var empty_dirs = "";
-		
-		// 
 
-		for(var i = BG_TASKS.length ; i > 0 ; i --){
+		
+		var vault_file_path = "";
+
+		for(var i = BG_TASKS.length-1 ; i > 0 ; i --){
 			
 			var current_task = BG_TASKS[i]; 
 			
-			var vault_file_path = this.get_last_task_publish(asset_code,asset_type,data_type,current_task)
+			vault_file_path = this.get_last_task_publish(asset_code,asset_type,data_type,current_task)
 			
 			if( vault_file_path != false){
 				
@@ -749,6 +695,8 @@ OO.Context = function (_S,_type){
 			}
 
 		}
+		
+		S.log.add("vault path not found ( "+vault_file_path+" )","error");
 		
 		S.log.add("no published bg ( "+_data_type+" ) found for asset ( "+_asset_code+" )","error");
 		
@@ -909,6 +857,7 @@ OO.Context = function (_S,_type){
 			
 			break;			
 			case "fx":
+			case "refx":
 			
 				sg_asset_type = "FX"; 
 			

@@ -387,6 +387,12 @@ OO.SceneManager = function(){
 		}		
 		
 	}
+	
+	this.load_asset_portal = function(_asset_object){
+		
+		
+		
+	}
 
 	this.load_asset_portals_by_type = function(_asset_type){
 

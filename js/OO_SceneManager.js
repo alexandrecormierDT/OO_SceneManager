@@ -511,6 +511,7 @@ function create_empty_portal(){
 	S.log.set_script_tag("OO_create_empty_portal"); 
 	S.log.create_scene_script_log_file_and_folder()
 	S.context.set_library_path(OO.library_path);
+	S.context.set_vault_path(OO.vault_path);
 	
 	var asset_code_list = S.assets.get_asset_code_string_list(); 
 	
@@ -572,6 +573,13 @@ function create_empty_portal(){
 		var final_psd_path = S.context.get_asset_data_path(nasset,"psd",departement);
 		var final_tpl_path = S.context.get_asset_data_path(nasset,"tpl",departement);
 		
+
+		
+		S.log.add('[CREATE PORTAL]','process');
+		S.log.add('[ASSET_CODE] : '+asset_code,'user_input');
+		S.log.add('[ASSET_TYPE] : '+asset_type,'user_input');
+		S.log.add('[DEPARTEMENT] : '+departement,'user_input');
+		
 		S.portals.creator.set_code( asset_code )
 		S.portals.creator.set_sg_asset_type( asset_type )
 		S.portals.creator.set_departement( departement )
@@ -592,6 +600,8 @@ function create_empty_portal(){
 		var nportal_tree = nportal.get_tree(); 
 	
 		nportal_tree.ungroup();
+
+		S.log.save_scene_script_log_file(); 	
 		
 		
 	}
