@@ -67,12 +67,12 @@ OO.PortalCreator = function(_S){
 		nportal.set_code(current_code)
 		nportal.set_sg_asset_type(current_sg_asset_type)
 		
+		nportal.set_departement(current_departement)
 		nportal.set_path('tpl',current_tpl_path)
 		nportal.set_path('png',current_png_path)
 		nportal.set_path('psd',current_psd_path)
 		nportal.set_path('svg',current_svg_path)
 		
-		nportal.set_departement(current_departement)
 		nportal.set_tpl_version(current_tpl_version)
 		nportal.set_status(current_status)
 		

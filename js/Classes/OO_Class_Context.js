@@ -437,8 +437,6 @@ OO.Context = function (_S,_type){
 				
 				case "png": 		
 						
-					departement = "boxanim";
-								
 					dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/png/"
 		
 				break;
@@ -451,8 +449,6 @@ OO.Context = function (_S,_type){
 				
 				case "tpl": 	
 				
-					departement = "boxanim";
-
 					dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
 	
 			
