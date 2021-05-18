@@ -424,7 +424,7 @@ OO.Context = function (_S,_type){
 		
 		var asset = _asset != undefined ? _asset : false; 
 		var data_type = _data_type != undefined ? _data_type : ""; 
-		var departement = _departement != undefined ? _departement : ""; 
+		var departement = _departement != undefined ? _departement : "boxanim"; 
 		
 		var asset_type = _asset.get_type();
 		var asset_code = _asset.get_code();	
@@ -491,7 +491,7 @@ OO.Context = function (_S,_type){
 		
 		var asset = _asset != undefined ? _asset : false; 
 		var data_type = _data_type != undefined ? _data_type : ""; 
-		var departement = _departement != undefined ? _departement : ""; 
+		var departement = _departement != undefined ? _departement : "boxanim"; 
 		
 		if(asset != false){
 	

@@ -435,41 +435,7 @@ function import_layout_setup(){
 	log_object.save_scene_script_log_file(); 	
 	
 }
-
-
-
-
-
-
-
-
-
-
-function load_shot_setup(){
-	
-	var S = new OO.SceneManager();	
-	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/load_shot_setup.html");
-	
-	
-	S.log.set_script_tag("OO_load_shot_setup"); 
-	S.log.create_scene_script_log_file_and_folder()
-	
-	S.context = new OO.Context(this,"Shotgun");
-	S.context.set_library_path(OO.library_path);
-	
-	var shot_setup = S.setups.apply('shot');	
-	
-	S.context.set_video_export_path(OO.video_export_path)
-	var video_render_path = S.context.generate_bg_preview_render_path();
-	
-	S.render.set_movie_render_path(video_render_path)
-	S.render.update_write_movie_render_path()
-
-	S.log.save();
-	S.log.save_scene_script_log_file()
-
-} 
+ 
 
 function load_anim_setup(){
 	
@@ -630,6 +596,152 @@ function empty_selected_portals(){
 		
 	}
 
+}
+
+
+
+function pull_tpl_by_asset_type(_asset_type){
+	
+	var S = new OO.SceneManager();	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_asset_tpl.html");
+	
+	S.context.set_context_type('Shotgun');	
+	
+	S.context.set_library_path(OO.library_path);	
+	
+	S.context.set_vault_path(OO.vault_path)
+	
+	S.assets.load_breakdown('csv');
+	
+	S.portals.pull_scene_portal_tpl_by_asset_type(_asset_type)
+	
+	return S.log;
+	
+	
+}
+
+function pull_tpl_anim(){
+	
+	var log_object = pull_tpl_by_asset_type("anim");
+	
+	log_object.set_script_tag("OO_pull_tpl_anim"); 
+	log_object.create_scene_script_log_file_and_folder(); 
+	log_object.save_scene_script_log_file(); 
+	
+}
+
+
+
+
+function pull_png_by_asset_type(_asset_type){
+	
+	////////MessageLog.trace("PULL PSD FUNCTION");
+	
+	var S = new OO.SceneManager();	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_asset_type.html");
+	
+	S.context.set_context_type('Shotgun');	
+	
+	S.context.set_library_path(OO.library_path);
+	
+	S.context.set_vault_path(OO.vault_path)
+	
+	S.assets.load_breakdown('csv');
+	
+	S.portals.load_from_scene();
+	
+	var portal_list = S.portals.get_list();
+
+	for(var p = 0 ; p < portal_list.length; p++){
+		
+		var current_portal = portal_list[p]
+		
+		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
+		
+		if(linked_asset != false){
+			
+			//checking asset type
+			if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
+				
+				S.log.add("[PULL_PNG] pulling png of - "+current_portal.get_code(),"process");
+				
+				if(current_portal.png_exist()){
+
+					var png_node = S.portals.pull(current_portal,'png');		
+
+					// should load the path from the portal and not check again with asset context __ weird logic. 
+					
+					var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
+
+					// if the bg has cadres that match the shot name. 
+					
+					var bg_cadre = S.load_cadre(full_svg_path);
+					
+					// only for png , the image is scaled automaticly on import
+					// to compensate this we put the image back to its original pixel size with the following code :
+					
+					if(bg_cadre.bg != undefined){
+						
+						S.log.add("[PULL_PNG] reading bg  - "+ bg_cadre.bg.height,"process");
+						S.log.add("[PULL_PNG] reading bg  - "+ bg_cadre.bg.height,"process");
+						
+						var final_sy = bg_cadre.bg.height/1080;
+						
+						var final_sx = final_sy;
+						
+						//INJECT SX
+						png_node.attributes.scale.x.setValue(final_sx);
+						
+						//INJECT SY
+						png_node.attributes.scale.y.setValue(final_sy);				
+					
+					}
+
+				}else{
+
+					S.log.add("[PULL_PNG] png not found - "+S.context.get_asset_data_path(linked_asset,"png"),"error");
+
+				}			
+				
+			}
+		
+		}
+		
+
+
+	}	
+	
+	
+
+	S.log.save();
+	
+	var log_object = S.log;
+	
+	return log_object;
+	
+} 
+
+
+function pull_png_bg(){
+	
+	var log_object = pull_png_by_asset_type("bg");
+	
+	log_object.set_script_tag("OO_pull_png_bg"); 
+	log_object.create_scene_script_log_file_and_folder(); 
+	log_object.save_scene_script_log_file(); 
+	
+}
+
+function pull_png_anim(){
+	
+	var log_object = pull_png_by_asset_type("anim");
+	
+	log_object.set_script_tag("OO_pull_png_anim"); 
+	log_object.create_scene_script_log_file_and_folder(); 
+	log_object.save_scene_script_log_file(); 
+	
 }
 
 
@@ -890,7 +1002,15 @@ function update_bg_portals_paths(){
 	
 }
 
-
+function update_anim_portals_paths(){
+	
+	var log_object = update_portals_paths_by_type('anim');
+	
+	log_object.set_script_tag("OO_update_anim_portals_paths"); 
+	log_object.create_scene_script_log_file_and_folder(); 
+	log_object.save_scene_script_log_file(); 	
+	
+}
 
 // ASSET PORTALS 
 
@@ -1173,131 +1293,6 @@ function empty_bg_portals(){
 	log_object.save_scene_script_log_file(); 	
 }
 
-
-
-function pull_scene_portal_tpl_by_asset_type(_asset_type){
-	
-	var S = new OO.SceneManager();	
-	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_asset_tpl.html");
-	
-	S.context.set_context_type('Shotgun');	
-	
-	S.context.set_library_path(OO.library_path);	
-	
-	S.context.set_vault_path(OO.vault_path)
-	
-	S.assets.load_breakdown('csv');
-	
-	S.portals.pull_scene_portal_tpl_by_asset_type(_asset_type)
-	
-	
-}
-
-
-
-
-
-
-function pull_(_asset_type){
-	
-	////////MessageLog.trace("PULL PSD FUNCTION");
-	
-	var S = new OO.SceneManager();	
-	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_asset_type.html");
-	
-	S.context.set_context_type('Shotgun');	
-	
-	S.context.set_library_path(OO.library_path);
-	
-	S.context.set_vault_path(OO.vault_path)
-	
-	S.assets.load_breakdown('csv');
-	
-	S.portals.load_from_scene();
-	
-	var portal_list = S.portals.get_list();
-
-	for(var p = 0 ; p < portal_list.length; p++){
-		
-		var current_portal = portal_list[p]
-		
-		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
-		
-		if(linked_asset != false){
-			
-			//checking asset type
-			if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
-				
-				S.log.add("[PULL_PNG] pulling png of - "+current_portal.get_code(),"process");
-				
-				if(current_portal.png_exist()){
-
-					var png_node = S.portals.pull(current_portal,'png');		
-
-					// should load the path from the portal and not check again with asset context __ weird logic. 
-					
-					var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
-
-					// if the bg has cadres that match the shot name. 
-					
-					var bg_cadre = S.load_cadre(full_svg_path);
-					
-					// only for png , the image is scaled automaticly on import
-					// to compensate this we put the image back to its original pixel size with the following code :
-					
-					if(bg_cadre.bg != undefined){
-						
-						S.log.add("[PULL_PNG] reading bg  - "+ bg_cadre.bg.height,"process");
-						S.log.add("[PULL_PNG] reading bg  - "+ bg_cadre.bg.height,"process");
-						
-						var final_sy = bg_cadre.bg.height/1080;
-						
-						var final_sx = final_sy;
-						
-						//INJECT SX
-						png_node.attributes.scale.x.setValue(final_sx);
-						
-						//INJECT SY
-						png_node.attributes.scale.y.setValue(final_sy);				
-					
-					}
-
-				}else{
-
-					S.log.add("[PULL_PNG] png not found - "+S.context.get_asset_data_path(linked_asset,"png"),"error");
-
-				}			
-				
-			}
-		
-		}
-		
-
-
-	}	
-	
-	
-
-	S.log.save();
-	
-	var log_object = S.log;
-	
-	return log_object;
-	
-} 
-
-
-function pull_bg(){
-	
-	var log_object = pull_("bg");
-	
-	log_object.set_script_tag("OO_pull_bg"); 
-	log_object.create_scene_script_log_file_and_folder(); 
-	log_object.save_scene_script_log_file(); 
-	
-}
 
 
 // SELECTED  PORTALS
@@ -2222,3 +2217,13 @@ function orwell_sanity_check(){
 	return (2+2 == 4); 
 	
 }
+
+
+function increase_atq_filter_brightness(){
+		
+	 node.setTextAttr("Top/ATQ_BC","BRIGHTCONTRAST_BRIGHTNESS_ADJUSTMENT", frame.current(),100);
+	
+
+}
+
+

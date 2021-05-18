@@ -213,19 +213,6 @@ function batch_pull_tpl_anim_portals(){
 
 
 
-function batch_increase_atq_filter_brightness(){
-		
-	//MessageLog.trace("BATCH INCREASE ATQ FILTER BRIGHTNESS...");
-
-	 node.setTextAttr("Top/ATQ_BC","BRIGHTCONTRAST_BRIGHTNESS_ADJUSTMENT", frame.current(),100);
-	
-	var saving = scene.saveAll();
-		
-	//MessageLog.trace("scene was saved : "+saving);	
-
-}
-
-
 
 	
 
