@@ -419,6 +419,7 @@ function import_setup(_setup_name){
 	}
 	
 	S.log.save();
+	;	
 	
 	return S.log 
 	
@@ -495,7 +496,7 @@ function create_empty_portal(){
 	dialog.add( userCode );
 	
 	var userType = new ComboBox();
-	userType.label = "Asset type"
+	userType.label = "Asset type";
 	userType.editable = true;
 	userType.itemList = ["Character", "Prop", "Fx","bg","Vehicle"];
 	dialog.add( userType );
@@ -567,7 +568,8 @@ function create_empty_portal(){
 	
 		nportal_tree.ungroup();
 
-		S.log.save_scene_script_log_file(); 	
+		S.log.save_scene_script_log_file(); 
+		;		
 		
 		
 	}
@@ -595,6 +597,8 @@ function empty_selected_portals(){
 
 		
 	}
+	
+	
 
 }
 
@@ -603,6 +607,7 @@ function empty_selected_portals(){
 function pull_tpl_by_asset_type(_asset_type){
 	
 	var S = new OO.SceneManager();	
+
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_asset_tpl.html");
 	
@@ -616,6 +621,7 @@ function pull_tpl_by_asset_type(_asset_type){
 	
 	S.portals.pull_scene_portal_tpl_by_asset_type(_asset_type)
 	
+	;
 	return S.log;
 	
 	
@@ -641,6 +647,7 @@ function pull_png_by_asset_type(_asset_type){
 	var S = new OO.SceneManager();	
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_asset_type.html");
+
 	
 	S.context.set_context_type('Shotgun');	
 	
@@ -716,6 +723,7 @@ function pull_png_by_asset_type(_asset_type){
 	
 
 	S.log.save();
+	
 	
 	var log_object = S.log;
 	
@@ -862,7 +870,8 @@ function pull_selected_portals_process(_data_type){
 			}
 	}	
 
-	S.log.save();		
+	S.log.save();	
+	;	
 
 	var log_object = S.log;
 	
@@ -904,6 +913,7 @@ function push_selected_portals(_data_type){
 	}	
 
 	S.log.save();
+	;
 	
 	var log_object = S.log;
 	
@@ -982,6 +992,7 @@ function update_portals_paths_by_type(_asset_type){
 	}	
 
 	S.log.save();
+	;
 	
 	var log_object = S.log;
 	
@@ -1021,7 +1032,8 @@ function create_portals(_asset_type){
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/create_asset_portals.html");
 	S.log.set_script_tag("OO_create_empty_portal"); 
 	S.log.create_scene_script_log_file_and_folder()
-	
+
+
 	S.context.set_context_type('Shotgun');	
 	
 	S.context.set_library_path(OO.library_path);	
@@ -1103,8 +1115,11 @@ function create_portals(_asset_type){
 	}
 
 	S.log.save();
+	;
 	
 	var log_object = S.log;
+
+
 	
 	return log_object 
 	
@@ -1147,6 +1162,8 @@ function create_master_asset_portal(){
 	var S = new OO.SceneManager();	
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/create_master_asset_portal.html");
+
+	
 	S.context.set_context_type('Shotgun');	
 	S.context.set_library_path(OO.library_path);	
 	S.context.set_vault_path(OO.vault_path)
@@ -1182,6 +1199,7 @@ function create_master_asset_portal(){
 	S.log.set_script_tag("OO_create_master_asset_portal"); 
 	S.log.create_scene_script_log_file_and_folder(); 
 	S.log.save_scene_script_log_file(); 	
+
 }
 
 
@@ -1256,7 +1274,7 @@ function push_master_asset_portal_to_folder(){
 function empty_portals(_asset_type){
 	
 	var S = new OO.SceneManager();	
-	
+
 	S.context.set_context_type('Shotgun');	
 	
 	S.assets.load_breakdown('csv');
@@ -1279,6 +1297,7 @@ function empty_portals(_asset_type){
 		
 	}
 	
+	;
 	return S.log;
 
 }
@@ -1304,6 +1323,7 @@ function fit_selected_portals_to_camera(){
 	var S = new OO.SceneManager();	
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/fit_bg_to_camera.html");
+
 	
 	S.portals.load_from_node_list(OO.doc.selectedNodes);
 	
@@ -1362,7 +1382,7 @@ function fit_selected_portals_to_camera(){
 					
 		}
 	}	
-
+	;
 	S.log.save();
 	
 }
@@ -1377,7 +1397,9 @@ function fit_bg_to_camera(){
 	
 	var S = new OO.SceneManager();	
 	
+	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/fit_bg_to_camera.html");
+
 	
 	S.context.set_context_type('Shotgun');	
 	
@@ -1433,7 +1455,7 @@ function fit_bg_to_camera(){
 	S.log.set_script_tag("OO_fit_bg_to_camera"); 
 	S.log.create_scene_script_log_file_and_folder(); 
 	S.log.save_scene_script_log_file();
-
+	;
 	
 }
 
@@ -1443,6 +1465,8 @@ function pull_psd(){
 	////////MessageLog.trace("PULL PSD FUNCTION");
 	
 	var S = new OO.SceneManager();	
+	
+	
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_psd.html");
 	
@@ -1913,10 +1937,8 @@ function upload_render_as_SG_version_dialog(){
 		var selected_task_name = sanitizer.clean_string_for_command_line(INPUT_TASK_NAME.currentItem)
 		var selected_task_status = sanitizer.clean_string_for_command_line(INPUT_TASK_STATUS.currentItem)
 		
-		
 		var formated_version_name = selected_shot_name+"_"+selected_task_name+"_"+selected_version_suffix
 		
-
 		S.render.set_movie_render_path_to_frames_folder_with_name("output");
 		S.render.update_write_movie_render_path();
 		S.render.render_write_nodes();
@@ -1924,7 +1946,7 @@ function upload_render_as_SG_version_dialog(){
 		var rendered_movie_path = S.render.get_rendered_movie_path()
 		
 		
-		//do the render with process command line ? "
+		//do the render with process command line ?
 		
 	
 		S.version.set_shot_name(selected_shot_name) ;
@@ -1959,9 +1981,11 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	
 	var S = new OO.SceneManager();	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/upload_render_as_SG_version.html");
+	
 	S.context = new OO.Context(this,"Shotgun");	
 	
 	S.context.set_from_scene_path();
+
 	
 	var shot_code = S.context.get_shot()
 	var version_name = shot_code+"_"+_task_name+"_"+_version_suffix;
@@ -1984,7 +2008,11 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	S.log.add(S.version.get_upload_repport(),"repport"); 
 	S.log.save();
 	
+	
+	;	
+	
 	var log_object = S.log;
+	
 	
 	return log_object; 
 		
@@ -2227,3 +2255,9 @@ function increase_atq_filter_brightness(){
 }
 
 
+function set_atq_filter_brightness_to_hundred(){
+		
+	 node.setTextAttr("Top/ATQ_BC","BRIGHTCONTRAST_BRIGHTNESS_ADJUSTMENT", frame.current(),100);
+	
+
+}

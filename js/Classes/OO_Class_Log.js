@@ -15,10 +15,19 @@ OO.Log =function (){
 		var external_path;
 		
 		var scene_script_log_path = null; 
+		var batch_txt_path = null; 
+		var txt_separator = ",";
+
+		var available_tag = "available";
 		
 		var script_tag = null;
 		
 		var time_stamp = null;
+		
+		
+		
+		
+		
 		
 		this.add = function(line,tag){
 			
@@ -35,16 +44,15 @@ OO.Log =function (){
 		
 		this.create_new_log_file = function(_filepath){
 			
-			
 			var file_test = new $.oFile(_filepath)
 			
 			if(file_test.exists == false){
 				
-				logfile = new PermanentFile(_filepath);
+				var logfile = new PermanentFile(_filepath);
 				var stamp = scene.currentScene()+"**************** NEW LOG >>>>"+Date();
 
-				logfile.open(4);                 // open with write only stream
-				logfile.writeLine(stamp);           // write line to file
+				logfile.open(4);              
+				logfile.writeLine(stamp);           
 				logfile.close(); 						
 				
 			}
@@ -152,15 +160,15 @@ OO.Log =function (){
 			if(script_tag != null){
 				
 				var timestamp = get_time_stamp_string();	
-				var scene_log_dir = create_scene_log_folder_if_missing()
-				var file_path = scene_log_dir+"/"+timestamp+"_"+script_tag+".html"; 
+				var scene_log_dir_path = create_scene_log_folder_if_missing()
+				var file_path = scene_log_dir_path+"/"+timestamp+"_"+script_tag+".html"; 
 				var file_test = new $.oFile(file_path)
 				
 				if(file_test.exists == false){
 					
 					MessageLog.trace("file_path");
 					MessageLog.trace(file_path);
-					logfile = new PermanentFile(file_path);						
+					var logfile = new PermanentFile(file_path);						
 					
 				}
 				
@@ -169,8 +177,72 @@ OO.Log =function (){
 			}
 			
 		}
+		
+		
+		function create_batch_txt_and_log_folder(){
 
+
+			var scene_log_dir_path = create_scene_log_folder_if_missing()
+			var txt_file_path = scene_log_dir_path+"/batch.txt"; 
+			var txt_file_test = new $.oFile(txt_file_path);
+
+			MessageLog.trace("txt_file_path")
+			MessageLog.trace(txt_file_path)
+			MessageLog.trace(txt_file_test)
+
+			if(txt_file_test.exists == false){
+
+				var txt_file_object = new PermanentFile(txt_file_path);	
+				MessageLog.trace("txt_file_object")		
+				MessageLog.trace(txt_file_object)	
+				txt_file_object.open(4);                
+				txt_file_object.write(script_tag);          
+				txt_file_object.close(); 
+				
+			}
+				
+			batch_txt_path = txt_file_path;
+	
+		}
+
+	
+		
+		function remove_batch_txt_file(){
 			
+			var file_test = new $.oFile(batch_txt_path)
+				
+			if(file_test.exists){
+				
+				var txt_file = new PermanentFile(batch_txt_path);
+				txt_file.remove()             
+				
+			}			
+			
+		}
+
+
+
+		this.set_scene_state_as_script_running = function(){
+
+			create_batch_txt_and_log_folder()
+			
+		}
+		
+		this.set_scene_state_as_available = function(){
+
+			remove_batch_txt_file()
+			
+		}
+
+		this.is_scene_available = function(){
+
+			var file_test = new $.oFile(batch_txt_path)
+				
+			return file_test.exists
+
+		}
+
+		
 		
 		
 		this.set_script_tag = function(_st){
@@ -262,6 +334,8 @@ OO.Log =function (){
 			
 
 		}		
+
+
 		this.clearLog = function(){
 			
 			log_list = []; 
