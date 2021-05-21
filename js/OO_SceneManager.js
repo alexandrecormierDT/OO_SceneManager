@@ -939,7 +939,9 @@ function udpate_portal_paths_from_vault(_portal){
 		tpl_path :S.context.get_asset_data_path(linked_asset,"tpl")
 	}
 	
-	//set var 
+	S.log.add("updating PSD path from vault - ( "+path_attributes_object.psd_path+" ) " ,"process");
+	S.log.add("updating PNG path from vault - ( "+path_attributes_object.png_path+" ) " ,"process");
+	S.log.add("updating TPL path - ( "+path_attributes_object.tpl_path+" ) " ,"process");
 	
 	//udpate 
 	
@@ -1963,8 +1965,11 @@ function upload_render_as_SG_version_dialog(){
 		
 		S.version.upload_movie_as_version(); 
 		
-		S.log.add(S.version.get_upload_repport(),"repport"); 
 		S.log.save();
+
+		S.log.set_script_tag("OO_upload_render_as_SG_version_dialog"); 
+		S.log.create_scene_script_log_file_and_folder(); 
+		S.log.save_scene_script_log_file(); 	
 		
 	}
 
@@ -1997,6 +2002,9 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	S.render.render_write_nodes();
 		
 	var rendered_movie_path = S.render.get_rendered_movie_path()
+
+
+
 		
 	S.version.set_shot_name(shot_code) ;
 	S.version.set_version_name(version_name);
@@ -2004,13 +2012,17 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	S.version.set_task_status (task_status);
 	S.version.set_movie_file_path(rendered_movie_path);	
 
+	S.log.add("shot_code : "+shot_code,"input");
+	S.log.add("version_name : "+version_name,"input");
+	S.log.add("task_name : "+task_name,"input");
+	S.log.add("task_status : "+task_status,"input");
+	S.log.add("rendered movie path :"+rendered_movie_path,"path"); 
+
+
 	S.version.upload_movie_as_version(); 
-	S.log.add(S.version.get_upload_repport(),"repport"); 
+
+
 	S.log.save();
-	
-	
-	;	
-	
 	var log_object = S.log;
 	
 	

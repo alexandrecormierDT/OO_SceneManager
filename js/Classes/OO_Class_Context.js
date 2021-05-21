@@ -656,10 +656,6 @@ OO.Context = function (_S,_type){
 				
 			}
 			
-		}else{
-			
-			S.log.add("dir not found ( "+task_dir_path+" ) for asset ( "+asset_code+" ) ","error");
-			
 		}
 		
 		

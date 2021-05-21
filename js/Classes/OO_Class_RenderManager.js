@@ -24,6 +24,7 @@ OO.RenderManager = function(_S){
 	this.set_movie_writer_node_path = function (_mwnp){
 		
 		movie_writer_node_path = _mwnp
+
 		
 	}
 	
@@ -36,6 +37,7 @@ OO.RenderManager = function(_S){
 	this.set_movie_render_path = function (_mp){
 		
 		movie_render_path = _mp
+
 		
 	}
 	
@@ -73,17 +75,11 @@ OO.RenderManager = function(_S){
 	}
 	
 	this.render_write_nodes = function(){
-		
-		try{
-		
-			$.scene.renderWriteNodes(false);
-		
-		}catch(error){
-			
-			S.log.add("[RENDER] "+error,"error");
-			
-		}
-		
+
+		S.log.add("RENDERING WRITE NODES","process")
+		S.log.add("movie render path :" +movie_render_path,"path")
+		var repport = $.scene.renderWriteNodes(false);
+		S.log.add(repport,"process")
 		
 	}
 	

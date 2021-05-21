@@ -25,20 +25,32 @@ OO.Log =function (){
 		var time_stamp = null;
 		
 		
-		
+		function safeToString(x) {
+			switch (typeof x) {
+			  case 'object':
+				return 'object';
+			  case 'function':
+				return 'function';
+			  default:
+				return x + '';
+			}
+		  }
 		
 		
 		
 		this.add = function(line,tag){
 			
 			var tag = tag == undefined || tag == "" ? "log" : tag; 
+
+			var str_tag =  safeToString(tag);
+			var str_line =  safeToString(line);
 			
-			log_list.push("["+tag+"] - "+line);
+			log_list.push("["+str_tag+"] - "+str_line);
 			
-			lines.push(line);
-			tags.push(tag);
+			lines.push(str_line);
+			tags.push(str_tag);
 			
-			MessageLog.trace("["+tag+"]___"+line)
+			MessageLog.trace("["+str_tag+"]___"+str_line)
 			
 		}
 		
@@ -329,9 +341,6 @@ OO.Log =function (){
 			logfile.open(4);                 // open with write only stream
 			logfile.writeLine(new_content);           // write line to file
 			logfile.close(); 	
-			
-			
-			
 
 		}		
 

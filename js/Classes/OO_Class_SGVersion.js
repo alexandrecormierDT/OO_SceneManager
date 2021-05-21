@@ -2,8 +2,9 @@
 
 ////MessageLog.trace("CLASS OO_ASSET")
 
-OO.SGVersion = function(){
+OO.SGVersion = function(_S){
 	
+	var S = _S;
 	var entity ="shot"; 
 	var project_name = "billy"; 
 	var shot_name = "";
@@ -89,14 +90,18 @@ OO.SGVersion = function(){
 		
 		format_movie_upload_command_string()
 		
-		MessageLog.clearLog ()
+		MessageLog.clearLog();
 		MessageLog.trace(movie_command)
 		
 		var process_movie = new Process2(movie_command);
 		MessageLog.trace(process_movie.launch());
 		MessageLog.trace(process_movie.errorMessage());
 		MessageLog.trace(process_movie);		
-		
+
+		S.log.add("TBMOVIEUPLAOD","start")
+		S.log.add(movie_command,"arguments")
+		S.log.add(process_movie.errorMessage(),"process")
+		S.log.add(process_movie,"process")
 		
 	}
 	
@@ -109,6 +114,10 @@ OO.SGVersion = function(){
 		MessageLog.trace(process_png.launch());
 		MessageLog.trace(process_png.errorMessage());
 		MessageLog.trace(process_png);		
+
+		S.log.add(png_command,"PYTHON")
+		S.log.add(process_movie.errorMessage(),"process")
+		S.log.add(process_movie,"process")
 		
 	}
 	
