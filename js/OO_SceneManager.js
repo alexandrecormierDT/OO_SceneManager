@@ -1941,8 +1941,11 @@ function upload_render_as_SG_version_dialog(){
 		
 		var formated_version_name = selected_shot_name+"_"+selected_task_name+"_"+selected_version_suffix
 		
-		S.render.set_movie_render_path_to_frames_folder_with_name("output");
+		S.render.set_movie_render_path_to_frames_folder_with_name(formated_version_name);
 		S.render.update_write_movie_render_path();
+
+
+		
 		S.render.render_write_nodes();
 		
 		var rendered_movie_path = S.render.get_rendered_movie_path()
