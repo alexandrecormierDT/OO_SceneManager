@@ -18,6 +18,8 @@ OO.SceneManager = function(){
 	this.log = new OO.Log();
 	this.render = new OO.RenderManager(this);
 	this.version = new OO.SGVersion(this);
+
+	var harmony_path = 'C:/Program Files (x86)/Toon Boom Animation/Toon Boom Harmony 20 Premium/win64/bin/HarmonyPremium.exe';
 	
 	
 	this.svg_reader = new SVG_reader(this);
@@ -43,6 +45,24 @@ OO.SceneManager = function(){
 		
 		scene.setDefaultResolution (ss.RES_X, ss.RES_Y, ss.FOV);
 		scene.setFrameRate (ss.FRAME_RATE);
+
+	}
+
+	this.get_harmony_path = function(){
+
+		return harmony_path;
+
+	}
+
+
+	this.get_xstage_path = function(){
+
+		var version_name = scene.currentVersionName(); 
+		var scene_path = scene.currentProjectPathRemapped();
+		var xstage_path = scene_path+"/"+version_name+".xstage";
+
+		return xstage_path;
+
 
 	}
 	

@@ -73,6 +73,18 @@ OO.RenderManager = function(_S){
 		return scene.currentProjectPath()+"/frames/";	
 		
 	}
+
+	function format_batch_render_command(){
+
+		var xstage_path = S.get_xstage_path(); 
+		var harmony_path = S.get_harmony_path();
+		var batch = ' -batch -scene '; 
+		
+		var command = '"'+harmony_path+'" '+batch+ ' "'+xstage_path+'"';
+
+		return command; 
+
+	}
 	
 	this.render_write_nodes = function(){
 
@@ -81,6 +93,19 @@ OO.RenderManager = function(_S){
 		var repport = $.scene.renderWriteNodes(false);
 		S.log.add(repport,"process")
 		
+	}
+
+	this.get_render_batch_command = function(){
+
+
+		return format_batch_render_command();
+
+	}
+
+	this.render_in_background = function(){
+
+
+
 	}
 	
 	this.get_rendered_movie_path = function(){

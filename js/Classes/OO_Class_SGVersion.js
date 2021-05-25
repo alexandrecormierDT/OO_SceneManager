@@ -16,10 +16,12 @@ OO.SGVersion = function(_S){
 	var task_status = "";
 	
 	var movie_upload_bat_file_path = 'P:/pipeline/extra_scripts/python3.x/tbmovieupload/bin/tbmovieupload.bat';
+	var render_and_upload_bat_file_path = "P:/pipeline/alexdev/proto/OO_SceneManager_proto/bin/render_and_upload.bat"
 	var png_upload_bat_file_path;
 	
-	var movie_command = ""; 
-	var png_command = ""; 
+	var movie_upload_command = ""; 
+	var render_and_upload_movie_command = ""; 
+	var png_upload_command = ""; 
 	
 	var upload_repport = ""; 
 	
@@ -77,29 +79,60 @@ OO.SGVersion = function(_S){
 	
 	function format_movie_upload_command_string(){
 		
-		movie_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+shot_name+'" -f "'+movie_file_path+'"  -n "'+version_name+'" -t "'+task_name+'"  -s  "'+task_status+'" ';
-		
+		movie_upload_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+shot_name+'" -f "'+movie_file_path+'"  -n "'+version_name+'" -t "'+task_name+'"  -s  "'+task_status+'" ';
+
 	}
+
+
+	function format_render_and_upload_command_string(){
+
+		render_and_upload_movie_command ='"'+render_and_upload_bat_file_path+'" "'+S.get_xstage_path()+'" "'+project_name+'" "'+shot_name+'" "'+movie_file_path+'" "'+version_name+'" "'+task_name+'"  "'+task_status+'" '
+
+	}
+	
 	
 	function format_png_upload_command_string(){
 		
-		png_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+movie_file_path+'"  -n "'+version_name+'"    -t "'+task_name +'"  -s  "'+task_status+'" ';
+		png_upload_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+movie_file_path+'"  -n "'+version_name+'"    -t "'+task_name +'"  -s  "'+task_status+'" ';
 	}	
+
+	this.render_and_upload_movie_as_version = function(){
+		
+		S.log.add("render_and_upload_movie_as_version","script")
+
+		format_render_and_upload_command_string();
+
+		MessageLog.trace(render_and_upload_movie_command)
+
+
+		S.log.add("RENDER AND TBMOVIEUPLAOD","start")
+		S.log.add(render_and_upload_movie_command,"arguments")
+
+		//var process_render_movie = new Process2(render_and_upload_movie_command);
+		var process_render_movie = new Process2(render_and_upload_movie_command);
+		var launch = process_render_movie.launchAndDetach();
+		var errors = process_render_movie.errorMessage();
+		
+		S.log.add("launch  "+launch,"process")
+		S.log.add(errors,"process")
+		S.log.add(process_render_movie,"process")
+		
+	}
 	
 	this.upload_movie_as_version = function(){
 		
 		format_movie_upload_command_string()
 		
 		MessageLog.clearLog();
-		MessageLog.trace(movie_command)
+		MessageLog.trace(movie_upload_command)
 		
-		var process_movie = new Process2(movie_command);
+		var process_movie = new Process2(movie_upload_command);
 		MessageLog.trace(process_movie.launch());
 		MessageLog.trace(process_movie.errorMessage());
 		MessageLog.trace(process_movie);		
 
 		S.log.add("TBMOVIEUPLAOD","start")
-		S.log.add(movie_command,"arguments")
+		S.log.add(movie_upload_command,"arguments")
 		S.log.add(process_movie.errorMessage(),"process")
 		S.log.add(process_movie,"process")
 		
@@ -110,12 +143,12 @@ OO.SGVersion = function(_S){
 		format_png_upload_command_string()
 		MessageLog.clearLog ()
 		
-		var process_png = new Process2(png_command);
+		var process_png = new Process2(png_upload_command);
 		MessageLog.trace(process_png.launch());
 		MessageLog.trace(process_png.errorMessage());
 		MessageLog.trace(process_png);		
 
-		S.log.add(png_command,"PYTHON")
+		S.log.add(png_upload_command,"PYTHON")
 		S.log.add(process_movie.errorMessage(),"process")
 		S.log.add(process_movie,"process")
 		

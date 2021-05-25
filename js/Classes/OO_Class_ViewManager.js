@@ -131,8 +131,10 @@ OO.ViewManager = function(_S){
 					$.scene.exportLayoutImage(final_path,[],CV.exportFrame,CV.exportBackground,CV.exportCameraFrame,CV.frameScale);
 					
 					//QUICK TEST OF JHONIE BAT SCRIPT
+
+					S.log("EXPORT MARKER" ,"process")
 					
-					/*var project_name = "billy"; 
+					var project_name = "billy"; 
 					
 					var asset_name = CV.asset;
 					var version_name = CV.version;
@@ -142,19 +144,18 @@ OO.ViewManager = function(_S){
 					
 					var bat_file = 'P:/pipeline/extra_scripts/python3.x/pnguploader/bin/pngupload.bat';
 					
-					var command = '"'+bat_file+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+file_path+'"  -n "'+version_name+'" -t "'+task_name+'" -s "'+task_status+'"';
+					var command_string = '"'+bat_file+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+file_path+'"  -n "'+version_name+'" -t "'+task_name+'" -s "'+task_status+'"';
 					
-					MessageLog.trace("command");
-					MessageLog.trace(command);
+					S.log(command_string ,"arguments")
 					
-					p1 = new Process2(command );           // create process from single string;
+					var process_export = new Process2(command_string );           // create process from single string;
 					
-					MessageLog.trace(p1.launch());
-					MessageLog.trace(p1.errorMessage());
-					MessageLog.trace(p1);*/
-					
-					
-					
+					var launch = process_export.launch();
+					var error = process_export.errorMessage();
+
+					S.log(process_export ,"process")
+					S.log(launch ,"process")
+					S.log(error ,"process")
 			
 				
 					

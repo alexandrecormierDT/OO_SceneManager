@@ -1543,6 +1543,13 @@ function export_markers_process(){
 		
 	}
 
+	
+	S.log.save();	
+	
+	S.log.set_script_tag("OO_export_markers"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file();
+
 }
 
 
@@ -1941,19 +1948,11 @@ function upload_render_as_SG_version_dialog(){
 		
 		var formated_version_name = selected_shot_name+"_"+selected_task_name+"_"+selected_version_suffix
 		
-		S.render.set_movie_render_path_to_frames_folder_with_name(formated_version_name);
+		S.render.set_movie_render_path_to_frames_folder_with_name('output');
 		S.render.update_write_movie_render_path();
 
-
-		
-		S.render.render_write_nodes();
-		
 		var rendered_movie_path = S.render.get_rendered_movie_path()
 		
-		
-		//do the render with process command line ?
-		
-	
 		S.version.set_shot_name(selected_shot_name) ;
 		S.version.set_version_name(formated_version_name);
 		S.version.set_task_name(selected_task_name);
@@ -1966,8 +1965,10 @@ function upload_render_as_SG_version_dialog(){
 		S.log.add("task status "+selected_task_status,"process");
 		S.log.add("movie file path "+rendered_movie_path,"process");
 		
-		S.version.upload_movie_as_version(); 
-		
+		scene.saveAll();
+
+		S.version.render_and_upload_movie_as_version()
+
 		S.log.save();
 
 		S.log.set_script_tag("OO_upload_render_as_SG_version_dialog"); 
@@ -1994,7 +1995,6 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	
 	S.context.set_from_scene_path();
 
-	
 	var shot_code = S.context.get_shot()
 	var version_name = shot_code+"_"+_task_name+"_"+_version_suffix;
 	var task_name = _task_name
@@ -2002,13 +2002,10 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 
 	S.render.set_movie_render_path_to_frames_folder_with_name("output");
 	S.render.update_write_movie_render_path();
-	S.render.render_write_nodes();
+	//S.render.render_write_nodes();
 		
 	var rendered_movie_path = S.render.get_rendered_movie_path()
 
-
-
-		
 	S.version.set_shot_name(shot_code) ;
 	S.version.set_version_name(version_name);
 	S.version.set_task_name(task_name);
@@ -2023,6 +2020,8 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 
 
 	S.version.upload_movie_as_version(); 
+
+	//S.version.render_and_upload_movie_as_version()
 
 
 	S.log.save();
