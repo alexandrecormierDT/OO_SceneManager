@@ -96,7 +96,7 @@ OO.SGVersion = function(_S){
 		png_upload_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+movie_file_path+'"  -n "'+version_name+'"    -t "'+task_name +'"  -s  "'+task_status+'" ';
 	}	
 
-	this.render_and_upload_movie_as_version = function(){
+	this.render_and_upload_movie_as_version_detached = function(){
 		
 		S.log.add("render_and_upload_movie_as_version","script")
 
@@ -111,6 +111,29 @@ OO.SGVersion = function(_S){
 		//var process_render_movie = new Process2(render_and_upload_movie_command);
 		var process_render_movie = new Process2(render_and_upload_movie_command);
 		var launch = process_render_movie.launchAndDetach();
+		var errors = process_render_movie.errorMessage();
+		
+		S.log.add("launch  "+launch,"process")
+		S.log.add(errors,"process")
+		S.log.add(process_render_movie,"process")
+		
+	}
+
+	this.render_and_upload_movie_as_version = function(){
+		
+		S.log.add("render_and_upload_movie_as_version","script")
+
+		format_render_and_upload_command_string();
+
+		MessageLog.trace(render_and_upload_movie_command)
+
+
+		S.log.add("RENDER AND TBMOVIEUPLAOD","start")
+		S.log.add(render_and_upload_movie_command,"arguments")
+
+		//var process_render_movie = new Process2(render_and_upload_movie_command);
+		var process_render_movie = new Process2(render_and_upload_movie_command);
+		var launch = process_render_movie.launch();
 		var errors = process_render_movie.errorMessage();
 		
 		S.log.add("launch  "+launch,"process")

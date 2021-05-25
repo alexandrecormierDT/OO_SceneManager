@@ -1968,8 +1968,7 @@ function upload_render_as_SG_version_dialog(){
 		S.log.add("movie file path "+rendered_movie_path,"process");
 		
 		scene.saveAll();
-
-		S.version.render_and_upload_movie_as_version()
+		S.version.render_and_upload_movie_as_version_detached()
 
 		S.log.save();
 
@@ -2002,9 +2001,8 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	var task_name = _task_name
 	var task_status = "pdr"
 
-	S.render.set_movie_render_path_to_frames_folder_with_name("output");
+	S.render.set_movie_render_path_to_frames_folder_with_name(version_name);
 	S.render.update_write_movie_render_path();
-	//S.render.render_write_nodes();
 		
 	var rendered_movie_path = S.render.get_rendered_movie_path()
 
@@ -2021,14 +2019,12 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	S.log.add("rendered movie path :"+rendered_movie_path,"path"); 
 
 
-	S.version.upload_movie_as_version(); 
-
-	//S.version.render_and_upload_movie_as_version()
+	scene.saveAll();
+	S.version.render_and_upload_movie_as_version()
 
 
 	S.log.save();
 	var log_object = S.log;
-	
 	
 	return log_object; 
 		
