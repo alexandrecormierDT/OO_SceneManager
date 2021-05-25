@@ -29,9 +29,11 @@ OO.ViewManager = function(_S){
 			
 			if(TLM_list_of_views.length == 0){
 				
-				OO.log.add('no views detected in the scene','ERROR');
-				
 				//MessageLog.trace('no views detected in the scene');
+
+				S.log.add("no views detected" ,"error")
+
+				MessageBox.alert("no views detected");
 				
 				this.noviews = true;
 				
