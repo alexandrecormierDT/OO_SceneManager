@@ -49,16 +49,26 @@ OO.View = function(TLM){
 			this.name = filter(TLM.name);
 			this.exportFrame = filter(TLM.markerStart);
 			this.exportLength = filter(TLM.markerLength);
+			this.version = "noversion";
+			this.asset = "ch_mytestchar";
+			this.task = "design_main";
 			
 			
 			var note = parse_note(TLM.note);
+
+			MessageLog.trace("notessss")
+			MessageLog.trace(Object.getOwnPropertyNames(note))
 			
 			if(note!=false){
 				
 				//TO BY PASS SHOTGUN STRUCTURE AND EXPORT DIRECTLY TO PNG :
 
 				this.direct_path = filter(note.hasOwnProperty('direct_path') ? note.direct_path : this.direct_path) ; 
-				this.file_name = filter(note.hasOwnProperty('file_name') ? note.file_name : this.file_name) ; 
+				if(this.direct_path != false){
+
+					this.file_name = filter(note.hasOwnProperty('file_name') ? note.file_name : this.file_name) ; 
+
+				}
 				
 				this.version = filter(note.hasOwnProperty('version') ? note.version : this.version) ; 
 				this.asset = filter(note.hasOwnProperty('asset') ? note.asset : this.asset) ; 
@@ -98,15 +108,18 @@ OO.View = function(TLM){
 	
 	this.get_file_name = function(){
 		
-		if(this.file_name == false){
+		//if(this.file_name == false){
+
+			MessageLog.trace("     this.asset")
+			MessageLog.trace(this.asset)
 	
 			return this.asset+"_"+this.task+"_"+this.version+"."+this.exportFormat;
 		
-		}else{
+		//}else{
 			
-			return this.file_name+"."+this.exportFormat;
+			//return this.file_name+"."+this.exportFormat;
 			
-		}
+		//}
 		
 	}
 	
@@ -138,9 +151,11 @@ OO.View = function(TLM){
 		
 		*/
 				
-		var obj = {};
+		var note_obj = {};
 		
 		var line_split = note.split('\n');
+
+
 		
 		if(line_split.length > 0){
 			
@@ -150,30 +165,35 @@ OO.View = function(TLM){
 
 					var equal_split = line.split(":");
 					
-					var param = equal_split[0];
-					var value = equal_split[1];
+					var param = remove_spaces(equal_split[0]+"");
+					var value = remove_spaces(equal_split[1]+"");
 						
-					obj[param] = value;
+					note_obj[param] = value;
 					
 			}			
 				
 		}else{
 			
-			return false
+			note_obj = false
 			
 		}
 		
 		
-							
-		//MessageLog.trace("NOTES");
+		MessageLog.trace("NOTES");
 		//MessageLog.trace(Object.getOwnPropertyNames(obj));
+		MessageLog.trace("note_obj");							
+		MessageLog.trace(note_obj);							
 		
-		return obj;
+		
+		return note_obj;
 		
 		
 
 	}
 	
+	function remove_spaces(_str){
 
+		return _str.replace(/\s+/g, '');
+	}
   
 }

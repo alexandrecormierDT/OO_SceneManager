@@ -68,9 +68,6 @@ OO.ViewManager = function(_S){
 				
 			}
 			
-			
-
-		
 	}
 	
 	var isViewName = function (TLM_name){
@@ -85,6 +82,7 @@ OO.ViewManager = function(_S){
 		
 		return false;
 		
+
 		
 	}
 	
@@ -95,11 +93,11 @@ OO.ViewManager = function(_S){
 	
 	var get_export_dir = function(view){
 		
-		if(view.direct_path != false){
+		//if(view.direct_path != false){
 			
-			return  "P:/"+view.direct_path;
+			//return  "P:/"+view.direct_path;
 			
-		}
+		//}
 		
 		return  output_dir+"/"+view.asset+"/"+view.task+"/";
 
@@ -132,7 +130,7 @@ OO.ViewManager = function(_S){
 					
 					//QUICK TEST OF JHONIE BAT SCRIPT
 
-					S.log("EXPORT MARKER" ,"process")
+					S.log.add("EXPORT MARKER" ,"process")
 					
 					var project_name = "billy"; 
 					
@@ -146,16 +144,16 @@ OO.ViewManager = function(_S){
 					
 					var command_string = '"'+bat_file+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+file_path+'"  -n "'+version_name+'" -t "'+task_name+'" -s "'+task_status+'"';
 					
-					S.log(command_string ,"arguments")
+					S.log.add(command_string ,"arguments")
 					
 					var process_export = new Process2(command_string );           // create process from single string;
 					
 					var launch = process_export.launch();
 					var error = process_export.errorMessage();
 
-					S.log(process_export ,"process")
-					S.log(launch ,"process")
-					S.log(error ,"process")
+					S.log.add(process_export ,"process")
+					S.log.add(launch ,"process")
+					S.log.add(error ,"process")
 			
 				
 					

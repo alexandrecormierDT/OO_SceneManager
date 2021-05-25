@@ -1457,7 +1457,7 @@ function fit_bg_to_camera(){
 	S.log.set_script_tag("OO_fit_bg_to_camera"); 
 	S.log.create_scene_script_log_file_and_folder(); 
 	S.log.save_scene_script_log_file();
-	;
+	
 	
 }
 
@@ -1530,6 +1530,8 @@ function export_markers_process(){
 	S.load_xstage();
 	
 	S.views.load(S.stage);
+
+	scene.saveAll();
 	
 	S.views.set_output_dir("P:/projects/billy/views");
 	
