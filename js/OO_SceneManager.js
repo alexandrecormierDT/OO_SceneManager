@@ -1618,8 +1618,12 @@ function export_asset_png_process(){
 			var user_png_path = OO.filter_string(userCode.text)
 			
 			var user_scale = OO.filter_string(userScale.text)
-			
-			var user_png_path
+
+			MessageLog.trace("export_asset_png_process")
+			MessageLog.trace("user_scale")
+			MessageLog.trace(user_scale)
+			MessageLog.trace("user_png_path")
+			MessageLog.trace(user_png_path)
 			
 			S.views.export_currentframe_png_to(user_png_path,user_scale);
 
@@ -1950,7 +1954,7 @@ function upload_render_as_SG_version_dialog(){
 		
 		var formated_version_name = selected_shot_name+"_"+selected_task_name+"_"+selected_version_suffix
 		
-		S.render.set_movie_render_path_to_frames_folder_with_name('output');
+		S.render.set_movie_render_path_to_frames_folder_with_name(version_name);
 		S.render.update_write_movie_render_path();
 
 		var rendered_movie_path = S.render.get_rendered_movie_path()
@@ -1987,10 +1991,14 @@ function upload_render_as_SG_version_dialog(){
 
 function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	
-	MessageLog.trace("UPLOAD PREVIEW TO SHOTGUN");
+	MessageLog.trace("upload_render_as_SG_version_for_task");
 	
 	var S = new OO.SceneManager();	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/upload_render_as_SG_version.html");
+
+	S.log.add("upload_render_as_SG_version_for_task","script");
+	S.log.add(_task_name,"script");
+	S.log.add(_version_suffix,"script");
 	
 	S.context = new OO.Context(this,"Shotgun");	
 	
@@ -2020,10 +2028,12 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 
 
 	scene.saveAll();
+
 	S.version.render_and_upload_movie_as_version()
 
 
 	S.log.save();
+
 	var log_object = S.log;
 	
 	return log_object; 

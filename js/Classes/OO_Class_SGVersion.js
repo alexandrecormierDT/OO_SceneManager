@@ -105,10 +105,9 @@ OO.SGVersion = function(_S){
 		MessageLog.trace(render_and_upload_movie_command)
 
 
-		S.log.add("RENDER AND TBMOVIEUPLAOD","start")
+		S.log.add("RENDER AND TBMOVIEUPLAOD DETACHED","start")
 		S.log.add(render_and_upload_movie_command,"arguments")
 
-		//var process_render_movie = new Process2(render_and_upload_movie_command);
 		var process_render_movie = new Process2(render_and_upload_movie_command);
 		var launch = process_render_movie.launchAndDetach();
 		var errors = process_render_movie.errorMessage();
@@ -127,11 +126,9 @@ OO.SGVersion = function(_S){
 
 		MessageLog.trace(render_and_upload_movie_command)
 
-
 		S.log.add("RENDER AND TBMOVIEUPLAOD","start")
 		S.log.add(render_and_upload_movie_command,"arguments")
 
-		//var process_render_movie = new Process2(render_and_upload_movie_command);
 		var process_render_movie = new Process2(render_and_upload_movie_command);
 		var launch = process_render_movie.launch();
 		var errors = process_render_movie.errorMessage();
