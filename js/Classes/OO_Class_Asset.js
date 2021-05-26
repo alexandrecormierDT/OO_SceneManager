@@ -52,7 +52,6 @@ OO.Asset = function(_param){
 	}
 	
 	this.get_type = function(){
-		
 
 		return	get_field_value("sg_asset_type");
 	
