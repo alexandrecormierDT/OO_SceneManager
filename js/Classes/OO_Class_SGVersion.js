@@ -76,7 +76,7 @@ OO.SGVersion = function(_S){
 		task_status = _ts
 		
 	}		
-	
+
 	function format_movie_upload_command_string(){
 		
 		movie_upload_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+shot_name+'" -f "'+movie_file_path+'"  -n "'+version_name+'" -t "'+task_name+'"  -s  "'+task_status+'" ';
@@ -95,6 +95,8 @@ OO.SGVersion = function(_S){
 		
 		png_upload_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+movie_file_path+'"  -n "'+version_name+'"    -t "'+task_name +'"  -s  "'+task_status+'" ';
 	}	
+
+
 
 	this.render_and_upload_movie_as_version_detached = function(){
 		

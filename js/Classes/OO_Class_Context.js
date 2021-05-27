@@ -38,11 +38,7 @@ OO.Context = function (_S,_type){
 	
 	var BG_TASKS = ["pack_board","recherche","bg_layout","trait_couleur","fabrication","numerisation","retouche_ps","confo_ps","psd_to_nodes"]
 	
-	var DESIGN_TASKS = [
-	
-	
-	
-	]
+	var DESIGN_TASKS = [""]
 	
 	
 //---------------------------------------------------------------------------------------------------------------------------
@@ -591,7 +587,9 @@ OO.Context = function (_S,_type){
 				
 			}
 			
-			return file_list
+			// return the last file in case the publish folder is a MESS !
+
+			return file_list[file_list.length-1];
 		
 	}
 

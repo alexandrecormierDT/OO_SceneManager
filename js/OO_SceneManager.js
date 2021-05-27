@@ -2026,11 +2026,9 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	S.log.add("task_status : "+task_status,"input");
 	S.log.add("rendered movie path :"+rendered_movie_path,"path"); 
 
-
 	scene.saveAll();
 
 	S.version.render_and_upload_movie_as_version()
-
 
 	S.log.save();
 
@@ -2283,3 +2281,12 @@ function set_atq_filter_brightness_to_hundred(){
 	
 
 }
+
+
+function deadline_test(){
+
+	var S = new OO.SceneManager();
+	S.deadline.submit_render_job();
+
+}
+

@@ -205,7 +205,7 @@ OO.ViewManager = function(_S){
 		
 		var height =  Math.floor(1080*with_ratio );
 		
-		var content = width+"\n"+height;
+		var content = width+'\n'+height;
 
 		reso_file.write(content);           // write line to file
 		

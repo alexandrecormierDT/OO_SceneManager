@@ -18,6 +18,7 @@ OO.SceneManager = function(){
 	this.log = new OO.Log();
 	this.render = new OO.RenderManager(this);
 	this.version = new OO.SGVersion(this);
+	this.deadline = new OO.DeadLineJobSubmiter(this);
 
 	var harmony_path = 'C:/Program Files (x86)/Toon Boom Animation/Toon Boom Harmony 20 Premium/win64/bin/HarmonyPremium.exe';
 	
@@ -28,6 +29,14 @@ OO.SceneManager = function(){
 		
 		
 		
+	}
+
+	this.get_unique_id = function(){
+
+		var k = Math.floor(Math.random() * 10000000);
+		var m =k.toString();	
+			
+		return m ;		
 	}
 	
 	this.update_render_path = function(writer_node,render_path) {
