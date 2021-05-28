@@ -171,20 +171,7 @@ OO.ViewManager = function(_S){
 
 	this.init_camera = function(){
 
-		var camera_peg = OO.doc.getNodeByPath("Top/Camera_Peg");
-
-		node.setTextAttr("Top/Camera_Peg","POSITION.SEPARATE",frame.current(),"On");
-	
-		//INJECT X
-		camera_peg.attributes.position.x.setValue(0);
-		
-		//INJECT Y
-		camera_peg.attributes.position.y.setValue(0);
-		
-		//INJECT Y
-		camera_peg.attributes.position.z.setValue(0);	
-		
-			
+		var camera_peg = $.scene.getNodeByPath("Top/Camera_Peg");
 
 	}
 	

@@ -995,12 +995,17 @@ OO.TreeManager = function(_S){
 			var cam_peg_x = 0;
 			var cam_peg_y = 0;
 			var cam_peg_z = 0;
+
+			node.setTextAttr("Top/Camera_Peg", "ROTATION.ANGLEZ", frame.current(),0);		
+			node.setTextAttr("Top/Camera_Peg", "ROTATION.ANGLEY", frame.current(),0);		
+			node.setTextAttr("Top/Camera_Peg", "ROTATION.ANGLEX", frame.current(),0);
 			
 			if(next_3d_key != false){
 				
 				cam_peg_x = toonboom_coords_to_float(next_3d_key[0]);
 				cam_peg_y = toonboom_coords_to_float(next_3d_key[1]);
 				cam_peg_z = toonboom_coords_to_float(next_3d_key[2]);	
+	
 				
 			}else{
 				

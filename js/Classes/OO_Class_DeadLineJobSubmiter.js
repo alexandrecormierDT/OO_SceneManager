@@ -17,8 +17,9 @@ OO.DeadLineJobSubmiter = function(_S){
 
         MessageLog.trace(command_line);
 
-		var deadline_process = new Process2(command_line);
+		var deadline_process = new Process2(command_line); 
 		deadline_process.launch();
+
         //MessageLog.trace(launch);
        // MessageLog.trace(deadline_process.errorMessage());
   
