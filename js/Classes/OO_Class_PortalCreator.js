@@ -7,6 +7,8 @@ OO.PortalCreator = function(_S){
 	var script_module_path = "P:/pipeline/script_modules/Portals/Portal.tpl";
 	
 	var S = _S;
+
+	var default_departement = "boxanim"
 	
 	var current_code = null;
 	var current_sg_asset_type = null;
@@ -14,7 +16,7 @@ OO.PortalCreator = function(_S){
 	var current_psd_path = null;
 	var current_png_path = null;		
 	var current_svg_path = null;		
-	var current_departement =  null;
+	var current_departement = default_departement;
 	var current_tpl_version = null;		
 	var current_status =  null;
 
@@ -59,8 +61,6 @@ OO.PortalCreator = function(_S){
 	
 	
 	this.create_portal = function(){ 
-	
-		//MessageLog.trace("Portal ADD");
 		
 		var nportal = new OO.Portal();
 		
@@ -119,8 +119,11 @@ OO.PortalCreator = function(_S){
 		var parent_group = ntree.get_parent_group();
 		
 		var departement_color = get_departement_color()
+
+		var departement_name_upper_case = current_departement.toUpperCase();
+
 		
-		ntree.set_backdrop(parent_group.addBackdropToNodes(pnodes, " < PORTAL : "+current_code+" > ",current_code,departement_color , 0, 0, 20, 20))
+		ntree.set_backdrop(parent_group.addBackdropToNodes(pnodes, " < "+departement_name_upper_case+" PORTAL : "+current_code+" > ",current_code,departement_color , 0, 0, 20, 20))
 		
 		
 		
@@ -183,6 +186,11 @@ OO.PortalCreator = function(_S){
 				departement_color = new $.oColorValue(OO.pipe_colors.compo[0])
 			
 			break;	
+			case "boxanim" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.layout[0])
+			
+			break;
 		}
 
 		return departement_color;

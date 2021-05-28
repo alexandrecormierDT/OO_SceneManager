@@ -1624,6 +1624,8 @@ function export_asset_png_process(){
 			MessageLog.trace(user_scale)
 			MessageLog.trace("user_png_path")
 			MessageLog.trace(user_png_path)
+
+			
 			
 			S.views.export_currentframe_png_to(user_png_path,user_scale);
 

@@ -978,6 +978,8 @@ OO.TreeManager = function(_S){
 			var cad_y = parseFloat(cadre.rect.y) 		
 			
 			
+
+
 			// camera_peg 
 			
 			var camera_peg = OO.doc.getNodeByPath("Top/Camera_Peg");
@@ -1017,7 +1019,13 @@ OO.TreeManager = function(_S){
 				camera_peg.attributes.position.y.setValue(0);
 				
 				//INJECT Y
-				camera_peg.attributes.position.z.setValue(0);		
+				camera_peg.attributes.position.z.setValue(0);	
+				
+				//INJECT ANGLE Z
+				node.setTextAttr("Top/Camera_Peg", "ROTATION.ANGLEZ", frame.current(),0);		
+				node.setTextAttr("Top/Camera_Peg", "ROTATION.ANGLEY", frame.current(),0);		
+				node.setTextAttr("Top/Camera_Peg", "ROTATION.ANGLEX", frame.current(),0);		
+				
 				
 				
 			}

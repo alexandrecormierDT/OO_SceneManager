@@ -132,7 +132,7 @@ OO.ViewManager = function(_S){
 					
 					//QUICK TEST OF JHONIE BAT SCRIPT
 
-					S.log.add("EXPORT MARKER" ,"process")
+					S.log.add("EXPORT MARKER" ,"process");
 					
 					var project_name = "billy"; 
 					
@@ -168,29 +168,85 @@ OO.ViewManager = function(_S){
 		
 		
 	}
+
+	this.init_camera = function(){
+
+		var camera_peg = OO.doc.getNodeByPath("Top/Camera_Peg");
+
+		node.setTextAttr("Top/Camera_Peg","POSITION.SEPARATE",frame.current(),"On");
 	
-	this.export_currentframe_png_to = function(_path,_frameScale){
+		//INJECT X
+		camera_peg.attributes.position.x.setValue(0);
+		
+		//INJECT Y
+		camera_peg.attributes.position.y.setValue(0);
+		
+		//INJECT Y
+		camera_peg.attributes.position.z.setValue(0);	
+		
+			
+
+	}
+	
+	this.export_currentframe_png_to = function(_file_path,_frameScale){
 
 		
 			//openHamrony method of oScene : exportLayoutImage(path, includedNodes, exportFrame,exportCameraFrame,exportBackground,frameScale)
 			
-			$.scene.exportLayoutImage(_path,[],frame.current(),false,false,_frameScale);
+			//$.scene.exportLayoutImage(_path,[],frame.current(),false,false,_frameScale);
 			
-			this.write_resolution_txt(_path,_frameScale);
+			//this.write_resolution_txt(_path,_frameScale);
 
-			/*var le = new LayoutExport;
-			var params = new LayoutExportParams;
-	
-	
-			params.setFileDirectory(_path);
-			params.setFileFormat("png");
-			params.setLayoutname("test");
-	
-			le.addRender(params)	
-			le.flush();*/
+			this.init_camera();
+
+			var path_object = parse_path_object(_file_path)
+
+			var params = new LayoutExportParams();
+
+			params.renderStaticCameraAtSceneRes = true;
+			params.fileFormat = 'png'
+			params.borderScale = _frameScale;
+			params.exportCameraFrame = false;
+			params.exportAllCameraFrame = false;
+			params.filePattern = path_object.file_bare;
+			params.fileDirectory = path_object.folder_path;
+			params.whiteBackground = false;
+		  
+
+			params.node = $.scene.root;
+			params.frame = frame.current();
+			params.layoutname = path_object.file_bare;
+
+			var exporter = new LayoutExport();
+			exporter.addRender(params);
+
+			if (!exporter.save(params)) throw new Error(S.log.add("failed to exportlayer at location "+_file_path,"error"));	
+
+
+			  		
 
 
 	}	
+
+	function parse_path_object(_file_path){
+	
+		var str = _file_path+''; 
+		var split = str.split("/");
+
+		var file = split[split.length-1]
+		var bare  = file.split('.')[0];
+		var extension = file.split('.')[1];
+		var split2 = str.split(file)[0];
+
+		var return_obj = {
+			file_name : file,
+			folder_path : split2,
+			file_bare:bare,
+			file_extension:extension
+		}
+		return return_obj;
+	
+	}
 
 	
 	this.write_resolution_txt = function(_path,_frameScale){
