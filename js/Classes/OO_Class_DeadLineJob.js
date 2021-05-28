@@ -4,11 +4,13 @@
 
 OO.DeadLineJob = function(){
 	
+    this._myvar ="truc";
     var xstage_path; 
 
     var jobs_file_temp_folder = "P:\\pipeline\\alexdev\\temp";
     //var dead_line_path = "%DEADLINE_PATH%\\deadlinecommand.exe";
-    var dead_line_path = "C:\\Program Files\\Thinkbox\\Deadline10\\bin\\deadlinecommand.exe";
+    var deadLine_root_path  = System.getenv("DEADLINE_PATH");
+    var dead_line_path = deadLine_root_path+"\\deadlinecommand.exe";
 
     var job_info_file_path = ""; 
     var plugin_info_file_path = ""; 
