@@ -64,6 +64,12 @@ OO.AssetManager = function(_S){
 		//////MessageLog.trace(shot);
 		
 		switch(inputtype){
+
+			case ('rest'):
+
+				//xzfanakyavvH7&uqhmcwueolr
+
+			break;
 			
 			case ('json'):
 			
@@ -93,6 +99,8 @@ OO.AssetManager = function(_S){
 			case ('csv'):
 			
 				// SAMPLE LINE : "1373","ep101_pl001","bg_ep101pl001_bil_ext_m_a1_ranch, pr_noissette_or","billy",
+
+				
 				
 				var asset_codes = [];
 			

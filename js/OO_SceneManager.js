@@ -1601,9 +1601,11 @@ function export_asset_png_process(){
 		dialog.add( userCode );	
 		
 		var userScale = new LineEdit();
-		userScale.label = "scale image";
-		userScale.text = 1.5;
-		dialog.add( userScale );	
+		var userScale = new ComboBox();
+		userScale.label = "expend camera frame : ";
+		userScale.editable = false;
+		userScale.itemList = [1.5,1,2];
+		dialog.add( userScale);	
 		
 		if (dialog.exec()){
 			
@@ -1617,7 +1619,7 @@ function export_asset_png_process(){
 			
 			var user_png_path = OO.filter_string(userCode.text)
 			
-			var user_scale = OO.filter_string(userScale.text)
+			var user_scale = OO.filter_string(userScale.currentItem)
 
 			MessageLog.trace("export_asset_png_process")
 			MessageLog.trace("user_scale")

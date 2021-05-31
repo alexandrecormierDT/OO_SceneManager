@@ -651,13 +651,23 @@ OO.TreeManager = function(_S){
 
 			var txt_path = S.context.get_txt_path_from_png_path(_png_path); 
 
-			if(txt_path != false){
+			var png_image_object = new OO.ImageFile(_png_path)
+
+			if(png_image_object.has_dimention_txt_file()){
+
+				S.log.add("reading png txt  "+txt_path,"process")
 				
-				var txt_resolution_object = S.context.get_resolution_object_from_txt(txt_path); 
+				var dimention_object = png_image_object.get_dimention_object();
 				// we scale back the png to the pixel size 
-				
-				//billy project param ? 
-				var final_sy = txt_resolution_object.height/1080;
+
+				var final_sy = parseFloat(dimention_object.height/1080)
+
+				if(final_sy > 2 ){
+					final_sy = 3;
+				}
+
+				MessageLog.trace("final_sy")
+				MessageLog.trace(final_sy)
 				
 				var final_sx = final_sy;
 				

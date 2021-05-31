@@ -3,6 +3,8 @@
 //MessageLog.trace("CLASS OO_ViewManager");
 
 OO.ViewManager = function(_S){
+
+	var read_image_info_bat = "P:\\pipeline\\alexdev\\proto\\OO_SceneManager_proto\\bin\\read_image_infos.bat";
 	
 	//reference to the singleton
 	var S = _S;
@@ -171,35 +173,91 @@ OO.ViewManager = function(_S){
 
 	this.init_camera = function(){
 
-		var camera_peg = $.scene.getNodeByPath("Top/Camera_Peg");
+		var node_path = "Top/Camera_Peg";
+		node.setTextAttr(node_path, "POSITION.X", frame.current(),0);
+		node.setTextAttr(node_path, "POSITION.Y", frame.current(),0);							
+		node.setTextAttr(node_path, "SKEW", frame.current(),0);				
+		node.setTextAttr(node_path, "ROTATION.ANGLEZ", frame.current(),0);				
+		node.setTextAttr(node_path, "SCALE.XY", frame.current(),1);				
+		node.setTextAttr(node_path, "SCALE.X", frame.current(),1);				
+		node.setTextAttr(node_path, "SCALE.Y", frame.current(),1);		
+
+	}
+
+
+	this.get_image_dimentions = function (_image_file_path){
+
+		//don't work in batch
+
+		var file_test;
+
+		var txt_file  = this.create_image_dimention_txt_for_image_file(_image_file_path);
+		//MessageLog.trace(Object.getOwnPropertyNames(infos) );
+
+		MessageLog.trace(txt_file);
+		MessageLog.trace(txt_file);
+
+		var dimentions = {
+			height : 10, 
+			width: 10
+		}
+
+		return dimentions
+
+	}
+
+	this.create_image_dimention_txt_for_image_file = function(_image_file_path){
+
+		var command_line = format_dimention_txt_creation_command_string(_image_file_path);
+
+		// uses image magick
+
+		//test "P:pipelinealexdevprotoOO_SceneManager_protoinead_image_infos.bat" "P:/projects/billy/library/boxanim/assets/Character/ch_jack/png/ch_jack.png"
+
+		S.log.add("creating dimention txt","file")
+		S.log.add(command_line,"arguments")
+
+		var process_create_txt = new Process2(command_line);
+		var launch = process_create_txt.launchAndDetach();
+		var errors = process_create_txt.errorMessage();
+		
+		S.log.add("launch  : "+launch,"process")
+		S.log.add("errors : "+errors,"process")
+		S.log.add( process_create_txt,"process")
+
+		return _image_file_path+".txt";
+
+
+	}
+
+	function format_dimention_txt_creation_command_string(_image_file_path){
+		
+		var dimention_txt_creation_command_string = '"'+read_image_info_bat+'" "'+_image_file_path+'"';
+
+		return dimention_txt_creation_command_string;
 
 	}
 	
+	
 	this.export_currentframe_png_to = function(_file_path,_frameScale){
 
-		
-			//openHamrony method of oScene : exportLayoutImage(path, includedNodes, exportFrame,exportCameraFrame,exportBackground,frameScale)
-			
-			//$.scene.exportLayoutImage(_path,[],frame.current(),false,false,_frameScale);
-			
-			//this.write_resolution_txt(_path,_frameScale);
-
+			// we set the camera to 0 to avoid any weird image dimentions
 			this.init_camera();
 
+			
 			var path_object = parse_path_object(_file_path)
 
 			var params = new LayoutExportParams();
 
 			params.renderStaticCameraAtSceneRes = true;
-			params.fileFormat = 'png'
+			params.fileFormat = 'PNG4'
 			params.borderScale = _frameScale;
 			params.exportCameraFrame = false;
 			params.exportAllCameraFrame = false;
 			params.filePattern = path_object.file_bare;
 			params.fileDirectory = path_object.folder_path;
 			params.whiteBackground = false;
-		  
-
+			params.whiteBackground = false;
 			params.node = $.scene.root;
 			params.frame = frame.current();
 			params.layoutname = path_object.file_bare;
@@ -207,10 +265,19 @@ OO.ViewManager = function(_S){
 			var exporter = new LayoutExport();
 			exporter.addRender(params);
 
-			if (!exporter.save(params)) throw new Error(S.log.add("failed to exportlayer at location "+_file_path,"error"));	
+			if (!exporter.save(params)){
 
+				throw new Error(S.log.add("failed to exportlayer at location "+_file_path,"error"));	
 
-			  		
+			}else{
+
+				S.log.add("creating txt dimention file "+_file_path+".txt","file")
+				//we create the dimention txt file to be red later at importation step
+				var exported_image = new OO.ImageFile(_file_path);
+				exported_image.create_dimention_txt_file()
+
+			}
+
 
 
 	}	
@@ -235,18 +302,23 @@ OO.ViewManager = function(_S){
 	
 	}
 
+	this.parse_dimention_txt = function(_file_path){
+
+		//P:/projects/billy/library/boxanim/assets/Character/ch_jack/png/ch_jack.png PNG 1920x1080 1920x1080+0+0 8-bit sRGB 272985B 0.000u 0:00.023
+
+
+	}
+
 	
 	this.write_resolution_txt = function(_path,_frameScale){
-		
-		var with_ratio = _frameScale*(4/3)
 		
 		var txt_path = _path+".txt"
 		
 		var reso_file = new $.oFile(txt_path);
 		
-		var width = Math.floor(1920*with_ratio );
+		var width = Math.floor(1920*_frameScale);
 		
-		var height =  Math.floor(1080*with_ratio );
+		var height =  Math.floor(1080*_frameScale);
 		
 		var content = width+'\n'+height;
 

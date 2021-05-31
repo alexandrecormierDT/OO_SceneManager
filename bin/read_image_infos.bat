@@ -1,0 +1,1 @@
+P:\pipeline\extra_soft\ImageMagick-7.0.10-Q16\magick.exe identify "%1">"%1".txt
