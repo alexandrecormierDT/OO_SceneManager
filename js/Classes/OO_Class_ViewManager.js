@@ -49,11 +49,9 @@ OO.ViewManager = function(_S){
 			}
 			
 			
-
 			for(var t in TLM_list_of_views){
 				
 				var curTLM = TLM_list_of_views[t];
-				
 				if(curTLM != undefined){
 					
 					if(isViewName(curTLM.name)){
@@ -61,9 +59,7 @@ OO.ViewManager = function(_S){
 						var nview = new OO.View();
 						
 						nview.load(TLM_list_of_views[t]);
-						
 						// see class view for processing of the marker note content
-						
 						list_of_views.push(nview);
 					
 					}
@@ -105,7 +101,6 @@ OO.ViewManager = function(_S){
 		
 		return  output_dir+"/"+view.asset+"/"+view.task+"/";
 
-		
 	}
 	
 	var get_export_path = function(view){
@@ -114,62 +109,83 @@ OO.ViewManager = function(_S){
 		
 	}
 
-	var selectedViews = [];
+	this.InputDialog = function(){
+		
+		var dialog = new Dialog();
+		dialog.title = "Export Views";
+		dialog.width = 600;
+		
+		var CB_list = [];
+		
+		for (var v in list_of_views){
+			
+			var curView = list_of_views[v];
+
+			var Vpath = get_export_path(curView);
+			
+			var VCB = new CheckBox();
+			VCB.checked = false;
+			VCB.text = curView.name+"  Frame  "+curView.exportFrame+"  -->  "+Vpath;
+			dialog.add(VCB)
+			
+			CB_list.push(VCB);
+			
+		}	
+		
+		if ( dialog.exec() ){
+			
+			for (var v in list_of_views){
+				
+				var curView = list_of_views[v];
+				curView.is_selected = CB_list[v].checked;
+				
+			}				
+
+			return true;
+			
+		}
+		
+	}	
 	
 
 	this.export_views = function(){
 	
 		for(var v in list_of_views){
 			
-				var CV = list_of_views[v];
+			var CV = list_of_views[v];
+			
+			if(CV.is_selected){
 				
-				if(CV.is_selected){
-					
-					var final_path = get_export_dir(CV) + CV.get_file_name();
-					
-					var asset_dir = new $.oFolder(get_export_dir(CV)).create();
+				var final_path = get_export_dir(CV) + CV.get_file_name();
+
+				this.export_currentframe_png_to(final_path,CV.frameScale)
+				
+				S.log.add("EXPORT MARKER" ,"process");
+				
+				S.version.set_project_name("billy") ;
+				S.version.set_asset_name(CV.asset) ;
+				S.version.set_version_name( CV.version);
+				S.version.set_task_name(CV.task);
+				S.version.set_task_status (CV.task_status );
+				S.version.set_png_file_path( final_path);	
+				
+				scene.saveAll();
+
+				S.version.upload_png_as_version()
 		
-					//openHamrony method of oScene : exportLayoutImage(path, includedNodes, exportFrame,exportCameraFrame,exportBackground,frameScale)
-					$.scene.exportLayoutImage(final_path,[],CV.exportFrame,CV.exportBackground,CV.exportCameraFrame,CV.frameScale);
-					
-					//QUICK TEST OF JHONIE BAT SCRIPT
-
-					S.log.add("EXPORT MARKER" ,"process");
-					
-					var project_name = "billy"; 
-					
-					var asset_name = CV.asset;
-					var version_name = CV.version;
-					var file_path = final_path;
-					var task_name = CV.task;
-					var task_status = "psr";
-					
-					var bat_file = 'P:/pipeline/extra_scripts/python3.x/pnguploader/bin/pngupload.bat';
-					
-					var command_string = '"'+bat_file+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+file_path+'"  -n "'+version_name+'" -t "'+task_name+'" -s "'+task_status+'"';
-					
-					S.log.add(command_string ,"arguments")
-					
-					var process_export = new Process2(command_string );           // create process from single string;
-					
-					var launch = process_export.launch();
-					var error = process_export.errorMessage();
-
-					S.log.add(process_export ,"process")
-					S.log.add(launch ,"process")
-					S.log.add(error ,"process")
+				
+				S.log.set_script_tag("OO_upload_png_as_version_dialog"); 
+				S.log.create_scene_script_log_file_and_folder(); 
+				S.log.save_scene_script_log_file(); 
+				S.log.save();
 			
+			}
 				
-					
-					
-				
-				}
-				
-			
 		}
 		
-		
 	}
+
+
 
 	this.init_camera = function(){
 
@@ -334,44 +350,7 @@ OO.ViewManager = function(_S){
 		
 	}
 	
-	this.InputDialog = function(){
-		
-		var dialog = new Dialog();
-		dialog.title = "Export Views";
-		dialog.width = 600;
-		
-		var CB_list = [];
-		
-		for (var v in list_of_views){
-			
-			var curView = list_of_views[v];
 
-			var Vpath = get_export_path(curView);
-			
-			var VCB = new CheckBox();
-			VCB.checked = false;
-			VCB.text = curView.name+"  Frame  "+curView.exportFrame+"  -->  "+Vpath;
-			dialog.add(VCB)
-			
-			CB_list.push(VCB);
-			
-		}	
-		
-		if ( dialog.exec() ){
-			
-			for (var v in list_of_views){
-				
-				var curView = list_of_views[v];
-				
-				curView.is_selected = CB_list[v].checked;
-				
-			}				
-
-			return true;
-			
-		}
-		
-	}
 	
   
 }

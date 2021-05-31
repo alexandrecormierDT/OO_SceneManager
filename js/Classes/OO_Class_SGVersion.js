@@ -17,7 +17,7 @@ OO.SGVersion = function(_S){
 	
 	var movie_upload_bat_file_path = 'P:/pipeline/extra_scripts/python3.x/tbmovieupload/bin/tbmovieupload.bat';
 	var render_and_upload_bat_file_path = "P:/pipeline/alexdev/proto/OO_SceneManager_proto/bin/render_and_upload.bat"
-	var png_upload_bat_file_path;
+	var png_upload_bat_file_path = 'P:/pipeline/extra_scripts/python3.x/tbmovieupload/bin/tbmovieupload.bat';
 	
 	var movie_upload_command = ""; 
 	var render_and_upload_movie_command = ""; 
@@ -45,7 +45,7 @@ OO.SGVersion = function(_S){
 	}
 	this.set_asset_name = function(_sn){
 		
-		shot_name = _sn
+		asset_name = _sn
 		
 	}	
 	this.set_version_name = function(_vn){
@@ -84,19 +84,13 @@ OO.SGVersion = function(_S){
 	}
 
 
+
+
 	function format_render_and_upload_command_string(){
 
 		render_and_upload_movie_command ='"'+render_and_upload_bat_file_path+'" "'+S.get_xstage_path()+'" "'+project_name+'" "'+shot_name+'" "'+movie_file_path+'" "'+version_name+'" "'+task_name+'"  "'+task_status+'" '
 
 	}
-	
-	
-	function format_png_upload_command_string(){
-		
-		png_upload_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+movie_file_path+'"  -n "'+version_name+'"    -t "'+task_name +'"  -s  "'+task_status+'" ';
-	}	
-
-
 
 	this.render_and_upload_movie_as_version_detached = function(){
 		
@@ -105,8 +99,6 @@ OO.SGVersion = function(_S){
 		format_render_and_upload_command_string();
 
 		MessageLog.trace(render_and_upload_movie_command)
-
-
 		S.log.add("RENDER AND TBMOVIEUPLAOD DETACHED","start")
 		S.log.add(render_and_upload_movie_command,"arguments")
 
@@ -140,6 +132,9 @@ OO.SGVersion = function(_S){
 		S.log.add(process_render_movie,"process")
 		
 	}
+
+
+
 	
 	this.upload_movie_as_version = function(){
 		
@@ -159,11 +154,22 @@ OO.SGVersion = function(_S){
 		S.log.add(process_movie,"process")
 		
 	}
+
+
+
+
+	
+	function format_png_upload_command_string(){
+		
+		png_upload_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+png_file_path+'"  -n "'+version_name+'"    -t "'+task_name +'"  -s  "'+task_status+'" ';
+	}	
+
 	
 	this.upload_png_as_version = function(){
 		
 		format_png_upload_command_string()
-		MessageLog.clearLog ()
+
+		MessageLog.trace(png_upload_command);
 		
 		var process_png = new Process2(png_upload_command);
 		MessageLog.trace(process_png.launch());
@@ -171,8 +177,8 @@ OO.SGVersion = function(_S){
 		MessageLog.trace(process_png);		
 
 		S.log.add(png_upload_command,"PYTHON")
-		S.log.add(process_movie.errorMessage(),"process")
-		S.log.add(process_movie,"process")
+		S.log.add(process_png.errorMessage(),"process")
+		S.log.add(process_png,"process")
 		
 	}
 	

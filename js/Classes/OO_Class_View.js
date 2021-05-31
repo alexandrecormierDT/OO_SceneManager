@@ -13,6 +13,8 @@ OO.View = function(TLM){
 	this.asset = "unnamedasset";
 	 
 	this.task = "unnamedtask";
+
+	this.task_status= "pdr";
 	
 	this.exportFormat = "png";
 	
@@ -37,15 +39,9 @@ OO.View = function(TLM){
 	
 	//exmple of TLM element in xml :  <timelineMarker markerStart="4" markerLength="0" colour="#FF0000FF" note="hello" name="C_marker"/>
 	this.load = function(TLM){
-
-		//MessageLog.trace(Object.getOwnPropertyNames(TLM));
 		
 		if(TLM.hasOwnProperty('note')){
 			
-			//MessageLog.trace("HAS NOTE")
-			//MessageLog.trace(TLM.name)
-			//MessageLog.trace(TLM.note)
-
 			this.name = filter(TLM.name);
 			this.exportFrame = filter(TLM.markerStart);
 			this.exportLength = filter(TLM.markerLength);
@@ -73,6 +69,7 @@ OO.View = function(TLM){
 				this.version = filter(note.hasOwnProperty('version') ? note.version : this.version) ; 
 				this.asset = filter(note.hasOwnProperty('asset') ? note.asset : this.asset) ; 
 				this.task = filter(note.hasOwnProperty('task') ? note.task : this.task) ;				
+				this.task_status = filter(note.hasOwnProperty('task_status') ? note.task_status : this.task_status) ;				
 				this.frameScale = filter(note.hasOwnProperty('frameScale') ? parseFloat(note.frameScale) : this.frameScale);
 				this.exportBackground = filter(note.hasOwnProperty('exportBackground') ? (note.exportBackground == "yes"): this.exportBackground);
 				this.exportCameraFrame = filter(note.hasOwnProperty('exportCameraFrame') ? (note.exportCameraFrame == "yes") : this.exportCameraFrame);		
