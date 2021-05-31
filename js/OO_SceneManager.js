@@ -807,8 +807,6 @@ function pull_selected_portals_process(_data_type){
 			
 			var pulled_nodes = S.portals.pull(current_portal,_data_type);	
 			
-			
-			
 			//after pull code ___ to be cleaned __ should be a separate function
 			
 			if(pulled_nodes != false){
@@ -820,7 +818,7 @@ function pull_selected_portals_process(_data_type){
 								// must find a way to get the size of the png in a different manner. without svg
 						
 								var linked_asset = S.assets.get_asset_by_code(current_portal.code);
-								
+
 								if(linked_asset != false){
 								
 									var full_svg_path = S.context.get_svg_path(linked_asset);

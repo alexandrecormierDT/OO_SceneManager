@@ -92,6 +92,7 @@ OO.PortalManager = function(_S){
 	}
 	
 
+	
 	this.load_from_node_list= function(_node_list){
 		
 		// init list
@@ -100,71 +101,45 @@ OO.PortalManager = function(_S){
 		
 		// Detect the script module with "portal" attributes among the selected nodes and fetch the linked nodes to make the tree, read the script module attributes 
 		//add a new portal object to the list. 
-		
+
+		//we fetch the Portal Script Modules in the selection
 		var scene_PSM = []
-		
 		for(var n = 0 ; n < _node_list.length ; n++){
-			
-			var cnode = OO.doc.getNodeByPath(_node_list[n]);
-			
+			var cnode = OO.doc.getNodeByPath(_node_list[n])
 			if(cnode.type == "SCRIPT_MODULE"){
-				
 				if(cnode.attributes.hasOwnProperty('portal') == true){
-					
 					scene_PSM.push(cnode);
-					
 				};
-				
 			}
 			
 		}
 
 		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
-			
-			
+
 			var cur_script_module = scene_PSM[sm];
 		
 			// CODE,TYPE AND PATHS
 			
 			var tpl_path = OO.filter_string(cur_script_module.tpl_path);
-			
 			var psd_path = OO.filter_string(cur_script_module.psd_path);
-			
 			var png_path = OO.filter_string(cur_script_module.png_path);
-			
 			var code = OO.filter_string(cur_script_module.code);
-			
 			var type = OO.filter_string(cur_script_module.sg_asset_type);
 			
 			
 			//PORTAL GROUP
-			
 			var linked_group = OO.doc.getNodeByPath(cur_script_module.linkedInNodes);
 			
-			//MessageLog.trace("detected group")
-			
-			//MessageLog.trace(linked_peg)
-			
 			//PORTAL PEG
-			
 			var linked_peg = OO.doc.getNodeByPath(linked_group.linkedInNodes);
-			
-			//MessageLog.trace("detected peg")
-			
-			//MessageLog.trace(linked_peg)
-			
-			
+
 			//TREE
-			
 			var ntree = S.trees.add(code,[]);
 			
 			ntree.set_key_node("PORTAL_GROUP",linked_group);
-			
 			ntree.set_key_node("PORTAL_PEG",linked_peg);
-			
 			ntree.set_key_node("PORTAL_MODULE",cur_script_module);
 
-		
 			var nportal = new OO.Portal();
 			
 			nportal.set_tree(ntree)
@@ -173,9 +148,6 @@ OO.PortalManager = function(_S){
 			nportal.set_path('tpl',tpl_path)
 			nportal.set_path('png',png_path)
 			nportal.set_path('psd',psd_path)
-
-			
-			//we gathered all informations expect the backdrop. 
 
 			this.add(nportal);
 
@@ -203,13 +175,9 @@ OO.PortalManager = function(_S){
 			if(portal_match_sg_asset_type(current_portal,_sg_asset_type)){
 				
 				var tpl_group = this.pull(current_portal,'tpl');
-				
-				
-				
 			}
 			
 		}
-		
 		return false; 		
 		
 		
@@ -220,142 +188,146 @@ OO.PortalManager = function(_S){
 	function portal_match_sg_asset_type(_portal,_sg_asset_type){
 		
 		var current_type = _portal.get_sg_asset_type(); 
-		
 		var anim_equivalent = ["FX","Character", "Prop","Vehicle"];
-		
 		if(current_type == _sg_asset_type ){
 			
 			return true;
 		}
-		
 		if(_sg_asset_type == "anim" && anim_equivalent.indexOf(current_type) != -1){
-			
 			return true;
-			
 		}
-		
 		return false; 
 		
 	}
 	
 	
-	
-
-	
 	this.pull = function(_portal,_data_type){
 		
-		var final_path = ""; 
-		
-		var portal_tree  = _portal.get_tree();
 		
 		var pulled_nodes = []; 
 		
 		if(_portal.path_exist(_data_type)){
 			
-			var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
-			
 			switch (_data_type){
-				
 				case 'psd': 
-				
-					//MessageLog.trace("pulling psd")
-				
-					final_path = _portal.get_path('psd'); 
-					
-					//we import the tpl inside the portal's group
-					var nodes = S.trees.import_psd_in_group(_portal.get_code(),final_path,portal_group);
-					
-					// we arange the psd nodes
-					var bg_tree = S.trees.add(_portal.get_code(),nodes)
-					
-					//bg_tree.set_parent_group(_portal.tree.group);
-					
-					S.trees.arange_psd_node(bg_tree);
-
-					var pbackdrop = _portal.get_backdrop();
-					
-					pbackdrop.color = new $.oColorValue("#5097D8ff");
-					
-					pulled_nodes.push(nodes); 
-					
-					
-
+					pulled_nodes = pull_psd(_portal)
 				break;
-				
 				case 'png': 
-				
-					final_path = _portal.get_path('png');
-
-					var png_node = S.trees.import_png_in_group(final_path,portal_group);
-					
-					if(png_node != false){
-						
-						S.log.add("[PORTAL PULL] png node created ","process")
-						S.log.add("[PORTAL PULL] importing png = "+png_node,"process")
-						
-						png_node.name = _portal.get_code();
-						
-						portal_group.multiportIn.linkOutNode(png_node,0,0,true);
-						
-						png_node.linkOutNode(portal_group.multiportOut,0,0,true);				
-						
-						png_node.centerAbove(portal_group.multiportOut, 0, -100);
-			
-						var pbackdrop = _portal.get_backdrop();
-						
-						pbackdrop.color = new $.oColorValue("#5097D8ff");
-						
-					}
-
-					pulled_nodes =  png_node;						
-					
+					pulled_nodes = pull_png(_portal); 
 				break;			
-				
 				case 'tpl':
-				
-					final_path = _portal.get_path('tpl') ;
-
-					S.trees.import_tpl_in_group(final_path,portal_group)
-					
-					var tpl_group = S.trees.get_first_sub_group_in_group(portal_group); 
-					
-					if(tpl_group != false){
-					
-						portal_group.multiportIn.linkOutNode(tpl_group,0,0,true);
-						
-						tpl_group.linkOutNode(portal_group.multiportOut,0,0,true);
-						
-						tpl_group.centerAbove(portal_group.multiportOut, 0, -500);
-						
-						node.explodeGroup(tpl_group);
-						
-						S.trees.replace_goup_multiports(portal_group);
-						
-						pulled_nodes = portal_group.nodes;	
-						
-					}else{
-						
-						S.log.add("[PORTAL PULL] data not found "+_portal.get_path(_data_type),"error");
-						
-					}
-
-					
-					// ungroup nodes. 
-				
-				
+					pulled_nodes = pull_tpl(_portal); 
 				break;
 			}			
 			
 		}else{
-			
 			S.log.add("[PORTAL PULL] data not found "+_portal.get_path(_data_type),"error");
-			
 		}
-		
+
 		return pulled_nodes; 
 
 	}
-	
+
+
+
+
+
+	function pull_png(_portal){
+
+			var portal_tree  = _portal.get_tree();	
+			var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
+			var portal_sg_asset_type = _portal.get_sg_asset_type()
+
+			final_path = _portal.get_path('png');
+
+			var png_node = S.trees.import_png_in_group(final_path,portal_group);
+
+			if(png_node != false){
+
+				// scale the read to fit the original size of the png
+				S.trees.scale_anim_node_to_png_size(png_node.path,final_path)
+
+				//different treatment for bg
+				if(portal_sg_asset_type == 'bg'){
+					S.trees.scale_bg_node_to_png_size(png_node.path,final_path)
+				}
+
+				S.log.add("[PORTAL PULL] png node created ","process")
+				S.log.add("[PORTAL PULL] importing png = "+png_node,"process")
+				
+				//positionning the node and renaming it 
+				png_node.name = _portal.get_code();
+				portal_group.multiportIn.linkOutNode(png_node,0,0,true);
+				png_node.linkOutNode(portal_group.multiportOut,0,0,true);				
+				png_node.centerAbove(portal_group.multiportOut, 0, -100);
+
+			}
+
+			return png_node;	
+
+	}
+
+
+
+
+
+	function pull_tpl(_portal){
+
+
+		var portal_tree  = _portal.get_tree();	
+		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
+		var pulled_nodes = []; 
+				
+		final_path = _portal.get_path('tpl') ;
+		S.trees.import_tpl_in_group(final_path,portal_group)
+		var tpl_group = S.trees.get_first_sub_group_in_group(portal_group); 
+		
+		if(tpl_group != false){
+		
+			//positionning the nodes 
+			portal_group.multiportIn.linkOutNode(tpl_group,0,0,true);
+			tpl_group.linkOutNode(portal_group.multiportOut,0,0,true);
+			tpl_group.centerAbove(portal_group.multiportOut, 0, -500);
+			node.explodeGroup(tpl_group);
+			S.trees.replace_goup_multiports(portal_group);
+			pulled_nodes = portal_group.nodes;	
+
+			
+		}
+
+		return pulled_nodes; 
+
+	}
+
+
+
+
+	function pull_psd(_portal){
+
+
+		var portal_tree  = _portal.get_tree();	
+		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
+				
+		final_path = _portal.get_path('psd'); 
+					
+		//we import the tpl inside the portal's group
+		var nodes = S.trees.import_psd_in_group(_portal.get_code(),final_path,portal_group);
+		
+		// we arange the psd nodes
+		var bg_tree = S.trees.add(_portal.get_code(),nodes)
+		
+		S.trees.arange_psd_node(bg_tree);
+		var pbackdrop = _portal.get_backdrop();
+		pbackdrop.color = new $.oColorValue("#5097D8ff");
+
+		return nodes
+		
+	}	
+
+
+
+
+
 	
 	//********************************** P U S H **************************************//
 	
@@ -392,18 +364,8 @@ OO.PortalManager = function(_S){
 				
 
 					var tpl_name = _portal.get_code();
-				
 					var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
-					
-					
-					//MessageLog.trace("EXPORT TPL");
-					//MessageLog.trace("export_folder_path");
-					//MessageLog.trace(export_folder_path);
-					//MessageLog.trace("portal_group");
-					//MessageLog.trace(portal_group);
-					//MessageLog.trace("tpl_name");
-					//MessageLog.trace(tpl_name);
-					
+
 					
 					S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");
 					
@@ -425,7 +387,6 @@ OO.PortalManager = function(_S){
 		var all_reads = []
 		var all_pegs = []
 		var all_composites = []
-		var list_type = []
 		
 		var portal_tree = _portal.get_tree()
 		

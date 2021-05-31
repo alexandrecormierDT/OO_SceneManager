@@ -190,9 +190,7 @@ OO.TreeManager = function(_S){
 	this.add_unique_id_to_onode = function(_onode,_override){
 		
 		
-		
 		var override = _override != undefined ? _override : false;
-			
 		var layer_id = _onode.type+"_"+get_unique_id()
 		
 		// if the node already has an ID we jut read it 
@@ -200,9 +198,7 @@ OO.TreeManager = function(_S){
 		if(_onode.hasOwnProperty("smlayerid")==false){
 			
 			//adding a dynamic attribute "smlayerid"
-			
 			node.createDynamicAttr(_onode, "STRING", "smlayerid", "smlayerid", false)
-			
 			node.setTextAttr(_onode,"smlayerid",frame.current,layer_id);	
 			
 		}else{
@@ -210,7 +206,6 @@ OO.TreeManager = function(_S){
 			if(override == true){
 				
 				//unless we want to override the id (dangerous) 
-				
 				node.setTextAttr(_onode,"smlayerid",frame.current,layer_id);		
 			}
 			
@@ -569,7 +564,6 @@ OO.TreeManager = function(_S){
 	this.get_first_sub_group_in_group = function(_group_scene_path){
 		
 		var recever_group_object = $.scene.getNodeByPath(_group_scene_path)
-		
 		group_content = recever_group_object.nodes
 		
 		for(var no = 0 ; no < group_content.length ; no++){
@@ -607,16 +601,11 @@ OO.TreeManager = function(_S){
 	function copypaste_tpl_in_group(tpl_file_path,group_scene_path){
 		
 		//MessageLog.trace("natif_Import_TPL_in_group");
-
 		var myCopyOptions = copyPaste.getCurrentCreateOptions();
-			
 		var myPasteOptions = copyPaste.getCurrentPasteOptions();
-			
+		
 		myPasteOptions.extendScene = false;
-
 		var myDragObject = copyPaste.copyFromTemplate(tpl_file_path,0,0,myCopyOptions);
-			
-
 		copyPaste.pasteNewNodes(myDragObject,group_scene_path,myPasteOptions);
 
 		return true; 
@@ -634,9 +623,45 @@ OO.TreeManager = function(_S){
 		return nodes; 		
 		
 	}	
-	
-	
-	
+
+
+	this.scale_bg_node_to_png_size = function(_node_path,_png_path){
+
+		var png_image_object = new OO.ImageFile(_png_path)
+
+		var dimention_object = png_image_object.get_dimention_object();
+		var final_sy = parseFloat(dimention_object.height/1080)
+
+		var final_sx = final_sy;
+			
+		//changin node scale
+		node.setTextAttr(_node_path, "SCALE.XY", frame.current(),final_sx);				
+		node.setTextAttr(_node_path, "SCALE.X", frame.current(),final_sx);				
+		node.setTextAttr(_node_path, "SCALE.Y", frame.current(),final_sx);		
+
+
+	}
+
+	this.scale_anim_node_to_png_size = function(_node_path,_png_path){
+
+		var png_image_object = new OO.ImageFile(_png_path)
+
+		var dimention_object = png_image_object.get_dimention_object();
+		var final_sy = parseFloat(dimention_object.height/1080)
+
+		//a quick fix for data that wasn't working (harmony need 3 instead of 2.13)
+		if(final_sy > 2 ){
+			final_sy = 3;
+		}
+		var final_sx = final_sy;
+			
+		//changin node scale
+		node.setTextAttr(_node_path, "SCALE.XY", frame.current(),final_sx);				
+		node.setTextAttr(_node_path, "SCALE.X", frame.current(),final_sx);				
+		node.setTextAttr(_node_path, "SCALE.Y", frame.current(),final_sx);
+				
+	} 	
+
 	this.import_png_in_group = function(_png_path,_group){
 
 		var png_file_object = new $.oFile(_png_path)
@@ -644,62 +669,23 @@ OO.TreeManager = function(_S){
 		if(png_file_object.exists){
 
 			var png_node = OO.doc.getNodeByPath(_group.importImage(_png_path));
-			
 			node.setLocked(png_node.path, true);
-			 
 			S.log.add("import png = "+png_node,"process")
-
-			var txt_path = S.context.get_txt_path_from_png_path(_png_path); 
-
-			var png_image_object = new OO.ImageFile(_png_path)
-
-			if(png_image_object.has_dimention_txt_file()){
-
-				S.log.add("reading png txt  "+txt_path,"process")
-				
-				var dimention_object = png_image_object.get_dimention_object();
-				// we scale back the png to the pixel size 
-
-				var final_sy = parseFloat(dimention_object.height/1080)
-
-				if(final_sy > 2 ){
-					final_sy = 3;
-				}
-
-				MessageLog.trace("final_sy")
-				MessageLog.trace(final_sy)
-				
-				var final_sx = final_sy;
-				
-				//INJECT SX
-				png_node.attributes.scale.x.setValue(final_sx);
-				
-				//INJECT SY
-				png_node.attributes.scale.y.setValue(final_sy);	
-				
-			}
-			
-			//png_node
-			
-			// extend exposure. 
-			
 			this.extend_exposition_to_scene_length(png_node);
 			
 			return png_node;
 			
 		}else{
 		
+			
+			S.log.add("png does not exist","error")
 			return false;
 			
 		}
 							
 	}
 	
-	// TO DO ! 
-	
 	this.extend_exposition_to_scene_length= function(_onode){
-		
-		////MessageLog.trace("extend_exposition_to_scene_length");
 		
 		var scene_length = scene.getStopFrame()+1
  
@@ -716,13 +702,16 @@ OO.TreeManager = function(_S){
 	}
 	
 	
-	
+	this.delete_nodes = function(_node_path_list){
+
+
+
+	}
 	
 	
 	// E X P O R T    T P L 
 	
 
-	
 	this.export_group_to_path = function(_group,_path,_tpl_name){
 		
 		
