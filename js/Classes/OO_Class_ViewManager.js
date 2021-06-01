@@ -35,14 +35,12 @@ OO.ViewManager = function(_S){
 			//MessageLog.trace("ViewManager Load");
 		
 			var TLM_list_of_views=_stage.get_TLM();
-
-	
 			
 			if(TLM_list_of_views.length == 0){
 				
 				//MessageLog.trace('no views detected in the scene');
 				S.log.add("no views detected" ,"error")
-				MessageBox.alert("no views detected");
+				MessageBox.warning("no views detected");
 				this.noviews = true;
 				
 				return; 
@@ -105,7 +103,7 @@ OO.ViewManager = function(_S){
 			
 		//}
 		
-		return  output_dir+"/"+view.asset+"/"+view.task+"/";
+		return  output_dir+"/";
 
 	}
 	

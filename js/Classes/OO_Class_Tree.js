@@ -69,7 +69,6 @@ OO.Tree = function(_code,_nodes){
 			if(map_module.hasOwnProperty(_attribute)){
 				
 				map_module.attributes[_attribute].setValue(_value);
-				
 				return true;
 				
 			}
@@ -87,9 +86,7 @@ OO.Tree = function(_code,_nodes){
 	this.fetch_node_list = function(){
 		
 		if(this.map_module != false){
-			
 			return map_module.node_list;
-			
 		}
 		
 		return false; 		
@@ -101,9 +98,7 @@ OO.Tree = function(_code,_nodes){
 	this.get_node_list = function(){
 		
 		if(this.map_module != false){
-			
 			return map_module.node_list;
-			
 		}
 		
 		return false; 		
@@ -115,9 +110,7 @@ OO.Tree = function(_code,_nodes){
 	this.add_node = function(_node){
 		
 		if(tree_nodes.indexOf(_node) == -1){
-		
 			tree_nodes.push(node);
-		
 		}
 
 	}
@@ -125,14 +118,10 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_nodes = function(){
 		
-	// return a list of oNodes
-	
 		var onode_list = []; 
 		
 		for(var n = 0 ; n < tree_nodes.length ; n ++){
-			
 			onode_list.push($.scene.getNodeByPath(tree_nodes[n]));
-			
 		}	
 
 		return onode_list;
@@ -144,15 +133,11 @@ OO.Tree = function(_code,_nodes){
 	// return a list of oNodes
 	
 		var read_list = []; 
-		
 		for(var n = 0 ; n < tree_nodes.length ; n ++){
 			
 			var current_onode = OO.doc.getNodeByPath(tree_nodes[n]); 
-			
 			if(current_onode.type == "READ"){
-				
 				read_list.push(OO.doc.getNodeByPath(tree_nodes[n]));
-				
 			}
 			
 		}	
@@ -164,7 +149,6 @@ OO.Tree = function(_code,_nodes){
 	this.select_nodes = function(){
 		
 		for(var n = 0 ; n < tree_nodes.length ; n ++){
-			
 			selection.addNodeToSelection (tree_nodes[n].path)
 		}
 		
@@ -176,11 +160,8 @@ OO.Tree = function(_code,_nodes){
 	this.set_key_node = function(_key,_node_path){
 		
 		key_nodes[_key] = _node_path;
-		
 		if(tree_nodes.indexOf(_node_path) == -1){
-			
 			tree_nodes.push(_node_path);
-			
 		}
 		
 	}
@@ -191,7 +172,6 @@ OO.Tree = function(_code,_nodes){
 	this.get_key_node = function(_key){
 		
 		MessageLog.trace("FUNCTION : "+arguments.callee.name);
-		
 		return key_nodes[_key];
 
 	}
@@ -231,9 +211,7 @@ OO.Tree = function(_code,_nodes){
 		for(var n = 0 ; n < tree_nodes.length  ; n ++){
 			
 			var current_node = OO.doc.getNodeByPath(tree_nodes[n]); 
-			
 			var name_split = current_node.name.split('_');
-			
 			if(name_split[0] == _prefix){
 			
 				return current_node;
@@ -250,9 +228,7 @@ OO.Tree = function(_code,_nodes){
 	this.find_top_node = function(){
 		
 		var top_prefix = "TOP";
-		
 		var found_node =  find_node_by_prefix(top_prefix);
-
 		return found_node;
 		
 	}
@@ -260,7 +236,6 @@ OO.Tree = function(_code,_nodes){
 	this.find_bottom_node = function(){
 		
 		var top_prefix = "BOTTOM";
-		
 		return find_node_by_prefix(top_prefix);
 		
 	}	
@@ -286,11 +261,8 @@ OO.Tree = function(_code,_nodes){
 		if(tree_nodes[0] != null){
 			
 			var first_node = $.scene.getNodeByPath(tree_nodes[0]) 
-			
 			if(first_node != null){
-				
 				return first_node.parent;	
-				
 			}
 
 			
@@ -374,7 +346,6 @@ OO.Tree = function(_code,_nodes){
 		for(var on in tree_nodes){
 		
 			var cn = tree_nodes[on];
-			
 			cn.x += _x
 			cn.y += _y
 			
