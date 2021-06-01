@@ -27,12 +27,14 @@ OO.View = function(TLM){
 	this.is_selected = false;
 	
 	this.name = "VIEW"
+	this.resolutionFactor = 1; 
 	
 	//TO BY PASS SHOTGUN STRUCTURE AND EXPORT DIRECTLY TO PNG : 
 	
 	this.direct_path = false;
 	
 	this.file_name = false;
+
 
 	
 	// reading data from an xml elment object "timelineMarker"
@@ -48,6 +50,7 @@ OO.View = function(TLM){
 			this.version = "noversion";
 			this.asset = "ch_mytestchar";
 			this.task = "design_main";
+			this.resolutionFactor = 1;
 			
 			
 			var note = parse_note(TLM.note);
@@ -73,7 +76,8 @@ OO.View = function(TLM){
 				this.frameScale = filter(note.hasOwnProperty('frameScale') ? parseFloat(note.frameScale) : this.frameScale);
 				this.exportBackground = filter(note.hasOwnProperty('exportBackground') ? (note.exportBackground == "yes"): this.exportBackground);
 				this.exportCameraFrame = filter(note.hasOwnProperty('exportCameraFrame') ? (note.exportCameraFrame == "yes") : this.exportCameraFrame);		
-				this.exportFormat = note.hasOwnProperty('format') ? filter_format(note.exportFormat) : this.exportFormat;		
+				this.exportFormat = filter(note.hasOwnProperty('format') ? filter_format(note.exportFormat) : this.exportFormat);		
+				this.resolutionFactor = filter(note.hasOwnProperty('resolutionFactor') ? note.resolutionFactor : this.resolutionFactor);		
 				
 			}
 			
@@ -177,9 +181,9 @@ OO.View = function(TLM){
 		
 		
 		MessageLog.trace("NOTES");
-		//MessageLog.trace(Object.getOwnPropertyNames(obj));
 		MessageLog.trace("note_obj");							
 		MessageLog.trace(note_obj);							
+		MessageLog.trace(Object.getOwnPropertyNames(note_obj));
 		
 		
 		return note_obj;

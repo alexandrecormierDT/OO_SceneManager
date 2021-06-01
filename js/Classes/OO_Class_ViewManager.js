@@ -21,6 +21,13 @@ OO.ViewManager = function(_S){
 	var list_of_views = [];
 	
 	var output_dir = "";
+
+	this.get_time_line_marker_object_list= function(){
+
+
+
+		return object_list ;
+	}
 	
 
 	this.load = function(_stage){
@@ -28,15 +35,14 @@ OO.ViewManager = function(_S){
 			//MessageLog.trace("ViewManager Load");
 		
 			var TLM_list_of_views=_stage.get_TLM();
+
+	
 			
 			if(TLM_list_of_views.length == 0){
 				
 				//MessageLog.trace('no views detected in the scene');
-
 				S.log.add("no views detected" ,"error")
-
 				MessageBox.alert("no views detected");
-				
 				this.noviews = true;
 				
 				return; 
@@ -158,8 +164,6 @@ OO.ViewManager = function(_S){
 				
 				var final_path = get_export_dir(CV) + CV.get_file_name();
 
-				this.export_currentframe_png_to(final_path,CV.frameScale)
-				
 				S.log.add("EXPORT MARKER" ,"process");
 				
 				S.version.set_project_name("billy") ;
@@ -167,9 +171,30 @@ OO.ViewManager = function(_S){
 				S.version.set_version_name( CV.version);
 				S.version.set_task_name(CV.task);
 				S.version.set_task_status (CV.task_status );
-				S.version.set_png_file_path( final_path);	
+
+				var resolutionFactor = CV.resolutionFactor
+				MessageLog.trace("CV.resolutionFactor")
+				MessageLog.trace(CV.resolutionFactor)
 				
-				scene.saveAll();
+				//for high res images
+				if(resolutionFactor!=1){
+					
+					S.multiply_resolution_by(resolutionFactor);
+					
+				}
+				
+				//scene.saveAll();
+
+				MessageLog.trace("CV.exportFrame")
+				MessageLog.trace(CV.exportFrame)
+				MessageLog.trace("CV.frameScale")
+				MessageLog.trace(CV.frameScale)
+
+				
+
+				this.export_frame_to_png_with_scale(CV.exportFrame,final_path,CV.frameScale);
+
+				S.version.set_png_file_path( final_path);	
 
 				S.version.upload_png_as_version()
 		
@@ -178,6 +203,8 @@ OO.ViewManager = function(_S){
 				S.log.create_scene_script_log_file_and_folder(); 
 				S.log.save_scene_script_log_file(); 
 				S.log.save();
+
+				S.reset_resolution();
 			
 			}
 				
@@ -255,7 +282,7 @@ OO.ViewManager = function(_S){
 	}
 	
 	
-	this.export_currentframe_png_to = function(_file_path,_frameScale){
+	this.export_frame_to_png_with_scale = function(_frame_number,_file_path,_frameScale){
 
 			// we set the camera to 0 to avoid any weird image dimentions
 			this.init_camera();
@@ -275,7 +302,7 @@ OO.ViewManager = function(_S){
 			params.whiteBackground = false;
 			params.whiteBackground = false;
 			params.node = $.scene.root;
-			params.frame = frame.current();
+			params.frame = _frame_number;
 			params.layoutname = path_object.file_bare;
 
 			var exporter = new LayoutExport();
@@ -297,7 +324,49 @@ OO.ViewManager = function(_S){
 
 
 	}	
+	
+	this.export_currentframe_png_to = function(_file_path,_frameScale){
 
+		// we set the camera to 0 to avoid any weird image dimentions
+		this.init_camera();
+
+		
+		var path_object = parse_path_object(_file_path)
+
+		var params = new LayoutExportParams();
+
+		params.renderStaticCameraAtSceneRes = true;
+		params.fileFormat = 'PNG4'
+		params.borderScale = _frameScale;
+		params.exportCameraFrame = false;
+		params.exportAllCameraFrame = false;
+		params.filePattern = path_object.file_bare;
+		params.fileDirectory = path_object.folder_path;
+		params.whiteBackground = false;
+		params.whiteBackground = false;
+		params.node = $.scene.root;
+		params.frame = frame.current();
+		params.layoutname = path_object.file_bare;
+
+		var exporter = new LayoutExport();
+		exporter.addRender(params);
+
+		if (!exporter.save(params)){
+
+			throw new Error(S.log.add("failed to exportlayer at location "+_file_path,"error"));	
+
+		}else{
+
+			S.log.add("creating txt dimention file "+_file_path+".txt","file")
+			//we create the dimention txt file to be red later at importation step
+			var exported_image = new OO.ImageFile(_file_path);
+			exported_image.create_dimention_txt_file()
+
+		}
+
+
+
+}	
 	function parse_path_object(_file_path){
 	
 		var str = _file_path+''; 

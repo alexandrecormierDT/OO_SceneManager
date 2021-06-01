@@ -17,7 +17,7 @@ OO.SGVersion = function(_S){
 	
 	var movie_upload_bat_file_path = 'P:/pipeline/extra_scripts/python3.x/tbmovieupload/bin/tbmovieupload.bat';
 	var render_and_upload_bat_file_path = "P:/pipeline/alexdev/proto/OO_SceneManager_proto/bin/render_and_upload.bat"
-	var png_upload_bat_file_path = 'P:/pipeline/extra_scripts/python3.x/tbmovieupload/bin/tbmovieupload.bat';
+	var png_upload_bat_file_path = 'P:/pipeline/extra_scripts/python3.x/pnguploader/bin/pngupload.bat';
 	
 	var movie_upload_command = ""; 
 	var render_and_upload_movie_command = ""; 
@@ -161,7 +161,7 @@ OO.SGVersion = function(_S){
 	
 	function format_png_upload_command_string(){
 		
-		png_upload_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+png_file_path+'"  -n "'+version_name+'"    -t "'+task_name +'"  -s  "'+task_status+'" ';
+		png_upload_command = '"'+png_upload_bat_file_path+'" -p "'+project_name+'" -a "'+asset_name+'" -f "'+png_file_path+'"  -n "'+version_name+'"    -t "'+task_name +'"  -s  "'+task_status+'" ';
 	}	
 
 	

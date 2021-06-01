@@ -19,7 +19,7 @@ OO.video_export_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/"
 OO.vault_path = "P:/.vault/billy/";
 OO.bg_preview_path = "P:/projects/billy/pre_shotgun/batch_pool/video/saison1/";
 
-// PIPE COLORS :
+// PIPELINE COLORS :
 
 OO.pipe_colors = {}; 
 OO.pipe_colors.design = ["#246926ff","#4deb53ff"]

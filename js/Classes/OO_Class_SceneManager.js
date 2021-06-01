@@ -24,6 +24,8 @@ OO.SceneManager = function(){
 	
 	
 	this.svg_reader = new SVG_reader(this);
+
+	this.scene_settings = ""; 
 	
 	this.init = function(){
 		
@@ -57,6 +59,34 @@ OO.SceneManager = function(){
 
 	}
 
+	this.reset_resolution = function(){
+
+		scene.setDefaultResolution (1920,1080, 41.112);
+		scene.setFrameRate (25);
+
+	}
+
+	this.multiply_resolution_by = function(_factor){
+
+
+
+		var rx =1920*_factor;
+		var ry =1080*_factor;
+
+		var fov = 41.112
+
+		MessageLog.trace("multiply_resolution_by")
+		MessageLog.trace(_factor)
+		MessageLog.trace(rx )
+		MessageLog.trace(ry )
+		MessageLog.trace(fov)
+
+		scene.setDefaultResolution(rx,ry,fov);
+
+
+
+	}
+
 	this.get_harmony_path = function(){
 
 		return harmony_path;
@@ -72,6 +102,31 @@ OO.SceneManager = function(){
 
 		return xstage_path;
 
+
+	}
+
+
+	//proto
+	this.get_TLM_object_array =  function (){
+
+		var obj_array = []
+
+		for(var f = 0 ; f < frame.numberOf () ; f++ ){
+
+				if(frame.hasTimelineMarker(f)){
+					var obj = {
+						note : frame.timelineMarkerNote (f),
+						exportFrame : frame.timelineMarkerStart (f),
+						exportLength : frame.timelineMarkerLength(f)
+					}
+
+					obj_array.push(obj);
+
+				}
+
+		}
+
+		return obj_array;
 
 	}
 	
