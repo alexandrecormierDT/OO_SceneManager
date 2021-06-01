@@ -34,11 +34,8 @@ OO.PortalManager = function(_S){
 		//add a new portal object to the list. 
 		
 		// init list
-
 		var scene_nodes = OO.doc.root.nodes;
-		
 		this.load_from_node_list(scene_nodes)
-		
 
 	}
 	
@@ -55,17 +52,13 @@ OO.PortalManager = function(_S){
 		for(var p = 0 ; p < list.length ; p++){
 			
 			var current_portal = list[p]; 
-			
 			if(portal_correspond_to_asset(current_portal,_asset)){
-				
 				return current_portal;
-				
 			}
 			
 		}
-		
+
 		return false; 
-		
 		
 	}
 	
@@ -83,7 +76,6 @@ OO.PortalManager = function(_S){
 		if( match == 2){
 			
 			return true
-			
 		}
 		
 		return false;
@@ -202,7 +194,8 @@ OO.PortalManager = function(_S){
 	
 	
 	this.pull = function(_portal,_data_type){
-		
+
+		MessageLog.trace("FUNCTION : "+arguments.callee.name);
 		
 		var pulled_nodes = []; 
 		
@@ -247,6 +240,7 @@ OO.PortalManager = function(_S){
 				// scale the read to fit the original size of the png
 				S.trees.scale_anim_node_to_png_size(png_node.path,final_path)
 
+
 				//different treatment for bg
 				if(portal_sg_asset_type == 'bg'){
 					S.trees.scale_bg_node_to_png_size(png_node.path,final_path)
@@ -254,6 +248,9 @@ OO.PortalManager = function(_S){
 
 				S.log.add("[PORTAL PULL] png node created ","process")
 				S.log.add("[PORTAL PULL] importing png = "+png_node,"process")
+
+
+				MessageLog.trace("positionning the node and renaming it ")
 				
 				//positionning the node and renaming it 
 				png_node.name = _portal.get_code();
@@ -273,29 +270,37 @@ OO.PortalManager = function(_S){
 
 	function pull_tpl(_portal){
 
+		MessageLog.trace("FUNCTION : "+arguments.callee.name);
 
 		var portal_tree  = _portal.get_tree();	
 		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 		var pulled_nodes = []; 
 				
+
 		final_path = _portal.get_path('tpl') ;
+		
+		
 		S.trees.import_tpl_in_group(final_path,portal_group)
 		var tpl_group = S.trees.get_first_sub_group_in_group(portal_group); 
 		
 		if(tpl_group != false){
-		
+			
+			
 			//positionning the nodes 
 			portal_group.multiportIn.linkOutNode(tpl_group,0,0,true);
 			tpl_group.linkOutNode(portal_group.multiportOut,0,0,true);
 			tpl_group.centerAbove(portal_group.multiportOut, 0, -500);
 			node.explodeGroup(tpl_group);
-			S.trees.replace_goup_multiports(portal_group);
-			pulled_nodes = portal_group.nodes;	
+			
+			
+			S.trees.replace_group_multiports(portal_group.path);
 
+			//pulled_nodes = portal_group.nodes;	
+			
 			
 		}
-
-		return pulled_nodes; 
+		
+		//return pulled_nodes; 
 
 	}
 

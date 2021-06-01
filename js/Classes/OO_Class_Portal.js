@@ -45,24 +45,16 @@ OO.Portal = function (){
 
 	
 	var portal_code = null;
-	
 	var portal_sg_asset_type = null
-	
 	var portal_departement = null;
-
 	var portal_tpl_version = null;
-	
 	var portal_status = null; 
-	
 	var portal_paths = [];
-	
 	
 	
 	// TREE
 	var portal_tree = null;
 	
-	
-		
 	
 	//SETTERS
 	
@@ -97,9 +89,6 @@ OO.Portal = function (){
 		portal_tree = _pt;
 		
 	}
-	
-	
-	
 	
 	//GETTERS
 
@@ -160,11 +149,8 @@ OO.Portal = function (){
 		if(portal_paths.hasOwnProperty(_key)){
 
 			var path = portal_paths[_key]; 
-			
 			var slash_split = path.split("/");
-			
 			var file = slash_split[slash_split.length-1]
-			
 			var dir = path.split(file)[0]
 			
 			return dir; 
@@ -177,7 +163,6 @@ OO.Portal = function (){
 	this.path_exist = function(_key){
 		
 		var nfile = new $.oFile(portal_paths[_key] )
-		
 		return nfile.exists;		
 	
 	}

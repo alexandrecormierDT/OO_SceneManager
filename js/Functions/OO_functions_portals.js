@@ -126,11 +126,8 @@ function create_portals(_asset_type){
 
 
 	S.context.set_context_type('Shotgun');	
-	
 	S.context.set_library_path(OO.library_path);	
-	
 	S.context.set_vault_path(OO.vault_path)
-	
 	S.assets.load_breakdown('csv');
 	
 	var target_backdrop = false;
@@ -179,15 +176,9 @@ function create_portals(_asset_type){
 	
 	if(target_composite != undefined){
 		
-		
 		//responability problem 
 		S.portals.reset_list();
-		
 		S.load_asset_portals_by_type(_asset_type);
-		
-		//MessageLog.trace("S.portals.get_list()");
-		//MessageLog.trace(S.portals.get_list());
-	
 		
 		if(_asset_type == "anim"){
 			
@@ -199,19 +190,14 @@ function create_portals(_asset_type){
 			
 		}
 			
-
-		
 		S.place_portal_list_in_setup(point,target_composite);
 		
 	}
 
 	S.log.save();
-	;
 	
 	var log_object = S.log;
 
-
-	
 	return log_object 
 	
 }
@@ -235,8 +221,6 @@ function create_anim_portals(){
 	
 	
 }
-
-
 
 
 function create_master_asset_portal(){
@@ -292,6 +276,12 @@ function create_master_asset_portal(){
 
 
 
+
+
+
+
+
+
 function empty_selected_portals(){
 	
 	var S = new OO.SceneManager();	
@@ -314,22 +304,15 @@ function pull_tpl_by_asset_type(_asset_type){
 	
 	var S = new OO.SceneManager();	
 
-	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_asset_tpl.html");
-	
-	S.context.set_context_type('Shotgun');	
-	
+	S.context.set_context_type('Shotgun');
 	S.context.set_library_path(OO.library_path);	
-	
 	S.context.set_vault_path(OO.vault_path)
-	
 	S.assets.load_breakdown('csv');
 	
 	S.portals.pull_scene_portal_tpl_by_asset_type(_asset_type)
 	
-	;
 	return S.log;
-	
 	
 }
 
@@ -377,35 +360,7 @@ function pull_png_by_asset_type(_asset_type){
 				
 				if(current_portal.png_exist()){
 
-					var png_node = S.portals.pull(current_portal,'png');		
-
-					// should load the path from the portal and not check again with asset context __ weird logic. 
-					
-					var full_svg_path = S.context.get_asset_data_path(linked_asset,"svg");
-
-					// if the bg has cadres that match the shot name. 
-					
-					var bg_cadre = S.load_cadre(full_svg_path);
-					
-					// only for png , the image is scaled automaticly on import
-					// to compensate this we put the image back to its original pixel size with the following code :
-					
-					if(bg_cadre.bg != undefined){
-						
-						S.log.add("[PULL_PNG] reading bg  - "+ bg_cadre.bg.height,"process");
-						S.log.add("[PULL_PNG] reading bg  - "+ bg_cadre.bg.height,"process");
-						
-						var final_sy = bg_cadre.bg.height/1080;
-						
-						var final_sx = final_sy;
-						
-						//INJECT SX
-						png_node.attributes.scale.x.setValue(final_sx);
-						
-						//INJECT SY
-						png_node.attributes.scale.y.setValue(final_sy);				
-					
-					}
+					S.portals.pull(current_portal,'png');		
 
 				}else{
 
@@ -504,7 +459,6 @@ function pull_selected_portals_dialog(){
 	if (dialog.exec()){
 		
 		DATA_TYPE = userType.currentItem;
-		
 		pull_selected_portals_process(DATA_TYPE);
 		
 	}
@@ -518,11 +472,8 @@ function pull_selected_portals_process(_data_type){
 	var S = new OO.SceneManager();	
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_portal.html");
-	
 	S.portals.load_from_node_list(OO.doc.selectedNodes);
-	
 	S.context.set_context_type('Shotgun');	
-
 	S.assets.load_breakdown('csv');
 	
 	var portal_list = S.portals.get_list()
@@ -532,77 +483,13 @@ function pull_selected_portals_process(_data_type){
 			var current_portal =  portal_list[p]
 			
 			//we empty the portal first 
-			
 			S.portals.empty(current_portal);
-			
-			
-			//  !
-			
-			var pulled_nodes = S.portals.pull(current_portal,_data_type);	
-			
-			//after pull code ___ to be cleaned __ should be a separate function
-			
-			if(pulled_nodes != false){
-				
-				switch (_data_type){
-					
-						case "png":
-						
-								// must find a way to get the size of the png in a different manner. without svg
-						
-								var linked_asset = S.assets.get_asset_by_code(current_portal.code);
+			S.portals.pull(current_portal,_data_type);	
 
-								if(linked_asset != false){
-								
-									var full_svg_path = S.context.get_svg_path(linked_asset);
-									
-									// only for png , the image is scaled automaticly on import
-									// to compensate this we put the image back to its original pixel size with the following code :
-									
-									var cadre = S.load_cadre(full_svg_path);
-									
-									if( cadre.bg != undefined){
-										
-										////MessageLog.trace("PNG HEIGHT");
-						
-										////MessageLog.trace(cadre.bg.height);
-										
-										var final_sy = cadre.bg.height/1080;
-										
-										var final_sx = final_sy;
-										
-										//INJECT SX
-										pulled_nodes.attributes.scale.x.setValue(final_sx);
-										
-										//INJECT SY
-										pulled_nodes.attributes.scale.y.setValue(final_sy);				
-									
-									}									
-								
-								}
-						
-
-										
-						
-						break; 
-						
-						case "psd": 
-						
-						
-						break; 
-						
-						case "tpl": 
-						
-						
-						break; 				
-		
-				}
-				
-			}
 	}	
 
 	S.log.save();	
-	;	
+	
 
 	var log_object = S.log;
 	
@@ -618,33 +505,23 @@ function push_selected_portals(_data_type){
 	////MessageLog.trace("PUSH PORTAL FUNCTION");
 	
 	var S = new OO.SceneManager();	
-	
-	
-	
+
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/push_portal.html");
-	
 	S.portals.load_from_node_list(OO.doc.selectedNodes);
-	
 	S.context.set_context_type('Shotgun');	
-	
 	S.assets.load_breakdown('csv');
 	
 	var portal_list = S.portals.get_list()
 
 	for(var p = 0 ; p < portal_list.length; p++){
-		
-		S.context.get_psd_path
-		
+
 		var current_portal = portal_list[p];
-			
-		////MessageLog.trace(current_portal.code);
-		
 		S.portals.push_portal(current_portal,_data_type);
 			
 	}	
 
 	S.log.save();
-	;
+	
 	
 	var log_object = S.log;
 	
@@ -689,14 +566,10 @@ function update_portals_paths_by_type(_asset_type){
 	////MessageLog.trace("update_portals_paths_by_type")
 	
 	var S = new OO.SceneManager();	
-		
 	
 	S.context.set_library_path(OO.library_path);	
-	
 	S.context.set_vault_path(OO.vault_path)
-	
 	S.assets.load_breakdown('csv');
-	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/update_portals_path.html");
 	
 	
@@ -707,7 +580,6 @@ function update_portals_paths_by_type(_asset_type){
 	for(var p = 0 ; p < portal_list.length; p++){
 		
 		var current_portal = portal_list[p]
-		
 		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
 		
 		if(linked_asset != false){
@@ -715,7 +587,6 @@ function update_portals_paths_by_type(_asset_type){
 			if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
 				
 				S.log.add("updating paths of portal - "+current_portal.get_code(),"process");
-				
 				udpate_portal_paths_from_vault(current_portal);
 				
 			}
@@ -725,8 +596,6 @@ function update_portals_paths_by_type(_asset_type){
 	}	
 
 	S.log.save();
-	;
-	
 	var log_object = S.log;
 	
 	return log_object 

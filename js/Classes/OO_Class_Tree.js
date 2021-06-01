@@ -190,6 +190,8 @@ OO.Tree = function(_code,_nodes){
 		
 	this.get_key_node = function(_key){
 		
+		MessageLog.trace("FUNCTION : "+arguments.callee.name);
+		
 		return key_nodes[_key];
 
 	}

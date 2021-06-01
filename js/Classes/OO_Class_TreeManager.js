@@ -1,7 +1,7 @@
 // CLASS OO_TreeManager
 // CLASS OO_TreeManager
 
-////////MessageLog.trace("CLASS OO_TreeManager")
+MessageLog.trace("CLASS OO_TreeManager")
 
 
 /*
@@ -63,13 +63,11 @@ OO.TreeManager = function(_S){
 		if(tree_nodes.length > 0){
 		
 			var node_to_link = tree_nodes[0];
-			
 			var found_top_node = ntree.find_top_node();
 			
 			if(found_top_node != false){
 				
 				ntree.set_top_node(found_top_node);
-				
 				node_to_link = found_top_node;
 			}
 			
@@ -80,26 +78,17 @@ OO.TreeManager = function(_S){
 				ntree.set_bottom_node(found_bottom_node);
 			}		
 
-
-					
 			// parsing node map (list of node with their ids) 
 			
 			var node_map_string = this.stringify_node_list(tree_nodes);
-			
-			
-			
+
 			// adding linking and setting map module 
 			
 			var map_module = this.add_map_module(_code,node_to_link);
-			
 			map_module.name = "TreeMap_"+_code
-			
 			ntree.set_map_module(map_module);
-			
 			ntree.update_map_module("code",_code);
-			
 			ntree.update_map_module("node_list",node_map_string);
-			
 			ntree.update_map_module("node_count",tree_nodes.length);
 				
 				
@@ -413,19 +402,12 @@ OO.TreeManager = function(_S){
 		// read the map_module attribute and instanciate a new tree object with the fetched data. 
 		
 		var tree_code = _map_module.code;
-		
 		var tree_id = _map_module.treeid;
-		
 		var node_list_string = OO.filter_string(_map_module.node_list)
-
 		var id_list = this.parse_node_list(node_list_string);
-		
 		var tree_nodes = this.fetch_nodes_by_id(id_list);
-		
 		var ntree = new OO.Tree(tree_code,tree_nodes); 
-		
 		ntree.set_map_module(_map_module);
-		
 		return ntree;
 		
 	}
@@ -582,18 +564,28 @@ OO.TreeManager = function(_S){
 	}
 	
 	
-	this.replace_goup_multiports = function(_group_scene_path){
+	this.replace_group_multiports = function(_group_scene_path){
+
+		MessageLog.trace("FUNCTION : replace_group_multiports ");
 		
 		var recever_group_object = $.scene.getNodeByPath(_group_scene_path)
 		
+		
 		var multiport_out_object = recever_group_object.multiportOut
 		var multiport_in_object = recever_group_object.multiportIn
+		
 		var multiport_out_linkin_node = multiport_in_object.outs[0]
 		var multiport_in_linkout_node = multiport_out_object.ins[0]
+
+		if(multiport_out_linkin_node != null || multiport_in_linkout_node != null){
 		
-		multiport_in_object.centerAbove(multiport_in_linkout_node, 0, -800);
-		multiport_out_object.centerBelow(multiport_out_linkin_node, 0, 800);
-		
+			multiport_in_object.centerAbove(multiport_in_linkout_node, 0, -800);
+			multiport_out_object.centerBelow(multiport_out_linkin_node, 0, 800);
+
+			S.log.add("no group found in tpl","error");
+
+
+		}
 		
 	}
 		
