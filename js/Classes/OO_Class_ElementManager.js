@@ -24,19 +24,14 @@ OO.ElementManager = function (){
 		if(scene_elements_directory_path != ""){
 		
 			var elements_folder = new $.oFolder(scene_elements_directory_path);
-			
 			var sub_folders = elements_folder.getFolders(); 
 			
 			for(var f = 0 ; f < sub_folders.length ; f++){
 				
 				var current_folder_path = sub_folders[f];
-			
 				var new_element_object = new OO.ElementFolder(current_folder_path);
-				
 				new_element_object.fetch_tvg_files_from_element_folder();
-				
 				MessageLog.trace("ELEMENT ----> "+new_element_object.get_name());
-				
 				element_list.push(new_element_object);					
 						
 

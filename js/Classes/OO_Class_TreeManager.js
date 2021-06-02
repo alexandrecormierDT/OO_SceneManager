@@ -1,11 +1,6 @@
 // CLASS OO_TreeManager
-// CLASS OO_TreeManager
-
-MessageLog.trace("CLASS OO_TreeManager")
-
 
 /*
-
 
 TREE AND NODES SHOULD BE HANDLE IN A CLEANER WAY 
 it's not clear how to find the nodes related to the tree. 
@@ -332,7 +327,7 @@ OO.TreeManager = function(_S){
 	this.get_node_id = function(_node){
 	
 		var onode = OO.doc.getNodeByPath(_node); 
-		
+
 		if(onode.hasOwnProperty('smlayerdid')){
 		
 			return onode.smlayerid;
@@ -348,13 +343,9 @@ OO.TreeManager = function(_S){
 	this.add_key_node_to_tree = function(_key,_node,_tree){
 		
 		var node_id = this.get_node_id(_node);
-		
 		var key_node = {key:_key,node:node_id};
-		
 		var key_node_list = this.parse_key_node_list(_tree.get_key_notes());
-		
 		key_node_list.push(key_node);
-		
 		var key_node_list_string = this.stringify_key_nodes_list(key_node_list);
 		
 	}
@@ -413,17 +404,9 @@ OO.TreeManager = function(_S){
 	}
 	
 	
-	
-	this.fetch_trees_from_nodes = function(){
-		
-		
-		
-	}
-	
 	this.get_all_nodes = function(){
 	
 		var groups_to_analyse = [OO.doc.root]
-		
 		var node_list = []
 		
 		for(var g = 0 ; g < groups_to_analyse.length ; g++){
@@ -448,13 +431,6 @@ OO.TreeManager = function(_S){
 		
 		return node_list;
 		
-		
-	}
-	
-	this.get_all_child_nodes = function(){
-		
-		
-
 	}
 
 	
@@ -462,15 +438,12 @@ OO.TreeManager = function(_S){
 	this.load_trees_from_scene = function(){
 		
 		var scene_nodes = this.get_all_nodes();
-		
 		var scene_map_modules = this.find_map_module_in_nodes(scene_nodes);
 		
 		for(var m = 0 ; m < scene_map_modules.length ; m++){
 			
 			var cur_map_module = scene_map_modules[m];
-				
 			var ntree = this.instaciate_tree_with_map_module(cur_map_module);
-			
 			this.list.push(ntree);
 
 		}		
@@ -496,7 +469,6 @@ OO.TreeManager = function(_S){
 	this.find_node_by_smlayerid = function(_smlayerid){
 		
 		var scene_nodes = OO.doc.root.nodes;
-		
 		for(var n = 0 ; n < scene_nodes.length ; n++){		
 		
 			if(this.get_node_smlayerid(curn) == _smlayerid){
@@ -523,14 +495,9 @@ OO.TreeManager = function(_S){
 		// create a group , import the tpl inside of it and return the nodes contained in this group 
 	
 		S.log.add("importing tpl "+_tpl_file_path,"file");
-			
 		var import_group =  $.scene.root.addNode("GROUP","TEMP"+_tpl_file_path); 	
-		
 		copypaste_tpl_in_group(_tpl_file_path,import_group.path);
-
-
 		var updated_group = $.scene.getNodeByPath(import_group.path)
-		
 		return updated_group.nodes; 
 
 	}	
@@ -680,9 +647,7 @@ OO.TreeManager = function(_S){
 	this.extend_exposition_to_scene_length= function(_onode){
 		
 		var scene_length = scene.getStopFrame()+1
- 
 		var dnode = OO.doc.getNodeByPath(_onode);
-		
 		var drawingAttribute = dnode.attributes.drawing.element
 		
 		for(var f = 0 ; f < scene_length ; f++){
@@ -713,9 +678,7 @@ OO.TreeManager = function(_S){
 		var tpl_name = ""; 
 		
 		selection.addNodeToSelection(_group)
-
 		copyPaste.createTemplateFromSelection(_tpl_name,_path)
-
 		
 		return true; 
 			
@@ -731,10 +694,8 @@ OO.TreeManager = function(_S){
 
 		var last_x = 0; 
 		var last_y = 0;	
-		var last_width = 0; 
-		
-		var padding = 10
-		
+		var last_width = 0;
+		var padding = 10;
 		var total_width;
 		
 		for(var n in node_list){
@@ -750,11 +711,8 @@ OO.TreeManager = function(_S){
 			}else{
 				
 				cn.y = last_y;
-				
 				cn.x = (last_width)+last_x+padding;
-				
 				last_x = cn.x; 
-				
 				last_width = cn.width;
 			
 			}
@@ -773,43 +731,23 @@ OO.TreeManager = function(_S){
 		
 	}
 	
-	
-	//
-	//
-	//	
-	//	                  B G   T R E A T M E N T
-	//	
-	//	
-	
-
-	
 
 	this.arange_psd_node = function(_tree){
 		
 		////////MessageLog.trace("ARRANGE PSD NODES");
 		
 		var reads = _tree.get_reads();
-		
 		var group = _tree.get_parent_group();
-		
-		var width = this.align_nodes(reads);
+		this.align_nodes(reads);
 		
 		var top_peg = group.addNode("PEG",_tree.get_code()+"-P")
-		
 		_tree.set_key_node("top_peg",top_peg);
-		
 		var final_comp = group.addNode("COMPOSITE",_tree.get_code()+"-C");
-		
 		_tree.set_key_node("final_comp",final_comp); 
-		
-		//linkInNode(nodeToLink, ownPort, destPort, createPorts){bool}
 
 		group.multiportIn.linkOutNode(top_peg,0,0,true);
-
 		final_comp.linkOutNode(group.multiportOut,0,0,true);
-		
 		final_comp.attributes.composite_mode.setValue("Pass Through");
-		
 		
 		
 		var z_factor = 0.001;
@@ -819,26 +757,16 @@ OO.TreeManager = function(_S){
 			var cr = reads[r]; 
 			
 			var npeg = group.addNode("PEG",cr.name+"-P",new $.oPoint(cr.x,cr.y-40,0))
-			
-			//linkOutNode(nodeToLink, ownPort, destPort, createPorts){bool}
-			
-			
 			top_peg.linkOutNode(npeg);
-			
 			cr.linkOutNode(final_comp);
 			
 			var Z = (reads.length-r)*z_factor;
 			var Z = (reads.length-r)*z_factor;
 			
 			npeg.linkOutNode(cr);
-			
 			cr.attributes.can_animate.setValue("N");
-			
 			cr.attributes.use_drawing_pivot.setValue("Apply Embedded Pivot on Parent Peg");
-			
-
 			npeg.attributes.position.separate.setValue("On");
-			
 			npeg.attributes.position.z.setValue(Z);
 			
 			_tree.add_node(npeg);
@@ -848,38 +776,27 @@ OO.TreeManager = function(_S){
 		
 
 		top_peg.centerAbove(reads, 0, -200);
-		
 		group.multiportIn.centerAbove(reads, 0, -500);
-		
 		final_comp.centerBelow(reads, 0, 200);
-		
 		group.multiportOut.centerBelow(reads, 0, 500);
-
-		
-		//group.addBackdropToNodes( _tree.get_nodes(), _tree.get_code(), "", new $.oColorValue("#5097D8ff"), 0, 0, 20, 20);
 		
 	}
 	
 	this.put_next_to = function(tree1,tree2,padding){
 		
 		var W = tree1.get_width(); 
-		
 		var X = tree1.get_X()+padding+W; 
-		
 		var Y = tree1.get_Y(); 
-		
 		tree2.moveTo(X,Y);
 		
 	}
 	
-	// on : oNode
+
 	
 	this.add_layout_peg = function(on){
 		
 		var group = on.parent;
-		
 		var npeg = group.addNode("PEG",on.name+"-P",new $.oPoint(on.x,on.y-40,0))
-			
 		npeg.linkOutNode(on);			
 		
 	}
@@ -893,14 +810,8 @@ OO.TreeManager = function(_S){
 	
 	this.scale_to_camera = function(top_peg){
 		
-		var SECU_W = 2111.99;
-		
-		var SECU_H = 1188;			
-	
+		var SECU_W = 2111.99;	
 		var cam_w= 1920;
-		
-		var cam_h =1080;	
-
 		var ratio = cam_w /SECU_W; 
 		
 		//INJECT SX
@@ -916,69 +827,43 @@ OO.TreeManager = function(_S){
 	this.fit_cadre_to_camera = function(top_peg,cadre){
 		
 		if(cadre.hasOwnProperty('rect')==true){
-			
-			////MessageLog.trace("FIT TO CAMERA");
-			
-			////MessageLog.trace("CADRE "+cadre);
-			
-			var EVIL_RATIO = parseFloat(4/3)
 
-			
+
 			// camera dimmentions :
 		
 			var cam_w= 1920;
-			
 			var cam_h =1080;
 			
-
 			
 			// cadre dimmentions :
 			
 			var cad_w = cadre.rect.width
-			
 			var cad_h = cadre.rect.height
 
 
 			// scale ratio between cadre and camera
 
-			var ratio = parseFloat(cam_w / cad_w);
-			
-			var ratio_y = parseFloat(cam_h / cad_h);		
+			var ratio = parseFloat(cam_w / cad_w);	
 			
 
-			
 			// coords of the center of the full bg in camera scale
 			
 					
 			var bg_w = cadre.bg.width 
-			
 			var bg_h = cadre.bg.height
 			
 			// we divide by ratio to get the bg space. 
 			
 			var bg_cx = parseFloat((bg_w/2)) ;
-			
 			var bg_cy = parseFloat((bg_h/2));
-			
-
-
-
-			
 			var cad_x = parseFloat(cadre.rect.x) 
-			
 			var cad_y = parseFloat(cadre.rect.y) 		
-			
-			
 
 
 			// camera_peg 
 			
 			var camera_peg = OO.doc.getNodeByPath("Top/Camera_Peg");
-
-
-			
 			var column3D = get_linked_3D_columns(camera_peg)
-			
 			var next_3d_key = get_next_3Dkey(column3D);
 			
 			// if the camera has no key the coords are probably at 0 but it's not 100% sure.. need to check this. 
@@ -1030,59 +915,44 @@ OO.TreeManager = function(_S){
 			// camera center 
 			
 			var cam_cx = parseFloat(cam_w/2) ;
-			
 			var cam_cy = parseFloat(cam_h/2) ;
 			
 
 			// position of the top up corner of the camera in bg space 
 			
 			var bg_cam_x = parseFloat(bg_cx - cam_cx);
-			
 			var bg_cam_y = parseFloat(bg_cy - cam_cy);
 				
-			
+			 
 			// CALCUL OF THE TRANSFORM 
 			
 			
 			// X
 			
 			var bg_x = (bg_w/2) * ratio; 
-			
 			var cadre_distance_to_center_x = bg_x - (cad_x * ratio) 
-			
 			var cadre_distance_to_cam_x =  cadre_distance_to_center_x - (cam_w / 2)
 			
 			
 			// Y
 			
 			var bg_y = (bg_h/2) * ratio; 
-			
 			var cadre_distance_to_center_y =  bg_y - (cad_y * ratio);
-			
 			var cadre_distance_to_cam_y =  cadre_distance_to_center_y - (cam_h / 2)
 
 			
 			//FINAL SCALE 
 			
 			var final_sx = ratio ;
-			
 			var final_sy = ratio ;
 			
 			// FINAL POSITIONS
 			
-		
-			
-			
 			var RATIO_PIXEL_X = parseFloat(16/(1920/2))
-			
 			var RATIO_PIXEL_Y = parseFloat(12/(1080/2))
 			
-			
-
 			var final_x =  parseFloat(cadre_distance_to_cam_x * RATIO_PIXEL_X) + parseFloat(cam_peg_x);
-			
 			var final_y =  parseFloat(-cadre_distance_to_cam_y * RATIO_PIXEL_Y)+ parseFloat(cam_peg_y);
-			
 			var final_z =  parseFloat(cam_peg_z);
 			
 			
@@ -1240,4 +1110,7 @@ OO.TreeManager = function(_S){
 	
 	
 }
+
+
+MessageLog.trace("CLASS OO_TreeManager")
 

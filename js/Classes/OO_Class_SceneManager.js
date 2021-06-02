@@ -33,6 +33,9 @@ OO.SceneManager = function(){
 		
 	}
 
+
+	this.save_as_
+
 	this.get_unique_id = function(){
 
 		var k = Math.floor(Math.random() * 10000000);

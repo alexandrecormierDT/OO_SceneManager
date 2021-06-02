@@ -1,6 +1,5 @@
 // CLASS OO_Portal
 
-//////MessageLog.trace("CLASS OO_PortalManager")
 
 OO.PortalManager = function(_S){
 	
@@ -342,13 +341,9 @@ OO.PortalManager = function(_S){
 			//MessageLog.trace("PUSH ");
 			
 			var export_path = _portal.get_path(_data_type);
-			
 			var export_folder_path = _portal.get_dir(_data_type);
-			
 			var export_folder_object = new $.oFolder(export_folder_path); 
-			
 			export_folder_object.create()
-			
 			var export_process = false;
 			
 			var portal_tree = _portal.get_tree();
@@ -356,24 +351,18 @@ OO.PortalManager = function(_S){
 			switch (_data_type){
 				
 				case 'psd': 
-				
 
 				break;
 				
 				case 'png': 					
-					
 
 				break;			
 				
 				case 'tpl':
 				
-
 					var tpl_name = _portal.get_code();
 					var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
-
-					
 					S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");
-					
 					export_process = S.trees.export_group_to_path(portal_group,export_folder_path,tpl_name);
 				
 				break;
@@ -392,9 +381,7 @@ OO.PortalManager = function(_S){
 		var all_reads = []
 		var all_pegs = []
 		var all_composites = []
-		
 		var portal_tree = _portal.get_tree()
-		
 		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 		
 		for(var n = 0 ; n < portal_group.nodes.length ; n ++){
@@ -423,7 +410,6 @@ OO.PortalManager = function(_S){
 		for(var n = 0 ; n < all_reads.length ; n ++){
 			
 			var curr = all_reads[n]; 
-			
 			node.deleteNode(curr,true,true); 
 
 		}		
@@ -431,7 +417,6 @@ OO.PortalManager = function(_S){
 		for(var n = 0 ; n < all_pegs.length ; n ++){
 			
 			var curp = all_pegs[n]; 
-			
 			node.deleteNode(curp,true,true); 
 
 		}			
@@ -439,7 +424,6 @@ OO.PortalManager = function(_S){
 		for(var n = 0 ; n < all_composites.length ; n ++){
 			
 			var curc = all_composites[n]; 
-			
 			node.deleteNode(curc,true,true); 
 
 		}		
@@ -468,40 +452,14 @@ OO.PortalManager = function(_S){
 		S.log.add("portal is now empty","process");
 	}
 	
-	this.push= function(type){
-			
-	}  
-	
-	this.clear = function(){
-		
-	}  	
-	
-	
-	// CREATING THE PORTAL TREE
-	
-	
-	
-	
 
-	
-	this.update= function(_portal,_new_values_object){
-		
-		var property_list = Object.getOwnPropertyNames(_new_values_object); 
-		
-		
-		for( var p = 0 ; p < property_list ; p++){
-			
-			//MessageLog.trace(property_list[p]);
-			
-		}
-		
-		
-	}
-	
-	this.remove= function(){
+	this.delete_portal = function(_portal){
 		
 		
 	}
 
   
 }
+
+
+MessageLog.trace("CLASS OO_PortalManager")

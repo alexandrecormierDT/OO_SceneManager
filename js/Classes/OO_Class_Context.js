@@ -631,7 +631,6 @@ OO.Context = function (_S,_type){
 		}			
 		
 		var task_dir_path = VAULT_PATH+"/assets/"+dir_type+"/"+asset_type+"/default/"+asset_code+"/"+task+"/"
-		
 		var task_folder = new $.oFolder(task_dir_path);
 		
 		var return_message = ""; 
@@ -647,7 +646,6 @@ OO.Context = function (_S,_type){
 				if(asked_file!=false){
 				
 					S.log.add("found ( "+asked_file+" ) for asset ( "+asset_code+" ) ","success");
-					
 					return asked_file;
 					
 				}
@@ -697,7 +695,6 @@ OO.Context = function (_S,_type){
 	this.get_task_dirs = function(_dir_path){
 		
 		var dir = new $.oFolder(_dir_path); 
-		
 		var sub_folders = dir.folders;
 		
 		if(sub_folders.length > 0){
@@ -715,11 +712,8 @@ OO.Context = function (_S,_type){
 	this.get_last_publish_dir = function(_dir_path){
 		
 		var dir = new $.oFolder(_dir_path); 
-		
 		var sub_folders = dir.folders;
-		
-		//MessageLog.trace(sub_folders);
-		
+	
 		if(sub_folders.length > 0){
 		
 			return sub_folders[sub_folders.length-1];
@@ -744,12 +738,6 @@ OO.Context = function (_S,_type){
 	this.file_exist = function(path){
 		
 		var f = new $.oFile(path)
-		
-		//OO.log.add(path+" exist ="+f.exists)
-		
-		////MessageLog.trace("FILE CHECK");
-		////MessageLog.trace(path+" exist ="+f.exists);
-		
 		return f.exists;
 		
 	}
@@ -758,7 +746,6 @@ OO.Context = function (_S,_type){
 	this.get_txt_path_from_png_path = function(_png_path){
 
 		var txt_file_path = _png_path+".txt"
-		
 		var txt_file_object = new $.oFile(txt_file_path)
 		
 		if(txt_file_object.exists){
@@ -782,8 +769,6 @@ OO.Context = function (_S,_type){
 		if(txt_file_object.exists){
 
 				var txt_content = txt_file_object.read()
-				//MessageLog.trace(txt_content);
-				//MessageLog.trace(txt_content.split('\n'));
 				
 				var resolution_object = {
 					width: parseFloat(txt_content.split('\n')[0]),
@@ -815,13 +800,8 @@ OO.Context = function (_S,_type){
 	
 	
 	this.get_type_from_asset_code = function(asset_code){
-		
-		////MessageLog.trace("get_type_with_asset_code");
-		
+
 		var short_type = asset_code.split("_")[0];
-		
-		////MessageLog.trace(short_type);
-		
 		var sg_asset_type = "notype";
 		
 		switch(short_type){
@@ -854,9 +834,6 @@ OO.Context = function (_S,_type){
 			break;				
 		}
 		
-		////MessageLog.trace("FOUND TYPE : ");
-		////MessageLog.trace(sg_asset_type);
-		
 		return sg_asset_type;
 		
 	}
@@ -864,11 +841,8 @@ OO.Context = function (_S,_type){
 	this.read_episode_from_bg_code = function (bg_code){
 		
 		var split_underscore = bg_code.split("_");
-		
 		var shot_code = split_underscore[1];
-		
 		var conformed_shot_code = shot_code.splice(5, 0, "_");
-		
 		return conformed_shot_code;
 
 	}
@@ -893,12 +867,7 @@ OO.Context = function (_S,_type){
 	
 	this.get_asset_code_without_type = function(asset_code){
 		
-		// CHANGE   "bg_ep102pl022_ded_ext"   TO   "ep102pl022_ded_ext"  
-		
-		////MessageLog.trace("get_asset_code_without_type");
-		
 		var split1 =  asset_code.split("_");
-		
 		var result = ""; 
 		
 		for(var i = 0 ; i < split1.length ; i++){
