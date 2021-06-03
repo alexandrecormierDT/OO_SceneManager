@@ -113,9 +113,6 @@ function create_empty_portal(){
 
 } 
 
-
-// ASSET PORTALS 
-
 function create_portals(_asset_type){
 	
 	var S = new OO.SceneManager();	
@@ -272,31 +269,6 @@ function create_master_asset_portal(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-function empty_selected_portals(){
-	
-	var S = new OO.SceneManager();	
-	S.portals.load_from_node_list(OO.doc.selectedNodes);
-	var portal_list = S.portals.get_list()
-
-	for(var p = 0 ; p < portal_list.length; p++){
-	
-		var current_portal = portal_list[p]
-		S.portals.empty(current_portal);
-
-		
-	}
-
-}
 
 
 
@@ -529,6 +501,68 @@ function push_selected_portals(_data_type){
 	
 } 
 
+
+
+
+/----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+
+	// WARINING !  this function is runned when publishing an asset scene by jhonie shotgun python script
+
+
+function push_master_asset_portal_to_folder(){
+	
+	// context detection 
+
+	var S = new OO.SceneManager();	
+	
+	S.context.set_context_type('Shotgun');	
+	S.context.set_library_path(OO.library_path);	
+	
+	var master_asset = S.get_scene_master_asset();
+	
+	S.log.add(branch,"branch")
+	S.log.add(master_asset.get_code(),"ASSET_CODE"); 
+	
+	
+	var master_asset_portal = S.portals.get_scene_portal_by_asset(master_asset); 
+	
+	if(master_asset_portal != false){
+		
+		S.portals.push_portal(master_asset_portal,'tpl')
+		var tpl_export_path  = master_asset_portal.get_path('tpl');
+		S.log.add(tpl_export_path ,"PIPELINE");
+		
+	}else{
+		
+		S.log.add("no portal found in the nodeview for  "+master_asset.get_code(),"error");
+	}
+	
+	//LOG
+	
+	S.log.create_new_log_file("P:/projects/billy/logs/push_master_asset_portal.html");
+	S.log.save();	
+	
+	S.log.set_script_tag("OO_push_master_asset_portal_to_folder"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file(); 	
+	
+}
+
+
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+
+
+
+
+
+
+
+
+
 function udpate_portal_paths_from_vault(_portal){
 	
 	var S = new OO.SceneManager();	
@@ -626,65 +660,6 @@ function update_anim_portals_paths(){
 }
 
 
-//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
-//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
-//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
-
-	// WARINING !  this function is runned when publishing an asset scene by jhonie shotgun python script
-
-
-function push_master_asset_portal_to_folder(){
-	
-	// context detection 
-
-	var S = new OO.SceneManager();	
-	
-	S.context.set_context_type('Shotgun');	
-	S.context.set_library_path(OO.library_path);	
-	
-	var master_asset = S.get_scene_master_asset();
-	
-	S.log.add(branch,"branch")
-	S.log.add(master_asset.get_code(),"ASSET_CODE"); 
-	
-	
-	var master_asset_portal = S.portals.get_scene_portal_by_asset(master_asset); 
-	
-	if(master_asset_portal != false){
-		
-		S.portals.push_portal(master_asset_portal,'tpl')
-		var tpl_export_path  = master_asset_portal.get_path('tpl');
-		S.log.add(tpl_export_path ,"PIPELINE");
-		
-	}else{
-		
-		S.log.add("no portal found in the nodeview for  "+master_asset.get_code(),"error");
-	}
-	
-	//LOG
-	
-	S.log.create_new_log_file("P:/projects/billy/logs/push_master_asset_portal.html");
-	S.log.save();	
-	
-	S.log.set_script_tag("OO_push_master_asset_portal_to_folder"); 
-	S.log.create_scene_script_log_file_and_folder(); 
-	S.log.save_scene_script_log_file(); 	
-	
-}
-
-
-//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
-//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
-//----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
-
-
-
-
-
-
-
-
-
 
 
 
@@ -731,3 +706,18 @@ function empty_bg_portals(){
 }
 
 
+function empty_selected_portals(){
+	
+	var S = new OO.SceneManager();	
+	S.portals.load_from_node_list(OO.doc.selectedNodes);
+	var portal_list = S.portals.get_list()
+
+	for(var p = 0 ; p < portal_list.length; p++){
+	
+		var current_portal = portal_list[p]
+		S.portals.empty(current_portal);
+
+		
+	}
+
+}

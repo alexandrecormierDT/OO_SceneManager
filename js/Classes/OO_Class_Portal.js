@@ -166,9 +166,6 @@ OO.Portal = function (){
 		return nfile.exists;		
 	
 	}
-	
-
-	
 
 	// script_module
 	

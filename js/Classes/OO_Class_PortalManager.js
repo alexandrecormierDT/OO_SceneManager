@@ -6,6 +6,7 @@ OO.PortalManager = function(_S){
 	var S = _S;
 	
 	this.creator = new OO.PortalCreator(S); 
+	this.placer = new OO.PortalPlacer(S); 
 	
 	var list = [];
 	
@@ -193,10 +194,12 @@ OO.PortalManager = function(_S){
 	
 	
 	this.pull = function(_portal,_data_type){
-
-		MessageLog.trace("FUNCTION : "+arguments.callee.name);
 		
 		var pulled_nodes = []; 
+
+		S.log.add("[PORTAL PULL]","process")
+		S.log.add(_portal.get_code(),"portal")
+		S.log.add(_data_type,"data_type")
 		
 		if(_portal.path_exist(_data_type)){
 			
@@ -213,7 +216,7 @@ OO.PortalManager = function(_S){
 			}			
 			
 		}else{
-			S.log.add("[PORTAL PULL] data not found "+_portal.get_path(_data_type),"error");
+			S.log.add("[PORTAL PULL] data not found for path "+_portal.get_path(_data_type),"error");
 		}
 
 		return pulled_nodes; 
@@ -229,6 +232,8 @@ OO.PortalManager = function(_S){
 			var portal_tree  = _portal.get_tree();	
 			var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 			var portal_sg_asset_type = _portal.get_sg_asset_type()
+
+			
 
 			final_path = _portal.get_path('png');
 
@@ -457,6 +462,147 @@ OO.PortalManager = function(_S){
 		
 		
 	}
+
+	
+		
+	this.place_portals_in_line_and_connect_to_composite= function(_point,_composite){
+		
+		var portal_list = this.get_list();
+
+		if(portal_list.length > 0){
+			
+			for(var p = 0 ; p < portal_list.length; p++){
+				
+				var cportal = portal_list[p]
+				var cportal_tree = cportal.get_tree(); 
+				
+				if(p > 0){
+					
+					var pportal = portal_list[p-1];
+					S.trees.put_next_to(pportal.get_tree(),cportal.get_tree(),100);
+					
+				}else{
+
+					cportal_tree.moveTo(_point.x,_point.y);
+
+				}
+				
+			}
+			
+			//	ungrouping them 
+			
+			for(var p = 0 ; p < portal_list.length; p++){
+				
+				var cportal = portal_list[p]
+				var cportal_tree = cportal.get_tree(); 
+				cportal_tree.ungroup();
+
+				if(typeof(_composite) != undefined ){
+					var group = OO.doc.getNodeByPath("Top/"+cportal.get_code());
+					if(group != undefined){
+						group.linkOutNode(_composite)				
+					}
+					
+				}
+
+			}
+
+		}		
+		
+	}
+
+	this.load_asset_portals_by_type = function(_asset_type){
+
+		for(var a in S.assets.list){
+			
+			var current_asset = S.assets.list[a]; 
+			
+			var final_psd_path = S.context.get_asset_data_path(current_asset,'psd');
+			var final_png_path = S.context.get_asset_data_path(current_asset,'png');
+			var final_tpl_path = S.context.get_asset_data_path(current_asset,'tpl');
+			var asset_code = current_asset.get_code()
+			var asset_type = current_asset.get_type()
+			
+			if(asset_type == _asset_type || asset_type == "all_type"){
+				
+				this.creator.set_code( asset_code )
+				this.creator.set_sg_asset_type( asset_type )
+				this.creator.set_tpl_path( final_tpl_path )
+				this.creator.set_psd_path( final_psd_path )
+				this.creator.set_png_path( final_png_path )
+				
+				var nportal = this.creator.create_portal(); 
+				
+				if(nportal!=false){
+					
+					this.add(nportal); 
+					
+				}
+				
+			}
+
+		}
+
+	}
+	
+	this.portals_already_in_the_scene = function(_portal){
+		
+		this.portals.load_from_scene();
+
+	}
+	
+	this.get_scene_master_asset = function(){
+		
+		this.context.set_from_scene_path();
+		
+		var scene_master_asset = new OO.Asset({
+			code: S.context.get_master_asset_code(),
+			sg_asset_type:S.context.get_master_sg_asset_type()
+		})
+		
+		return scene_master_asset;
+		
+	}
+	
+	this.create_single_asset_portal = function(_asset,_point,_composite){
+
+		// fetching assets and creating portals; 
+
+			var current_asset  = _asset; 
+			var final_psd_path = S.context.get_asset_data_path(current_asset,'psd');
+			var final_png_path = S.context.get_asset_data_path(current_asset,'png');
+			var final_tpl_path = S.context.get_asset_data_path(current_asset,'tpl');
+			var asset_code = current_asset.get_code()
+			var asset_type = current_asset.get_type()
+			
+			this.creator.set_code( asset_code )
+			this.creator.set_sg_asset_type( asset_type )
+			this.creator.set_tpl_path( final_tpl_path )
+			this.creator.set_psd_path( final_psd_path )
+			this.creator.set_png_path( final_png_path )
+			
+			var nportal = this.creator.create_portal(); 
+			
+			if(nportal!=false){
+				
+				this.add(nportal); 
+				var nportal_tree = nportal.get_tree(); 
+				nportal_tree.moveTo(_point.x,_point.y);
+				nportal_tree.ungroup();
+				var ungrouped_portal_group = OO.doc.getNodeByPath("Top/"+nportal.get_code());
+					
+				if(ungrouped_portal_group != undefined){
+
+					ungrouped_portal_group.linkOutNode(_composite)
+					
+				}					
+				
+				
+			}
+				
+			
+			
+		}
 
   
 }
