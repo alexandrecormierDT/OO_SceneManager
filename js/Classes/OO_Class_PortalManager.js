@@ -38,6 +38,89 @@ OO.PortalManager = function(_S){
 		this.load_from_node_list(scene_nodes)
 
 	}
+
+	this.load_from_scene_by_sg_asset_type = function(_sg_asset_type){
+		
+		var scene_nodes = OO.doc.root.nodes;
+		this.load_from_node_list(scene_nodes)
+
+		var found_portals = [];
+
+		for(var p = 0 ; p < list.length ; p++){
+			
+			var current_portal = list[p]; 
+			if(portal_match_sg_asset_type(current_portal,_sg_asset_type)){
+				found_portals.push(current_portal)
+			}
+			
+		}
+
+		list = found_portals;
+		return found_portals;
+
+	}
+	
+	this.load_from_node_list= function(_node_list){
+		
+		// init list
+		list = [];
+		
+		// Detect the script module with "portal" attributes among the selected nodes and fetch the linked nodes to make the tree, read the script module attributes 
+		//add a new portal object to the list. 
+
+		//we fetch the Portal Script Modules in the selection
+		var scene_PSM = []
+		for(var n = 0 ; n < _node_list.length ; n++){
+			var cnode = OO.doc.getNodeByPath(_node_list[n])
+			if(cnode.type == "SCRIPT_MODULE"){
+				if(cnode.attributes.hasOwnProperty('portal') == true){
+					scene_PSM.push(cnode);
+				};
+			}
+		}
+
+		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
+
+			var cur_script_module = scene_PSM[sm];
+		
+			// CODE,TYPE AND PATHS
+			
+			var tpl_path = OO.filter_string(cur_script_module.tpl_path);
+			var psd_path = OO.filter_string(cur_script_module.psd_path);
+			var png_path = OO.filter_string(cur_script_module.png_path);
+			var svg_path = OO.filter_string(cur_script_module.svg_path);
+			var code = OO.filter_string(cur_script_module.code);
+			var type = OO.filter_string(cur_script_module.sg_asset_type);
+			
+			//PORTAL GROUP
+			var linked_group = OO.doc.getNodeByPath(cur_script_module.linkedInNodes);
+			
+			//PORTAL PEG
+			var linked_peg = OO.doc.getNodeByPath(linked_group.linkedInNodes);
+
+			//TREE
+			var ntree = S.trees.add(code,[]);
+			
+			ntree.set_key_node("PORTAL_GROUP",linked_group);
+			ntree.set_key_node("PORTAL_PEG",linked_peg);
+			ntree.set_key_node("PORTAL_MODULE",cur_script_module);
+
+			var nportal = new OO.Portal();
+			
+			nportal.set_tree(ntree)
+			nportal.set_code(code)
+			nportal.set_sg_asset_type(type)
+			nportal.set_path('tpl',tpl_path)
+			nportal.set_path('png',png_path)
+			nportal.set_path('psd',psd_path)
+			nportal.set_path('svg',svg_path)
+
+			this.add(nportal);
+
+		}
+		
+
+	}
 	
 	this.allready_loaded = function(_portal){
 		
@@ -80,73 +163,10 @@ OO.PortalManager = function(_S){
 		
 		return false;
 		
-		
 	}
 	
 
 	
-	this.load_from_node_list= function(_node_list){
-		
-		// init list
-		
-		list = [];
-		
-		// Detect the script module with "portal" attributes among the selected nodes and fetch the linked nodes to make the tree, read the script module attributes 
-		//add a new portal object to the list. 
-
-		//we fetch the Portal Script Modules in the selection
-		var scene_PSM = []
-		for(var n = 0 ; n < _node_list.length ; n++){
-			var cnode = OO.doc.getNodeByPath(_node_list[n])
-			if(cnode.type == "SCRIPT_MODULE"){
-				if(cnode.attributes.hasOwnProperty('portal') == true){
-					scene_PSM.push(cnode);
-				};
-			}
-			
-		}
-
-		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
-
-			var cur_script_module = scene_PSM[sm];
-		
-			// CODE,TYPE AND PATHS
-			
-			var tpl_path = OO.filter_string(cur_script_module.tpl_path);
-			var psd_path = OO.filter_string(cur_script_module.psd_path);
-			var png_path = OO.filter_string(cur_script_module.png_path);
-			var code = OO.filter_string(cur_script_module.code);
-			var type = OO.filter_string(cur_script_module.sg_asset_type);
-			
-			
-			//PORTAL GROUP
-			var linked_group = OO.doc.getNodeByPath(cur_script_module.linkedInNodes);
-			
-			//PORTAL PEG
-			var linked_peg = OO.doc.getNodeByPath(linked_group.linkedInNodes);
-
-			//TREE
-			var ntree = S.trees.add(code,[]);
-			
-			ntree.set_key_node("PORTAL_GROUP",linked_group);
-			ntree.set_key_node("PORTAL_PEG",linked_peg);
-			ntree.set_key_node("PORTAL_MODULE",cur_script_module);
-
-			var nportal = new OO.Portal();
-			
-			nportal.set_tree(ntree)
-			nportal.set_code(code)
-			nportal.set_sg_asset_type(type)
-			nportal.set_path('tpl',tpl_path)
-			nportal.set_path('png',png_path)
-			nportal.set_path('psd',psd_path)
-
-			this.add(nportal);
-
-		}
-		
-
-	}	
 	
 	this.update_portal_script_module_attributes = function (_portal,_attributes_object){
 		
@@ -154,41 +174,70 @@ OO.PortalManager = function(_S){
 		
 	}
 	
-
 	
-	this.pull_scene_portal_tpl_by_asset_type = function(_sg_asset_type){
+	this.pull_scene_portal_data_by_sg_asset_type = function(_data_type,_sg_asset_type){
 		
-		this.load_from_scene(); 
-		
+		this.load_from_scene_by_sg_asset_type(_sg_asset_type);
 		for(var p = 0 ; p < list.length ; p++){
-			
-			var current_portal = list[p]; 
-			
-			if(portal_match_sg_asset_type(current_portal,_sg_asset_type)){
-				
-				var tpl_group = this.pull(current_portal,'tpl');
-			}
-			
+			this.pull(current_portal,_data_type);
 		}
-		return false; 		
-		
-		
+
 	}
-	
-	
+		
 	
 	function portal_match_sg_asset_type(_portal,_sg_asset_type){
 		
 		var current_type = _portal.get_sg_asset_type(); 
 		var anim_equivalent = ["FX","Character", "Prop","Vehicle"];
 		if(current_type == _sg_asset_type ){
-			
 			return true;
 		}
+
 		if(_sg_asset_type == "anim" && anim_equivalent.indexOf(current_type) != -1){
 			return true;
 		}
+
 		return false; 
+		
+	}
+
+	
+	this.create_single_asset_portal = function(_asset,_point,_composite){
+
+		var current_asset  = _asset; 
+		var final_psd_path = S.context.get_asset_data_path(current_asset,'psd');
+		var final_svg_path = S.context.get_asset_data_path(current_asset,'svg');
+		var final_png_path = S.context.get_asset_data_path(current_asset,'png');
+		var final_tpl_path = S.context.get_asset_data_path(current_asset,'tpl');
+		var asset_code = current_asset.get_code()
+		var asset_type = current_asset.get_type()
+		
+		this.creator.set_code( asset_code )
+		this.creator.set_sg_asset_type( asset_type )
+		this.creator.set_tpl_path( final_tpl_path )
+		this.creator.set_psd_path( final_psd_path )
+		this.creator.set_png_path( final_png_path )
+		this.creator.set_svg_path( final_svg_path )
+		
+		var nportal = this.creator.create_portal(); 
+		
+		if(nportal!=false){
+			
+			this.add(nportal); 
+			var nportal_tree = nportal.get_tree(); 
+			nportal_tree.moveTo(_point.x,_point.y);
+			nportal_tree.ungroup();
+			var ungrouped_portal_group = OO.doc.getNodeByPath("Top/"+nportal.get_code());
+				
+			if(ungrouped_portal_group != undefined){
+
+				ungrouped_portal_group.linkOutNode(_composite)
+				
+			}					
+			
+		}
+			
+		
 		
 	}
 	
@@ -225,15 +274,11 @@ OO.PortalManager = function(_S){
 
 
 
-
-
 	function pull_png(_portal){
 
 			var portal_tree  = _portal.get_tree();	
 			var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 			var portal_sg_asset_type = _portal.get_sg_asset_type()
-
-			
 
 			final_path = _portal.get_path('png');
 
@@ -267,9 +312,6 @@ OO.PortalManager = function(_S){
 			return png_node;	
 
 	}
-
-
-
 
 
 	function pull_tpl(_portal){
@@ -309,8 +351,6 @@ OO.PortalManager = function(_S){
 	}
 
 
-
-
 	function pull_psd(_portal){
 
 
@@ -332,8 +372,6 @@ OO.PortalManager = function(_S){
 		return nodes
 		
 	}	
-
-
 
 
 
@@ -374,8 +412,6 @@ OO.PortalManager = function(_S){
 			}			
 
 			S.log.add("export status "+export_process,"report");
-			
-
 
 	}	
 
@@ -520,6 +556,7 @@ OO.PortalManager = function(_S){
 			var final_psd_path = S.context.get_asset_data_path(current_asset,'psd');
 			var final_png_path = S.context.get_asset_data_path(current_asset,'png');
 			var final_tpl_path = S.context.get_asset_data_path(current_asset,'tpl');
+			var final_svg_path = S.context.get_asset_data_path(current_asset,'svg');
 			var asset_code = current_asset.get_code()
 			var asset_type = current_asset.get_type()
 			
@@ -530,6 +567,7 @@ OO.PortalManager = function(_S){
 				this.creator.set_tpl_path( final_tpl_path )
 				this.creator.set_psd_path( final_psd_path )
 				this.creator.set_png_path( final_png_path )
+				this.creator.set_svg_path( final_svg_path )
 				
 				var nportal = this.creator.create_portal(); 
 				
@@ -552,57 +590,15 @@ OO.PortalManager = function(_S){
 	}
 	
 	this.get_scene_master_asset = function(){
-		
-		this.context.set_from_scene_path();
-		
-		var scene_master_asset = new OO.Asset({
-			code: S.context.get_master_asset_code(),
-			sg_asset_type:S.context.get_master_sg_asset_type()
-		})
-		
+
+		S.context.set_from_scene_path();
+		var scene_master_asset = new OO.Asset(S.context.get_master_asset_code())
+		scene_master_asset.sg_asset_type = S.context.get_master_sg_asset_type(); 
+
 		return scene_master_asset;
 		
 	}
-	
-	this.create_single_asset_portal = function(_asset,_point,_composite){
 
-		// fetching assets and creating portals; 
-
-			var current_asset  = _asset; 
-			var final_psd_path = S.context.get_asset_data_path(current_asset,'psd');
-			var final_png_path = S.context.get_asset_data_path(current_asset,'png');
-			var final_tpl_path = S.context.get_asset_data_path(current_asset,'tpl');
-			var asset_code = current_asset.get_code()
-			var asset_type = current_asset.get_type()
-			
-			this.creator.set_code( asset_code )
-			this.creator.set_sg_asset_type( asset_type )
-			this.creator.set_tpl_path( final_tpl_path )
-			this.creator.set_psd_path( final_psd_path )
-			this.creator.set_png_path( final_png_path )
-			
-			var nportal = this.creator.create_portal(); 
-			
-			if(nportal!=false){
-				
-				this.add(nportal); 
-				var nportal_tree = nportal.get_tree(); 
-				nportal_tree.moveTo(_point.x,_point.y);
-				nportal_tree.ungroup();
-				var ungrouped_portal_group = OO.doc.getNodeByPath("Top/"+nportal.get_code());
-					
-				if(ungrouped_portal_group != undefined){
-
-					ungrouped_portal_group.linkOutNode(_composite)
-					
-				}					
-				
-				
-			}
-				
-			
-			
-		}
 
   
 }

@@ -112,9 +112,7 @@ OO.MasterControler = function (_node_path){
 	this.update_node_attributes = function(){
 		
 		format_ui_data_object()
-
 		format_extra_files_string()
-		
 		node.setTextAttr(node_path,"uiData", frame.current(),ui_data_string);
 		file_column = node.linkedColumn(node_path,"files")
 		column.setEntry(file_column, 0,frame.current(), extra_files_string);
@@ -174,3 +172,5 @@ OO.MasterControler = function (_node_path){
 	}
 	
 } 
+
+MessageLog.trace("Class MasterControler ");

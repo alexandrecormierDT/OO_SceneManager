@@ -1,17 +1,10 @@
-// CLASS OO_Stage
-////MessageLog.trace("CLASS OO_Context")
-
 // CLASS TO HANDLE FILES , PATHS , GLOBAL CONTEXT AND INTERACTIONS
-
-
 OO.Context = function (_S,_type){
 	
 	var CONTEXT_TYPE = _type == undefined ? "Shotgun" : _type;
-	
 	var LIBRARY_PATH = "none";
 	
 	var S = _S;
-	
 	var sanitizer = new OO.Sanitizer();
 	
 	//temporary
@@ -22,7 +15,6 @@ OO.Context = function (_S,_type){
 	var BG_PREVIEW_PATH = "";
 	
 	var VAULT_PATH = ""; 
-
 	
 	this.project ="";
 	this.entity = ""	
@@ -83,7 +75,6 @@ OO.Context = function (_S,_type){
 	
 	this.get_master_asset_code = function(){
 		
-		
 		return this.code; 
 		
 	}
@@ -92,9 +83,7 @@ OO.Context = function (_S,_type){
 
 	this.get_master_sg_asset_type = function(){
 		
-		
 		return this.sg_asset_type; 
-		
 		
 	}
 
@@ -109,35 +98,21 @@ OO.Context = function (_S,_type){
 	this.breakdown_scene_path = function(){
 		
 		var scene_path = scene.currentProjectPathRemapped()
-		
 		var slash_split = scene_path.split("/");
-		
 		return slash_split;
 		
 	}
-	
-	function is_in_shotgun(){
-		
-		
-		
-		
-	}
-	
+
 	function is_inside_the_vault(){
 		
 		var scene_path = scene.currentProjectPathRemapped()
-		
 		var slash_split = scene_path.split("\\");
 
-		
 		if(slash_split[0] == "P:" && slash_split[1] == ".vault"){
-			
 			return true; 
-			
 		}
 		
 		return false;
-				
 		
 	}
 	
@@ -149,21 +124,7 @@ OO.Context = function (_S,_type){
 		
 	}
 	
-
-	// only for shotgun work scenes : 
-	
-	function get_data_from_project_scene_path(){
-		
-		
-	}
-	
-	function get_data_from_vault_scene_path(){
-		
-		
-	}	
-	
 	this.set_from_scene_path = function(){
-		
 		
 		// PATH EXEMPLES
 		
@@ -177,9 +138,7 @@ OO.Context = function (_S,_type){
 		// SHOT
 		
 		// P:/projects/billy/pre_production_test/pipeline_dev/seuqence_test/ep222_pl001/animation/work/a-cormier/toonboom/scenes
-		
 		// 0    1        2        3                4              5             6            7       8     9        10      11
-		
 		
 		// V A U L T
 		
@@ -267,148 +226,78 @@ OO.Context = function (_S,_type){
 					data.user = scene_path[9];				
 					data.software = scene_path[10];				
 					data.scene_folder = scene_path[11];							
-					
 				}
-				
-				
-		
-				
 			}
-			
-	
 
 		return data; 
 
 	}
 	
 	this.get_task = function(){
-	
 		return this.task; 
-		
 	}
 	
-
 	this.get_current_asset = function(){
 		
 		var data = this.set_from_scene_path();
-		
-		var current_asset = new OO.Asset({
-			code: data.code,
-			sg_asset_type: data.sg_asset_type,
-		
-		})
-		
-		//MessageLog.trace(data.code)
-		//MessageLog.trace(data.sg_asset_type)
-		
+		var current_asset = new OO.Asset(data.code);
+		current_asset.sg_asset_type = data.sg_asset_type;
 		return current_asset;
-
 	}
 	
 	
 	this.get_library_asset_path = function(_asset_code,_asset_type){
-		
 		var path =  LIBRARY_PATH+"/"+_departement+"/assets/"+_asset_type+"/"+_asset_code+"/png/"+_asset_code+".png";
-		
 		return path;
-		
 	}
-
 	
 	
 	this.get_episode_from_scene_name = function(){
 		
 		//P:/projects/billy/pre_shotgun/batch_pool/xstages/test_scene/ep104_pl010_animatic_v001-1
-		
 		var scene_split = this.breakdown_scene_path();
-		
 		var scene_name = scene_split[scene_split.length-1] 
-		
 		var name_split = scene_name.split("_");
-		
 		var episode = name_split[0];
-
 		return episode;
+
 	}
 	
 	this.get_shot_code_from_scene_name = function(){
 		
 		//P:/projects/billy/pre_shotgun/batch_pool/xstages/test_scene/ep104_pl010_animatic_v001-1
-		
 		var scene_split = this.breakdown_scene_path();
-		
 		var scene_name = scene_split[scene_split.length-1] 
-		
 		var name_split = scene_name.split("_");
-		
 		var shot_code = name_split[0]+"_"+name_split[1];
-
 		return shot_code;
 	}
 	
 	this.generate_bg_preview_render_path = function(){
-		
 		var scene_name = scene.currentScene();
-		
 		var episode = this.get_episode_from_scene_name();
-		
 		var render_path =BG_PREVIEW_PATH+"/"+episode+"/"+scene_name+".";		
-		
 		return render_path;
-		
 	}
 	
 	this.generate_render_path = function(){
-		
 		var scene_name = scene.currentScene();
-		
 		var render_path =VIDEO_EXPORT_PATH+scene_name+".";
-		
 		return render_path;
-		
 	}	
-	
-	
-	
-	////// REPEAT !! 
-	this.get_shotcode_from_scene_name = function(){
-		
-			//P:/projects/billy/pre_shotgun/batch_pool/xstages/test_scene/ep101_pl023_animatic_v001
-		
-			var scene_path = scene.currentScene().split("/")
-			var scene_name = scene_path[scene_path.length-1]
-			var shotcode = scene_name.split("_")[0]+"_"+scene_name.split("_")[1];
-			////MessageLog.trace("SHOTCODE")
-			////MessageLog.trace(shotcode)
-			return shotcode;
-		
-	}
-	
+
 	this.get_shot = function(){
-
 		return this.shot_code;
-
 	}
 	
 	this.get_episode = function(){
-
 		return this.episode;
-
 	}
 	
 	this.get_asset_code = function(){
-		
 		this.set_from_scene_path();
-		
 		return this.asset_code;
-		
 	}	
-	
-
-	
-	
-	
-
 
 //---------------------------------------------------------------------------------------------------------------------------
 
@@ -421,71 +310,37 @@ OO.Context = function (_S,_type){
 		var asset = _asset != undefined ? _asset : false; 
 		var data_type = _data_type != undefined ? _data_type : ""; 
 		var departement = _departement != undefined ? _departement : "boxanim"; 
-		
 		var asset_type = _asset.get_type();
 		var asset_code = _asset.get_code();	
-		
 		var dir_path = false; 
 		
 		if(asset != false){
-
 			switch (data_type){
-				
 				case "png": 		
-						
 					dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/png/"
-		
-				break;
-				
+					break;
 				case "psd": 	
-				
 					dir_path = PSD_PATH;
-
-				break;		
-				
+					break;		
 				case "tpl": 	
-				
 					dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
-	
-			
-				break;	
-				
+					break;	
 				case "svg":
-
 					dir_path = SVG_PATH;
-
-				break;
-				
+					break;
 			}
-		
 		}
 		
 		return sanitizer.clean_path_slashes(dir_path); 
 		
 	}
 	
-	
-	
-	
-	
-	
-
-	
-	
-//---------------------------------------------------------------------------------------------------------------------------
-	
-	// GET THE PATH OF THE REQUESTED ASSET DATA :
-	
-//---------------------------------------------------------------------------------------------------------------------------
-
 
 	// used in many scripts : 
-	
 	this.get_asset_data_path = function(_asset,_data_type,_departement){
 		
 		var file_path = false; 
-		
-		var asset = _asset != undefined ? _asset : false; 
+		var asset = _asset != undefined ? _asset : false;
 		var data_type = _data_type != undefined ? _data_type : ""; 
 		var departement = _departement != undefined ? _departement : "boxanim"; 
 		
@@ -493,70 +348,39 @@ OO.Context = function (_S,_type){
 	
 			var asset_type = _asset.get_type();
 			var asset_code = _asset.get_code()
-
 			var dir_path = 	this.get_dir_path(asset,data_type,departement);
 			
 			switch (data_type){
 				
-				case "png": 
-
+				case "png":
 					switch (asset_type){
-						
 						case ( "Character" ) : 
 						case ( "Prop" ) : 
 						case ( "Fx" ) : 
-							
 							file_path = dir_path+"/"+asset_code+".png";
-							
-						break; 
-						
+							break; 
 						case ("bg"): 
-
 							file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);	
-
-						break; 
-
+							break; 
 					}
 		
-				
 				break; 
-				
-				case "psd": 
-				
+		
+				case "psd":
 					switch (asset_type){
-						
+						case ("bg"): 
+							file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
+						}
+				break; 	
+				case "svg": 
+					switch (asset_type){
 						case ( "Character" ) : 
 						case ( "Prop" ) : 
 						case ( "Fx" ) : 
-							
-							
-							
 						break; 
-						
-						case ("bg"): 
-							
+						case ("bg"): 				
 							file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
-				
 						}
-	
-					
-				break; 	
-				
-				case "svg": 
-				
-					switch (asset_type){
-						
-					case ( "Character" ) : 
-					case ( "Prop" ) : 
-					case ( "Fx" ) : 
-								
-					break; 
-						
-					case ("bg"): 				
-						
-						file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
-					}
-					
 				break; 			
 				
 				case "tpl": 
@@ -571,31 +395,18 @@ OO.Context = function (_S,_type){
 		return sanitizer.clean_path_slashes(file_path);
 	}
 	
-	
-
-	
 	this.find_file_by_extension = function(_dir_path,_extension){
-		
-			var folder = new $.oFolder(_dir_path)
-			var file_list = folder.getFiles("*."+_extension);
-			
-			//MessageLog.trace(file_list);
-			
-			if(file_list.length == 0){
-			
-				return false;
-				
-			}
-			
-			// return the last file in case the publish folder is a MESS !
 
-			return file_list[file_list.length-1];
-		
+		var folder = new $.oFolder(_dir_path)
+		var file_list = folder.getFiles("*."+_extension);
+		if(file_list.length == 0){
+			return false;
+		}
+		// return the last file in case the publish folder is a MESS !
+		return file_list[file_list.length-1];
 	}
 
-		
-	
-	
+
 	
 	
 	
@@ -610,7 +421,6 @@ OO.Context = function (_S,_type){
 	this.get_last_task_publish = function(_asset_code,_asset_type,_data_type,_task){
 		
 		// we look for publish files in the task directory 
-		
 		var asset_code = _asset_code;
 		var asset_type = _asset_type;
 		var data_type = _data_type;		
@@ -618,46 +428,32 @@ OO.Context = function (_S,_type){
 		var dir_type = _data_type;
 		
 		if(_asset_type == "bg"){
-			
 			asset_type = "BG";
-
 		}
-	
+
 		if(dir_type == "png" || dir_type == "svg"){
-		
 			//all those format are in the psd directory
 			dir_type = "psd"
-			
 		}			
 		
 		var task_dir_path = VAULT_PATH+"/assets/"+dir_type+"/"+asset_type+"/default/"+asset_code+"/"+task+"/"
 		var task_folder = new $.oFolder(task_dir_path);
 		
-		var return_message = ""; 
-		
 		if(task_folder.exists){
 			
 			var latest_publish_dir = this.get_last_publish_dir(task_dir_path)
-			
 			if(latest_publish_dir!=false){
 				
 				var asked_file = this.find_file_by_extension(latest_publish_dir,data_type);
-				
 				if(asked_file!=false){
-				
 					S.log.add("found ( "+asked_file+" ) for asset ( "+asset_code+" ) ","success");
 					return asked_file;
-					
 				}
-				
 			}
-			
 		}
 		
-		
 		return false;
-		
-		
+	
 	}
 	
 	this.find_latest_bg_file_in_vault = function(_asset_code,_data_type){
@@ -666,15 +462,11 @@ OO.Context = function (_S,_type){
 		var data_type = _data_type;
 		var asset_type = "BG";
 
-		//starting at the last task by order of fabrication. 
-
-		
 		var vault_file_path = "";
 
 		for(var i = BG_TASKS.length-1 ; i > 0 ; i --){
 			
 			var current_task = BG_TASKS[i]; 
-			
 			vault_file_path = this.get_last_task_publish(asset_code,asset_type,data_type,current_task)
 			
 			if( vault_file_path != false){
@@ -685,9 +477,7 @@ OO.Context = function (_S,_type){
 		}
 		
 		S.log.add("vault path not found ( "+vault_file_path+" )","error");
-		
 		S.log.add("no published bg ( "+_data_type+" ) found for asset ( "+_asset_code+" )","error");
-		
 		return false;
 		
 	}
@@ -696,15 +486,11 @@ OO.Context = function (_S,_type){
 		
 		var dir = new $.oFolder(_dir_path); 
 		var sub_folders = dir.folders;
-		
+	
 		if(sub_folders.length > 0){
-		
 			return sub_folders;
-		
 		}
-		
 		return false; 		
-		
 	}
 
 	
@@ -715,11 +501,8 @@ OO.Context = function (_S,_type){
 		var sub_folders = dir.folders;
 	
 		if(sub_folders.length > 0){
-		
 			return sub_folders[sub_folders.length-1];
-		
 		}
-		
 		return false; 
 		
 	}
@@ -736,12 +519,9 @@ OO.Context = function (_S,_type){
 //---------------------------------------------------------------------------------------------------------------------------
 
 	this.file_exist = function(path){
-		
 		var f = new $.oFile(path)
 		return f.exists;
-		
 	}
-
 	
 	this.get_txt_path_from_png_path = function(_png_path){
 
@@ -749,16 +529,10 @@ OO.Context = function (_S,_type){
 		var txt_file_object = new $.oFile(txt_file_path)
 		
 		if(txt_file_object.exists){
-			
 			return txt_file_path;
-			
 		}else{
-			
 			return false;  
-			
 		}
-			
-	
 	}
 	
 	
@@ -769,20 +543,15 @@ OO.Context = function (_S,_type){
 		if(txt_file_object.exists){
 
 				var txt_content = txt_file_object.read()
-				
 				var resolution_object = {
 					width: parseFloat(txt_content.split('\n')[0]),
 					height: parseFloat(txt_content.split('\n')[1])
 				}
-				
 				return resolution_object;
 			
 		}else{
-			
 			S.log.add("can't find txt resoltion file ( "+_txt_path+" )","error"); 
-			
 			return false; 
-			
 		}	
 		
 	}
@@ -803,35 +572,24 @@ OO.Context = function (_S,_type){
 
 		var short_type = asset_code.split("_")[0];
 		var sg_asset_type = "notype";
-		
+
 		switch(short_type){
-		
 			case "bg":
-			
 				 sg_asset_type =  "bg";
-			
-			break;
+				break;
 			case "ch":
-			
 				sg_asset_type = "Character";
-			
-			break;			
+				break;			
 			case "p":
-			
 				sg_asset_type = "Posing";
-			
-			break;
+				break;
 			case "pr":
-			
 				sg_asset_type = "Prop";
-			
-			break;			
+				break;			
 			case "fx":
 			case "refx":
-			
 				sg_asset_type = "FX"; 
-			
-			break;				
+				break;				
 		}
 		
 		return sg_asset_type;
@@ -849,11 +607,9 @@ OO.Context = function (_S,_type){
 	
 	this.get_bg_infos_from_name = function(bg_name){
 		
-		
 		// name exemple : bg_ep101pl023_bos_j_a2_chemin_jack
-
 		var firstsplit = bg_name.split("_")[1]
-		
+
 		var result = {
 			bg_type :  bg_name.split("_")[0],			
 			episode :   firstsplit.substring(0, 5),
@@ -879,19 +635,13 @@ OO.Context = function (_S,_type){
 				result +="_"
 				result +=split1[i];
 			}
-			
 		}
-		
-		
 		return result; 
 	}	
 
-		
-		
-	
 }
 
-		
+MessageLog.trace("Class Context");		
 	
 	
   

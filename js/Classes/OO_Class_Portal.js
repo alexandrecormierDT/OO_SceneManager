@@ -171,12 +171,6 @@ OO.Portal = function (){
 	
 	var portal_script_module_object = null; 
 	
-	
-	function add_attributes_to_script_module(_attribute_name){
-		
-		
-	}
-	
 	this.update_script_module_attributes_from_current_instance = function(){
 		
 		var attributes_object = get_attributes_object_from_current_instance()
@@ -209,9 +203,7 @@ OO.Portal = function (){
 		for (var a = 0 ;  a <attributes_names.length ; a++){
 			
 			var cur_attr_name = attributes_names[a]
-			
 			var cur_attr_val = _attributes_object[cur_attr_name]
-			
 			set_script_module_attribute(cur_attr_name,cur_attr_val);
 			
 		}		
@@ -221,11 +213,6 @@ OO.Portal = function (){
 	function set_script_module_attribute(_attr,_value){
 		
 		var portal_script_module_path = portal_tree.get_key_node("PORTAL_MODULE");
-		
-		//MessageLog.trace("portal_script_module_path")
-		
-		//MessageLog.trace(portal_script_module_path)
-		
 		var portal_script_module_object = $.scn.getNodeByPath(portal_script_module_path)
 		
 		if(portal_script_module_object.attributes.hasOwnProperty(_attr)){
@@ -239,16 +226,13 @@ OO.Portal = function (){
 			
 	this.get_backdrop = function (){
 		
-		var scene_backdrops = OO.doc.root.backdrops; 
-		
+		var scene_backdrops = OO.doc.root.backdrops;
 		for (var b = 0 ; b < scene_backdrops.length ; b++){
 		
 			var curb = scene_backdrops[b];
-			
 			if(curb.body == portal_code && curb.title == "PORTAL"){
 				
 				return curb;
-				
 				break;
 				
 			}
@@ -269,7 +253,6 @@ OO.Portal = function (){
 	this.tpl_exist = function(){
 		
 		var tpl = new $.oFile(this.get_path('tpl'))
-		
 		return tpl.exists;
 		
 	}
@@ -277,7 +260,6 @@ OO.Portal = function (){
 	this.psd_exist = function(){
 		
 		var psd = new $.oFile(this.get_path('psd'))
-
 		return psd.exists;
 	}
 	
@@ -285,14 +267,10 @@ OO.Portal = function (){
 	this.png_exist = function(){
 		
 		var png = new $.oFile(this.get_path('png'))
-
 		return png.exists;
 	}
-	
 
-
-
-	
 
 }
 
+MessageLog.trace("Class Portal");

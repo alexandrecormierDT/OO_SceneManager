@@ -278,4 +278,5 @@ OO.SceneManager = function(){
 
 }
 
+MessageLog.trace("Class SceneManager ");
 

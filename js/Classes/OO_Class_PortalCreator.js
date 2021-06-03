@@ -66,24 +66,18 @@ OO.PortalCreator = function(_S){
 		
 		nportal.set_code(current_code)
 		nportal.set_sg_asset_type(current_sg_asset_type)
-		
 		nportal.set_departement(current_departement)
 		nportal.set_path('tpl',current_tpl_path)
 		nportal.set_path('png',current_png_path)
 		nportal.set_path('psd',current_psd_path)
 		nportal.set_path('svg',current_svg_path)
-		
 		nportal.set_tpl_version(current_tpl_version)
 		nportal.set_status(current_status)
 		
-		
-		
 		// IMPORTING THE TPL 
-		
 		var pnodes =  S.trees.import_tpl_in_temp_group(script_module_path);
 
 		// BUILDING THE TREE with its key nodes
-		
 		var ntree = S.trees.add(current_code,pnodes);
 		
 		for (var n in pnodes){
@@ -94,8 +88,6 @@ OO.PortalCreator = function(_S){
 						
 				cn.name = "PORTAL_"+current_code
 				ntree.set_key_node("PORTAL_MODULE",cn);
-
-	 
 			}
 			
 			if(cn.type == "GROUP"){
@@ -115,33 +107,18 @@ OO.PortalCreator = function(_S){
 		} 
 		
 		// CREATING THE BACK DROP 
-		
 		var parent_group = ntree.get_parent_group();
-		
 		var departement_color = get_departement_color()
-
 		var departement_name_upper_case = current_departement.toUpperCase();
-
 		ntree.set_backdrop(parent_group.addBackdropToNodes(pnodes, " < "+departement_name_upper_case+" PORTAL : "+current_code+" > ",current_code,departement_color , 0, 0, 20, 20))
 	
 		// linking the tree to the portal instance
-		
 		nportal.set_tree(ntree)
 		
 		// updating the module now that the script module is created and defined 
-		
 		nportal.update_script_module_attributes_from_current_instance();		
-		
-		var created_portal = nportal;
-		
 		return nportal;
 			
-	}
-	
-	this.get_created_portal = function(){
-		
-		return created_portal;
-		
 	}
 
 	function get_departement_color(){
@@ -199,3 +176,5 @@ OO.PortalCreator = function(_S){
 
   
 }
+
+MessageLog.trace("Class PortalCreator");

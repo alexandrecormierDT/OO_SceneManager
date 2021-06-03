@@ -828,7 +828,6 @@ OO.TreeManager = function(_S){
 		
 		if(cadre.hasOwnProperty('rect')==true){
 
-
 			// camera dimmentions :
 		
 			var cam_w= 1920;

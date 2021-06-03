@@ -59,22 +59,17 @@ function create_empty_portal(){
 	if (dialog.exec()){
 		
 		var asset_code = OO.filter_string(userCode.currentItem);
-		
 		var asset_type = OO.filter_string(userType.currentItem);
-		
 		var departement = OO.filter_string(userDepartement.currentItem);
-		
 		var tpl_version = OO.filter_string(userInputVersion.currentItem);
-		
 		var status = OO.filter_string(userInputStatus.currentItem);
 		
-		var nasset = new OO.Asset({code:asset_code,sg_asset_type:asset_type});
+		var nasset = new OO.Asset(asset_code);
+		nasset.sg_asset_type = asset_type;
 		
 		var final_png_path = S.context.get_asset_data_path(nasset,"png",departement);
 		var final_psd_path = S.context.get_asset_data_path(nasset,"psd",departement);
 		var final_tpl_path = S.context.get_asset_data_path(nasset,"tpl",departement);
-		
-
 		
 		S.log.add('[CREATE PORTAL]','process');
 		S.log.add('[ASSET_CODE] : '+asset_code,'user_input');
@@ -125,7 +120,7 @@ function create_portals(_asset_type){
 	S.context.set_context_type('Shotgun');	
 	S.context.set_library_path(OO.library_path);	
 	S.context.set_vault_path(OO.vault_path)
-	S.assets.load_breakdown('csv');
+	S.breakdown.load_breakdown();
 	
 	var target_backdrop = false;
 	
@@ -720,4 +715,71 @@ function empty_selected_portals(){
 		
 	}
 
+}
+
+
+
+function fit_selected_portals_to_camera(){
+	
+	// loop through bg portals and change thier layout peg transform in order to fit the cadre of the current shot with the scene camera. 
+	
+	var S = new OO.SceneManager();	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/fit_bg_to_camera.html");
+	S.context.set_context_type('Shotgun');	
+	S.context.set_vault_path(OO.vault_path)
+	S.assets.load_breakdown('csv');
+	
+	S.portals.load_from_node_list($.scene.selectedNodes);
+	var portal_list = S.portals.get_list(); 
+	
+	
+	for(var p = 0 ; p < portal_list.length; p++){
+		
+		var current_portal = portal_list[p]
+		S.portals.placer.fit_portal_to_camera(current_portal);
+
+	}	
+
+	//log
+	S.log.save();	
+	S.log.set_script_tag("OO_fit_selected_portals_to_camera"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file();
+	
+}
+
+
+
+function fit_bg_portals_to_camera(){
+	
+	//FIT BG TO CAMERA
+	// loop through bg portals and change thier layout peg transform in order to fit the cadre of the current shot with the scene camera. 
+	
+	var S = new OO.SceneManager();	
+	
+	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/fit_bg_to_camera.html");
+	S.context.set_context_type('Shotgun');	
+	S.context.set_vault_path(OO.vault_path)
+	S.assets.load_breakdown('csv');
+
+	//fetching bg portals
+	S.portals.load_from_scene_by_sg_asset_type('bg');
+	var bg_portal_list = S.portals.get_list(); 
+	
+	for(var p = 0 ; p < bg_portal_list.length; p++){
+
+		//placing portal
+		var current_portal = bg_portal_list[p];
+		S.portals.placer.fit_portal_to_camera(current_portal);
+
+	}	
+	
+	//log
+	S.log.save();	
+	S.log.set_script_tag("OO_fit_bg_to_camera"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file();
+	
+	
 }

@@ -53,14 +53,10 @@ function export_asset_png_process(){
 		
 		var current_portal = portal_list[0];
 		
-		current_asset = new OO.Asset({
-			code: current_portal.get_code(),
-			sg_asset_type:current_portal.get_sg_asset_type()
-		})
-		
+		current_asset = new OO.Asset(current_portal.get_code()); 
+		current_asset.sg_asset_type = current_portal.get_sg_asset_type();
 
 		library_asset_png_path = S.context.get_asset_data_path(current_asset,"png");
-		
 		library_asset_png_folder_path = S.context.get_dir_path(current_asset,"png");
 
 		
