@@ -41,7 +41,6 @@ OO.Breakdown = function(_S){
         
     }
 
-    
     function parse_asset_code_list(_asset_code_list){
         var asset_object_array =[]
         for (var a = 0 ; a < _asset_code_list.length ; a++){
@@ -52,30 +51,11 @@ OO.Breakdown = function(_S){
         return asset_object_array; 
     }
 
-	function parse_assets_objects_from_shot(_shot_code){
-		var asset_object_array=[];
-		S.log.add("[Breakdown] loading asset breakdown for shot "+_shot_code,"info");
-		
-		switch(input_type){
-			case ('rest'):
-				//xzfanakyavvH7&uqhmcwueolr
-			break;
-			case ('csv'):
-				S.log.add("[Breakdown] loading breakdown from "+shot_breakdown_csv_path+" ..." ,"process");
-                var shot_object = parse_csv_and_find_shot(_shot_code);
-                asset_object_array = parse_asset_code_list(shot_object.asset_code_list);
-			break;			
-		}
-        return asset_object_array;
-	}
-
     function parse_shot_csv_and_find_shot(_shot_code){
 
-        var csv_file = new $.oFile(shot_breakdown_csv_path);
+        csv_string = get_shot_csv_content()
+        if(csv_string!=false){
 
-        if(csv_file.exists){
-
-            var csv_string = csv_file.read();
             var line_split = csv_string.split('\n');
 
             for (var l = 1 ; l < line_split.length ; l++){
@@ -104,9 +84,6 @@ OO.Breakdown = function(_S){
 
             }
 
-        }else{
-            
-            S.log.add("[Breakdown] "+ path+" don't exist","error");
         }
         
     }
@@ -115,10 +92,9 @@ OO.Breakdown = function(_S){
 
     function parse_asset_csv_and_find_asset(_asset_code){
 
-        var csv_file = new $.oFile(asset_breakdown_csv_path);
-        if(csv_file.exists){
+        csv_string = get_asset_csv_content()
+        if(csv_string!=false){
 
-            csv_string = csv_file.read()
             var line_split = csv_string.split("\n");
 				
             //loop throught lines
@@ -135,7 +111,7 @@ OO.Breakdown = function(_S){
                     var asset_id = remove_spaces(second_split[1]);
                     var sg_asset_type = remove_spaces(second_split[5]);
                     var project  = second_split[9];
-                    var shots = parse_coma_list_and_remove_spaces(second_split[7]+"");
+                    var shots = parse_coma_list_and_remove_spaces(second_split[7]);
 
                     //instanciating asset object
                     var asset_object = new OO.Asset(_asset_code);
@@ -155,16 +131,21 @@ OO.Breakdown = function(_S){
 
     function parse_asset_csv_to_asset_code_list(){
 
-        var csv_file = new $.oFile(asset_breakdown_csv_path);
         var asset_code_list = []; 
 
-        if(csv_file.exists){
+        csv_string = get_asset_csv_content()
+        if(csv_string!=false){
 
             var line_split = csv_string.split("\n");
 
-            for (var l = 1 ; l < line_split.length ; l++){                                                                          
+            for (var l = 1 ; l < line_split.length ; l++){       
+
                 var second_split = line_split[l].split('"');
+
                 var code = remove_spaces(second_split[3]) 
+
+                MessageLog.trace("code")
+                MessageLog.trace(code)
                 asset_code_list.push(code)
             }
         }
@@ -176,7 +157,32 @@ OO.Breakdown = function(_S){
 		return parse_asset_csv_to_asset_code_list();
 	}
 
+    function get_asset_csv_content(){
+        var csv_file = new $.oFile(asset_breakdown_csv_path);
+        if(csv_file.exists){
+            csv_string = csv_file.read();
+            return  csv_string
 
+        }else{
+            
+            S.log.add("[Breakdown] "+ asset_breakdown_csv_path+" don't exist","error");
+        }
+        return false
+    }
+
+
+    function get_shot_csv_content(){
+        var csv_file = new $.oFile(shot_breakdown_csv_path);
+        if(csv_file.exists){
+            csv_string = csv_file.read();
+            return  csv_string;
+
+        }else{
+            
+            S.log.add("[Breakdown] "+ shot_breakdown_csv_path+" don't exist","error");
+        }
+        return false
+    }
 
     function parse_coma_list_and_remove_spaces(_string){
 
@@ -191,6 +197,7 @@ OO.Breakdown = function(_S){
     }
 
 	function remove_spaces(str){
+        str = str+""
 		return str.replace(/\s/g, '');
 	}
 
@@ -203,6 +210,26 @@ OO.Breakdown = function(_S){
 		return scene_master_asset;
 		
 	}
+
+    this.get_shot_id = function(_code){
+
+        var shot_object =  parse_shot_csv_and_find_shot(_code)
+        if(shot_object!=false){
+         return shot_object.get_id()
+        }
+        return false
+
+    }
+
+    this.get_asset_id = function(_code){
+
+       var asset_object =  parse_asset_csv_and_find_asset(_code)
+       if(asset_object!=false){
+        return asset_object.get_id()
+       }
+       return false
+        
+    }
 
 
 	

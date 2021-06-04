@@ -5,7 +5,7 @@ function add_sub_folder_to_selected_mcs_dialog(){
 	var S = new OO.SceneManager();	
 	
 	S.context = new OO.Context(this,"Shotgun");
-	var asset_code_list = S.assets.get_asset_code_string_list(); 
+	var asset_code_list = S.breakdown.get_asset_code_string_list(); 
 	
 	var selected_nodes = selection.selectedNodes(); 
 	

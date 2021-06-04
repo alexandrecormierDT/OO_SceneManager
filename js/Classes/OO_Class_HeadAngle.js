@@ -1,5 +1,3 @@
-
-
 OO.HeadAngle = function (){
 	
 	var source_group = ""
@@ -20,18 +18,12 @@ OO.HeadAngle = function (){
 		
 		head_layer_path = source_group+"/TETE";
 		
-		MessageLog.trace("head_layer_path");
-		
-		MessageLog.trace(head_layer_path);
-		
 	}
 	
 	this.get_head_angle_at_frame = function(_frame){
 		
 		current_frame = _frame;
-		
 		extract_angle_from_sub_name()
-		
 		return head_angle;
 		
 	}
@@ -40,22 +32,16 @@ OO.HeadAngle = function (){
 	function fetch_head_layer_current_sub_name(){
 		
 		var current_tvg_name = column.getDrawingName(head_layer_drawing_column,current_frame)
-		
 		head_layer_current_sub_name = extract_sub_name_from_tvg_name(current_tvg_name); 
-		
 		MessageLog.trace("head_layer_current_sub_name");
-		
 		MessageLog.trace(head_layer_current_sub_name);
-		
 		
 	}
 	
 	function extract_angle_from_sub_name(){
 		
 		fetch_head_layer_drawing_column()
-		
 		fetch_head_layer_current_sub_name()
-		
 		underscore_split = head_layer_current_sub_name.split("_"); 
 		MessageLog.trace(underscore_split.length);
 		
@@ -67,26 +53,18 @@ OO.HeadAngle = function (){
 			
 			head_angle = head_layer_current_sub_name
 		}
-		
-		MessageLog.trace("head_angle");
-		
-		MessageLog.trace(head_angle);
-		
 	}
 
 	
 	function extract_sub_name_from_tvg_name(tvgname){
 		
 		var split0=tvgname.split('-');
-
 		var split1=split0[1];
-		
 		var result = "";
 
 		if(split1 != "" &&typeof(split1) == "string"){
 			
 			var split2 = split1.split('.')
-
 			result = split2[0]
 			
 		}
@@ -106,9 +84,7 @@ OO.HeadAngle = function (){
 				if(column.type(currentColumn) == "DRAWING"){
 					
 					readColumn = Timeline.layerToColumn(i);
-					
 					head_layer_drawing_column = readColumn; 
-					
 					break;
 					
 				}

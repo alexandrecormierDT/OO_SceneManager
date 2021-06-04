@@ -9,10 +9,17 @@ OO.PortalManager = function(_S){
 	this.fiter = new OO.PortalFiter(S); 
 
 	var portal_objects_array = [];
+
+	//array where portals are store by asset id [ID][PORTAL_OBJECT]
+	var portal_id_table = []
 	
 	this.get_list = function(){return portal_objects_array;}
 	this.reset_list= function(){ portal_objects_array = []; }
-	this.add = function(_portal){portal_objects_array.push(_portal);}
+
+	this.add = function(_portal){
+		portal_id_table[_portal.get_id()] = _portal;
+		portal_objects_array.push(_portal);
+	}
 	
 	this.load_from_scene = function(){
 		
@@ -33,7 +40,6 @@ OO.PortalManager = function(_S){
 		var found_portals = [];
 
 		for(var p = 0 ; p < portal_objects_array.length ; p++){
-			
 			var current_portal = portal_objects_array[p]; 
 			if(portal_match_sg_asset_type(current_portal,_sg_asset_type)){
 				found_portals.push(current_portal)
@@ -105,8 +111,8 @@ OO.PortalManager = function(_S){
 			ntree.set_key_node("PORTAL_PEG",linked_peg);
 			ntree.set_key_node("PORTAL_MODULE",cur_script_module);
 
+			//instanciating portal class
 			var nportal = new OO.Portal();
-			
 			nportal.set_tree(ntree)
 			nportal.set_code(code)
 			nportal.set_sg_asset_type(type)
@@ -119,20 +125,20 @@ OO.PortalManager = function(_S){
 			this.add(nportal);
 
 		}
-		
 		MessageLog.trace("load_from_node_list")
-		
-
 	}
-	
-	this.allready_loaded = function(_portal){}
-	
+
+	//comparing portal ids to see if it's already in the scene
+	this.find_portal_by_asset_id= function(_asset_id){
+		if(portal_id_table[_asset_id] == undefined){
+			return false; 
+		}else{
+			return portal_id_table[_asset_id]
+		}
+	}
+
 	this.get_scene_portal_by_asset =  function(_asset){
-		
-		this.load_from_scene(); 
-		
 		for(var p = 0 ; p < portal_objects_array.length ; p++){
-			
 			var current_portal = portal_objects_array[p]; 
 			if(portal_correspond_to_asset(current_portal,_asset)){
 				return current_portal;
@@ -143,7 +149,6 @@ OO.PortalManager = function(_S){
 	}
 	
 	function portal_correspond_to_asset(_portal,_asset){
-		
 		var match = 0; 
 		if(_portal.get_code() == _asset.get_code() ){
 			match++;
@@ -183,36 +188,43 @@ OO.PortalManager = function(_S){
 	this.create_single_asset_portal = function(_asset,_point,_composite){
 
 		var current_asset  = _asset; 
-		var final_psd_path = S.context.get_asset_data_path(current_asset,'psd');
-		var final_svg_path = S.context.get_asset_data_path(current_asset,'svg');
-		var final_png_path = S.context.get_asset_data_path(current_asset,'png');
-		var final_tpl_path = S.context.get_asset_data_path(current_asset,'tpl');
-		var asset_code = current_asset.get_code()
-		var asset_type = current_asset.get_type()
-		
-		this.creator.set_code( asset_code )
-		this.creator.set_sg_asset_type( asset_type )
-		this.creator.set_tpl_path( final_tpl_path )
-		this.creator.set_psd_path( final_psd_path )
-		this.creator.set_png_path( final_png_path )
-		this.creator.set_svg_path( final_svg_path )
-		
-		var nportal = this.creator.create_portal(); 
-		
-		if(nportal!=false){
-			
-			this.add(nportal); 
-			var nportal_tree = nportal.get_tree(); 
-			nportal_tree.moveTo(_point.x,_point.y);
-			nportal_tree.ungroup();
-			var ungrouped_portal_group = OO.doc.getNodeByPath("Top/"+nportal.get_code());
-				
-			if(ungrouped_portal_group != undefined){
 
-				ungrouped_portal_group.linkOutNode(_composite)
+		if(this.find_portal_by_asset_id(current_asset.get_id()==false)){
+
+			var final_psd_path = S.context.get_asset_data_path(current_asset,'psd');
+			var final_svg_path = S.context.get_asset_data_path(current_asset,'svg');
+			var final_png_path = S.context.get_asset_data_path(current_asset,'png');
+			var final_tpl_path = S.context.get_asset_data_path(current_asset,'tpl');
+			var asset_code = current_asset.get_code()
+			var asset_type = current_asset.get_type()
+			
+			this.creator.set_code( asset_code )
+			this.creator.set_sg_asset_type( asset_type )
+			this.creator.set_tpl_path( final_tpl_path )
+			this.creator.set_psd_path( final_psd_path )
+			this.creator.set_png_path( final_png_path )
+			this.creator.set_svg_path( final_svg_path )
+			
+			var nportal = this.creator.create_portal(); 
+			
+			if(nportal!=false){
 				
-			}					
-		}	
+				this.add(nportal); 
+				var nportal_tree = nportal.get_tree(); 
+				nportal_tree.moveTo(_point.x,_point.y);
+				nportal_tree.ungroup();
+				var ungrouped_portal_group = OO.doc.getNodeByPath("Top/"+nportal.get_code());
+					
+				if(ungrouped_portal_group != undefined){
+	
+					ungrouped_portal_group.linkOutNode(_composite)
+					
+				}					
+			}
+
+		}
+
+	
 	}
 
 
@@ -239,23 +251,26 @@ OO.PortalManager = function(_S){
 			var asset_type = current_asset.get_type()
 			var asset_id = current_asset.get_id()
 
+			
 			if(asset_type == _asset_type || asset_type == "all_type"){
 				
-				this.creator.set_code( asset_code )
-				this.creator.set_sg_asset_type( asset_type )
-				this.creator.set_id( asset_id )
-				this.creator.set_tpl_path( final_tpl_path )
-				this.creator.set_psd_path( final_psd_path )
-				this.creator.set_png_path( final_png_path )
-				this.creator.set_svg_path( final_svg_path )
+				if(this.find_portal_by_asset_id(asset_id)==false){
+
+					this.creator.set_code( asset_code )
+					this.creator.set_sg_asset_type( asset_type )
+					this.creator.set_id( asset_id )
+					this.creator.set_tpl_path( final_tpl_path )
+					this.creator.set_psd_path( final_psd_path )
+					this.creator.set_png_path( final_png_path )
+					this.creator.set_svg_path( final_svg_path )
+					var nportal = this.creator.create_portal(); 
 				
-				var nportal = this.creator.create_portal(); 
-				
-				if(nportal!=false){
-					
-					this.add(nportal); 
-					
+					if(nportal!=false){
+						this.add(nportal);  
+					}
+
 				}
+
 				
 			}
 
@@ -273,7 +288,7 @@ OO.PortalManager = function(_S){
 				var cportal_tree = cportal.get_tree(); 
 				
 				if(p > 0){
-					var pportal = portal_list[p-1];
+					var pportal = portal_objects_array[p-1];
 					S.trees.put_next_to(pportal.get_tree(),cportal.get_tree(),100);
 				}else{
 
@@ -330,7 +345,9 @@ OO.PortalManager = function(_S){
 		S.log.add(_data_type,"data_type")
 		
 		if(_portal.path_exist(_data_type)){
-			
+
+			this.empty_portal(_portal);
+
 			switch (_data_type){
 				case 'psd': 
 					pulled_nodes = pull_psd(_portal)
@@ -488,60 +505,13 @@ OO.PortalManager = function(_S){
 
 	// should be handled by the tree class
 	
-	this.empty = function (_portal){
+	this.empty_portal = function (_portal){
 		
-		var all_reads = []
-		var all_pegs = []
-		var all_composites = []
 		var portal_tree = _portal.get_tree()
 		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
-		
-		for(var n = 0 ; n < portal_group.nodes.length ; n ++){
-			
-			var curn = portal_group.nodes[n]; 
-			
-			if(curn.type !== "MULTIPORT_IN" && curn.type !== "MULTIPORT_OUT" ){
-				
-				if(curn.type == "READ"){
-					
-					all_reads.push(curn.path);
-				}
-				if(curn.type == "PEG"){
-					
-					all_pegs.push(curn.path);
-				}			
-				if(curn.type == "COMPOSITE"){
-					
-					all_composites.push(curn.path);
-				}	
 
-			}
-		
-		}
-		
-		for(var n = 0 ; n < all_reads.length ; n ++){
-			
-			var curr = all_reads[n]; 
-			node.deleteNode(curr,true,true); 
+		S.trees.delete_group_nodes(portal_group.path)
 
-		}		
-		
-		for(var n = 0 ; n < all_pegs.length ; n ++){
-			
-			var curp = all_pegs[n]; 
-			node.deleteNode(curp,true,true); 
-
-		}			
-		
-		for(var n = 0 ; n < all_composites.length ; n ++){
-			
-			var curc = all_composites[n]; 
-			node.deleteNode(curc,true,true); 
-
-		}		
-		
-		//until we can delete backdrops.....
-		
 		if(portal_group.backdrops[0] != undefined){
 		
 			portal_group.backdrops[0].x+=2000; 
@@ -551,14 +521,7 @@ OO.PortalManager = function(_S){
 			portal_group.backdrops[0].body = "deleteme";
 		
 		}
-		
-		var pbackdrop = _portal.get_backdrop();
-		
-		if(pbackdrop != false){
-				
-			pbackdrop.color = new $.oColorValue("#000000ff");		
-		
-		}
+
 
 		
 		S.log.add("portal is now empty","process");

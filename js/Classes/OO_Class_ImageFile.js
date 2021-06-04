@@ -72,7 +72,7 @@ OO.ImageFile = function(_image_file_path){
 
         //we parse the dimentions
         var space_split = _content.split(" ");
-        var dimentions = space_split[2]
+        var dimentions = space_split[2]+""
         var x_split = dimentions.split("x")
 
         var obj  = {

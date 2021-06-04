@@ -9,12 +9,10 @@ function create_empty_portal(){
 	
 	var S = new OO.SceneManager();	
 	
-	S.log.set_script_tag("OO_create_empty_portal"); 
-	S.log.create_scene_script_log_file_and_folder()
 	S.context.set_library_path(OO.library_path);
 	S.context.set_vault_path(OO.vault_path);
 	
-	var asset_code_list = S.assets.get_asset_code_string_list(); 
+	var asset_code_list = S.breakdown.get_asset_code_string_list(); 
 	
 	var dialog = new Dialog();
 	dialog.title = "CREATE PORTAL";
@@ -39,7 +37,7 @@ function create_empty_portal(){
 	userDepartement.label = "Departement"
 	userDepartement.editable = true;
 	userDepartement.itemList = ["design", "rig", "anim","bg","layout","boxanim"];
-	userDepartement.currentItem = [""];
+	userDepartement.currentItem = ["boxanim"];
 	dialog.add( userDepartement );
 	
 	var userInputVersion = new ComboBox();
@@ -58,23 +56,32 @@ function create_empty_portal(){
 	
 	if (dialog.exec()){
 		
+		//filtering user input
 		var asset_code = OO.filter_string(userCode.currentItem);
 		var asset_type = OO.filter_string(userType.currentItem);
-		var departement = OO.filter_string(userDepartement.currentItem);
+		var departement = userDepartement.currentItem != ""  ? OO.filter_string(userDepartement.currentItem) : "boxanim";
 		var tpl_version = OO.filter_string(userInputVersion.currentItem);
 		var status = OO.filter_string(userInputStatus.currentItem);
 		
+
 		var nasset = new OO.Asset(asset_code);
 		nasset.sg_asset_type = asset_type;
 		
 		var final_png_path = S.context.get_asset_data_path(nasset,"png",departement);
 		var final_psd_path = S.context.get_asset_data_path(nasset,"psd",departement);
 		var final_tpl_path = S.context.get_asset_data_path(nasset,"tpl",departement);
+		var final_svg_path = S.context.get_asset_data_path(nasset,"svg",departement);
 		
 		S.log.add('[CREATE PORTAL]','process');
 		S.log.add('[ASSET_CODE] : '+asset_code,'user_input');
 		S.log.add('[ASSET_TYPE] : '+asset_type,'user_input');
 		S.log.add('[DEPARTEMENT] : '+departement,'user_input');
+
+		var asset_id = S.breakdown.get_asset_id(asset_code)
+
+		if(asset_id == false){
+			asset_id = 00000;
+		}
 		
 		S.portals.creator.set_code( asset_code )
 		S.portals.creator.set_sg_asset_type( asset_type )
@@ -84,21 +91,18 @@ function create_empty_portal(){
 		S.portals.creator.set_png_path( final_png_path )
 		S.portals.creator.set_psd_path( final_psd_path )
 		S.portals.creator.set_tpl_path( final_tpl_path )
+		S.portals.creator.set_svg_path( final_svg_path )
+		S.portals.creator.set_id(asset_id)
 		
 		var nportal = S.portals.creator.create_portal(); 
 		
 		if(nportal!=false){
-			
 			S.portals.add(nportal); 
-			
 		}		
 
 		var nportal_tree = nportal.get_tree(); 
-	
 		nportal_tree.ungroup();
-
 		S.log.save_scene_script_log_file(); 
-		;		
 		
 		
 	}
@@ -116,7 +120,6 @@ function create_portals_by_asset_type(_asset_type){
 	S.log.set_script_tag("OO_create_empty_portal"); 
 	S.log.create_scene_script_log_file_and_folder()
 
-	
 	var target_backdrop = false;
 	var target_composite = false;
 	
@@ -124,23 +127,17 @@ function create_portals_by_asset_type(_asset_type){
 		
 		case ('bg'):
 		case ('BG'):
-		
 			target_backdrop = S.get_backdrop_by_name('BG');
 			target_composite = OO.doc.getNodeByPath("Top/BG-C");
-		
 		break; 
 		
 		case('Character'):
 		case('Prop'):
 		case('FX'):
 		case('anim'):
-		
 			target_backdrop = S.get_backdrop_by_name('ANIM');
 			target_composite = OO.doc.getNodeByPath("Top/ANIM-C");
-		
 		break;
-		
-
 	}
 	
 	if(target_backdrop == false){
@@ -163,6 +160,10 @@ function create_portals_by_asset_type(_asset_type){
 		S.breakdown.load_current_shot_breakdown();
 
 		S.portals.reset_list();
+		
+		//load scene portal to check if an asset already has a portal
+		S.portals.load_from_scene();
+
 		S.portals.load_asset_portals_from_breakdown_by_type(_asset_type);
 		
 		if(_asset_type == "anim"){

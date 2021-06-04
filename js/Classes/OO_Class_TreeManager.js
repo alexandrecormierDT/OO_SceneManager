@@ -579,15 +579,21 @@ OO.TreeManager = function(_S){
 
 
 	}
+
+	this.delete_group_nodes = function(_group_node_path){
+
+		var sub_nodes = node.subNodes(_group_node_path);
+		var temp_group = node.createGroup(sub_nodes, "group_to_delete");
+		node.deleteNode(temp_group,true,true);
+
+	}
 	
 	
 	
 	this.import_psd_in_group = function(_code,_path,_group){
 		
 		S.log.add("importing psd "+_path,"file")
-
 		var nodes = _group.importPSD(_path,true,false,false,"ASIS");  
-
 		return nodes; 		
 		
 	}	
@@ -599,15 +605,12 @@ OO.TreeManager = function(_S){
 
 		var dimention_object = png_image_object.get_dimention_object();
 		var final_sy = parseFloat(dimention_object.height/1080)
-
 		var final_sx = final_sy;
 			
 		//changin node scale
 		node.setTextAttr(_node_path, "SCALE.XY", frame.current(),final_sx);				
 		node.setTextAttr(_node_path, "SCALE.X", frame.current(),final_sx);				
 		node.setTextAttr(_node_path, "SCALE.Y", frame.current(),final_sx);		
-
-
 	}
 
 	this.scale_anim_node_to_png_size = function(_node_path,_png_path){
@@ -665,13 +668,6 @@ OO.TreeManager = function(_S){
 			
 		}
 		
-	}
-	
-	
-	this.delete_nodes = function(_node_path_list){
-
-
-
 	}
 	
 	

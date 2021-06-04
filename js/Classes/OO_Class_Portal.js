@@ -104,6 +104,10 @@ OO.Portal = function (){
 	this.get_code = function(){
 		return portal_code;
 	}
+
+	this.get_id = function(){
+		return portal_id;
+	}
 	
 	this.get_departement = function(){
 		return portal_departement; 
@@ -229,28 +233,17 @@ OO.Portal = function (){
 
 			
 	this.get_backdrop = function (){
-		
 		var scene_backdrops = OO.doc.root.backdrops;
 		for (var b = 0 ; b < scene_backdrops.length ; b++){
-		
 			var curb = scene_backdrops[b];
-			if(curb.body == portal_code && curb.title == "PORTAL"){
-				
+			if(curb.body == portal_code){
 				return curb;
-				break;
-				
+				break; 
 			}
-
-		}
-		
+		} 
 		return false;
-		
-		
-		
 	}	
 
-	
-	
 
 	//obsolete
 	
