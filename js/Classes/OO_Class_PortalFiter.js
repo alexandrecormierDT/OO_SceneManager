@@ -1,4 +1,4 @@
-OO.PortalPlacer = function(_S){
+OO.PortalFiter  = function(_S){
 
     var S = _S; 
 
@@ -15,6 +15,7 @@ OO.PortalPlacer = function(_S){
         var portal_svg_path =_portal.get_path('svg');
         S.svg_reader.set_path(portal_svg_path);
         var shot_cadre = S.svg_reader.get_layout_cadre_for_shot(current_shot)
+        var current_portal_tree =_portal.get_tree()
 
         var portal_peg = current_portal_tree.get_key_node("PORTAL_PEG");
 

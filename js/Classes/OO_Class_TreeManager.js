@@ -505,7 +505,6 @@ OO.TreeManager = function(_S){
 	this.import_tpl_in_group = function(_tpl_file_path,_group_scene_path){
 		
 		// should also be in a temp group 
-		
 		copypaste_tpl_in_group(_tpl_file_path,_group_scene_path);
 		
 	}
@@ -533,10 +532,7 @@ OO.TreeManager = function(_S){
 	
 	this.replace_group_multiports = function(_group_scene_path){
 
-		MessageLog.trace("FUNCTION : replace_group_multiports ");
-		
 		var recever_group_object = $.scene.getNodeByPath(_group_scene_path)
-		
 		
 		var multiport_out_object = recever_group_object.multiportOut
 		var multiport_in_object = recever_group_object.multiportIn
@@ -557,17 +553,30 @@ OO.TreeManager = function(_S){
 	}
 		
 	
-	function copypaste_tpl_in_group(tpl_file_path,group_scene_path){
-		
-		//MessageLog.trace("natif_Import_TPL_in_group");
-		var myCopyOptions = copyPaste.getCurrentCreateOptions();
-		var myPasteOptions = copyPaste.getCurrentPasteOptions();
-		
-		myPasteOptions.extendScene = false;
-		var myDragObject = copyPaste.copyFromTemplate(tpl_file_path,0,0,myCopyOptions);
-		copyPaste.pasteNewNodes(myDragObject,group_scene_path,myPasteOptions);
+	function copypaste_tpl_in_group(_tpl_file_path,_group_scene_path){
 
-		return true; 
+		if(_group_scene_path != null){
+
+			var myCopyOptions = copyPaste.getCurrentCreateOptions();
+			var myPasteOptions = copyPaste.getCurrentPasteOptions();
+			
+			myPasteOptions.extendScene = false;
+			var myDragObject = copyPaste.copyFromTemplate(_tpl_file_path,0,0,myCopyOptions);
+			
+			MessageLog.trace("tpl_file_path");
+			MessageLog.trace(_tpl_file_path);
+			MessageLog.trace(_group_scene_path);
+	
+			copyPaste.pasteNewNodes(myDragObject,_group_scene_path,myPasteOptions);
+	
+			return true; 
+
+		}
+
+		MessageLog.trace("[copypaste_tpl_in_group]  group error "+_group_scene_path)
+		return false; 
+
+
 
 	}
 	
@@ -627,7 +636,7 @@ OO.TreeManager = function(_S){
 		
 		if(png_file_object.exists){
 
-			var png_node = OO.doc.getNodeByPath(_group.importImage(_png_path));
+			var png_node = $.scene.getNodeByPath(_group.importImage(_png_path));
 			node.setLocked(png_node.path, true);
 			S.log.add("import png = "+png_node,"process")
 			this.extend_exposition_to_scene_length(png_node);

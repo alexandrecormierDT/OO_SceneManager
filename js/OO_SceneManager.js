@@ -2,7 +2,7 @@
 
 var OO = {}
 $.batchMode = true;
-OO.doc = $.scn;
+OO.doc = $.scene;
 
 //CLASSES
 

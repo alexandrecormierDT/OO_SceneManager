@@ -45,6 +45,7 @@ OO.Portal = function (){
 
 	
 	var portal_code = null;
+	var portal_id = null;
 	var portal_sg_asset_type = null
 	var portal_departement = null;
 	var portal_tpl_version = null;
@@ -61,7 +62,10 @@ OO.Portal = function (){
 	this.set_code = function(_pc){
 		portal_code = _pc;
 	}	
-	
+	this.set_id = function(_i){
+		portal_id = _i;
+	}	
+		
 	this.set_sg_asset_type = function(_c){
 		portal_sg_asset_type = _c;
 	}	
@@ -174,7 +178,6 @@ OO.Portal = function (){
 	this.update_script_module_attributes_from_current_instance = function(){
 		
 		var attributes_object = get_attributes_object_from_current_instance()
-		
 		this.set_several_script_module_attributes(attributes_object);
 		
 	}
@@ -183,6 +186,7 @@ OO.Portal = function (){
 		
 		var attr_object = {
 			code: portal_code,
+			id: portal_id,
 			tpl_version: portal_tpl_version,
 			sg_asset_type: portal_sg_asset_type,
 			departement: portal_departement,

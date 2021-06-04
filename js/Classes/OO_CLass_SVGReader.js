@@ -56,7 +56,6 @@ OO.SVGReader = function(_S){
 				height:attr.height
 			}			
 			cadre.bg = rect;
-			
 		}
 		
 		S.log.add("[SVGReader] Dimentions du psd","process");
@@ -73,14 +72,13 @@ OO.SVGReader = function(_S){
 			if(group_title=="CADRES"){
 				
 				S.log.add("[SVG] found group : "+group_title,"process");
-				
 				var gimages = cg['image']; 
 				
 				for(var i in gimages){
 					
 					var cimage = gimages[i]; 
 					var image_title = "";
-					var image_attributes = ""
+					var image_attributes = "";
 					
 					if(i == "title"){
 							
@@ -130,11 +128,8 @@ OO.SVGReader = function(_S){
 							
 						cadre.bg = rect;
 					}
-						
 				}				
-				
 			}
-
 		}
 			
 		if(match > 0){
@@ -146,8 +141,8 @@ OO.SVGReader = function(_S){
 			return false ;
 			
 		}
-
 	}
+
 	
 }
 

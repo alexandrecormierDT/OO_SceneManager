@@ -190,3 +190,6 @@ OO.SGVersion = function(_S){
 
 
 }
+
+
+MessageLog.trace("Class SGVersion ");

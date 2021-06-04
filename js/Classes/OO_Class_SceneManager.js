@@ -8,6 +8,7 @@ OO.SceneManager = function(){
 	
 	this.stage = new OO.Stage(this);
 	this.assets = new OO.AssetManager(this);
+	this.breakdown = new OO.Breakdown(this);
 	this.trees = new OO.TreeManager(this);
 	this.views = new OO.ViewManager(this);
 	this.context = new OO.Context(this);

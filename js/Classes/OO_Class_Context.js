@@ -287,10 +287,12 @@ OO.Context = function (_S,_type){
 	}	
 
 	this.get_shot = function(){
+		this.set_from_scene_path();
 		return this.shot_code;
 	}
 	
 	this.get_episode = function(){
+		this.set_from_scene_path();
 		return this.episode;
 	}
 	
@@ -346,8 +348,8 @@ OO.Context = function (_S,_type){
 		
 		if(asset != false){
 	
-			var asset_type = _asset.get_type();
-			var asset_code = _asset.get_code()
+			var asset_type = asset.get_type();
+			var asset_code = asset.get_code()
 			var dir_path = 	this.get_dir_path(asset,data_type,departement);
 			
 			switch (data_type){
@@ -359,7 +361,7 @@ OO.Context = function (_S,_type){
 						case ( "Fx" ) : 
 							file_path = dir_path+"/"+asset_code+".png";
 							break; 
-						case ("bg"): 
+						case ("BG"): 
 							file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);	
 							break; 
 					}
@@ -368,7 +370,7 @@ OO.Context = function (_S,_type){
 		
 				case "psd":
 					switch (asset_type){
-						case ("bg"): 
+						case ("BG"): 
 							file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
 						}
 				break; 	
@@ -378,7 +380,7 @@ OO.Context = function (_S,_type){
 						case ( "Prop" ) : 
 						case ( "Fx" ) : 
 						break; 
-						case ("bg"): 				
+						case ("BG"): 				
 							file_path = this.find_latest_bg_file_in_vault(asset_code,data_type);
 						}
 				break; 			

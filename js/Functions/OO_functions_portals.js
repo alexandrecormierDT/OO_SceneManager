@@ -108,7 +108,7 @@ function create_empty_portal(){
 
 } 
 
-function create_portals(_asset_type){
+function create_portals_by_asset_type(_asset_type){
 	
 	var S = new OO.SceneManager();	
 	
@@ -116,25 +116,15 @@ function create_portals(_asset_type){
 	S.log.set_script_tag("OO_create_empty_portal"); 
 	S.log.create_scene_script_log_file_and_folder()
 
-
-	S.context.set_context_type('Shotgun');	
-	S.context.set_library_path(OO.library_path);	
-	S.context.set_vault_path(OO.vault_path)
-	S.breakdown.load_breakdown();
 	
 	var target_backdrop = false;
-	
 	var target_composite = false;
-	
-	//MessageLog.trace("_asset_type");
-	//MessageLog.trace(_asset_type);
 	
 	switch(_asset_type){
 		
 		case ('bg'):
 		case ('BG'):
 		
-			
 			target_backdrop = S.get_backdrop_by_name('BG');
 			target_composite = OO.doc.getNodeByPath("Top/BG-C");
 		
@@ -159,30 +149,32 @@ function create_portals(_asset_type){
 		
 	}
 
-	var point = {
+	var line_start_point = {
 		x:target_backdrop.x + 400,
 		y:target_backdrop.y + 400 
 	}
 	
-	S.portals.load_from_scene();
-	
 	if(target_composite != undefined){
 		
-		//responability problem 
+		S.context.set_context_type('Shotgun');	
+		S.context.set_library_path(OO.library_path);	
+		S.context.set_vault_path(OO.vault_path)
+
+		S.breakdown.load_current_shot_breakdown();
+
 		S.portals.reset_list();
-		S.load_asset_portals_by_type(_asset_type);
+		S.portals.load_asset_portals_from_breakdown_by_type(_asset_type);
 		
 		if(_asset_type == "anim"){
-			
-			//this is dirty i know
+
 			S.portals.reset_list();
-			S.load_asset_portals_by_type("Character");
-			S.load_asset_portals_by_type("Prop");
-			S.load_asset_portals_by_type("FX");
+			S.portals.load_asset_portals_from_breakdown_by_type("Character");
+			S.portals.load_asset_portals_from_breakdown_by_type("Prop");
+			S.portals.load_asset_portals_from_breakdown_by_type("FX");
 			
 		}
 			
-		S.place_portal_list_in_setup(point,target_composite);
+		S.portals.place_portals_in_line_and_connect_to_composite(line_start_point,target_composite);
 		
 	}
 
@@ -196,7 +188,7 @@ function create_portals(_asset_type){
 
 function create_bg_portals(){
 	
-	var log_object = create_portals('bg')
+	var log_object = create_portals_by_asset_type('BG')
 	
 	log_object.set_script_tag("OO_create_bg_portals"); 
 	log_object.create_scene_script_log_file_and_folder(); 
@@ -205,7 +197,7 @@ function create_bg_portals(){
 
 function create_anim_portals(){
 	
-	var log_object = create_portals('anim')
+	var log_object = create_portals_by_asset_type('anim')
 	
 	log_object.set_script_tag("OO_create_anim_portals"); 
 	log_object.create_scene_script_log_file_and_folder(); 
@@ -222,8 +214,6 @@ function create_master_asset_portal(){
 	var S = new OO.SceneManager();	
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/create_master_asset_portal.html");
-
-	
 	S.context.set_context_type('Shotgun');	
 	S.context.set_library_path(OO.library_path);	
 	S.context.set_vault_path(OO.vault_path)
@@ -232,26 +222,20 @@ function create_master_asset_portal(){
 	var target_composite = false;
 	
 	target_backdrop = S.get_backdrop_by_name('TPL_EXPORT');
-	target_composite = OO.doc.getNodeByPath("Top/TPL_EXPORT_C");	
+	target_composite = $.roor.scene.getNodeByPath("Top/TPL_EXPORT_C");	
 	
 	if(target_backdrop == false){
-		
 		target_backdrop = {x:0,y:0};
-		
 	}
 
 	var point = {
-		
 		x:target_backdrop.x + 400,
 		y:target_backdrop.y + 400 
 	}
 	
 	if(target_composite != undefined){
-		
-		var master_asset = S.get_scene_master_asset();
-		
-		S.create_single_asset_portal(master_asset,point,target_composite)
-		
+		var master_asset = S.breakdown.get_scene_master_asset();
+		S.portals.create_single_asset_portal(master_asset,point,target_composite)
 	}
 
 	S.log.save();	
@@ -265,107 +249,44 @@ function create_master_asset_portal(){
 
 
 
-
+function pull_png_by_asset_type(_asset_type){
+	
+	var S = new OO.SceneManager();	
+	S.portals.pull_scene_portal_data_by_sg_asset_type('png',_asset_type)
+	return S.log;
+	
+} 
 
 function pull_tpl_by_asset_type(_asset_type){
 	
 	var S = new OO.SceneManager();	
-
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_asset_tpl.html");
-	S.context.set_context_type('Shotgun');
-	S.context.set_library_path(OO.library_path);	
-	S.context.set_vault_path(OO.vault_path)
-	S.assets.load_breakdown('csv');
-	
-	S.portals.pull_scene_portal_tpl_by_asset_type(_asset_type)
-	
+	S.portals.pull_scene_portal_data_by_sg_asset_type('tpl',_asset_type)
 	return S.log;
-	
-}
-
-function pull_tpl_anim(){
-	
-	var log_object = pull_tpl_by_asset_type("anim");
-	
-	log_object.set_script_tag("OO_pull_tpl_anim"); 
-	log_object.create_scene_script_log_file_and_folder(); 
-	log_object.save_scene_script_log_file(); 
-	
-}
-
-
-
-
-function pull_png_by_asset_type(_asset_type){
-	
-	////////MessageLog.trace("PULL PSD FUNCTION");
-	
-	var S = new OO.SceneManager();	
-	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_asset_type.html");
-
-	S.context.set_context_type('Shotgun');	
-	S.context.set_library_path(OO.library_path);
-	S.context.set_vault_path(OO.vault_path)
-	S.assets.load_breakdown('csv');
-	S.portals.load_from_scene();
-	
-	var portal_list = S.portals.get_list();
-
-	for(var p = 0 ; p < portal_list.length; p++){
-		
-		var current_portal = portal_list[p]
-		
-		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
-		
-		if(linked_asset != false){
-			
-			//checking asset type
-			if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
-				
-				S.log.add("[PULL_PNG] pulling png of - "+current_portal.get_code(),"process");
-				
-				if(current_portal.png_exist()){
-
-					S.portals.pull(current_portal,'png');		
-
-				}else{
-
-					S.log.add("[PULL_PNG] png not found - "+S.context.get_asset_data_path(linked_asset,"png"),"error");
-
-				}			
-				
-			}
-		
-		}
-		
-
-
-	}	
-	
-	
-
-	S.log.save();
-	
-	
-	var log_object = S.log;
-	
-	return log_object;
 	
 } 
 
 
-function pull_png_bg(){
+function pull_psd_by_asset_type(_asset_type){
 	
-	var log_object = pull_png_by_asset_type("bg");
+	var S = new OO.SceneManager();	
+	S.portals.pull_scene_portal_data_by_sg_asset_type('tpl',_asset_type)
+	return S.log;
 	
-	log_object.set_script_tag("OO_pull_png_bg"); 
+} 
+
+
+
+function pull_bg_portal_png(){
+	
+	var log_object = pull_png_by_asset_type("BG");
+	
+	log_object.set_script_tag("OO_pull_bg_portal_png"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
 	
 }
 
-function pull_png_anim(){
+function pull_anim_portal_png(){
 	
 	var log_object = pull_png_by_asset_type("anim");
 	
@@ -375,33 +296,28 @@ function pull_png_anim(){
 	
 }
 
+function pull_bg_portal_png(){
+	
+	var log_object = pull_png_by_asset_type("BG");
+	
+	log_object.set_script_tag("OO_pull_bg_portal_png"); 
+	log_object.create_scene_script_log_file_and_folder(); 
+	log_object.save_scene_script_log_file(); 
+	
+}
 
-function pull_psd(){
+
+
+function pull_bg_portal_psd(){
 	
 	var S = new OO.SceneManager();	
 	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_psd.html");
-	S.context = new OO.Context(this,"Shotgun");	
-	S.portals.load_from_scene();
-	var portal_list = S.portals.get_list();
+	var log_object = pull_psd_by_asset_type("BG");
+	
+	log_object.set_script_tag("OO_pull_bg_portal_png"); 
+	log_object.create_scene_script_log_file_and_folder(); 
+	log_object.save_scene_script_log_file(); 
 
-	for(var p = 0 ; p < portal_list.length; p++){
-		
-		var current_portal = portal_list[p]
-		
-		if(current_portal.psd_exist()){
-
-			var full_psd_path = current_portal.get_path('psd');
-			////MessageLog.trace(full_psd_path);
-			S.log.add(full_psd_path+" --- > pulling","process");
-			var bg_nodes = S.portals.pull(current_portal,'psd');		
-			S.log.add(full_psd_path+" --- > psd pulled","success");
-		
-		}
-
-	}	
-
-	S.log.save();
 	
 }
 
@@ -424,25 +340,16 @@ function pull_selected_portals_dialog(){
 	dialog.add( userType );		
 	
 	if (dialog.exec()){
-		
 		DATA_TYPE = userType.currentItem;
 		pull_selected_portals_process(DATA_TYPE);
-		
 	}
 	
 }
 
 function pull_selected_portals_process(_data_type){
 	
-	////////MessageLog.trace("PULL PSD FUNCTION");
-	
 	var S = new OO.SceneManager();	
-	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/pull_portal.html");
-	S.portals.load_from_node_list(OO.doc.selectedNodes);
-	S.context.set_context_type('Shotgun');	
-	S.assets.load_breakdown('csv');
-	
+	S.portals.load_from_node_list($.scene.selectedNodes);
 	var portal_list = S.portals.get_list()
 	
 	for(var p = 0 ; p <  portal_list.length; p++){
@@ -457,9 +364,7 @@ function pull_selected_portals_process(_data_type){
 
 	S.log.save();	
 	
-
 	var log_object = S.log;
-	
 	return log_object 
 
 } 
@@ -474,9 +379,10 @@ function push_selected_portals(_data_type){
 	var S = new OO.SceneManager();	
 
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/push_portal.html");
-	S.portals.load_from_node_list(OO.doc.selectedNodes);
+	S.portals.load_from_node_list($.scene.selectedNodes);
 	S.context.set_context_type('Shotgun');	
-	S.assets.load_breakdown('csv');
+	
+	S.breakdown.load_current_shot_breakdown();
 	
 	var portal_list = S.portals.get_list()
 
@@ -492,14 +398,15 @@ function push_selected_portals(_data_type){
 	
 	var log_object = S.log;
 	
-	return log_object 
+
+	return log_object;
 	
 } 
 
 
 
 
-/----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
+
 //----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
 //----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
 
@@ -512,14 +419,10 @@ function push_master_asset_portal_to_folder(){
 
 	var S = new OO.SceneManager();	
 	
-	S.context.set_context_type('Shotgun');	
-	S.context.set_library_path(OO.library_path);	
-	
-	var master_asset = S.get_scene_master_asset();
+	var master_asset = S.breakdown.get_scene_master_asset();
 	
 	S.log.add(branch,"branch")
 	S.log.add(master_asset.get_code(),"ASSET_CODE"); 
-	
 	
 	var master_asset_portal = S.portals.get_scene_portal_by_asset(master_asset); 
 	
@@ -566,9 +469,9 @@ function udpate_portal_paths_from_vault(_portal){
 	
 	S.context.set_vault_path(OO.vault_path)	
 	
-	S.assets.load_breakdown('csv');
+	S.breakdown.load_current_shot_breakdown();
 
-	var linked_asset = S.assets.get_asset_by_code(_portal.get_code());
+	var linked_asset = S.assets.get_asset_object_by_code(_portal.get_code());
 	
 	var path_attributes_object = {
 		psd_path :S.context.get_asset_data_path(linked_asset,"psd"),
@@ -602,14 +505,14 @@ function update_portals_paths_by_type(_asset_type){
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/update_portals_path.html");
 	
 	
-	S.portals.load_from_scene();
-	
-	var portal_list = S.portals.get_list()
+	S.breakdown.load_current_shot_breakdown();
+
+	var portal_list = S.portals.get_list();
 
 	for(var p = 0 ; p < portal_list.length; p++){
 		
 		var current_portal = portal_list[p]
-		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
+		var linked_asset = S.assets.get_asset_object_by_code(current_portal.get_code());
 		
 		if(linked_asset != false){
 
@@ -675,7 +578,7 @@ function empty_portals(_asset_type){
 	
 		var current_portal = portal_list[p]
 		
-		var linked_asset = S.assets.get_asset_by_code(current_portal.get_code());
+		var linked_asset = S.assets.get_asset_object_by_code(current_portal.get_code());
 		
 		if(linked_asset.get_type() == _asset_type){
 			
@@ -704,7 +607,7 @@ function empty_bg_portals(){
 function empty_selected_portals(){
 	
 	var S = new OO.SceneManager();	
-	S.portals.load_from_node_list(OO.doc.selectedNodes);
+	S.portals.load_from_node_list($.scene.selectedNodes);
 	var portal_list = S.portals.get_list()
 
 	for(var p = 0 ; p < portal_list.length; p++){
@@ -757,21 +660,16 @@ function fit_bg_portals_to_camera(){
 	// loop through bg portals and change thier layout peg transform in order to fit the cadre of the current shot with the scene camera. 
 	
 	var S = new OO.SceneManager();	
-	
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/fit_bg_to_camera.html");
-	S.context.set_context_type('Shotgun');	
-	S.context.set_vault_path(OO.vault_path)
-	S.assets.load_breakdown('csv');
 
 	//fetching bg portals
-	S.portals.load_from_scene_by_sg_asset_type('bg');
+	S.portals.load_from_scene_by_sg_asset_type('BG');
 	var bg_portal_list = S.portals.get_list(); 
-	
+
 	for(var p = 0 ; p < bg_portal_list.length; p++){
 
-		//placing portal
+		//moving portal peg
 		var current_portal = bg_portal_list[p];
-		S.portals.placer.fit_portal_to_camera(current_portal);
+		S.portals.fiter.fit_portal_to_camera(current_portal);
 
 	}	
 	

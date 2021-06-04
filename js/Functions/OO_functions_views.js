@@ -39,13 +39,7 @@ function export_asset_png_process(){
 	var S = new OO.SceneManager();
 	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/export_asset_png.html");
-	S.context.set_context_type('Shotgun');	
-	S.context.set_library_path(OO.library_path);
-	S.portals.load_from_node_list(OO.doc.selectedNodes);
-	S.context.set_context_type('Shotgun');	
-	S.assets.load_breakdown('csv');
-	
-	
+	S.portals.load_from_node_list($.scene.selectedNodes);
 	
 	var portal_list = S.portals.get_list(); 
 	

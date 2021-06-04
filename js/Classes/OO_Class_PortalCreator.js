@@ -1,9 +1,6 @@
-// CLASS OO_Portal
-
-//////MessageLog.trace("CLASS OO_PortalManager")
-
 OO.PortalCreator = function(_S){
 	
+	//need evirnoment path
 	var script_module_path = "P:/pipeline/script_modules/Portals/Portal.tpl";
 	
 	var S = _S;
@@ -11,6 +8,7 @@ OO.PortalCreator = function(_S){
 	var default_departement = "boxanim"
 	
 	var current_code = null;
+	var current_id = null;
 	var current_sg_asset_type = null;
 	var current_tpl_path = null;
 	var current_psd_path = null;
@@ -20,14 +18,15 @@ OO.PortalCreator = function(_S){
 	var current_tpl_version = null;		
 	var current_status =  null;
 
-	var created_portal = null; 
-	
 	this.set_sg_asset_type = function(_sat){
 		current_sg_asset_type = _sat
 	}; 
 	
 	this.set_code = function(_c){
 		current_code = _c
+	}; 
+	this.set_id = function(_i){
+		current_id = _i
 	}; 
 	
 	this.set_tpl_path = function(_tp){
@@ -73,6 +72,7 @@ OO.PortalCreator = function(_S){
 		nportal.set_path('svg',current_svg_path)
 		nportal.set_tpl_version(current_tpl_version)
 		nportal.set_status(current_status)
+		nportal.set_id(current_id)
 		
 		// IMPORTING THE TPL 
 		var pnodes =  S.trees.import_tpl_in_temp_group(script_module_path);
@@ -116,7 +116,10 @@ OO.PortalCreator = function(_S){
 		nportal.set_tree(ntree)
 		
 		// updating the module now that the script module is created and defined 
-		nportal.update_script_module_attributes_from_current_instance();		
+		nportal.update_script_module_attributes_from_current_instance();	
+		
+		S.log.add("created portal for asset "+current_code,"success")
+		
 		return nportal;
 			
 	}

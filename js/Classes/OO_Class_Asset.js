@@ -1,5 +1,5 @@
 OO.Asset = function(_asset_code){
-
+	MessageLog.trace("New Object Asset ");
 	this.code=_asset_code;
 	this.id = 0;
 	this.sg_asset_type ="";
@@ -17,6 +17,9 @@ OO.Asset = function(_asset_code){
 	}
 	this.get_type = function(){
 		return	this.sg_asset_type;
+	}
+	this.get_lower_case_type = function(){
+		return	this.sg_asset_type.toLowerCase();
 	}
 	this.get_sg_asset_type = function(){
 		return	this.sg_asset_type;

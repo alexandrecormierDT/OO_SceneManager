@@ -1,23 +1,14 @@
 
-
 OO.MasterControler = function (_node_path){
 	
 	var node_path = _node_path
-	
 	var extra_files_string = ""; 
-	
 	var extra_file_script_path = ""; 
-	
-	var extra_file_tbstate_path = ""; 
-
+	var extra_file_tbstate_path = "";
 	var file_column = ""; 
-	
 	var ui_data_object ={}; 
-	
 	var ui_data_string = ""; 
-	
 	var ui_data_poses = ""; 
-	
 	var ui_data_location = ""; 
 	
 	
@@ -51,13 +42,10 @@ OO.MasterControler = function (_node_path){
 	
 	this.show_controls = function(){
 		
-		
 		node.showControls(node_path, true);	
-		
 	}
 	
 	this.hide_controls = function(){
-		
 		
 		node.showControls(node_path, false);	
 		
@@ -69,9 +57,7 @@ OO.MasterControler = function (_node_path){
 		ui_data_string = node.getTextAttr(node_path,frame.current(),"uiData");
 		file_column = node.linkedColumn(node_path,"files")
 		extra_files_string = column.getEntry(file_column,0,frame.current())
-		
 		parse_ui_data_string()
-		
 		parse_extra_files_string()
 		
 	}
@@ -130,13 +116,9 @@ OO.MasterControler = function (_node_path){
 	function get_ui_data_poses_path_with_subfolder(_sub_folder_name){
 		
 		parse_ui_data_string()
-		
 		var script_split = ui_data_poses.split("/scripts/"); 
-		
 		var first_part = script_split[0]; 
-		
 		var with_sub_folder = "/scripts/"+_sub_folder_name+"/"+script_split[1];		
-		
 		return with_sub_folder
 		
 	}
@@ -147,13 +129,8 @@ OO.MasterControler = function (_node_path){
 		// scripts/LOOK_QFDOWN.tbState
 		
 		parse_extra_files_string()
-		
 		var script_split = extra_file_tbstate_path.split("scripts/"); 
-		
-		var first_part = script_split[0]; 
-		
 		var with_sub_folder = "scripts/"+_sub_folder_name+"/"+script_split[1];		
-		
 		return with_sub_folder;
 		
 	}
@@ -161,9 +138,7 @@ OO.MasterControler = function (_node_path){
 	this.add_subfolder_to_tbsates_path = function(_sub_folder_name){
 		
 		ui_data_poses = get_ui_data_poses_path_with_subfolder(_sub_folder_name);
-		
 		extra_file_tbstate_path = get_extra_file_tbstate_path_with_subfolder(_sub_folder_name)
-		
 		MessageLog.trace("ui_data_poses");
 		MessageLog.trace(ui_data_poses);
 		MessageLog.trace("extra_file_tbstate_path");

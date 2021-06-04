@@ -5,108 +5,28 @@
 
 OO.Tree = function(_code,_nodes){
 	
-	
 	// realy need to clean the public vars 
 	
 	// META 
-	
 	var tree_code = _code
-	
 	var tree_id = 0;
 
-	
 	// NODES
-	
 	var tree_nodes = _nodes
 
-
 	// KEY NODES 
-	
 	var key_nodes = []
 	
 	// BACKDROP 
-	
 	var tree_backdrop_object = ""; 
-	
-	
-	
-	
-	
-	
 	
 	var map_module = false;
 	
-	
-	// META DATS 
-	
+	// META DATAS 
 	this.get_code = function(){
-		
 		return tree_code;
-		
-	}
-	
-	
-	// MAP MODULE
-
-	this.set_map_module = function(_script_module){
-		
-		map_module  = _script_module;
-		
-	}
-	
-	this.get_map_module = function(){
-
-		return map_module;
-		
 	}
 
-	// update attributes of the map module
-	
-	this.update_map_module = function(_attribute,_value){
-
-		if(map_module != false){
-			
-			if(map_module.hasOwnProperty(_attribute)){
-				
-				map_module.attributes[_attribute].setValue(_value);
-				return true;
-				
-			}
-			
-			
-		}
-		
-		return false; 
-		
-	}
-
-	
-	// NODES
-	
-	this.fetch_node_list = function(){
-		
-		if(this.map_module != false){
-			return map_module.node_list;
-		}
-		
-		return false; 		
-		
-	}
-	
-	//this is bad
-	
-	this.get_node_list = function(){
-		
-		if(this.map_module != false){
-			return map_module.node_list;
-		}
-		
-		return false; 		
-		
-	}	
-	
-
-	
 	this.add_node = function(_node){
 		
 		if(tree_nodes.indexOf(_node) == -1){
@@ -119,19 +39,14 @@ OO.Tree = function(_code,_nodes){
 	this.get_nodes = function(){
 		
 		var onode_list = []; 
-		
 		for(var n = 0 ; n < tree_nodes.length ; n ++){
 			onode_list.push($.scene.getNodeByPath(tree_nodes[n]));
 		}	
-
 		return onode_list;
 		
 	}
 	
 	this.get_reads = function(){
-		
-	// return a list of oNodes
-	
 		var read_list = []; 
 		for(var n = 0 ; n < tree_nodes.length ; n ++){
 			
@@ -139,11 +54,8 @@ OO.Tree = function(_code,_nodes){
 			if(current_onode.type == "READ"){
 				read_list.push(OO.doc.getNodeByPath(tree_nodes[n]));
 			}
-			
 		}	
-
 		return read_list;
-		
 	}
 	
 	this.select_nodes = function(){
@@ -151,13 +63,13 @@ OO.Tree = function(_code,_nodes){
 		for(var n = 0 ; n < tree_nodes.length ; n ++){
 			selection.addNodeToSelection (tree_nodes[n].path)
 		}
-		
 	}
 	
 	
 	// KEY NODES 
-	
 	this.set_key_node = function(_key,_node_path){
+		MessageLog.trace(_key)
+		MessageLog.trace(_node_path)
 		
 		key_nodes[_key] = _node_path;
 		if(tree_nodes.indexOf(_node_path) == -1){
@@ -170,41 +82,26 @@ OO.Tree = function(_code,_nodes){
 	//this will eventualy call the id instead of path
 		
 	this.get_key_node = function(_key){
-		
-		MessageLog.trace("FUNCTION : "+arguments.callee.name);
 		return key_nodes[_key];
 
 	}
 	
-	
 	// ANATOMY METHO
-	
 	this.set_top_node = function(h){
-		
 		this.set_key_node("top_node",h); 
-		
 	}
 	
-	
 	this.set_bottom_node = function(f){
-		
-		this.set_key_node("bottom_node",h); 
-		
+		this.set_key_node("bottom_node",f); 
 	}	
 	
 	this.get_top_node= function(){
-		
-		return OO.doc.getNodeByPath(key_nodes["top_node"]);
-		
+		return OO.doc.getNodeByPath(key_nodes["top_node"])
 	}	
 	
 	this.get_bottom_node = function(){
-		
 		return OO.doc.getNodeByPath(this.get_key_node("bottom_node"));
-		
 	}
-	
-	
 	
 	function find_node_by_prefix(_prefix){
 		
@@ -366,9 +263,7 @@ OO.Tree = function(_code,_nodes){
 			if(tree_backdrop_object != undefined){
 			
 				var diffX =   cn.x - tree_backdrop_object.x
-			
 				var diffY =  cn.y - tree_backdrop_object.y 
-			
 				cn.x = _x + diffX
 				cn.y = _y + diffY
 			
@@ -390,7 +285,6 @@ OO.Tree = function(_code,_nodes){
 		for(var n in tree_nodes){
 		
 			var cn =  OO.doc.getNodeByPath(tree_nodes[n]);
-			
 			cn.x *= sx
 			cn.y *= sy
 			
@@ -410,12 +304,10 @@ OO.Tree = function(_code,_nodes){
 		for (var i = 0 ; i < tree_nodes.length ; i++){
 			
 			var current_node = OO.doc.getNodeByPath(tree_nodes[i]);
-
 			node_name_list.push(current_node);
 			
 		}
 		
-
 		if(this.get_parent_group() != null && this.get_parent_group().path != "Top"){
 	
 			node.explodeGroup(this.get_parent_group().path);
