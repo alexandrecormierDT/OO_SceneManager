@@ -52,7 +52,7 @@ function upload_render_as_SG_version_dialog(){
 	var INPUT_TASK_STATUS= new ComboBox();
 	 INPUT_TASK_STATUS.label = "TASK_STATUS : ";
 	 INPUT_TASK_STATUS.editable = false;
-	 INPUT_TASK_STATUS.itemList = ["psr","ret","pdr","ip"];
+	 INPUT_TASK_STATUS.itemList = ["psr","ret","pdr"];
 	 INPUT_TASK_STATUS.currentItem = input_task_status;
 	d.add(INPUT_TASK_STATUS);		
 	

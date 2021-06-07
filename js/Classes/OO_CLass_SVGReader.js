@@ -43,19 +43,16 @@ OO.SVGReader = function(_S){
 	}
 
 	this.get_layout_cadre_for_shot = function(_shot_code){
-		
-		var cadre = {};
+
+		var cadre = new OO.Cadre(_shot_code)
+
 		var match = 0;
 		var attr = XMLobj._Attribs
 		
 		if(attr.hasOwnProperty('height')==true){
-			
 			match++;
-			var rect = {
-				width:attr.width,
-				height:attr.height
-			}			
-			cadre.bg = rect;
+			cadre.bg.width = attr.width
+			cadre.bg.height = attr.height
 		}
 		
 		S.log.add("[SVGReader] Dimentions du psd","process");
@@ -96,22 +93,18 @@ OO.SVGReader = function(_S){
 						
 						S.log.add("[SVGReader] found layer ( "+image_title+" ) for shot  ( "+_shot_code+" )","process");
 						var attr = image_attributes;
-						
-						var rect = {
-							width:attr.width,
-							height:attr.height,
-							x:attr.x,
-							y:attr.y
-						}
-							
+	
+
+						cadre.rect.x = attr.x;
+						cadre.rect.y = attr.y;
+						cadre.rect.width= attr.width;
+						cadre.rect.height= attr.height;
+
 						S.log.add("[SVGReader] cadre ( "+image_title+" )","process");
 						S.log.add("[SVGReader] width ( "+attr.width+" )","process");
 						S.log.add("[SVGReader] height ( "+attr.height+" )","process");
 						S.log.add("[SVGReader] x ( "+attr.x+" )","process");
 						S.log.add("[SVGReader] y ( "+attr.y+" )","process");
-
-							
-						cadre.rect = rect;
 						
 						match++;
 						
@@ -120,13 +113,15 @@ OO.SVGReader = function(_S){
 					if(cimage.title == "bg_size"){
 						
 						var attr = cimage._Attribs;
-						
-						var rect = {
-							width:attr.width,
-							height:attr.height,
-						}
-							
-						cadre.bg = rect;
+
+						var cadre = new OO.Cadre(cimage.title); 
+			
+						cadre.bg.width = attr.width
+						cadre.bg.height = attr.height
+
+						MessageLog.trace("cadre")
+						MessageLog.trace(cadre)
+						MessageLog.trace(Object.getOwnPropertyNames(cadre))
 					}
 				}				
 			}
@@ -137,6 +132,8 @@ OO.SVGReader = function(_S){
 			return cadre ;
 			
 		}else{
+
+			S.log.add("[SVGReader] no cadre found for ( "+_shot_code+" )","error");
 
 			return false ;
 			

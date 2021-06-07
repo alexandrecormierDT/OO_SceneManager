@@ -316,8 +316,16 @@ OO.Tree = function(_code,_nodes){
 
 
 	}
+
+	this.delete_nodes = function(){
+		MessageLog.trace("---------------tree_nodes")
+		MessageLog.trace(tree_nodes)
+		var temp_group = node.createGroup(tree_nodes, "group_to_delete");
+		node.deleteNode(temp_group,true,true);
+	}
 	
 }
 
+MessageLog.trace("Class Tree")
 
 

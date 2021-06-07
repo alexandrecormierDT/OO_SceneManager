@@ -92,6 +92,14 @@ OO.PortalManager = function(_S){
 			var psd_path = OO.filter_string(cur_script_module.psd_path);
 			var png_path = OO.filter_string(cur_script_module.png_path);
 			var svg_path = OO.filter_string(cur_script_module.svg_path);
+
+			//old bg portals might not have svg path so we assert them py their psd
+			if(svg_path == false || svg_path == ""  || svg_path == "false" ){
+				if(psd_path != false || psd_path != ""  || psd_path != "false" ){
+					svg_path = S.context.convert_psd_path_to_svg_path(psd_path)
+				}
+			}
+
 			var code = OO.filter_string(cur_script_module.code);
 			var type = OO.filter_string(cur_script_module.sg_asset_type);
 			var id = OO.filter_string(cur_script_module.id);
@@ -145,7 +153,6 @@ OO.PortalManager = function(_S){
 			}
 		}
 		return false; 
-		
 	}
 	
 	function portal_correspond_to_asset(_portal,_asset){
@@ -313,13 +320,9 @@ OO.PortalManager = function(_S){
 					if(group != undefined){
 						group.linkOutNode(_composite)				
 					}
-					
 				}
-
 			}
-
 		}		
-		
 	}
 
 
@@ -387,15 +390,18 @@ OO.PortalManager = function(_S){
 				// scale the read to fit the original size of the png
 				S.trees.scale_anim_node_to_png_size(png_node.path,final_path)
 
-
 				//different treatment for bg
-				if(portal_sg_asset_type == 'bg'){
+				if(portal_sg_asset_type == 'BG' || portal_sg_asset_type == 'bg'){
+					S.log.add("[PORTAL PULL] "+portal_sg_asset_type+" detected","process");
+					S.log.add("[PORTAL PULL] scaling node with svg data ","process");
 					S.trees.scale_bg_node_to_png_size(png_node.path,final_path)
+				}else{
+					S.log.add("[PORTAL PULL] scaling node with dimention txt data ","process");
+					S.trees.scale_anim_node_to_png_size(png_node.path,final_path);
 				}
 
 				S.log.add("[PORTAL PULL] png node created ","process")
 				S.log.add("[PORTAL PULL] importing png = "+png_node,"process")
-
 
 				MessageLog.trace("positionning the node and renaming it ")
 				
@@ -443,7 +449,6 @@ OO.PortalManager = function(_S){
 
 	function pull_psd(_portal){
 
-
 		var portal_tree  = _portal.get_tree();	
 		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 				
@@ -471,38 +476,36 @@ OO.PortalManager = function(_S){
 	
 	this.push_portal = function(_portal,_data_type){
 		
-			MessageLog.trace("push_portal");
+		MessageLog.trace("push_portal");
+		
+		var export_path = _portal.get_path(_data_type);
+		var export_folder_path = _portal.get_dir(_data_type);
+		var export_folder_object = new $.oFolder(export_folder_path); 
+		export_folder_object.create()
+		var export_process = false;
+		
+		var portal_tree = _portal.get_tree();
+		
+		switch (_data_type){
 			
-			var export_path = _portal.get_path(_data_type);
-			var export_folder_path = _portal.get_dir(_data_type);
-			var export_folder_object = new $.oFolder(export_folder_path); 
-			export_folder_object.create()
-			var export_process = false;
+			case 'psd': 
+
+			break;
 			
-			var portal_tree = _portal.get_tree();
+			case 'png': 					
+
+			break;			
 			
-			switch (_data_type){
-				
-				case 'psd': 
-
-				break;
-				
-				case 'png': 					
-
-				break;			
-				
-				case 'tpl':
-				
-					var tpl_name = _portal.get_code();
-					var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
-					S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");	
-					export_process = S.trees.export_group_to_path(portal_group,export_folder_path,tpl_name);
-				
-				break;
-			}			
-
-			S.log.add("export status "+export_process,"report");
-
+			case 'tpl':
+			
+				var tpl_name = _portal.get_code();
+				var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
+				S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");	
+				export_process = S.trees.export_group_to_path(portal_group,export_folder_path,tpl_name);
+			
+			break;
+		}			
+		S.log.add("export status "+export_process,"report");
 	}	
 
 	// should be handled by the tree class
@@ -511,7 +514,6 @@ OO.PortalManager = function(_S){
 		
 		var portal_tree = _portal.get_tree()
 		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
-
 		S.trees.delete_group_nodes(portal_group.path)
 
 		if(portal_group.backdrops[0] != undefined){
@@ -523,24 +525,30 @@ OO.PortalManager = function(_S){
 			portal_group.backdrops[0].body = "deleteme";
 		
 		}
-		
 		S.log.add("portal is now empty","process");
-		
 	}
 	
 
 	this.delete_portal = function(_portal){
-		
-		
+		S.log.add("[PortalManager][delete_portal] "+_portal.get_code(),"process");
+		var portal_tree = _portal.get_tree();
+		portal_tree.delete_nodes()
 	}
 
-
+	this.delete_all_scene_portals = function(){
+		this.load_from_scene();
+		MessageLog.trace(portal_objects_array)
+		for(var p = 0 ; p < portal_objects_array.length ; p++){
+			var current_portal = portal_objects_array[p];
+			this.delete_portal(current_portal);
+		}
+	}
 	
 	this.portals_already_in_the_scene = function(_portal){
-		
-		this.portals.load_from_scene();
 
 	}
+
+
 	
 
 

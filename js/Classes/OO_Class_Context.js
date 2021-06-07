@@ -336,6 +336,13 @@ OO.Context = function (_S,_type){
 		return sanitizer.clean_path_slashes(dir_path); 
 		
 	}
+
+	this.convert_psd_path_to_svg_path = function(_psd_path){
+
+		var svg_path = _psd_path+"".split(".")[0]+".svg";
+		return svg_path;
+
+	}
 	
 
 	// used in many scripts : 

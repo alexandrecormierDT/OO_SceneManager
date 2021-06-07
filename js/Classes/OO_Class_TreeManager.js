@@ -14,9 +14,7 @@ the trees should have a node_map.
 OO.TreeManager = function(_S){
 	
 	var S = _S;
-	
 	this.list = [];
-	
 	this.module_path = "P:/pipeline/script_modules/TreeMap/TreeMap.tpl";
 	
 	
@@ -541,15 +539,10 @@ OO.TreeManager = function(_S){
 		var multiport_in_linkout_node = multiport_out_object.ins[0]
 
 		if(multiport_out_linkin_node != null || multiport_in_linkout_node != null){
-		
 			multiport_in_object.centerAbove(multiport_in_linkout_node, 0, -800);
 			multiport_out_object.centerBelow(multiport_out_linkin_node, 0, 800);
-
-			
 		}else{
-			
 			S.log.add("[TreeManager] no group found in tpl","error");
-
 		}
 		
 	}
@@ -837,11 +830,18 @@ OO.TreeManager = function(_S){
 		
 		if(cadre.hasOwnProperty('rect')==true){
 
+			MessageLog.trace("C A D R E    C O N T E N T ")
+			MessageLog.trace(Object.getOwnPropertyNames(cadre))
+			MessageLog.trace(Object.getOwnPropertyNames(cadre.rect))
+			MessageLog.trace(Object.getOwnPropertyNames(cadre.bg))
+			MessageLog.trace(cadre.rect.width)
+			MessageLog.trace(cadre.rect.x)
+			MessageLog.trace(cadre.rect.y)
+
 			// camera dimmentions :
 		
 			var cam_w= 1920;
 			var cam_h =1080;
-			
 			
 			// cadre dimmentions :
 			
@@ -914,74 +914,72 @@ OO.TreeManager = function(_S){
 				node.setTextAttr("Top/Camera_Peg", "ROTATION.ANGLEZ", frame.current(),0);		
 				node.setTextAttr("Top/Camera_Peg", "ROTATION.ANGLEY", frame.current(),0);		
 				node.setTextAttr("Top/Camera_Peg", "ROTATION.ANGLEX", frame.current(),0);		
-				
-				
-				
 			}
 
-			
 			// camera center 
-			
 			var cam_cx = parseFloat(cam_w/2) ;
 			var cam_cy = parseFloat(cam_h/2) ;
 			
 
 			// position of the top up corner of the camera in bg space 
-			
 			var bg_cam_x = parseFloat(bg_cx - cam_cx);
 			var bg_cam_y = parseFloat(bg_cy - cam_cy);
 				
 			 
 			// CALCUL OF THE TRANSFORM 
 			
-			
 			// X
-			
 			var bg_x = (bg_w/2) * ratio; 
 			var cadre_distance_to_center_x = bg_x - (cad_x * ratio) 
 			var cadre_distance_to_cam_x =  cadre_distance_to_center_x - (cam_w / 2)
 			
 			
 			// Y
-			
 			var bg_y = (bg_h/2) * ratio; 
 			var cadre_distance_to_center_y =  bg_y - (cad_y * ratio);
 			var cadre_distance_to_cam_y =  cadre_distance_to_center_y - (cam_h / 2)
 
 			
 			//FINAL SCALE 
-			
 			var final_sx = ratio ;
 			var final_sy = ratio ;
 			
 			// FINAL POSITIONS
-			
 			var RATIO_PIXEL_X = parseFloat(16/(1920/2))
 			var RATIO_PIXEL_Y = parseFloat(12/(1080/2))
 			
 			var final_x =  parseFloat(cadre_distance_to_cam_x * RATIO_PIXEL_X) + parseFloat(cam_peg_x);
 			var final_y =  parseFloat(-cadre_distance_to_cam_y * RATIO_PIXEL_Y)+ parseFloat(cam_peg_y);
 			var final_z =  parseFloat(cam_peg_z);
+
+			if(final_sx != NaN && final_sy != NaN && final_x != NaN && final_y != NaN){
 			
+				//INJECT X
+				top_peg.attributes.position.x.setValue(final_x);
+				
+				//INJECT Y
+				top_peg.attributes.position.y.setValue(final_y);
+				
+				//INJECT Y
+				top_peg.attributes.position.z.setValue(final_z);
+				
+				//INJECT SX
+				top_peg.attributes.scale.x.setValue(final_sx);
+				
+				//INJECT SY
+				top_peg.attributes.scale.y.setValue(final_sy);
+				
+				S.log.add("[fit to camera] - reading camera peg coords  X = "+cam_peg_x+ " Y = "+cam_peg_y+"  Z = "+cam_peg_z,"process");
+				S.log.add("[fit to camera] - changing bg scale SX = "+final_sx+ " SY = "+final_sy,"process");
+				S.log.add("[fit to camera] - changing bg position X = "+final_x+ " Y = "+final_y+ " Z = "+final_z,"process");
+
+			}else{
+
+				S.log.add("[fit to camera] - NaN values X = "+final_x+ " Y = "+final_y+ " Z = "+final_z,"error");
+
+			}
 			
-			//INJECT X
-			top_peg.attributes.position.x.setValue(final_x);
-			
-			//INJECT Y
-			top_peg.attributes.position.y.setValue(final_y);
-			
-			//INJECT Y
-			top_peg.attributes.position.z.setValue(final_z);
-			
-			//INJECT SX
-			top_peg.attributes.scale.x.setValue(final_sx);
-			
-			//INJECT SY
-			top_peg.attributes.scale.y.setValue(final_sy);
-			
-			S.log.add("fit to camera - reading camera peg coords  X = "+cam_peg_x+ " Y = "+cam_peg_y+"  Z = "+cam_peg_z,"process");
-			S.log.add("fit to camera - changing bg scale SX = "+final_sx+ " SY = "+final_sy,"process");
-			S.log.add("fit to camera - changing bg position X = "+final_x+ " Y = "+final_y+ " Z = "+final_z,"process");
+
 		
 		
 		}
@@ -993,19 +991,14 @@ OO.TreeManager = function(_S){
 	function get_linked_3D_columns(_node){
 		
 		var node_columns = Array();
-	
 		var attrList = getAttributesNameList (_node);
-		
 		for (var i=0; i<attrList.length; i++){
 			
 			var attribute_name = attrList[i]
-			
 			if(attribute_name == "POSITION.3DPATH"){
 			
 				var linked_column = node.linkedColumn(_node,attribute_name)
-				
 				if( linked_column !=""){
-
 					node_columns = (linked_column);
 				}
 				
@@ -1052,20 +1045,12 @@ OO.TreeManager = function(_S){
 		s = 1;
 		
 		for (var f = 0 ; f<=frame.numberOf();f++){
-				
-
-				 if(column.isKeyFrame(_column,s,f)){
-		
-					for (s = s ; s<sub_column;s++){
-
-						key.push(column.getEntry(_column,s,f))
-
-					}
-					
-					return key;
-	
+				if(column.isKeyFrame(_column,s,f)){
+				for (s = s ; s<sub_column;s++){
+					key.push(column.getEntry(_column,s,f))
 				}
-					
+				return key;
+			}
 		}
 		
 		return false;
@@ -1073,29 +1058,20 @@ OO.TreeManager = function(_S){
 	}
 	
 	function toonboom_coords_to_float(tbv){
-		
+
 		var result = 0
-		
 		result= tbv.split(" ")[0];
 		var letter = tbv.split(" ")[1];
-		
-		
-		
 		if(letter == "W" || letter =="B" || letter =="S"){
-			
 			result = "-"+result;
 		}
-		
-		
 		result = parseFloat(result)
-
 		return result
-		
+
 	}		 
 	
 	
 	this.create_tree_file = function(_filepath){
-		
 		
 		var file_test = new $.oFile(_filepath)
 		
@@ -1113,8 +1089,8 @@ OO.TreeManager = function(_S){
 		this.path = _filepath;
 		
 	}
-	
-	
+
+
 	
 	
 }
