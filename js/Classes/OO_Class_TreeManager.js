@@ -494,7 +494,7 @@ OO.TreeManager = function(_S){
 		
 		// create a group , import the tpl inside of it and return the nodes contained in this group 
 	
-		S.log.add("importing tpl "+_tpl_file_path,"file");
+		S.log.add("[TreeManager] importing tpl "+_tpl_file_path,"file");
 		var import_group =  $.scene.root.addNode("GROUP","TEMP"+_tpl_file_path); 	
 		copypaste_tpl_in_group(_tpl_file_path,import_group.path);
 		var updated_group = $.scene.getNodeByPath(import_group.path)
@@ -545,8 +545,10 @@ OO.TreeManager = function(_S){
 			multiport_in_object.centerAbove(multiport_in_linkout_node, 0, -800);
 			multiport_out_object.centerBelow(multiport_out_linkin_node, 0, 800);
 
-			S.log.add("no group found in tpl","error");
-
+			
+		}else{
+			
+			S.log.add("[TreeManager] no group found in tpl","error");
 
 		}
 		
@@ -573,7 +575,9 @@ OO.TreeManager = function(_S){
 
 		}
 
-		MessageLog.trace("[copypaste_tpl_in_group]  group error "+_group_scene_path)
+		S.log.add("[TreeManager][copypaste_tpl_in_group]  group error "+_group_scene_path,"error")
+		MessageLog.trace("[TreeManager][copypaste_tpl_in_group]  group error "+_group_scene_path)
+
 		return false; 
 
 

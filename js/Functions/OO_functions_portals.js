@@ -103,13 +103,7 @@ function create_empty_portal(){
 		var nportal_tree = nportal.get_tree(); 
 		nportal_tree.ungroup();
 		S.log.save_scene_script_log_file(); 
-		
-		
 	}
-	
-	
-
-
 } 
 
 function create_portals_by_asset_type(_asset_type){
@@ -128,15 +122,14 @@ function create_portals_by_asset_type(_asset_type){
 		case ('bg'):
 		case ('BG'):
 			target_backdrop = S.get_backdrop_by_name('BG');
-			target_composite = OO.doc.getNodeByPath("Top/BG-C");
+			target_composite = $.scene.getNodeByPath("Top/BG-C");
 		break; 
-		
 		case('Character'):
 		case('Prop'):
 		case('FX'):
 		case('anim'):
 			target_backdrop = S.get_backdrop_by_name('ANIM');
-			target_composite = OO.doc.getNodeByPath("Top/ANIM-C");
+			target_composite = $.scene.getNodeByPath("Top/ANIM-C");
 		break;
 	}
 	
@@ -291,7 +284,18 @@ function pull_anim_portal_png(){
 	
 	var log_object = pull_png_by_asset_type("anim");
 	
-	log_object.set_script_tag("OO_pull_png_anim"); 
+	log_object.set_script_tag("OO_pull_anim_portal_png"); 
+	log_object.create_scene_script_log_file_and_folder(); 
+	log_object.save_scene_script_log_file(); 
+	
+}
+
+
+function pull_anim_portal_tpl(){
+	
+	var log_object = pull_tpl_by_asset_type("anim");
+	
+	log_object.set_script_tag("OO_pull_anim_portal_tpl"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
 	
@@ -358,7 +362,7 @@ function pull_selected_portals_process(_data_type){
 			var current_portal =  portal_list[p]
 			
 			//we empty the portal first 
-			S.portals.empty(current_portal);
+			S.portals.empty_portal(current_portal);
 			S.portals.pull(current_portal,_data_type);	
 
 	}	
@@ -583,7 +587,7 @@ function empty_portals(_asset_type){
 		
 		if(linked_asset.get_type() == _asset_type){
 			
-			S.portals.empty(current_portal);
+			S.portals.empty_portal(current_portal);
 			
 		}
 		

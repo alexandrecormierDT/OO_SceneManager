@@ -41,19 +41,23 @@ OO.Breakdown = function(_S){
         
     }
 
+    //find a matching asset to complete the data on the asset
     function parse_asset_code_list(_asset_code_list){
         var asset_object_array =[]
         for (var a = 0 ; a < _asset_code_list.length ; a++){
             var current_asset_code = _asset_code_list[a]; 
             var asset_object = parse_asset_csv_and_find_asset(current_asset_code)
-            asset_object_array.push(asset_object)
+            if(asset_object!=false){
+                asset_object_array.push(asset_object)
+            }
         }
         return asset_object_array; 
     }
 
     function parse_shot_csv_and_find_shot(_shot_code){
 
-        csv_string = get_shot_csv_content()
+        csv_string = get_shot_csv_content();
+        var match = 0; 
         if(csv_string!=false){
 
             var line_split = csv_string.split('\n');
@@ -76,13 +80,21 @@ OO.Breakdown = function(_S){
                     //instanciating shot object
                     var shot_object = new OO.Shot(_shot_code); 
                     shot_object.asset_code_list =  assets;
-                    shot_object.id =  shot_id;
-                    shot_object.project =  shot_project;
+                    shot_object.id= shot_id;
+                    shot_object.project = shot_project;
+
+                    match++;
 
                     return shot_object;
                 }
 
             }
+
+        }
+        if(match ==0){
+
+            S.log.add("[Breakdown] can't find shot ( "+_shot_code+" ) in Shot.csv database ","error")
+            return false 
 
         }
         
@@ -93,6 +105,7 @@ OO.Breakdown = function(_S){
     function parse_asset_csv_and_find_asset(_asset_code){
 
         csv_string = get_asset_csv_content()
+        var match = 0;
         if(csv_string!=false){
 
             var line_split = csv_string.split("\n");
@@ -116,14 +129,29 @@ OO.Breakdown = function(_S){
                     //instanciating asset object
                     var asset_object = new OO.Asset(_asset_code);
                     asset_object.id = asset_id;
-                    asset_object.sg_asset_type  = sg_asset_type;
-                    asset_object.project   = project ;
-                    asset_object.shots   = shots;
+                    asset_object.sg_asset_type = sg_asset_type;
+                    asset_object.project = project ;
+                    asset_object.shots = shots;
+
+                    MessageLog.trace("_______----_______")
+                    MessageLog.trace(_asset_code)
+                    MessageLog.trace(asset_object.id )
+                    MessageLog.trace( asset_object.sg_asset_type)
+                    MessageLog.trace(asset_object.project)
+
+                    match++;
 
                     return asset_object;
 
                 }
             }
+        }
+
+        if(match == 0){
+
+            S.log.add("[Breakdown] can't find asset ( "+_asset_code+" ) in Asset.csv database ","error")
+            return false 
+
         }
     }
 

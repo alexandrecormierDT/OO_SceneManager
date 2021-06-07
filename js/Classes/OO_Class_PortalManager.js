@@ -239,6 +239,8 @@ OO.PortalManager = function(_S){
 			
 			var current_asset = asset_object_array[a]; 
 
+			MessageLog.trace("CURRENT ASSET")
+			MessageLog.trace(current_asset)
 			MessageLog.trace(current_asset.get_code())
 			MessageLog.trace(current_asset.get_id())
 			MessageLog.trace(current_asset.get_type())
@@ -521,10 +523,9 @@ OO.PortalManager = function(_S){
 			portal_group.backdrops[0].body = "deleteme";
 		
 		}
-
-
 		
 		S.log.add("portal is now empty","process");
+		
 	}
 	
 
