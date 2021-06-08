@@ -580,13 +580,8 @@ function empty_portals(_asset_type){
 
 	try{
 
-		S.portals.load_from_node_list_by_asset_type(_asset_type);
-		var portal_list = S.portals.get_list(); 
-		for(var p = 0 ; p < portal_list.length; p++){
-			var current_portal = portal_list[p]
-			S.portals.empty_portal(current_portal);
-		}
-		
+		S.portals.empty_scene_portals_by_type(_asset_type);
+
 	}catch(error){
 
 		S.log.add("file "+error.fileName+"  line "+error.lineNumber,"error"); 

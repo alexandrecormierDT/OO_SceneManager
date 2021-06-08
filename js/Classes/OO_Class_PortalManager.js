@@ -33,14 +33,16 @@ OO.PortalManager = function(_S){
 
 	this.load_from_scene_by_sg_asset_type = function(_sg_asset_type){
 		
-		var scene_nodes = $.scene.root.nodes;
-		this.load_from_node_list_by_asset_type(scene_nodes,_sg_asset_type)
+		var fetched_scene_nodes = $.scene.root.nodes;
+		this.load_from_node_list_by_asset_type(fetched_scene_nodes,_sg_asset_type)
 
 	}
 
 	function fetch_portal_modules_from_list(_node_list){
 
 		var scene_PSM = []
+		MessageLog.trace("_node_list")
+		MessageLog.trace(_node_list)
 		for(var n = 0 ; n < _node_list.length ; n++){
 			var cnode = $.scene.getNodeByPath(_node_list[n])
 			if(cnode!=null){
@@ -52,6 +54,7 @@ OO.PortalManager = function(_S){
 			}
 
 		}
+		MessageLog.trace(scene_PSM)
 		return scene_PSM
 	}
 
@@ -61,6 +64,8 @@ OO.PortalManager = function(_S){
 		
 		// init list
 		this.reset_list()
+		MessageLog.trace(_node_list)
+		MessageLog.trace(_asset_type)
 		
 		// Detect the script module with "portal" attributes among the selected nodes and fetch the linked nodes to make the tree, read the script module attributes 
 		//add a new portal object to the portal_objects_array. 
@@ -68,6 +73,7 @@ OO.PortalManager = function(_S){
 		//we fetch the Portal Script Modules in the selection
 		var scene_PSM = fetch_portal_modules_from_list(_node_list)
 
+		MessageLog.trace(scene_PSM)
 		MessageLog.trace(scene_PSM)
 
 		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
@@ -255,9 +261,9 @@ OO.PortalManager = function(_S){
 		input_type = remove_spaces(_input_type)
 		compare_type = remove_spaces(_compare_type)
 
-		if(input_type=="bg"){
+		if(compare_type=="bg"){
 
-			input_type = "BG"; 
+			compare_type = "BG"; 
 
 		}
 
@@ -611,6 +617,8 @@ OO.PortalManager = function(_S){
 	// should be handled by the tree class
 	
 	this.empty_portal = function (_portal){
+
+		MessageLog.trace("empty_portal")
 		
 		var portal_tree = _portal.get_tree()
 		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
@@ -632,6 +640,15 @@ OO.PortalManager = function(_S){
 
 
 		S.log.add("portal is now empty","process");
+	}
+
+
+	this.empty_scene_portals_by_type = function(_asset_type){
+		this.load_from_scene_by_sg_asset_type(_asset_type)
+		for(var p = 0 ; p < portal_objects_array.length ; p++){
+			var current_portal = portal_objects_array[p];
+			this.empty_portal(current_portal);
+		}
 	}
 	
 
