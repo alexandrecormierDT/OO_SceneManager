@@ -544,7 +544,7 @@ function update_portals_paths_by_type(_asset_type){
 
 function update_bg_portals_paths(){
 	
-	var log_object = update_portals_paths_by_type('bg');
+	var log_object = update_portals_paths_by_type('BG');
 	
 	log_object.set_script_tag("OO_update_bg_portals_paths"); 
 	log_object.create_scene_script_log_file_and_folder(); 
@@ -601,7 +601,7 @@ function empty_portals(_asset_type){
 function empty_bg_portals(){
 	
 	
-	var log_object = empty_portals('bg');
+	var log_object = empty_portals('BG');
 	
 	log_object.set_script_tag("OO_empty_bg_portals"); 
 	log_object.create_scene_script_log_file_and_folder(); 
