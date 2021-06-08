@@ -694,11 +694,22 @@ function delete_bg_portals(){
 	S = new OO.SceneManager();
 	S.portals.delete_scene_portals_by_type("BG");
 
+	//log
+	S.log.save();	
+	S.log.set_script_tag("OO_delete_bg_portals"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file();
+
 }
 
 function delete_anim_portals(){
 
 	S = new OO.SceneManager();
 	S.portals.delete_scene_portals_by_type("anim");
+	//log
+	S.log.save();	
+	S.log.set_script_tag("OO_delete_anim_portals"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file();
 	
 }
