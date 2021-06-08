@@ -127,9 +127,13 @@ OO.SGVersion = function(_S){
 		var launch = process_render_movie.launch();
 		var errors = process_render_movie.errorMessage();
 		
-		S.log.add("launch  "+launch,"process")
-		S.log.add(errors,"process")
-		S.log.add(process_render_movie,"process")
+		if(launch == 0){
+			S.log.add(launch+" = upload succeed","success")
+		}else{
+			S.log.add(launch+" = upload failed","error")
+
+		}
+
 		
 	}
 
@@ -150,8 +154,12 @@ OO.SGVersion = function(_S){
 
 		S.log.add("TBMOVIEUPLAOD","start")
 		S.log.add(movie_upload_command,"arguments")
-		S.log.add(process_movie.errorMessage(),"process")
-		S.log.add(process_movie,"process")
+		if(launch == 0){
+			S.log.add(launch+" = upload succeed","success")
+		}else{
+			S.log.add(launch+" = upload failed","error")
+
+		}
 		
 	}
 
@@ -172,13 +180,13 @@ OO.SGVersion = function(_S){
 		MessageLog.trace(png_upload_command);
 		
 		var process_png = new Process2(png_upload_command);
-		MessageLog.trace(process_png.launch());
-		MessageLog.trace(process_png.errorMessage());
-		MessageLog.trace(process_png);		
+		S.log.add(png_upload_command,"arguments")
+		if(launch == 0){
+			S.log.add(launch+" = upload succeed","success")
+		}else{
+			S.log.add(launch+" = upload failed","error")
 
-		S.log.add(png_upload_command,"PYTHON")
-		S.log.add(process_png.errorMessage(),"process")
-		S.log.add(process_png,"process")
+		}
 		
 	}
 	

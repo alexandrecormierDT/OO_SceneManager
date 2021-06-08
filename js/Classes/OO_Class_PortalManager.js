@@ -27,7 +27,6 @@ OO.PortalManager = function(_S){
 		//add a new portal object to the list. 
 
 		var scene_nodes =$.scene.root.nodes;
-		MessageLog.trace(scene_nodes)
 		this.load_from_node_list(scene_nodes)
 
 	}
@@ -44,11 +43,14 @@ OO.PortalManager = function(_S){
 		var scene_PSM = []
 		for(var n = 0 ; n < _node_list.length ; n++){
 			var cnode = $.scene.getNodeByPath(_node_list[n])
-			if(cnode.type == "SCRIPT_MODULE"){
-				if(cnode.attributes.hasOwnProperty('portal') == true){
-					scene_PSM.push(cnode);
-				};
+			if(cnode!=null){
+				if(cnode.type == "SCRIPT_MODULE"){
+					if(cnode.attributes.hasOwnProperty('portal') == true){
+						scene_PSM.push(cnode);
+					};
+				}
 			}
+
 		}
 		return scene_PSM
 	}
@@ -248,9 +250,16 @@ OO.PortalManager = function(_S){
 	function match_sg_asset_type(_input_type,_compare_type){
 		
 		var anim_equivalent = ["FX","Character","Prop","Vehicle"];
+		
 
 		input_type = remove_spaces(_input_type)
 		compare_type = remove_spaces(_compare_type)
+
+		if(input_type=="bg"){
+
+			input_type = "BG"; 
+
+		}
 
 		MessageLog.trace("_input_type")
 		MessageLog.trace(_input_type)
@@ -411,9 +420,8 @@ OO.PortalManager = function(_S){
 
 
 	this.pull_scene_portal_data_by_sg_asset_type = function(_data_type,_sg_asset_type){
-		
-		this.load_from_scene_by_sg_asset_type(_sg_asset_type);
 
+		this.load_from_scene_by_sg_asset_type(_sg_asset_type);
 		for(var p = 0 ; p < portal_objects_array.length ; p++){
 
 			var current_portal = portal_objects_array[p];
@@ -432,25 +440,33 @@ OO.PortalManager = function(_S){
 		S.log.add("[PORTAL PULL]","process")
 		S.log.add(_portal.get_code(),"portal")
 		S.log.add(_data_type,"data_type")
+
+		try{
 		
-		if(_portal.path_exist(_data_type)){
+			if(_portal.path_exist(_data_type)){
 
-			this.empty_portal(_portal);
+				this.empty_portal(_portal);
 
-			switch (_data_type){
-				case 'psd': 
-					pulled_nodes = pull_psd(_portal)
-				break;
-				case 'png': 
-					pulled_nodes = pull_png(_portal); 
-				break;			
-				case 'tpl':
-					pulled_nodes = pull_tpl(_portal); 
-				break;
-			}			
-			
-		}else{
-			S.log.add("[PORTAL PULL] data not found for path "+_portal.get_path(_data_type),"error");
+				switch (_data_type){
+					case 'psd': 
+						pulled_nodes = pull_psd(_portal)
+					break;
+					case 'png': 
+						pulled_nodes = pull_png(_portal); 
+					break;			
+					case 'tpl':
+						pulled_nodes = pull_tpl(_portal); 
+					break;
+				}			
+				
+			}else{
+				S.log.add("[PORTAL PULL] data not found for path "+_portal.get_path(_data_type),"error");
+			}
+
+		}catch(error){
+
+			S.log.add("[PortalManager] "+error,"error"); 
+		
 		}
 
 		return pulled_nodes; 
@@ -600,15 +616,21 @@ OO.PortalManager = function(_S){
 		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 		S.trees.delete_group_nodes(portal_group.path)
 
-		if(portal_group.backdrops[0] != undefined){
+		for(var g= 0 ; g < portal_group.backdrops.length ; g++){
+
+			if(portal_group.backdrops[g] != undefined){
 		
-			portal_group.backdrops[0].x+=2000; 
-			portal_group.backdrops[0].width=20;
-			portal_group.backdrops[0].height=20;
-			portal_group.backdrops[0].title = "deleteme";
-			portal_group.backdrops[0].body = "deleteme";
-		
+				portal_group.backdrops[g].x+=2000; 
+				portal_group.backdrops[g].width=20;
+				portal_group.backdrops[g].height=20;
+				portal_group.backdrops[g].title = "deleteme";
+				portal_group.backdrops[g].body = "deleteme";
+			
+			}
+
 		}
+
+
 		S.log.add("portal is now empty","process");
 	}
 	
@@ -624,6 +646,7 @@ OO.PortalManager = function(_S){
 		bd_name = _portal.get_backdrop_name();
 		var portal_backdrop = S.backdrops.get_backdrop_by_name(bd_name)
 		S.backdrops.delete_backdrop(portal_backdrop)
+
 	}
 
 	this.delete_all_scene_portals = function(){
