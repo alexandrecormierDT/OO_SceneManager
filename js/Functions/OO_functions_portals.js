@@ -274,7 +274,7 @@ function pull_bg_portal_png(){
 	
 	var log_object = pull_png_by_asset_type("BG");
 	
-	log_object.set_script_tag("OO_pull_bg_portal_png"); 
+	log_object.set_script_tag("OO_pull_bg_portals_png"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
 	
@@ -284,7 +284,7 @@ function pull_anim_portal_png(){
 	
 	var log_object = pull_png_by_asset_type("anim");
 	
-	log_object.set_script_tag("OO_pull_anim_portal_png"); 
+	log_object.set_script_tag("OO_pull_anim_portals_png"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
 	
@@ -295,7 +295,7 @@ function pull_anim_portal_tpl(){
 	
 	var log_object = pull_tpl_by_asset_type("anim");
 	
-	log_object.set_script_tag("OO_pull_anim_portal_tpl"); 
+	log_object.set_script_tag("OO_pull_anim_portals_tpl"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
 	
@@ -305,7 +305,7 @@ function pull_bg_portal_png(){
 	
 	var log_object = pull_png_by_asset_type("BG");
 	
-	log_object.set_script_tag("OO_pull_bg_portal_png"); 
+	log_object.set_script_tag("OO_pull_bg_portals_png"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
 	
@@ -319,7 +319,7 @@ function pull_bg_portal_psd(){
 	
 	var log_object = pull_psd_by_asset_type("BG");
 	
-	log_object.set_script_tag("OO_pull_bg_portal_png"); 
+	log_object.set_script_tag("OO_pull_bg_portals_psd"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
 
@@ -503,12 +503,9 @@ function update_portals_paths_by_type(_asset_type){
 	try{
 
 		var S = new OO.SceneManager();	
-
 		S.context.set_library_path(OO.library_path);	
 		S.context.set_vault_path(OO.vault_path)
-		S.assets.load_breakdown('csv');
 		S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/update_portals_path.html");
-
 
 		S.breakdown.load_current_shot_breakdown();
 
