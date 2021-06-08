@@ -429,10 +429,8 @@ OO.PortalManager = function(_S){
 
 		this.load_from_scene_by_sg_asset_type(_sg_asset_type);
 		for(var p = 0 ; p < portal_objects_array.length ; p++){
-
 			var current_portal = portal_objects_array[p];
 			this.pull(current_portal,_data_type);
-
 		}
 
 	}
@@ -581,37 +579,45 @@ OO.PortalManager = function(_S){
 	
 	
 	this.push_portal = function(_portal,_data_type){
-		
-		MessageLog.trace("push_portal");
-		
-		var export_path = _portal.get_path(_data_type);
-		var export_folder_path = _portal.get_dir(_data_type);
-		var export_folder_object = new $.oFolder(export_folder_path); 
-		export_folder_object.create()
-		var export_process = false;
-		
-		var portal_tree = _portal.get_tree();
-		
-		switch (_data_type){
-			
-			case 'psd': 
 
-			break;
+		try{
+		
+			MessageLog.trace("push_portal");
 			
-			case 'png': 					
+			var export_path = _portal.get_path(_data_type);
+			var export_folder_path = _portal.get_dir(_data_type);
+			var export_folder_object = new $.oFolder(export_folder_path); 
+			export_folder_object.create()
+			var export_process = false;
+			
+			var portal_tree = _portal.get_tree();
+			
+			switch (_data_type){
+				
+				case 'psd': 
 
-			break;			
-			
-			case 'tpl':
-			
-				var tpl_name = _portal.get_code();
-				var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
-				S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");	
-				export_process = S.trees.export_group_to_path(portal_group,export_folder_path,tpl_name);
-			
-			break;
-		}			
-		S.log.add("export status "+export_process,"report");
+				break;
+				
+				case 'png': 					
+
+				break;			
+				
+				case 'tpl':
+				
+					var tpl_name = _portal.get_code();
+					var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
+					S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");	
+					export_process = S.trees.export_group_to_path(portal_group,export_folder_path,tpl_name);
+				
+				break;
+			}			
+			S.log.add("export status "+export_process,"report");
+
+		}catch(error){
+
+			S.log.add_script_error_object(error); 
+
+		}
 	}	
 
 	// should be handled by the tree class

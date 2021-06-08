@@ -471,21 +471,21 @@ function udpate_portal_paths_from_vault(_portal){
 	var S = new OO.SceneManager();	
 		
 	S.context.set_context_type('Shotgun');	
-	
 	S.context.set_vault_path(OO.vault_path)	
-	
 	S.breakdown.load_current_shot_breakdown();
 
-	var linked_asset = S.assets.get_asset_object_by_code(_portal.get_code());
+	var linked_asset = S.breakdown.get_asset_object_by_code(_portal.get_code());
 	
 	var path_attributes_object = {
 		psd_path :S.context.get_asset_data_path(linked_asset,"psd"),
 		png_path :S.context.get_asset_data_path(linked_asset,"png"),
-		tpl_path :S.context.get_asset_data_path(linked_asset,"tpl")
+		tpl_path :S.context.get_asset_data_path(linked_asset,"tpl"),
+		svg_path :S.context.get_asset_data_path(linked_asset,"svg")
 	}
 	
 	S.log.add("updating PSD path from vault - ( "+path_attributes_object.psd_path+" ) " ,"process");
 	S.log.add("updating PNG path from vault - ( "+path_attributes_object.png_path+" ) " ,"process");
+	S.log.add("updating SVG path from vault - ( "+path_attributes_object.svg_path+" ) " ,"process");
 	S.log.add("updating TPL path - ( "+path_attributes_object.tpl_path+" ) " ,"process");
 	
 	//udpate 
@@ -501,32 +501,12 @@ function udpate_portal_paths_from_vault(_portal){
 function update_portals_paths_by_type(_asset_type){
 	
 	try{
-
 		var S = new OO.SceneManager();	
-		S.context.set_library_path(OO.library_path);	
-		S.context.set_vault_path(OO.vault_path)
-		S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/update_portals_path.html");
-
-		S.breakdown.load_current_shot_breakdown();
-
+		S.portals.load_from_scene_by_sg_asset_type(_asset_type);
 		var portal_list = S.portals.get_list();
-
 		for(var p = 0 ; p < portal_list.length; p++){
-			
-			var current_portal = portal_list[p]
-			var linked_asset = S.assets.get_asset_object_by_code(current_portal.get_code());
-			
-			if(linked_asset != false){
-
-				if(linked_asset.get_type() == _asset_type || _asset_type == "ALL" ){
-					
-					S.log.add("updating paths of portal - "+current_portal.get_code(),"process");
-					udpate_portal_paths_from_vault(current_portal);
-					
-				}
-			
-			}
-			
+			S.log.add("updating paths of portal - "+current_portal.get_code(),"process");
+			udpate_portal_paths_from_vault(current_portal);
 		}	
 
 	}catch(error){

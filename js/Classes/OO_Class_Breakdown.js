@@ -43,6 +43,7 @@ OO.Breakdown = function(_S){
 
     //find a matching asset to complete the data on the asset
     function parse_asset_code_list(_asset_code_list){
+
         var asset_object_array =[]
         for (var a = 0 ; a < _asset_code_list.length ; a++){
             var current_asset_code = _asset_code_list[a]; 
@@ -180,6 +181,22 @@ OO.Breakdown = function(_S){
 
         return asset_code_list
     }
+
+    this.get_asset_code_by_id = function(_asset_id){
+
+
+    }
+
+	this.find_asset_object_by_code = function(_search_code){
+		
+		for(var a = 0 ; a < asset_list.length ; a++){
+			var current_asset = asset_list[a];
+			if(current_asset.get_code() == _search_code){
+				return current_asset;
+			}
+		}
+		return false;
+	}
 	
 	this.get_asset_code_string_list = function(){
 		return parse_asset_csv_to_asset_code_list();
