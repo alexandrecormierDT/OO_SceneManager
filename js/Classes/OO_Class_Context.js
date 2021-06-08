@@ -14,7 +14,7 @@ OO.Context = function (_S,_type){
 	var VIDEO_EXPORT_PATH = "";
 	var BG_PREVIEW_PATH = "";
 	
-	var VAULT_PATH = ""; 
+	var VAULT_PATH = OO.vault_path; 
 	
 	this.project ="";
 	this.entity = ""	
@@ -435,6 +435,8 @@ OO.Context = function (_S,_type){
 		var data_type = _data_type;		
 		var task = _task;		
 		var dir_type = _data_type;
+
+		MessageLog.trace(asset_code)
 		
 		if(_asset_type == "bg"){
 			asset_type = "BG";
@@ -446,6 +448,9 @@ OO.Context = function (_S,_type){
 		}			
 		
 		var task_dir_path = VAULT_PATH+"/assets/"+dir_type+"/"+asset_type+"/default/"+asset_code+"/"+task+"/"
+
+		MessageLog.trace(task_dir_path)
+
 		var task_folder = new $.oFolder(task_dir_path);
 		
 		if(task_folder.exists){

@@ -149,7 +149,6 @@ function create_portals_by_asset_type(_asset_type){
 		S.context.set_context_type('Shotgun');	
 		S.context.set_library_path(OO.library_path);	
 		S.context.set_vault_path(OO.vault_path)
-
 		S.breakdown.load_current_shot_breakdown();
 
 		S.portals.reset_list();
@@ -462,19 +461,20 @@ function push_master_asset_portal_to_folder(){
 //----------------------------------------------------------------------------------------------- P U B L I S H -----------------------------------------------------------------//
 
 
+function update_portals_paths_by_type(_asset_type){
+
+	var S = new OO.SceneManager();	
 
 
+	S.portals.update_portals_paths_by_type(_asset_type)
 
+	return S.log;
 
-
-
-
-
-
-
+}
 
 function update_bg_portals_paths(){
-	
+
+
 	var log_object = update_portals_paths_by_type('BG');
 	
 	log_object.set_script_tag("OO_update_bg_portals_paths"); 
@@ -492,10 +492,6 @@ function update_anim_portals_paths(){
 	log_object.save_scene_script_log_file(); 	
 	
 }
-
-
-
-
 
 
 function empty_portals(_asset_type){
@@ -557,6 +553,31 @@ function empty_selected_portals(){
 
 }
 
+function update_anim_portals_paths(){
+
+	var S = new OO.SceneManager();	
+
+	S.portals.update_portals_paths_by_type("anim")
+
+	S.log.save();	
+	S.log.set_script_tag("OO_update_anim_portals_paths"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file();
+
+}
+
+function update_bg_portals_paths(){
+
+	var S = new OO.SceneManager();	
+
+	S.portals.update_portals_paths_by_type("BG")
+
+	S.log.save();	
+	S.log.set_script_tag("OO_update_bg_portals_paths"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file();
+
+}
 
 
 function fit_selected_portals_to_camera(){
@@ -568,7 +589,7 @@ function fit_selected_portals_to_camera(){
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/fit_bg_to_camera.html");
 	S.context.set_context_type('Shotgun');	
 	S.context.set_vault_path(OO.vault_path)
-	S.assets.load_breakdown('csv');
+	S.breakdown.load_current_shot_breakdown();
 	
 	S.portals.load_from_node_list($.scene.selectedNodes);
 	var portal_list = S.portals.get_list(); 

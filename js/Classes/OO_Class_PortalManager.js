@@ -273,10 +273,6 @@ OO.PortalManager = function(_S){
 		
 	}
 	
-	this.update_portal_script_module_attributes = function (_portal,_attributes_object){
-		_portal.set_several_script_module_attributes(_attributes_object);
-	}
-	
 	function match_sg_asset_type(_input_type,_compare_type){
 		
 		var anim_equivalent = ["FX","Character","Prop","Vehicle"];
@@ -685,16 +681,20 @@ OO.PortalManager = function(_S){
 
 	function udpate_portal_paths_from_vault(_portal){
 	
-		S.breakdown.load_current_shot_breakdown();
 		var linked_asset = S.breakdown.get_asset_object_by_code(_portal.get_code());
+
+		S.context.set_library_path(OO.library_path);	
+		S.context.set_vault_path(OO.vault_path)
 
 		var path_attributes_object = {
 			psd_path :S.context.get_asset_data_path(linked_asset,"psd"),
 			png_path :S.context.get_asset_data_path(linked_asset,"png"),
 			tpl_path :S.context.get_asset_data_path(linked_asset,"tpl"),
-			svg_path :S.context.get_asset_data_path(linked_asset,"svg")
+			svg_path :S.context.get_asset_data_path(linked_asset,"svg"),
+			id:linked_asset.get_id()
 		}
 		
+		S.log.add("updating ID - ( "+path_attributes_object.id+" ) " ,"process");
 		S.log.add("updating PSD path from vault - ( "+path_attributes_object.psd_path+" ) " ,"process");
 		S.log.add("updating PNG path from vault - ( "+path_attributes_object.png_path+" ) " ,"process");
 		S.log.add("updating SVG path from vault - ( "+path_attributes_object.svg_path+" ) " ,"process");
@@ -702,21 +702,19 @@ OO.PortalManager = function(_S){
 		
 		//udpate 
 		
-		S.portals.update_portal_script_module_attributes(_portal,path_attributes_object); 
+		_portal.set_several_script_module_attributes(path_attributes_object); 
 		
 	}
-	
-	
 	
 	
 	
 	this.update_portals_paths_by_type = function(_asset_type){
 		
 		try{
-			var S = new OO.SceneManager();	
-			S.portals.load_from_scene_by_sg_asset_type(_asset_type);
-			var portal_list = S.portals.get_list();
-			for(var p = 0 ; p < portal_list.length; p++){
+			
+			this.load_from_scene_by_sg_asset_type(_asset_type);
+			for(var p = 0 ; p < portal_objects_array.length; p++){
+				var current_portal = portal_objects_array[p]
 				S.log.add("updating paths of portal - "+current_portal.get_code(),"process");
 				udpate_portal_paths_from_vault(current_portal);
 			}	
@@ -724,14 +722,7 @@ OO.PortalManager = function(_S){
 		}catch(error){
 	
 			S.log.add_script_error_object(error); 
-		
 		}
-		
-	
-		S.log.save();
-		var log_object = S.log;
-		
-		return log_object 
 		
 	};
 	

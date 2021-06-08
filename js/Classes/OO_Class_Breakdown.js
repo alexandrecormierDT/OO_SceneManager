@@ -142,6 +142,7 @@ OO.Breakdown = function(_S){
                     MessageLog.trace(asset_object.project)
 
                     match++;
+                    S.log.add("[Breakdown] found asset ( "+asset_object.get_code()+" ) in Asset.csv database ","success")
 
                     return asset_object;
 
@@ -184,15 +185,10 @@ OO.Breakdown = function(_S){
 
     }
 
-	this.find_asset_object_by_code = function(_search_code){
+	this.get_asset_object_by_code = function(_search_code){
 		
-		for(var a = 0 ; a < asset_list.length ; a++){
-			var current_asset = asset_list[a];
-			if(current_asset.get_code() == _search_code){
-				return current_asset;
-			}
-		}
-		return false;
+		var asset_object = parse_asset_csv_and_find_asset(_search_code)
+		return asset_object;
 	}
 	
 	this.get_asset_code_string_list = function(){
