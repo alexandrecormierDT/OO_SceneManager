@@ -28,16 +28,17 @@ OO.Breakdown = function(_S){
 
     }
 
-
     this.load_current_shot_breakdown = function(){
 
         current_shot_code = S.context.get_shot(); 
-        current_shot = parse_shot_csv_and_find_shot(current_shot_code); 
+        if(current_shot_code != false){
+            current_shot = parse_shot_csv_and_find_shot(current_shot_code); 
+            asset_list = parse_asset_code_list(current_shot.asset_code_list);
+            MessageLog.trace("current_shot.asset_code_list")
+            MessageLog.trace(current_shot.asset_code_list)         
+        }
         
-        asset_list = parse_asset_code_list(current_shot.asset_code_list);
 
-        MessageLog.trace("current_shot.asset_code_list")
-        MessageLog.trace(current_shot.asset_code_list)
         
     }
 
@@ -166,13 +167,9 @@ OO.Breakdown = function(_S){
         if(csv_string!=false){
 
             var line_split = csv_string.split("\n");
-
             for (var l = 1 ; l < line_split.length ; l++){       
-
                 var second_split = line_split[l].split('"');
-
                 var code = remove_spaces(second_split[3]) 
-
                 MessageLog.trace("code")
                 MessageLog.trace(code)
                 asset_code_list.push(code)

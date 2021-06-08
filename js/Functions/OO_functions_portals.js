@@ -378,17 +378,11 @@ function pull_selected_portals_process(_data_type){
 
 
 function push_selected_portals(_data_type){
-	
-	////MessageLog.trace("PUSH PORTAL FUNCTION");
-	
+
 	var S = new OO.SceneManager();	
 
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/push_portal.html");
 	S.portals.load_from_node_list($.scene.selectedNodes);
-	S.context.set_context_type('Shotgun');	
-	
-	S.breakdown.load_current_shot_breakdown();
-	
 	var portal_list = S.portals.get_list()
 
 	for(var p = 0 ; p < portal_list.length; p++){
@@ -400,9 +394,7 @@ function push_selected_portals(_data_type){
 
 	S.log.save();
 	
-	
 	var log_object = S.log;
-	
 
 	return log_object;
 	
