@@ -381,22 +381,31 @@ function push_selected_portals(_data_type){
 
 	var S = new OO.SceneManager();	
 
-	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/push_portal.html");
-	S.portals.load_from_node_list($.scene.selectedNodes);
-	var portal_list = S.portals.get_list()
+	try{
 
-	for(var p = 0 ; p < portal_list.length; p++){
+		S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/push_portal.html");
+		S.portals.load_from_node_list($.scene.selectedNodes);
+		var portal_list = S.portals.get_list()
+	
+		for(var p = 0 ; p < portal_list.length; p++){
+	
+			var current_portal = portal_list[p];
+			S.portals.push_portal(current_portal,_data_type);
+				
+		}	
 
-		var current_portal = portal_list[p];
-		S.portals.push_portal(current_portal,_data_type);
-			
-	}	
+	}catch(error){
+	
+			S.log.add_script_error_object(error); 
+		
+	}
 
 	S.log.save();
-	
+		
 	var log_object = S.log;
 
 	return log_object;
+
 	
 } 
 
@@ -458,62 +467,6 @@ function push_master_asset_portal_to_folder(){
 
 
 
-function udpate_portal_paths_from_vault(_portal){
-	
-	var S = new OO.SceneManager();	
-		
-	S.context.set_context_type('Shotgun');	
-	S.context.set_vault_path(OO.vault_path)	
-	S.breakdown.load_current_shot_breakdown();
-
-	var linked_asset = S.breakdown.get_asset_object_by_code(_portal.get_code());
-	
-	var path_attributes_object = {
-		psd_path :S.context.get_asset_data_path(linked_asset,"psd"),
-		png_path :S.context.get_asset_data_path(linked_asset,"png"),
-		tpl_path :S.context.get_asset_data_path(linked_asset,"tpl"),
-		svg_path :S.context.get_asset_data_path(linked_asset,"svg")
-	}
-	
-	S.log.add("updating PSD path from vault - ( "+path_attributes_object.psd_path+" ) " ,"process");
-	S.log.add("updating PNG path from vault - ( "+path_attributes_object.png_path+" ) " ,"process");
-	S.log.add("updating SVG path from vault - ( "+path_attributes_object.svg_path+" ) " ,"process");
-	S.log.add("updating TPL path - ( "+path_attributes_object.tpl_path+" ) " ,"process");
-	
-	//udpate 
-	
-	S.portals.update_portal_script_module_attributes(_portal,path_attributes_object); 
-	
-}
-
-
-
-
-
-function update_portals_paths_by_type(_asset_type){
-	
-	try{
-		var S = new OO.SceneManager();	
-		S.portals.load_from_scene_by_sg_asset_type(_asset_type);
-		var portal_list = S.portals.get_list();
-		for(var p = 0 ; p < portal_list.length; p++){
-			S.log.add("updating paths of portal - "+current_portal.get_code(),"process");
-			udpate_portal_paths_from_vault(current_portal);
-		}	
-
-	}catch(error){
-
-		S.log.add_script_error_object(error); 
-	
-	}
-	
-
-	S.log.save();
-	var log_object = S.log;
-	
-	return log_object 
-	
-};
 
 
 

@@ -286,14 +286,16 @@ OO.PortalManager = function(_S){
 		compare_type = remove_spaces(_compare_type)
 
 		if(compare_type=="bg"){
-
 			compare_type = "BG"; 
+		}
 
+		if(_input_type=="bg"){
+			input_type= "BG"; 
 		}
 
 		MessageLog.trace("_input_type")
-		MessageLog.trace(_input_type)
-		MessageLog.trace(_compare_type)
+		MessageLog.trace(input_type)
+		MessageLog.trace(compare_type)
 
 		if(input_type == compare_type ){
 			return true;
@@ -678,13 +680,72 @@ OO.PortalManager = function(_S){
 			var current_portal = portal_objects_array[p];
 			this.delete_portal(current_portal);
 		}
-
 	}
 	
+
+	function udpate_portal_paths_from_vault(_portal){
+	
+		S.breakdown.load_current_shot_breakdown();
+		var linked_asset = S.breakdown.get_asset_object_by_code(_portal.get_code());
+
+		var path_attributes_object = {
+			psd_path :S.context.get_asset_data_path(linked_asset,"psd"),
+			png_path :S.context.get_asset_data_path(linked_asset,"png"),
+			tpl_path :S.context.get_asset_data_path(linked_asset,"tpl"),
+			svg_path :S.context.get_asset_data_path(linked_asset,"svg")
+		}
+		
+		S.log.add("updating PSD path from vault - ( "+path_attributes_object.psd_path+" ) " ,"process");
+		S.log.add("updating PNG path from vault - ( "+path_attributes_object.png_path+" ) " ,"process");
+		S.log.add("updating SVG path from vault - ( "+path_attributes_object.svg_path+" ) " ,"process");
+		S.log.add("updating TPL path - ( "+path_attributes_object.tpl_path+" ) " ,"process");
+		
+		//udpate 
+		
+		S.portals.update_portal_script_module_attributes(_portal,path_attributes_object); 
+		
+	}
+	
+	
+	
+	
+	
+	this.update_portals_paths_by_type = function(_asset_type){
+		
+		try{
+			var S = new OO.SceneManager();	
+			S.portals.load_from_scene_by_sg_asset_type(_asset_type);
+			var portal_list = S.portals.get_list();
+			for(var p = 0 ; p < portal_list.length; p++){
+				S.log.add("updating paths of portal - "+current_portal.get_code(),"process");
+				udpate_portal_paths_from_vault(current_portal);
+			}	
+	
+		}catch(error){
+	
+			S.log.add_script_error_object(error); 
+		
+		}
+		
+	
+		S.log.save();
+		var log_object = S.log;
+		
+		return log_object 
+		
+	};
+	
+
+
+
+
+
 
 
   
 }
+
+
 
 
 MessageLog.trace("CLASS OO_PortalManager")
