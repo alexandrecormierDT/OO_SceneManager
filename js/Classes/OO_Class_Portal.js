@@ -47,10 +47,12 @@ OO.Portal = function (){
 	var portal_code = null;
 	var portal_id = null;
 	var portal_sg_asset_type = null
-	var portal_departement = null;
+	var portal_departement = "boxanim";
 	var portal_tpl_version = null;
 	var portal_status = null; 
 	var portal_paths = [];
+	var portal_backdrop_name = "PORTAL";
+	var portal_backdrop_body = "";
 	
 	
 	// TREE
@@ -137,6 +139,32 @@ OO.Portal = function (){
 		return false; 
 		
 	}	
+
+	this.get_backdrop_name = function(){
+
+		format_backdrop_name()
+		return portal_backdrop_name;
+
+	}
+	this.get_backdrop_body = function(){
+
+		format_backdrop_body()
+		return portal_backdrop_body;
+
+	}
+	function format_backdrop_name(){
+
+		departement_name_upper_case = portal_departement.toUpperCase();
+		portal_backdrop_name =" < "+departement_name_upper_case+" PORTAL : "+portal_code+" > ";
+		MessageLog.trace(portal_backdrop_name)
+
+	}
+
+	function format_backdrop_body(){
+
+		portal_backdrop_body = this.portal_code
+
+	}
 
 	// PATHS
 

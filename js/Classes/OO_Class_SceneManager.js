@@ -7,6 +7,7 @@ OO.SceneManager = function(){
 	//access to the xstage throuht the class 
 	
 	this.stage = new OO.Stage(this);
+	this.backdrops = new OO.BackdropManager(this);
 	this.assets = new OO.AssetManager(this);
 	this.breakdown = new OO.Breakdown(this);
 	this.trees = new OO.TreeManager(this);
@@ -113,7 +114,7 @@ OO.SceneManager = function(){
 	
 	this.write_shot_burnin = function(_sceneinfos,_shotinfos,_date){
 		
-		var backdrop = this.get_backdrop_by_name("SHOT SCENE BURNIN");
+		var backdrop = this.backdrops.get_backdrop_by_name("SHOT SCENE BURNIN");
 		
 		if(backdrop != false){
 		
@@ -145,7 +146,7 @@ OO.SceneManager = function(){
 	
 	this.write_asset_burnin = function(_sceneinfos,_assetinfos,_date){
 		
-		var backdrop = this.get_backdrop_by_name("ASSET SCENE BURNIN");
+		var backdrop = this.backdrops.get_backdrop_by_name("ASSET SCENE BURNIN");
 		
 		if(backdrop != false){
 		
@@ -178,7 +179,7 @@ OO.SceneManager = function(){
 	
 	this.add_entry_to_scene_journal = function(_text){
 		
-		var backdrop = this.get_backdrop_by_name("SCENE JOURNAL");
+		var backdrop = this.backdrops.get_backdrop_by_name("SCENE JOURNAL");
 		
 		var time_stamp = OO.aujourdhui();
 		
@@ -199,7 +200,7 @@ OO.SceneManager = function(){
 
 			Backdrop.addBackdrop("Top", myBackdrop);
 			
-			var newbackdrop=this.get_backdrop_by_name("SCENE JOURNAL");		
+			var newbackdrop=this.backdrops.get_backdrop_by_name("SCENE JOURNAL");		
 			 newbackdrop.color = white_color;
 
 		}else{
@@ -214,7 +215,7 @@ OO.SceneManager = function(){
 		
 		var scene_path = scene.currentProjectPathRemapped() 
 		var scene_infos = scene_path+"\n";	
-		var backdrop = this.get_backdrop_by_name("SCENE NAME");
+		var backdrop = this.backdrops.get_backdrop_by_name("SCENE NAME");
 		 
 		if(backdrop == false){
 			
@@ -237,27 +238,6 @@ OO.SceneManager = function(){
 	}
 	
 
-	this.get_backdrop_by_name = function(bdname){
-
-		var backdrops = OO.doc.root.backdrops;
-		var match = 0; 
-
-		for(var b = 0 ; b < backdrops.length ; b++){
-
-			if(backdrops[b].title == bdname){
-				
-				match++;
-				return backdrops[b];
-
-			};
-		}
-		
-		if(match==0){
-			
-			return false;
-		}
-	}
-	
 
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	

@@ -121,14 +121,14 @@ function create_portals_by_asset_type(_asset_type){
 		
 		case ('bg'):
 		case ('BG'):
-			target_backdrop = S.get_backdrop_by_name('BG');
+			target_backdrop = S.backdrops.get_backdrop_by_name('BG');
 			target_composite = $.scene.getNodeByPath("Top/BG-C");
 		break; 
 		case('Character'):
 		case('Prop'):
 		case('FX'):
 		case('anim'):
-			target_backdrop = S.get_backdrop_by_name('ANIM');
+			target_backdrop = S.backdrops.get_backdrop_by_name('ANIM');
 			target_composite = $.scene.getNodeByPath("Top/ANIM-C");
 		break;
 	}
@@ -215,7 +215,7 @@ function create_master_asset_portal(){
 	var target_backdrop = false;
 	var target_composite = false;
 	
-	target_backdrop = S.get_backdrop_by_name('TPL_EXPORT');
+	target_backdrop = S.backdrops.get_backdrop_by_name('TPL_EXPORT');
 	target_composite = $.roor.scene.getNodeByPath("Top/TPL_EXPORT_C");	
 	
 	if(target_backdrop == false){

@@ -258,7 +258,7 @@ OO.Tree = function(_code,_nodes){
 		
 		for(var n in tree_nodes){
 		
-			var cn = OO.doc.getNodeByPath(tree_nodes[n]);
+			var cn = $.scene.getNodeByPath(tree_nodes[n]);
 			
 			if(tree_backdrop_object != undefined){
 			

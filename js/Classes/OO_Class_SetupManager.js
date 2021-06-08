@@ -45,20 +45,12 @@ OO.SetupManager = function(_S){
 	
 	
 	this.get_current_setup = function(setup_name){
-		
-		var CSB = S.get_backdrop_by_name("CURRENT_SETUP"); 
-		
+		var CSB = S.backdrops.get_backdrop_by_name("CURRENT_SETUP"); 
 		if(CSB == false){
-		
 			return false;
-			
 		}else{
-			
 			return CSB.body;
-			
 		}
-		
-		
 	}
 
 }

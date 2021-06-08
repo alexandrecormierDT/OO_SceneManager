@@ -109,8 +109,9 @@ OO.PortalCreator = function(_S){
 		// CREATING THE BACK DROP 
 		var parent_group = ntree.get_parent_group();
 		var departement_color = get_departement_color()
-		var departement_name_upper_case = current_departement.toUpperCase();
-		ntree.set_backdrop(parent_group.addBackdropToNodes(pnodes, " < "+departement_name_upper_case+" PORTAL : "+current_code+" > ",current_code,departement_color , 0, 0, 20, 20))
+		var backdrop_name = nportal.get_backdrop_name(); 
+		var backdrop_body = nportal.get_backdrop_body(); 
+		ntree.set_backdrop(parent_group.addBackdropToNodes(pnodes,backdrop_name,backdrop_body,departement_color , 0, 0, 20, 20))
 	
 		// linking the tree to the portal instance
 		nportal.set_tree(ntree)

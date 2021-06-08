@@ -600,9 +600,16 @@ OO.PortalManager = function(_S){
 	
 
 	this.delete_portal = function(_portal){
+
+		//deleting nodes
 		S.log.add("[PortalManager][delete_portal] "+_portal.get_code(),"process");
 		var portal_tree = _portal.get_tree();
-		portal_tree.delete_nodes()
+		portal_tree.delete_nodes();
+
+		//deleting backdrop
+		bd_name = _portal.get_backdrop_name();
+		var portal_backdrop = S.backdrops.get_backdrop_by_name(bd_name)
+		S.backdrops.delete_backdrop(portal_backdrop)
 	}
 
 	this.delete_all_scene_portals = function(){
@@ -618,7 +625,14 @@ OO.PortalManager = function(_S){
 
 	}
 
+	this.delete_scene_portals_by_type = function(_asset_type){
+		this.load_from_scene_by_sg_asset_type(_asset_type)
+		for(var p = 0 ; p < portal_objects_array.length ; p++){
+			var current_portal = portal_objects_array[p];
+			this.delete_portal(current_portal);
+		}
 
+	}
 	
 
 
