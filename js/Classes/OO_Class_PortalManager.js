@@ -35,21 +35,7 @@ OO.PortalManager = function(_S){
 	this.load_from_scene_by_sg_asset_type = function(_sg_asset_type){
 		
 		var scene_nodes = $.scene.root.nodes;
-		this.load_from_node_list(scene_nodes)
-
-		var found_portals = [];
-
-		for(var p = 0 ; p < portal_objects_array.length ; p++){
-			var current_portal = portal_objects_array[p]; 
-			if(portal_match_sg_asset_type(current_portal,_sg_asset_type)){
-				found_portals.push(current_portal)
-			}
-			
-		}
-
-		portal_objects_array = found_portals;
-
-		return found_portals;
+		this.load_from_node_list_by_asset_type(scene_nodes,_sg_asset_type)
 
 	}
 
@@ -66,8 +52,10 @@ OO.PortalManager = function(_S){
 		}
 		return scene_PSM
 	}
-	
-	this.load_from_node_list= function(_node_list){
+
+
+	//twinf function by asset type for gain of caclulation
+	this.load_from_node_list_by_asset_type= function(_node_list,_asset_type){
 		
 		// init list
 		this.reset_list()
@@ -83,57 +71,139 @@ OO.PortalManager = function(_S){
 		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
 
 			var cur_script_module = scene_PSM[sm];
-		
-			MessageLog.trace("cur_script_module")
-			MessageLog.trace(cur_script_module)
-			//building the portal instance from the nodeview
-			
-			var tpl_path = OO.filter_string(cur_script_module.tpl_path);
-			var psd_path = OO.filter_string(cur_script_module.psd_path);
-			var png_path = OO.filter_string(cur_script_module.png_path);
-			var svg_path = OO.filter_string(cur_script_module.svg_path);
 
-			//old bg portals might not have svg path so we assert them py their psd
-			if(svg_path == false || svg_path == ""  || svg_path == "false" ){
-				if(psd_path != false || psd_path != ""  || psd_path != "false" ){
-					svg_path = S.context.convert_psd_path_to_svg_path(psd_path)
-				}
-			}
-
-			var code = OO.filter_string(cur_script_module.code);
 			var type = OO.filter_string(cur_script_module.sg_asset_type);
-			var id = OO.filter_string(cur_script_module.id);
 
-			MessageLog.trace("here")
-			
-			//PORTAL GROUP
-			var linked_group = $.scene.getNodeByPath(cur_script_module.linkedInNodes);
-			
-			//PORTAL PEG
-			var linked_peg =  $.scene.getNodeByPath(linked_group.linkedInNodes);
+			if(type==_asset_type){
 
-			//TREE
-			var ntree = S.trees.add(code,[]);
-			
-			ntree.set_key_node("PORTAL_GROUP",linked_group);
-			ntree.set_key_node("PORTAL_PEG",linked_peg);
-			ntree.set_key_node("PORTAL_MODULE",cur_script_module);
+				//building the portal instance from the nodeview
+				
+				var tpl_path = OO.filter_string(cur_script_module.tpl_path);
+				var psd_path = OO.filter_string(cur_script_module.psd_path);
+				var png_path = OO.filter_string(cur_script_module.png_path);
+				var svg_path = OO.filter_string(cur_script_module.svg_path);
+	
+				//old bg portals might not have svg path so we assert them py their psd
+				if(svg_path == false || svg_path == ""  || svg_path == "false" ){
+					if(psd_path != false || psd_path != ""  || psd_path != "false" ){
+						svg_path = S.context.convert_psd_path_to_svg_path(psd_path)
+					}
+				}
+	
+				var code = OO.filter_string(cur_script_module.code);
+				var id = OO.filter_string(cur_script_module.id);
+	
+				MessageLog.trace("here")
+				
+				//PORTAL GROUP
+				var linked_group = $.scene.getNodeByPath(cur_script_module.linkedInNodes);
+				
+				//PORTAL PEG
+				var linked_peg =  $.scene.getNodeByPath(linked_group.linkedInNodes);
+	
+				//TREE
+				var ntree = S.trees.add(code,[]);
+				
+				ntree.set_key_node("PORTAL_GROUP",linked_group);
+				ntree.set_key_node("PORTAL_PEG",linked_peg);
+				ntree.set_key_node("PORTAL_MODULE",cur_script_module);
+	
+				//instanciating portal class
+				var nportal = new OO.Portal();
+				nportal.set_tree(ntree)
+				nportal.set_code(code)
+				nportal.set_sg_asset_type(type)
+				nportal.set_id(id)
+				nportal.set_path('tpl',tpl_path)
+				nportal.set_path('png',png_path)
+				nportal.set_path('psd',psd_path)
+				nportal.set_path('svg',svg_path)
+	
+				this.add(nportal);
 
-			//instanciating portal class
-			var nportal = new OO.Portal();
-			nportal.set_tree(ntree)
-			nportal.set_code(code)
-			nportal.set_sg_asset_type(type)
-			nportal.set_id(id)
-			nportal.set_path('tpl',tpl_path)
-			nportal.set_path('png',png_path)
-			nportal.set_path('psd',psd_path)
-			nportal.set_path('svg',svg_path)
 
-			this.add(nportal);
+			}
+		
+	
 
 		}
 		MessageLog.trace("load_from_node_list")
+
+	}
+	
+	this.load_from_node_list= function(_node_list){
+		// init list
+		this.reset_list()
+			
+		// Detect the script module with "portal" attributes among the selected nodes and fetch the linked nodes to make the tree, read the script module attributes 
+		//add a new portal object to the portal_objects_array. 
+
+		//we fetch the Portal Script Modules in the selection
+		var scene_PSM = fetch_portal_modules_from_list(_node_list)
+
+		MessageLog.trace(scene_PSM)
+
+		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
+
+			var cur_script_module = scene_PSM[sm];
+
+			var type = OO.filter_string(cur_script_module.sg_asset_type);
+
+
+
+				//building the portal instance from the nodeview
+				
+				var tpl_path = OO.filter_string(cur_script_module.tpl_path);
+				var psd_path = OO.filter_string(cur_script_module.psd_path);
+				var png_path = OO.filter_string(cur_script_module.png_path);
+				var svg_path = OO.filter_string(cur_script_module.svg_path);
+
+				//old bg portals might not have svg path so we assert them py their psd
+				if(svg_path == false || svg_path == ""  || svg_path == "false" ){
+					if(psd_path != false || psd_path != ""  || psd_path != "false" ){
+						svg_path = S.context.convert_psd_path_to_svg_path(psd_path)
+					}
+				}
+
+				var code = OO.filter_string(cur_script_module.code);
+				var id = OO.filter_string(cur_script_module.id);
+
+				MessageLog.trace("here")
+				
+				//PORTAL GROUP
+				var linked_group = $.scene.getNodeByPath(cur_script_module.linkedInNodes);
+				
+				//PORTAL PEG
+				var linked_peg =  $.scene.getNodeByPath(linked_group.linkedInNodes);
+
+				//TREE
+				var ntree = S.trees.add(code,[]);
+				
+				ntree.set_key_node("PORTAL_GROUP",linked_group);
+				ntree.set_key_node("PORTAL_PEG",linked_peg);
+				ntree.set_key_node("PORTAL_MODULE",cur_script_module);
+
+				//instanciating portal class
+				var nportal = new OO.Portal();
+				nportal.set_tree(ntree)
+				nportal.set_code(code)
+				nportal.set_sg_asset_type(type)
+				nportal.set_id(id)
+				nportal.set_path('tpl',tpl_path)
+				nportal.set_path('png',png_path)
+				nportal.set_path('psd',psd_path)
+				nportal.set_path('svg',svg_path)
+
+				this.add(nportal);
+
+
+			}
+		
+
+
+		
+		MessageLog.trace("load_from_node_list")
+
 	}
 
 	//comparing portal ids to see if it's already in the scene
