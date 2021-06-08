@@ -420,32 +420,36 @@ function push_selected_portals(_data_type){
 function push_master_asset_portal_to_folder(){
 	
 	// context detection 
-
 	var S = new OO.SceneManager();	
-	
-	var master_asset = S.breakdown.get_scene_master_asset();
-	
-	S.log.add(branch,"branch")
-	S.log.add(master_asset.get_code(),"ASSET_CODE"); 
-	
-	var master_asset_portal = S.portals.get_scene_portal_by_asset(master_asset); 
-	
-	if(master_asset_portal != false){
-		
-		S.portals.push_portal(master_asset_portal,'tpl')
-		var tpl_export_path  = master_asset_portal.get_path('tpl');
-		S.log.add(tpl_export_path ,"PIPELINE");
-		
-	}else{
-		
-		S.log.add("no portal found in the nodeview for  "+master_asset.get_code(),"error");
-	}
-	
-	//LOG
-	
 	S.log.create_new_log_file("P:/projects/billy/logs/push_master_asset_portal.html");
-	S.log.save();	
+
+	try{
 	
+		var master_asset = S.breakdown.get_scene_master_asset();
+		
+		S.log.add(branch,"branch")
+		S.log.add(master_asset.get_code(),"ASSET_CODE"); 
+		
+		var master_asset_portal = S.portals.get_scene_portal_by_asset(master_asset); 
+		
+		if(master_asset_portal != false){
+			
+			S.portals.push_portal(master_asset_portal,'tpl')
+			var tpl_export_path  = master_asset_portal.get_path('tpl');
+			S.log.add(tpl_export_path ,"PIPELINE");
+			
+		}else{
+			
+			S.log.add("no portal found in the nodeview for  "+master_asset.get_code(),"error");
+		}
+	
+	}catch(error){
+	
+		S.log.add_script_error_object(error); 
+	
+	}
+
+	S.log.save();	
 	S.log.set_script_tag("OO_push_master_asset_portal_to_folder"); 
 	S.log.create_scene_script_log_file_and_folder(); 
 	S.log.save_scene_script_log_file(); 	
