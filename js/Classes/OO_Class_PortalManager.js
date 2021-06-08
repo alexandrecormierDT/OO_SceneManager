@@ -38,42 +38,15 @@ OO.PortalManager = function(_S){
 
 	}
 
-	function fetch_portal_modules_from_list(_node_list){
-
-		var scene_PSM = []
-		MessageLog.trace("_node_list")
-		MessageLog.trace(_node_list)
-		for(var n = 0 ; n < _node_list.length ; n++){
-			var cnode = $.scene.getNodeByPath(_node_list[n])
-			if(cnode!=null){
-				if(cnode.type == "SCRIPT_MODULE"){
-					if(cnode.attributes.hasOwnProperty('portal') == true){
-						scene_PSM.push(cnode);
-					};
-				}
-			}
-
-		}
-		MessageLog.trace(scene_PSM)
-		return scene_PSM
-	}
 
 
-	//twinf function by asset type for gain of caclulation
 	this.load_from_node_list_by_asset_type= function(_node_list,_asset_type){
 		
 		// init list
 		this.reset_list()
-		MessageLog.trace(_node_list)
-		MessageLog.trace(_asset_type)
-		
-		// Detect the script module with "portal" attributes among the selected nodes and fetch the linked nodes to make the tree, read the script module attributes 
-		//add a new portal object to the portal_objects_array. 
 
-		//we fetch the Portal Script Modules in the selection
 		var scene_PSM = fetch_portal_modules_from_list(_node_list)
 
-		MessageLog.trace(scene_PSM)
 		MessageLog.trace(scene_PSM)
 
 		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
@@ -100,8 +73,6 @@ OO.PortalManager = function(_S){
 	
 				var code = OO.filter_string(cur_script_module.code);
 				var id = OO.filter_string(cur_script_module.id);
-	
-				MessageLog.trace("here")
 				
 				//PORTAL GROUP
 				var linked_group = $.scene.getNodeByPath(cur_script_module.linkedInNodes);
@@ -135,29 +106,21 @@ OO.PortalManager = function(_S){
 	
 
 		}
-		MessageLog.trace("load_from_node_list")
+		MessageLog.trace("load_from_node_list by asset type")
 
 	}
 	
 	this.load_from_node_list= function(_node_list){
-		// init list
+
 		this.reset_list()
-			
-		// Detect the script module with "portal" attributes among the selected nodes and fetch the linked nodes to make the tree, read the script module attributes 
-		//add a new portal object to the portal_objects_array. 
 
-		//we fetch the Portal Script Modules in the selection
 		var scene_PSM = fetch_portal_modules_from_list(_node_list)
-
-		MessageLog.trace(scene_PSM)
 
 		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
 
 			var cur_script_module = scene_PSM[sm];
 
 			var type = OO.filter_string(cur_script_module.sg_asset_type);
-
-
 
 				//building the portal instance from the nodeview
 				
@@ -176,8 +139,6 @@ OO.PortalManager = function(_S){
 				var code = OO.filter_string(cur_script_module.code);
 				var id = OO.filter_string(cur_script_module.id);
 
-				MessageLog.trace("here")
-				
 				//PORTAL GROUP
 				var linked_group = $.scene.getNodeByPath(cur_script_module.linkedInNodes);
 				
@@ -204,7 +165,6 @@ OO.PortalManager = function(_S){
 
 				this.add(nportal);
 
-
 			}
 		
 
@@ -212,6 +172,70 @@ OO.PortalManager = function(_S){
 		
 		MessageLog.trace("load_from_node_list")
 
+	}
+
+	function fetch_portal_modules_from_list(_node_list){
+
+		var scene_PSM = []
+		MessageLog.trace("_node_list")
+		MessageLog.trace(_node_list)
+		for(var n = 0 ; n < _node_list.length ; n++){
+			var cnode = $.scene.getNodeByPath(_node_list[n])
+			if(cnode!=null){
+				if(cnode.type == "SCRIPT_MODULE"){
+					if(cnode.attributes.hasOwnProperty('portal') == true){
+						scene_PSM.push(cnode);
+					};
+				}
+			}
+
+		}
+		MessageLog.trace(scene_PSM)
+		return scene_PSM
+	}
+
+	this.empty_portal = function (_portal){
+		
+		MessageLog.trace("-------------empty_portal")
+
+		try{
+
+			
+			var portal_tree = _portal.get_tree()
+			var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
+			S.trees.delete_group_nodes(portal_group.path)
+
+			for(var g= 0 ; g < portal_group.backdrops.length ; g++){
+
+				if(portal_group.backdrops[g] != undefined){
+			
+					portal_group.backdrops[g].x+=2000; 
+					portal_group.backdrops[g].width=20;
+					portal_group.backdrops[g].height=20;
+					portal_group.backdrops[g].title = "deleteme";
+					portal_group.backdrops[g].body = "deleteme";
+				
+				}
+
+			}
+				S.log.add("portal is now empty","process");
+
+		}catch(error){
+
+			S.log.add_script_error_object(error); 
+
+		}
+
+
+	}
+
+
+	this.empty_scene_portals_by_type = function(_asset_type){
+		this.load_from_scene_by_sg_asset_type(_asset_type)
+		for(var p = 0 ; p < portal_objects_array.length ; p++){
+			var current_portal = portal_objects_array[p];
+			this.empty_portal(current_portal);
+		}
 	}
 
 	//comparing portal ids to see if it's already in the scene
@@ -620,43 +644,6 @@ OO.PortalManager = function(_S){
 		}
 	}	
 
-	// should be handled by the tree class
-	
-	this.empty_portal = function (_portal){
-
-		MessageLog.trace("empty_portal")
-		
-		var portal_tree = _portal.get_tree()
-		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
-		S.trees.delete_group_nodes(portal_group.path)
-
-		for(var g= 0 ; g < portal_group.backdrops.length ; g++){
-
-			if(portal_group.backdrops[g] != undefined){
-		
-				portal_group.backdrops[g].x+=2000; 
-				portal_group.backdrops[g].width=20;
-				portal_group.backdrops[g].height=20;
-				portal_group.backdrops[g].title = "deleteme";
-				portal_group.backdrops[g].body = "deleteme";
-			
-			}
-
-		}
-
-
-		S.log.add("portal is now empty","process");
-	}
-
-
-	this.empty_scene_portals_by_type = function(_asset_type){
-		this.load_from_scene_by_sg_asset_type(_asset_type)
-		for(var p = 0 ; p < portal_objects_array.length ; p++){
-			var current_portal = portal_objects_array[p];
-			this.empty_portal(current_portal);
-		}
-	}
-	
 
 	this.delete_portal = function(_portal){
 
