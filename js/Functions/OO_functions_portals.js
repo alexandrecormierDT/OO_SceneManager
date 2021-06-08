@@ -401,9 +401,7 @@ function push_selected_portals(_data_type){
 	}
 
 	S.log.save();
-		
 	var log_object = S.log;
-
 	return log_object;
 
 	
