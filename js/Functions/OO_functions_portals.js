@@ -589,8 +589,6 @@ function empty_portals(_asset_type){
 		
 	}catch(error){
 
-		//S.log.add(Object.getOwnPropertyNames(error),"error"); 
-		MessageLog.trace(Object.getOwnPropertyNames(error))
 		S.log.add("file "+error.fileName+"  line "+error.lineNumber,"error"); 
 		S.log.add(error.message,"error"); 
 	}
