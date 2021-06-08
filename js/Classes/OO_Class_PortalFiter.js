@@ -32,9 +32,7 @@ OO.PortalFiter  = function(_S){
 
         //we apply the transformation
         if(shot_cadre != false){
-				
-            if(shot_cadre.hasOwnProperty('rect')==true){
-                
+            if(shot_cadre.has_rect()==true){
                 S.trees.fit_cadre_to_camera(portal_peg,shot_cadre);
                 S.log.add("[PortalPlacer] portal fit to camera ","success");				
                 

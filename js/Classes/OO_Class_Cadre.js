@@ -10,7 +10,7 @@ OO.Cadre = function (_name){
     this.type = "CameraIn";
 
     this.has_rect = function(){
-        if(rect.x != 0 && this.rect.y != 0){
+        if(this.rect.x != 0 && this.rect.y != 0){
             return true; 
         }
         return false; 
