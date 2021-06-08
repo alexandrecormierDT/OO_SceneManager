@@ -534,7 +534,7 @@ function update_portals_paths_by_type(_asset_type){
 
 	}catch(error){
 
-		S.log.add(error,"error"); 
+		S.log.add_script_error_object(error); 
 	
 	}
 	
@@ -583,9 +583,7 @@ function empty_portals(_asset_type){
 		S.portals.empty_scene_portals_by_type(_asset_type);
 
 	}catch(error){
-
-		S.log.add("file "+error.fileName+"  line "+error.lineNumber,"error"); 
-		S.log.add(error.message,"error"); 
+		S.log.add_script_error_object(error); 
 	}
 	
 	S.log.save();
@@ -625,7 +623,7 @@ function empty_selected_portals(){
 
 	}catch(error){
 
-		S.log.add(error,"error"); 
+		S.log.add_script_error_object(error); 
 
 	}
 
@@ -695,7 +693,7 @@ function fit_bg_portals_to_camera(){
 
 	}catch(error){
 
-		S.log.add(error,"error"); 
+		S.log.add_script_error_object(error); 
 
 	}
 

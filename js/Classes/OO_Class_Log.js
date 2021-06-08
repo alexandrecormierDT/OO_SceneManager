@@ -350,6 +350,13 @@ OO.Log =function (){
 			log_list = []; 
 			
 		}
+
+		this.add_script_error_object = function(error_object){
+
+			this.add("file "+error_object.fileName+"  line "+error_object.lineNumber,"error"); 
+			this.add(error_object.message,"error"); 
+
+		}
 		
 	
 

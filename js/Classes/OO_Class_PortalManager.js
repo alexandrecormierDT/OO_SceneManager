@@ -471,7 +471,7 @@ OO.PortalManager = function(_S){
 
 		}catch(error){
 
-			S.log.add("[PortalManager] "+error,"error"); 
+			S.log.add_script_error_object(error); 
 		
 		}
 
