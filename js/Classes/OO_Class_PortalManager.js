@@ -74,7 +74,7 @@ OO.PortalManager = function(_S){
 
 			var type = OO.filter_string(cur_script_module.sg_asset_type);
 
-			if(type==_asset_type){
+			if(match_sg_asset_type(type,_asset_type)){
 
 				//building the portal instance from the nodeview
 				
@@ -245,15 +245,23 @@ OO.PortalManager = function(_S){
 		_portal.set_several_script_module_attributes(_attributes_object);
 	}
 	
-	function portal_match_sg_asset_type(_portal,_sg_asset_type){
+	function match_sg_asset_type(_input_type,_compare_type){
 		
-		var current_type = _portal.get_sg_asset_type(); 
-		var anim_equivalent = ["FX","Character", "Prop","Vehicle"];
-		if(current_type == _sg_asset_type ){
+		var anim_equivalent = ["FX","Character","Prop","Vehicle"];
+
+		input_type = remove_spaces(_input_type)
+		compare_type = remove_spaces(_compare_type)
+
+		MessageLog.trace("_input_type")
+		MessageLog.trace(_input_type)
+		MessageLog.trace(_compare_type)
+
+		if(input_type == compare_type ){
 			return true;
 		}
 
-		if(_sg_asset_type == "anim" && anim_equivalent.indexOf(current_type) != -1){
+		if(compare_type  == "anim" && anim_equivalent.indexOf(input_type) != -1){
+			MessageLog.trace("match")
 			return true;
 		}
 
@@ -261,7 +269,13 @@ OO.PortalManager = function(_S){
 		
 	}
 
+
+	function remove_spaces(str){
+        str = str+""
+		return str.replace(/\s/g, '');
+	}
 	
+
 	this.create_single_asset_portal = function(_asset,_point,_composite){
 
 		var current_asset  = _asset; 

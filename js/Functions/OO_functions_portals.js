@@ -686,3 +686,19 @@ function fit_bg_portals_to_camera(){
 	
 	
 }
+
+
+
+function delete_bg_portals(){
+
+	S = new OO.SceneManager();
+	S.portals.delete_scene_portals_by_type("BG");
+
+}
+
+function delete_anim_portals(){
+
+	S = new OO.SceneManager();
+	S.portals.delete_scene_portals_by_type("anim");
+	
+}

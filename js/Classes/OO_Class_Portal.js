@@ -162,7 +162,7 @@ OO.Portal = function (){
 
 	function format_backdrop_body(){
 
-		portal_backdrop_body = this.portal_code
+		portal_backdrop_body = portal_code
 
 	}
 
