@@ -35,8 +35,8 @@ function create_empty_portal(){
 	
 	var userDepartement = new ComboBox();
 	userDepartement.label = "Departement"
-	userDepartement.editable = true;
-	userDepartement.itemList = ["design", "rig", "anim","bg","layout","boxanim"];
+	userDepartement.editable = false;
+	userDepartement.itemList =["design", "rig", "anim","bg","layout","boxanim","director","compo"];;
 	userDepartement.currentItem = ["boxanim"];
 	dialog.add( userDepartement );
 	
@@ -552,6 +552,35 @@ function empty_selected_portals(){
 	return S.log
 
 }
+
+function change_selected_portals_departement_dialog(){
+
+	var dialog = new Dialog();
+	dialog.title = "CHANGE PORTAL DEPARTEMENT";
+	dialog.width = 200;
+	
+	var userDepartement = new ComboBox();
+	userDepartement.label = "Departement"
+	userDepartement.editable = false;
+	userDepartement.itemList = ["design", "rig", "anim","bg","layout","boxanim","director","compo"];
+	userDepartement.currentItem = ["boxanim"];
+	dialog.add( userDepartement );
+	
+	if (dialog.exec()){
+
+		var S = new OO.SceneManager();	
+		var choosed_departement = userDepartement.currentItem
+		S.portals.change_portals_departement($.scene.selectedNodes,choosed_departement )
+
+		S.log.save();	
+		S.log.set_script_tag("OO_change_portals_departement"); 
+		S.log.create_scene_script_log_file_and_folder(); 
+		S.log.save_scene_script_log_file();
+
+	}
+}
+
+
 
 function update_anim_portals_paths(){
 

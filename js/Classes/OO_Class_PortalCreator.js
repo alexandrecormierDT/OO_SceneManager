@@ -108,7 +108,7 @@ OO.PortalCreator = function(_S){
 		
 		// CREATING THE BACK DROP 
 		var parent_group = ntree.get_parent_group();
-		var departement_color = get_departement_color()
+		var departement_color = S.get_departement_color(current_departement);
 		var backdrop_name = nportal.get_backdrop_name(); 
 		var backdrop_body = nportal.get_backdrop_body(); 
 		ntree.set_backdrop(parent_group.addBackdropToNodes(pnodes,backdrop_name,backdrop_body,departement_color , 0, 0, 20, 20))
@@ -125,57 +125,6 @@ OO.PortalCreator = function(_S){
 			
 	}
 
-	function get_departement_color(){
-		
-		var departement_color = new $.oColorValue(OO.pipe_colors.dt[0]); 
-		
-		switch (current_departement){
-			
-			case "design" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.design[0])
-				
-			break; 
-			
-			case "rig" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.rig[0])
-				
-			break;
-			
-			case "bg" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.bg[0])
-			
-			break;			
-			case "layout" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.layout[0])
-			
-			break;
-			
-			case "anim" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.anim[0])
-			
-			break;	
-			case "compo" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.compo[0])
-			
-			break;	
-			case "boxanim" : 
-			
-				departement_color = new $.oColorValue(OO.pipe_colors.layout[0])
-			
-			break;
-		}
-
-		return departement_color;
-		
-		
-		
-	}
 
 
   

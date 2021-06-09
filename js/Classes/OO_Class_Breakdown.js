@@ -86,7 +86,8 @@ OO.Breakdown = function(_S){
                     shot_object.project = shot_project;
 
                     match++;
-
+                    
+                    S.log.add("[Breakdown] "+get_shot_link(shot_object),"link")
                     return shot_object;
                 }
 
@@ -95,22 +96,37 @@ OO.Breakdown = function(_S){
         }
         if(match ==0){
 
+
             S.log.add("[Breakdown] can't find shot ( "+_shot_code+" ) in Shot.csv database ","error")
+
             return false 
 
         }
         
     }
 
+    function get_shot_link(_shot_object){
+        var shotgrid_link = new OO.ShotgridLink()
+        shotgrid_link.set_shot_object(_shot_object)
+        return shotgrid_link.get_html_shot_link()
+
+    }
+    function get_asset_link(_asset_object){
+        var shotgrid_link = new OO.ShotgridLink()
+        shotgrid_link.set_asset_object(_asset_object)
+        return shotgrid_link.get_html_asset_link()
+
+    }
+
 
 
     function parse_asset_csv_and_find_asset(_asset_code){
 
-        csv_string = get_asset_csv_content()
-        var match = 0;
+        csv_string = get_asset_csv_content();
+        var match = 0
         if(csv_string!=false){
 
-            var line_split = csv_string.split("\n");
+            var line_split = csv_string.split('\n');
 				
             //loop throught lines
             for (var l = 1 ; l < line_split.length ; l++){
@@ -118,7 +134,7 @@ OO.Breakdown = function(_S){
 				// SAMPLE LINE : "1656","pr_rocking_chair_billy","Prop","ep102_pl001, ep102_pl002, ep102_pl005, ep102_pl006, ep102_pl007, ep102_pl009, ep102_pl010","billy",
 				//              0   1  2         3              4   5  6    7                                                                                      8  9     10
                 var second_split = line_split[l].split('"');
-                var code = remove_spaces(second_split[3]) 
+                var code = remove_spaces(second_split[3])+""
 
                 if(code == _asset_code){
 
@@ -135,14 +151,13 @@ OO.Breakdown = function(_S){
                     asset_object.project = project ;
                     asset_object.shots = shots;
 
-                    MessageLog.trace("_______----_______")
-                    MessageLog.trace(_asset_code)
-                    MessageLog.trace(asset_object.id )
-                    MessageLog.trace( asset_object.sg_asset_type)
-                    MessageLog.trace(asset_object.project)
+
+                    MessageLog.trace(get_asset_link(asset_object))
 
                     match++;
+                    S.log.add("[Breakdown] "+get_asset_link(asset_object),"link")
                     S.log.add("[Breakdown] found asset ( "+asset_object.get_code()+" ) in Asset.csv database ","success")
+
 
                     return asset_object;
 

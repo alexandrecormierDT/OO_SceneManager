@@ -255,6 +255,65 @@ OO.SceneManager = function(){
 		return this.stage.parse_xml(xstageDOM);
 
 	}
+
+
+	this.get_departement_color = function(_departement){
+		
+		var departement_color = new $.oColorValue(OO.pipe_colors.dt[0]); 
+		
+		switch (_departement){
+			
+			case "design" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.design[0])
+				
+			break; 
+			
+			case "rig" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.rig[0])
+				
+			break;
+
+			case "director" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.director[0])
+				
+			break;
+			
+			case "bg" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.bg[0])
+			
+			break;			
+			case "layout" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.layout[0])
+			
+			break;
+			
+			case "anim" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.anim[0])
+			
+			break;	
+			case "compo" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.compo[0])
+			
+			break;	
+			case "boxanim" : 
+			
+				departement_color = new $.oColorValue(OO.pipe_colors.layout[0])
+			
+			break;
+		}
+
+		return departement_color;
+		
+		
+		
+	}
 	
 
 }

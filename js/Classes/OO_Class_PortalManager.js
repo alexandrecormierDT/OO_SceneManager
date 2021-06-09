@@ -200,7 +200,6 @@ OO.PortalManager = function(_S){
 
 		try{
 
-			
 			var portal_tree = _portal.get_tree()
 			var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 			S.trees.delete_group_nodes(portal_group.path)
@@ -568,6 +567,7 @@ OO.PortalManager = function(_S){
 		
 			S.trees.replace_group_multiports(portal_group.path);
 
+
 		}
 
 	}
@@ -585,10 +585,8 @@ OO.PortalManager = function(_S){
 		
 		// we arange the psd nodes
 		var bg_tree = S.trees.add(_portal.get_code(),nodes)
-		
 		S.trees.arange_psd_node(bg_tree);
-		var pbackdrop = _portal.get_backdrop();
-		pbackdrop.color = new $.oColorValue("#5097D8ff");
+
 
 		return nodes
 		
@@ -679,18 +677,19 @@ OO.PortalManager = function(_S){
 	}
 	
 
-	function udpate_portal_paths_from_vault(_portal){
+	function udpate_portal_paths_from_vault(_portal,_new_departement){
 	
 		var linked_asset = S.breakdown.get_asset_object_by_code(_portal.get_code());
+		var new_departement = _new_departement != undefined ? _new_departement : _portal.get_departement();
 
 		S.context.set_library_path(OO.library_path);	
 		S.context.set_vault_path(OO.vault_path)
 
 		var path_attributes_object = {
-			psd_path :S.context.get_asset_data_path(linked_asset,"psd"),
-			png_path :S.context.get_asset_data_path(linked_asset,"png"),
-			tpl_path :S.context.get_asset_data_path(linked_asset,"tpl"),
-			svg_path :S.context.get_asset_data_path(linked_asset,"svg"),
+			psd_path :S.context.get_asset_data_path(linked_asset,"psd",new_departement),
+			png_path :S.context.get_asset_data_path(linked_asset,"png",new_departement),
+			tpl_path :S.context.get_asset_data_path(linked_asset,"tpl",new_departement),
+			svg_path :S.context.get_asset_data_path(linked_asset,"svg",new_departement),
 			id:linked_asset.get_id()
 		}
 		
@@ -702,11 +701,12 @@ OO.PortalManager = function(_S){
 		
 		//udpate 
 		
+		
 		_portal.set_several_script_module_attributes(path_attributes_object); 
 		
 	}
-	
-	
+
+
 	
 	this.update_portals_paths_by_type = function(_asset_type){
 		
@@ -728,10 +728,35 @@ OO.PortalManager = function(_S){
 	
 
 
+	this.change_portals_departement = function(_node_list,_departement){
 
+		try{
 
+			this.load_from_node_list(_node_list);
+			for(var p = 0 ; p < portal_objects_array.length; p++){
+				var current_portal = portal_objects_array[p]
+				S.log.add("updating paths of portal "+current_portal.get_code()+"with new department "+_departement,"process");
 
+				
+				var new_color = S.get_departement_color(_departement);
+				var portal_backdrop =current_portal.get_backdrop()
+				S.backdrops.change_backdrop_color(portal_backdrop,new_color)
 
+				current_portal.set_departement(_departement)
+				portal_backdrop.title= current_portal.get_backdrop_name()
+
+				udpate_portal_paths_from_vault(current_portal,_departement);
+
+				
+				
+			}	
+	
+		}catch(error){
+	
+			S.log.add_script_error_object(error); 
+		}
+
+	}
 
   
 }

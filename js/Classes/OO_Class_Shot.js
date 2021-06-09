@@ -6,6 +6,13 @@ OO.Shot = function(_shot_code){
     this.project =""; 
     this.sequence =""; 
 
+    this.get_id = function(){
+        return this.id;
+    }
+    this.get_code = function(){
+        return this.code;
+    }
+
 
 }
 

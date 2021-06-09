@@ -55,9 +55,9 @@ OO.SVGReader = function(_S){
 			cadre.bg.height = attr.height
 		}
 		
-		S.log.add("[SVGReader] Dimentions du psd","process");
-		S.log.add("[SVGReader] bg width = "+cadre.bg.width,"process");
-		S.log.add("[SVGReader] bg height = "+cadre.bg.height,"process");
+		S.log.add("[SVGReader] Dimentions du psd","infos");
+		S.log.add("[SVGReader] bg width = "+cadre.bg.width,"infos");
+		S.log.add("[SVGReader] bg height = "+cadre.bg.height,"infos");
 		
 		var groups = XMLobj['g'];
 
@@ -66,9 +66,11 @@ OO.SVGReader = function(_S){
 			cg = groups[i]; 
 			var group_title = cg.title;
 
+			
+
 			if(group_title=="CADRES"){
 				
-				S.log.add("[SVG] found group : "+group_title,"process");
+				S.log.add("[SVGReader] found group : "+group_title,"success");
 				var gimages = cg['image']; 
 				
 				for(var i in gimages){
@@ -88,10 +90,12 @@ OO.SVGReader = function(_S){
 						image_attributes = cimage._Attribs;
 			
 					}
+
+					S.log.add("[SVGReader] cadre layer : "+image_title,"listing");
 					
 					if(image_title == _shot_code){
 						
-						S.log.add("[SVGReader] found layer ( "+image_title+" ) for shot  ( "+_shot_code+" )","process");
+						S.log.add("[SVGReader] found layer ( "+image_title+" ) for shot  ( "+_shot_code+" )","success");
 						var attr = image_attributes;
 	
 
@@ -100,11 +104,11 @@ OO.SVGReader = function(_S){
 						cadre.rect.width= attr.width;
 						cadre.rect.height= attr.height;
 
-						S.log.add("[SVGReader] cadre ( "+image_title+" )","process");
-						S.log.add("[SVGReader] width ( "+attr.width+" )","process");
-						S.log.add("[SVGReader] height ( "+attr.height+" )","process");
-						S.log.add("[SVGReader] x ( "+attr.x+" )","process");
-						S.log.add("[SVGReader] y ( "+attr.y+" )","process");
+						S.log.add("[SVGReader] cadre ( "+image_title+" )","infos");
+						S.log.add("[SVGReader] width ( "+attr.width+" )","infos");
+						S.log.add("[SVGReader] height ( "+attr.height+" )","infos");
+						S.log.add("[SVGReader] x ( "+attr.x+" )","infos");
+						S.log.add("[SVGReader] y ( "+attr.y+" )","infos");
 						
 						match++;
 						

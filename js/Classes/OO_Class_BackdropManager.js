@@ -41,6 +41,18 @@ OO.BackdropManager = function(_S){
 		_backdrop.body = "";
 
     }
-	
+
+    this.change_backdrop_color = function(_backdrop,_color_object){
+
+		_backdrop.color = _color_object;
+
+
+    }
+    this.change_backdrop_title = function(_backdrop,_title){
+
+		_backdrop.title = _title;
+
+
+    }	
 
 }

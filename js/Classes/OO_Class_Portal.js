@@ -152,6 +152,19 @@ OO.Portal = function (){
 		return portal_backdrop_body;
 
 	}
+
+	this.change_backdrop_color_to = function(_color_object){
+
+
+	}
+
+	this.get_backdrop_object = function(){
+		format_backdrop_name()
+		
+
+	}
+
+
 	function format_backdrop_name(){
 
 		departement_name_upper_case = portal_departement.toUpperCase();
