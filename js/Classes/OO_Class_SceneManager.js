@@ -276,26 +276,18 @@ OO.SceneManager = function(){
 			break;
 
 			case "director" : 
-			
 				departement_color = new $.oColorValue(OO.pipe_colors.director[0])
-				
 			break;
 			
 			case "bg" : 
-			
 				departement_color = new $.oColorValue(OO.pipe_colors.bg[0])
-			
 			break;			
 			case "layout" : 
-			
 				departement_color = new $.oColorValue(OO.pipe_colors.layout[0])
-			
 			break;
 			
 			case "anim" : 
-			
 				departement_color = new $.oColorValue(OO.pipe_colors.anim[0])
-			
 			break;	
 			case "compo" : 
 			

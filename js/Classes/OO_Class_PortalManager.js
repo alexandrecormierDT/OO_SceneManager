@@ -462,7 +462,7 @@ OO.PortalManager = function(_S){
 		
 		var pulled_nodes = []; 
 
-		S.log.add("[PORTAL PULL]","process")
+		S.log.add("[PortalManager]","process")
 		S.log.add(_portal.get_code(),"portal")
 		S.log.add(_data_type,"data_type")
 
@@ -485,7 +485,7 @@ OO.PortalManager = function(_S){
 				}			
 				
 			}else{
-				S.log.add("[PORTAL PULL] data not found for path "+_portal.get_path(_data_type),"error");
+				S.log.add("[PortalManager] data not found for path "+_portal.get_path(_data_type),"error");
 			}
 
 		}catch(error){
@@ -515,20 +515,17 @@ OO.PortalManager = function(_S){
 				// scale the read to fit the original size of the png
 				S.trees.scale_anim_node_to_png_size(png_node.path,final_path)
 
+				S.log.add("[PortalManager] importing PNG file to nodeview "+final_path,"process")
+
 				//different treatment for bg
 				if(portal_sg_asset_type == 'BG' || portal_sg_asset_type == 'bg'){
-					S.log.add("[PORTAL PULL] "+portal_sg_asset_type+" detected","process");
-					S.log.add("[PORTAL PULL] scaling node with svg data ","process");
+					S.log.add("[PortalManager] "+portal_sg_asset_type+" detected","process");
+					S.log.add("[PortalManager] scaling node with svg data ","process");
 					S.trees.scale_bg_node_to_png_size(png_node.path,final_path)
 				}else{
-					S.log.add("[PORTAL PULL] scaling node with dimention txt data ","process");
+					S.log.add("[PortalManager] scaling node with dimention txt data ","process");
 					S.trees.scale_anim_node_to_png_size(png_node.path,final_path);
 				}
-
-				S.log.add("[PORTAL PULL] png node created ","process")
-				S.log.add("[PORTAL PULL] importing png = "+png_node,"process")
-
-				MessageLog.trace("positionning the node and renaming it ")
 				
 				//positionning the node and renaming it 
 				png_node.name = _portal.get_code();
@@ -556,6 +553,7 @@ OO.PortalManager = function(_S){
 		
 		S.trees.import_tpl_in_group(final_path,portal_group)
 		var tpl_group = S.trees.get_first_sub_group_in_group(portal_group); 
+		S.log.add("[PortalManager] importing TPL file to nodeview "+final_path,"process")
 		
 		if(tpl_group != false){
 			
@@ -575,10 +573,12 @@ OO.PortalManager = function(_S){
 
 	function pull_psd(_portal){
 
+		
 		var portal_tree  = _portal.get_tree();	
 		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
-				
+		
 		final_path = _portal.get_path('psd'); 
+		S.log.add("[PortalManager] importing PSD file to nodeview "+final_path,"process")
 					
 		//we import the tpl inside the portal's group
 		var nodes = S.trees.import_psd_in_group(_portal.get_code(),final_path,portal_group);

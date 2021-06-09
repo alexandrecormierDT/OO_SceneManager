@@ -152,9 +152,6 @@ function create_portals_by_asset_type(_asset_type){
 		S.breakdown.load_current_shot_breakdown();
 
 		S.portals.reset_list();
-		
-		//load scene portal to check if an asset already has a portal
-		S.portals.load_from_scene();
 
 		S.portals.load_asset_portals_from_breakdown_by_type(_asset_type);
 		
@@ -262,7 +259,7 @@ function pull_tpl_by_asset_type(_asset_type){
 function pull_psd_by_asset_type(_asset_type){
 	
 	var S = new OO.SceneManager();	
-	S.portals.pull_scene_portal_data_by_sg_asset_type('tpl',_asset_type)
+	S.portals.pull_scene_portal_data_by_sg_asset_type('psd',_asset_type)
 	return S.log;
 	
 } 
@@ -314,10 +311,9 @@ function pull_bg_portal_png(){
 
 function pull_bg_portal_psd(){
 	
-	var S = new OO.SceneManager();	
-	
+
 	var log_object = pull_psd_by_asset_type("BG");
-	
+
 	log_object.set_script_tag("OO_pull_bg_portals_psd"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
@@ -351,23 +347,29 @@ function pull_selected_portals_dialog(){
 }
 
 function pull_selected_portals_process(_data_type){
-	
-	var S = new OO.SceneManager();	
-	S.portals.load_from_node_list($.scene.selectedNodes);
-	var portal_list = S.portals.get_list()
-	
-	for(var p = 0 ; p <  portal_list.length; p++){
-		
-			var current_portal =  portal_list[p]
-			
-			//we empty the portal first 
-			S.portals.empty_portal(current_portal);
-			S.portals.pull(current_portal,_data_type);	
 
-	}	
+	try{
+
+		var S = new OO.SceneManager();	
+		S.portals.load_from_node_list($.scene.selectedNodes);
+		var portal_list = S.portals.get_list()
+		for(var p = 0 ; p <  portal_list.length; p++){
+			
+				var current_portal =  portal_list[p]
+				
+				//we empty the portal first 
+				S.portals.empty_portal(current_portal);
+				S.portals.pull(current_portal,_data_type);	
+
+		}	
+
+	}catch(error){
+	
+		S.log.add_script_error_object(error); 
+	
+	}
 
 	S.log.save();	
-	
 	var log_object = S.log;
 	return log_object 
 

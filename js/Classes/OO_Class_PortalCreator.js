@@ -60,6 +60,8 @@ OO.PortalCreator = function(_S){
 	
 	
 	this.create_portal = function(){ 
+
+		S.log.add("creating portal for asset "+current_code,"start")
 		
 		var nportal = new OO.Portal();
 		
