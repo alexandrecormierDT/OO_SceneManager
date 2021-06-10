@@ -63,9 +63,18 @@ function create_empty_portal(){
 		var tpl_version = OO.filter_string(userInputVersion.currentItem);
 		var status = OO.filter_string(userInputStatus.currentItem);
 		
+		var nasset = S.breakdown.get_asset_object_by_code(asset_code)
+		var asset_id = 000000;
+		
 
-		var nasset = new OO.Asset(asset_code);
-		nasset.sg_asset_type = asset_type;
+		if(nasset == false){
+			nasset = new OO.Asset(asset_code);
+			nasset.sg_asset_type = asset_type;
+		}else{
+			asset_type = nasset.get_sg_asset_type();
+			asset_id =nasset.get_id();
+		}
+
 		
 		var final_png_path = S.context.get_asset_data_path(nasset,"png",departement);
 		var final_psd_path = S.context.get_asset_data_path(nasset,"psd",departement);
@@ -75,14 +84,11 @@ function create_empty_portal(){
 		S.log.add('[CREATE PORTAL]','process');
 		S.log.add('[ASSET_CODE] : '+asset_code,'user_input');
 		S.log.add('[ASSET_TYPE] : '+asset_type,'user_input');
+		S.log.add('[ASSET_ID] : '+asset_type,'user_input');
 		S.log.add('[DEPARTEMENT] : '+departement,'user_input');
 
 		var asset_id = S.breakdown.get_asset_id(asset_code)
 
-		if(asset_id == false){
-			asset_id = 00000;
-		}
-		
 		S.portals.creator.set_code( asset_code )
 		S.portals.creator.set_sg_asset_type( asset_type )
 		S.portals.creator.set_departement( departement )

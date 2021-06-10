@@ -4,8 +4,8 @@
 
 OO.DeadLineJob = function(){
 	
-    this._myvar ="truc";
-    var xstage_path; 
+    var xstage_path =""; 
+    var command_line_string = ""; 
 
     var jobs_file_temp_folder = "P:\\pipeline\\alexdev\\temp";
     //var dead_line_path = "%DEADLINE_PATH%\\deadlinecommand.exe";
@@ -15,21 +15,36 @@ OO.DeadLineJob = function(){
     var job_info_file_path = ""; 
     var plugin_info_file_path = ""; 
 
+    var plugin_type = "hamrony"; 
+
     var startf = scene.getStartFrame();
     var stopf = scene.getStopFrame();
 
     
-
+    
+    //BatchName
+    var batch_name = "batch";
     var job_name = "JOB_"+get_unique_id();
 
+    this.set_plugin = function(_p){
+        plugin_type = _p;
+    }
 
-    this.set_xstage_path = function(_xstage_path){
+    this.set_job_name = function(_jn){
 
-        xstage_path = _xstage_path;
+        var insert = _jn+""; 
+
+        job_name = "JOB_"+insert+"_"+get_unique_id();
+ 
 
     }
 
-    function format_plugin_info_file_content(){
+
+    this.set_xstage_path = function(_xstage_path){
+        xstage_path = _xstage_path;
+    }
+
+    function format_harmony_plugin_info_file_content(){
 
         var content;
 
@@ -38,6 +53,14 @@ OO.DeadLineJob = function(){
         return content;
     }
 
+    function format_command_line_plugin_info_file_content(){
+
+        var content;
+        content = "Shell=cmd\nShellExecute=True\nArguments="+command_line_string;
+        MessageLog.trace(content)
+
+        return content;
+    }
 
 
     function create_plugin_info_file(){
@@ -49,11 +72,19 @@ OO.DeadLineJob = function(){
 			
 		if(file_test.exists == false){
 				
-			var logfile = new PermanentFile(file_path);
-
-			logfile.open(4);              
-			logfile.write(format_plugin_info_file_content());           
-			logfile.close(); 						
+			var plugin_info_file = new PermanentFile(file_path);
+            var file_content = ""
+            switch(plugin_type){
+                case ('harmony'): 
+                    file_content = format_harmony_plugin_info_file_content();
+                break; 
+                case ('command_line'):
+                    file_content = format_command_line_plugin_info_file_content();
+                break; 
+            }
+			plugin_info_file.open(4);              
+			plugin_info_file.write(file_content);           
+			plugin_info_file.close(); 						
 				
 		}
 
@@ -70,12 +101,22 @@ OO.DeadLineJob = function(){
 		var file_test = new $.oFile(file_path)
 			
 		if(file_test.exists == false){
+
+            var file_content = ""; 
 				
 			var logfile = new PermanentFile(file_path);
-			var file_content = format_job_info_file_content()
+
+            switch(plugin_type){
+                case ('harmony'): 
+                 file_content = format_harmony_job_info_file_content()
+                break; 
+                case ('command_line'):
+                    file_content = format_command_line_job_info_file_content()
+                break; 
+            }
 
 			logfile.open(4);              
-			logfile.write(format_job_info_file_content());           
+			logfile.write(file_content);           
 			logfile.close(); 						
 				
 		}
@@ -84,13 +125,10 @@ OO.DeadLineJob = function(){
 
     }
 
-    function format_job_info_file_content(){
+    function format_harmony_job_info_file_content(){
 
         var content;
-
-        MessageLog.trace(startf+" "+stopf)
-
-        content = "Plugin=Harmony\nFrames="+startf+"-"+stopf+"\nChunkSize="+stopf+"\nName="+job_name+""
+        content = "Plugin=ooo_Harmony\nFrames="+startf+"-"+stopf+"\nChunkSize="+stopf+"\nName="+job_name+""
        
        /* Frames=1-36
         ChunkSize=36
@@ -100,10 +138,22 @@ OO.DeadLineJob = function(){
         return content;
     }
 
-    function format_json_object(){
+    function format_command_line_job_info_file_content(){
 
+        var content;
+        content = "Batch="+batch_name+"\nPlugin=CommandLine\nFrames=1-1\nChunkSize=1\nName="+job_name+""
+       
+       /* Frames=1-1
+        ChunkSize=36
+        Name=prout2
+        JobDependencies=60afad674026630b642426c9"*/
 
+        return content;
+    }
 
+    this.set_command_line_string = function(_cmds){
+
+        command_line_string = _cmds
     }
 
     this.create_job_files = function(){

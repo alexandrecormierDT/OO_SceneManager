@@ -4,7 +4,13 @@
 
 OO.ViewManager = function(_S){
 
-	var read_image_info_bat = "P:\\pipeline\\alexdev\\proto\\OO_SceneManager_proto\\bin\\read_image_infos.bat";
+	if(FOLDER == undefined){
+
+		FOLDER = "master";
+		
+	}
+
+	var read_image_info_bat = "P:\\pipeline\\alexdev\\"+FOLDER+"\\OO_SceneManager_"+FOLDER+"\\bin\\read_image_infos.bat";
 	
 	//reference to the singleton
 	var S = _S;

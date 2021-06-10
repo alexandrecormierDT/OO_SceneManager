@@ -93,36 +93,36 @@ OO.SGVersion = function(_S){
 	}
 
 	this.render_and_upload_movie_as_version_detached = function(){
-		
+	
 		S.log.add("render_and_upload_movie_as_version","script")
-
 		format_render_and_upload_command_string();
 
 		MessageLog.trace(render_and_upload_movie_command)
-		S.log.add("RENDER AND TBMOVIEUPLAOD DETACHED","start")
+
 		S.log.add(render_and_upload_movie_command,"arguments")
 
-		var process_render_movie = new Process2(render_and_upload_movie_command);
-		var launch = process_render_movie.launchAndDetach();
-		var errors = process_render_movie.errorMessage();
-		
-		S.log.add("launch  "+launch,"process")
-		S.log.add(errors,"process")
-		S.log.add(process_render_movie,"process")
-		
+		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
+
+		//var process_render_movie = new Process2(render_and_upload_movie_command);
+		//var launch = process_render_movie.launchAndDetach();
+		/*
+		if(launch == 0){
+			S.log.add(launch+" = upload succeed","success")
+		}else{
+			S.log.add(launch+" = upload failed","error")
+		}*/
 	}
 
 	this.render_and_upload_movie_as_version = function(){
 		
 		S.log.add("render_and_upload_movie_as_version","script")
-
 		format_render_and_upload_command_string();
-
 		MessageLog.trace(render_and_upload_movie_command)
 
-		S.log.add("RENDER AND TBMOVIEUPLAOD","start")
 		S.log.add(render_and_upload_movie_command,"arguments")
 
+		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
+		/*
 		var process_render_movie = new Process2(render_and_upload_movie_command);
 		var launch = process_render_movie.launch();
 		var errors = process_render_movie.errorMessage();
@@ -131,8 +131,7 @@ OO.SGVersion = function(_S){
 			S.log.add(launch+" = upload succeed","success")
 		}else{
 			S.log.add(launch+" = upload failed","error")
-
-		}
+		}*/
 
 		
 	}
@@ -148,6 +147,8 @@ OO.SGVersion = function(_S){
 		MessageLog.trace(movie_upload_command)
 		
 		var process_movie = new Process2(movie_upload_command);
+
+
 		MessageLog.trace(process_movie.launch());
 		MessageLog.trace(process_movie.errorMessage());
 		MessageLog.trace(process_movie);		
@@ -160,7 +161,6 @@ OO.SGVersion = function(_S){
 			S.log.add(launch+" = upload failed","error")
 
 		}
-		
 	}
 
 
@@ -179,14 +179,17 @@ OO.SGVersion = function(_S){
 
 		MessageLog.trace(png_upload_command);
 		
-		var process_png = new Process2(png_upload_command);
-		S.log.add(png_upload_command,"arguments")
+		//var process_png = new Process2(png_upload_command);
+
+		S.deadline.submit_command_line_job(png_upload_command);
+
+		/*S.log.add(png_upload_command,"arguments")
 		if(launch == 0){
 			S.log.add(launch+" = upload succeed","success")
 		}else{
 			S.log.add(launch+" = upload failed","error")
 
-		}
+		}*/
 		
 	}
 	

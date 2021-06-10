@@ -5,27 +5,16 @@
 OO.View = function(TLM){
 	
 	this.version = "unnamedversion"; 
-	
 	this.exportFrame = 0;
-	
 	this.exportLength = 0; 
-	
 	this.asset = "unnamedasset";
-	 
 	this.task = "unnamedtask";
-
 	this.task_status= "pdr";
-	
 	this.exportFormat = "png";
-	
 	this.exportBackground = false;
-	
 	this.exportCameraFrame = false;
-	
 	this.frameScale = 1;
-	
 	this.is_selected = false;
-	
 	this.name = "VIEW"
 	this.resolutionFactor = 1; 
 	

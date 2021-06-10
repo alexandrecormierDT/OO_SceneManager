@@ -21,7 +21,6 @@ OO.PortalFiter  = function(_S){
             }
         }
 
-
         //we instaciate the cadre class
         S.svg_reader.set_path(svg_path);
         var shot_cadre = S.svg_reader.get_layout_cadre_for_shot(current_shot)

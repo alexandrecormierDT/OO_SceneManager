@@ -24,6 +24,7 @@ OO.SceneManager = function(){
 	var harmony_path = 'C:/Program Files (x86)/Toon Boom Animation/Toon Boom Harmony 20 Premium/win64/bin/HarmonyPremium.exe';
 	this.svg_reader = new OO.SVGReader(this);
 	this.scene_settings = ""; 
+	this.psd_importer = new OO.PSDImporter(this)
 
 	this.get_unique_id = function(){
 

@@ -23,8 +23,8 @@ function upload_render_as_SG_version_dialog(){
 	
 	var sanitizer = new OO.Sanitizer();
 	
-	
 	S.context.set_from_scene_path();
+
 	var input_task_name = S.context.get_task()
 	var input_version_name = "versioname";
 	var input_task_status = "psr";
@@ -91,17 +91,17 @@ function upload_render_as_SG_version_dialog(){
 		S.log.add("movie file path "+rendered_movie_path,"process");
 		
 		scene.saveAll();
+
 		S.version.render_and_upload_movie_as_version_detached()
 
 		S.log.save();
-
 		S.log.set_script_tag("OO_upload_render_as_SG_version_dialog"); 
 		S.log.create_scene_script_log_file_and_folder(); 
 		S.log.save_scene_script_log_file(); 	
-		
-	}
 
-	
+		
+
+	}
 }
 
 function upload_render_as_SG_version_for_task(_task_name,_version_suffix){

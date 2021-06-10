@@ -124,7 +124,7 @@ OO.Log =function (){
 				
 				case "html": 
 				
-					stamp = "<div class='logbox'><h3><span class='scene'> "+scene_path+" </span></h3><span class='entry'>"+Date()+"</span><br>";
+					stamp = "[timestamp="+get_time_stamp_string()+"]<div class='logbox'><h3><span class='scene'> "+scene_path+" </span></h3><span class='entry'>"+Date()+"</span><br>";
 				
 					for (l in log_list){
 						
@@ -286,9 +286,10 @@ OO.Log =function (){
 		
 		function get_time_stamp_string(){
 			
-			var ts = Math.round(+new Date() / 100)+""
+			var ts = Math.round(+new Date() / 10)+""
 			//we keep it short
 			var str = ts.substring(5);
+			var str = ts
 			return str;			
 			
 		}
