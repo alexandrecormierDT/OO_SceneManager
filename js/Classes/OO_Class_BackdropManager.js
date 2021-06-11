@@ -28,9 +28,25 @@ OO.BackdropManager = function(_S){
 		}
 
 	}
+
+	this.get_backdrop_native_object_by_title = function(_bdtitle_string){
+		var backdrops_object_array = Backdrop.backdrops("Top");
+		for(var i=0; i< backdrops_object_array.length; i++){
+			var bd_obj = backdrops_object_array[i]; 
+			if(current_backdrop.title == _bdtitle_string){
+				return bd_obj;
+			}
+		}
+
+
+	}
+
+
 	
 
     this.delete_backdrop = function(_backdrop){
+
+		//get_backdrop_native_object_by_name()
 
 		//there is no delete function yet so we put the backdrop faraway
 		_backdrop.x = 15000;
@@ -39,19 +55,18 @@ OO.BackdropManager = function(_S){
 		_backdrop.h = 10;
 		_backdrop.title = "todelete";
 		_backdrop.body = "";
-
+		
     }
 
     this.change_backdrop_color = function(_backdrop,_color_object){
 
 		_backdrop.color = _color_object;
 
-
     }
+
     this.change_backdrop_title = function(_backdrop,_title){
 
 		_backdrop.title = _title;
-
 
     }	
 

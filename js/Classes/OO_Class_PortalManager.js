@@ -623,15 +623,36 @@ OO.PortalManager = function(_S){
 				break;			
 				
 				case 'tpl':
-				
-					var tpl_name = _portal.get_code();
-					var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
+
+					var new_tpl = new OO.TPL(_portal.get_code())
+
+					/*this.tpl_id = 0000
+					this.asset_code =""
+					this.asset_type  =""
+					this.asset_id =""
+					this.last_push_time =""
+					this.last_pull_time =""
+					this.birth_xstage_path =""
+					this.last_source_xstage_path =
+					this.note =""
+					this.task  =""
+					this.departement  =""
+					this.project  =""
+					this.author = "";*/
+
+					new_tpl.data.group_path = portal_tree.get_key_node("PORTAL_GROUP");
+					new_tpl.data.folder_path = export_folder_path
+					new_tpl.data.asset_code = _portal.get_code();
+					new_tpl.data.asset_id = _portal.get_id();
+					new_tpl.data.departement = _portal.get_departement();
+					new_tpl.data.sg_asset_type = _portal.get_sg_asset_type();
+
+					S.tpl.create_tpl_file_with_passeport(new_tpl)
+
 					S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");	
-					export_process = S.trees.export_group_to_path(portal_group,export_folder_path,tpl_name);
-				
+	
 				break;
 			}			
-			S.log.add("export status "+export_process,"report");
 
 		}catch(error){
 

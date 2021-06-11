@@ -25,6 +25,14 @@ OO.SceneManager = function(){
 	this.svg_reader = new OO.SVGReader(this);
 	this.scene_settings = ""; 
 	this.psd_importer = new OO.PSDImporter(this)
+	this.tpl = new OO.TPLManager(this)
+
+
+	this.get_current_project = function(){
+
+		return "billy";
+
+	}
 
 	this.get_unique_id = function(){
 

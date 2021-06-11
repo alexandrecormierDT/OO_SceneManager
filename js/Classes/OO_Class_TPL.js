@@ -1,29 +1,72 @@
 
-OO.ActionTPL = function (_file_path){
+OO.TPL = function (_name){
+
+    this.data = {}
 	
-    var type = _type; 
-    var name = _name; 
-    var file_path = _file_path; 
-    var folder_path = "";
+    this.data.name = _name; 
+    this.data.folder_path = "";
 
-    function parse_file_path(){
+    this.data.file_path
 
-        var split_slash = _file_path.split("\\");
-        var split_file = _file_path.split(split_slash[split_slash.length-1]);
-        folder_path = split_file[0]
-        name = split_file[1].split(".")[0]
+    this.data.tpl_type = "master"
+    this.data.tpl_id = 0000
+    this.data.asset_link =""
+    this.data.entity_type ="asset"
+    this.data.asset_code =""
+    this.data.asset_type  =""
+    this.data.asset_id =""
+    this.data.last_push_time =""
+    this.data.last_pull_time =""
+    this.data.birth_xstage_path =""
+    this.data.last_source_xstage_path =
+    this.data.note =""
+    this.data.task  =""
+    this.data.departement  =""
+    this.data.project  =""
+    this.data.author = ""; 
+    this.data.status =""; 
 
+
+    this.data.group_path = ""; 
+    this.data.file_size =""; 
+    this.data.number_of_files=0; 
+    this.data.number_of_nodes = 0
+
+    this.get_tpl_folder_path = function(){
+
+        return this.data.folder_path+"//"+ this.data.name+".tpl";;
+    
     }
 
-    this.set_folder_path = function(_fp){
-        folder_path = _fp
+
+
+    this.format_properties_in_json = function(){
+
+       var property_list = Object.getOwnPropertyNames(this.data)
+       var json_object = {}; 
+       var detach_object = this.data; 
+       var string = "{"
+
+        for(var i = 0 ; i< property_list.length ; i++){
+            var current_prop = property_list[i]; 
+            MessageLog.trace(current_prop)
+            json_object[current_prop] = detach_object[current_prop]+"";
+            var coma = ','
+            if(i ==0){
+                 coma =''
+            }else{
+                coma= ',';
+            }
+            string+=coma+'\n'+'"'+current_prop+'":"'+detach_object[current_prop]+'"'
+        }
+
+        string += "}"
+
+        //MessageLog.trace(json_object.toSring());
+        
+        //var string = JSON.stringify(json_object)
+        MessageLog.trace(string)
+        return string;
+
     }
-
-    this.export_selection = function(){
-        parse_file_path()
-        copypPaste.createTemplateFromSelection(name+".tpl",folder_path)	
-    }
-
-
-	
 }

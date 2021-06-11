@@ -103,14 +103,14 @@ OO.SGVersion = function(_S){
 
 		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
 
-		//var process_render_movie = new Process2(render_and_upload_movie_command);
-		//var launch = process_render_movie.launchAndDetach();
-		/*
+		var process_render_movie = new Process2(render_and_upload_movie_command);
+		var launch = process_render_movie.launchAndDetach();
+		
 		if(launch == 0){
 			S.log.add(launch+" = upload succeed","success")
 		}else{
 			S.log.add(launch+" = upload failed","error")
-		}*/
+		}
 	}
 
 	this.render_and_upload_movie_as_version = function(){
@@ -122,7 +122,7 @@ OO.SGVersion = function(_S){
 		S.log.add(render_and_upload_movie_command,"arguments")
 
 		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
-		/*
+		
 		var process_render_movie = new Process2(render_and_upload_movie_command);
 		var launch = process_render_movie.launch();
 		var errors = process_render_movie.errorMessage();
@@ -131,7 +131,7 @@ OO.SGVersion = function(_S){
 			S.log.add(launch+" = upload succeed","success")
 		}else{
 			S.log.add(launch+" = upload failed","error")
-		}*/
+		}
 
 		
 	}

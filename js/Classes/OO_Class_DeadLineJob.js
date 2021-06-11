@@ -19,8 +19,6 @@ OO.DeadLineJob = function(){
 
     var startf = scene.getStartFrame();
     var stopf = scene.getStopFrame();
-
-    
     
     //BatchName
     var batch_name = "batch";
