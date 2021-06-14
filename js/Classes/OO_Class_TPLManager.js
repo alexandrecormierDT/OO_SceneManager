@@ -1,20 +1,6 @@
 OO.TPLManager = function(_S){
 
     var S = _S ;
-    var tpl_object_array = []
-
-    function export_group_to_path(_group,_path,_name){
-        
-		S.log.add("[TPLManager] exporting tpl to "+_path,"file")
-		selection.addNodeToSelection(_group)
-		var proccess = copyPaste.createTemplateFromSelection(_name,_path)
-        S.log.add("[copyPaste] "+ proccess,"copypaste")
-
-		return true; 
-		
-	}
-
-
 
     this.create_tpl_file_with_passeport = function(_TPLOBJECT){
 
@@ -27,17 +13,27 @@ OO.TPLManager = function(_S){
             _TPLOBJECT.data.last_source_xstage_path = S.get_xstage_path()+""
             _TPLOBJECT.data.project = S.get_current_project()+""
 
+            var tpl_node_path_list = S.trees.fetch_all_nodes_path_recursive(_TPLOBJECT.data.group_path)
+
+            MessageLog.trace("tpl_node_path_list")
+            MessageLog.trace(tpl_node_path_list)
+            MessageLog.trace(_TPLOBJECT.data.group_path)
+            tpl_node_path_list = S.trees.get_sub_nodes(_TPLOBJECT.data.group_path)
+            MessageLog.trace(tpl_node_path_list)
+
             _TPLOBJECT.data.file_size =1; 
             _TPLOBJECT.data.number_of_files=0; 
-            _TPLOBJECT.data.number_of_nodes =get_number_of_nodes_in_group(_TPLOBJECT.data.group_path)     
+            _TPLOBJECT.data.number_of_nodes =tpl_node_path_list.length;
+            _TPLOBJECT.data.nodes_path_list = S.trees.format_node_path_list(tpl_node_path_list)
             
-            var export_process = export_group_to_path(_TPLOBJECT.data.group_path,_TPLOBJECT.data.folder_path,_TPLOBJECT.data.name+".tpl")
+            var export_process = S.trees.export_group_to_path(_TPLOBJECT.data.group_path,_TPLOBJECT.data.folder_path,_TPLOBJECT.data.name+".tpl")
 
             if(export_process==true){
 
                 _TPLOBJECT.data.file_size = get_file_size(_TPLOBJECT.get_tpl_folder_path()); 
                 _TPLOBJECT.data.number_of_files = get_number_of_files_in_folder(_TPLOBJECT.get_tpl_folder_path()); 
                 S.log.add("creating passport","file")
+
                 create_passeport_for_tpl_object(_TPLOBJECT);
 
             }
@@ -52,22 +48,9 @@ OO.TPLManager = function(_S){
 
     function create_passeport_for_tpl_object(_tpl_object){
 
-        var tpl_dir_path = _tpl_object.get_tpl_folder_path()
-        var txt_file_path = tpl_dir_path+"//tpl_passeport.txt"; 
-
-        var json_string = _tpl_object.format_properties_in_json()
-
-        S.log.add("creating file "+txt_file_path,"file")
-
-        MessageLog.trace( "tpl_dir_path" )
-        MessageLog.trace( tpl_dir_path )
-
-        var txt_file_object = new PermanentFile(txt_file_path);	
-        MessageLog.trace("txt_file_object")		
-        MessageLog.trace(txt_file_object)	
-        txt_file_object.open(4);                
-        txt_file_object.write(json_string);          
-        txt_file_object.close(); 
+       var passeport =  new OO.TPLPassport(_tpl_object.get_tpl_folder_path())
+       passeport.set_tpl_object(_tpl_object)
+       passeport.create_txt()
 
     }
 
@@ -77,16 +60,6 @@ OO.TPLManager = function(_S){
 
 
     }
-
-
-    function get_number_of_nodes_in_group(_group_path){
-
-        return 1
-
-    }
-
-
-
 
 
 

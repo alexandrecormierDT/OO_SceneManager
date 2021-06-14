@@ -43,12 +43,9 @@ OO.TreeManager = function(_S){
 		// marking nodes with unique id
 		
 		var tree_nodes = ntree.get_nodes();
-		
-	
 		this.add_id_to_nodes(tree_nodes)
 		
 		//for the id to be writen in the xstage 
-		
 		scene.saveAll();
 		
 		// FINDING AND SETTING TOP AND BOTTOM NODES
@@ -59,7 +56,6 @@ OO.TreeManager = function(_S){
 			var found_top_node = ntree.find_top_node();
 			
 			if(found_top_node != false){
-				
 				ntree.set_top_node(found_top_node);
 				node_to_link = found_top_node;
 			}
@@ -67,24 +63,19 @@ OO.TreeManager = function(_S){
 			var found_bottom_node = ntree.find_bottom_node();
 			
 			if(found_bottom_node != false){
-				
 				ntree.set_bottom_node(found_bottom_node);
 			}		
 
 			// parsing node map (list of node with their ids) 
-			
 			var node_map_string = this.stringify_node_list(tree_nodes);
 
 			// adding linking and setting map module 
-			
 			var map_module = this.add_map_module(_code,node_to_link);
 			map_module.name = "TreeMap_"+_code
 			ntree.set_map_module(map_module);
 			ntree.update_map_module("code",_code);
 			ntree.update_map_module("node_list",node_map_string);
 			ntree.update_map_module("node_count",tree_nodes.length);
-				
-				
 			this.list.push(ntree);
 		
 		}
@@ -156,11 +147,8 @@ OO.TreeManager = function(_S){
 		// mark nodes with unique id by adding a dynamic attribute 
 
 		for(var s = 0 ; s < _nodes.length ; s++){
-			
 			var curn = _nodes[s];
-			
 			var layer_id = this.add_unique_id_to_onode(curn,_override);
-
 		}
 		
 		
@@ -178,7 +166,6 @@ OO.TreeManager = function(_S){
 		// if the node already has an ID we jut read it 
 		
 		if(_onode.hasOwnProperty("smlayerid")==false){
-			
 			//adding a dynamic attribute "smlayerid"
 			node.createDynamicAttr(_onode, "STRING", "smlayerid", "smlayerid", false)
 			node.setTextAttr(_onode,"smlayerid",frame.current,layer_id);	
@@ -190,11 +177,8 @@ OO.TreeManager = function(_S){
 				//unless we want to override the id (dangerous) 
 				node.setTextAttr(_onode,"smlayerid",frame.current,layer_id);		
 			}
-			
 			layer_id = _onode.smlayerid;
 		}
-		
-			
 		return layer_id;
 		
 		
@@ -213,43 +197,135 @@ OO.TreeManager = function(_S){
 
 	// TREE MAP 
 
+
+
+
+
+
+
+
+
+
+	this.fetch_all_nodes_path_recursive = function(_node_path){
+
+		var nodes_to_treat = []
+
+		if(node.isGroup(_node_path)==true){
+			nodes_to_treat.concat(this.get_sub_nodes(_node_path))
+		}else{
+			if(_node_path.length!=undefined){
+				nodes_to_treat.concat(_node_path)
+			}
+		}
+		
+		var fetched_nodes = []
+
+		for(var s = 0 ; s < nodes_to_treat.length ; s++){
+			var curn = nodes_to_treat[s];
+			if(node.isGroup(curn)){
+				nodes_to_treat.concat(this.get_sub_nodes(nodes_to_treat))
+			}
+			fetched_nodes.push(curn);
+		}
+
+		return fetched_nodes
+
+	}
+
+	this.get_sub_nodes = function( _node_path ){
+		
+		var node_array = []
+		var groups_to_read = []
+		if(node.isGroup( _node_path)==true){
+			groups_to_read.push(_node_path)
+		}
+		for(var g = 0 ; g < groups_to_read.length; g++){
+			current_group = groups_to_read[g]; 
+			for(var i =0 ;i< node.numberOfSubNodes(groups_to_read[g]);i++){
+				var sub_node = node.subNode(groups_to_read[g],i);
+				node_array.push(sub_node);
+				if(node.isGroup(sub_node)==true){
+					groups_to_read.push(sub_node)
+				}
+			}
+
+		}
+
+	  	return node_array; 
+	}
+
+	this.format_group_to_string = function(_group_node_path){
+
+
+
+	}
+
+
+
+	this.format_node_path_list = function(_nodes){
+		
+		var string ="[";
+		MessageLog.trace("_nodes")
+		MessageLog.trace(_nodes)
+		for(var s = 0 ; s < _nodes.length ; s++){
+			var curn = _nodes[s];
+			if(s==0){
+				string+=curn;
+			}else{
+				string+=','+curn;
+			}
+		}
+
+		string +="]";
+		MessageLog.trace("string")
+		MessageLog.trace(string)
+
+		return string;		
+
+	}
+
+
+
+
+
 	this.stringify_node_list = function(_nodes){
 		
 		var map_string = "";
-		
 		for(var s = 0 ; s < _nodes.length ; s++){
-			
+
 			var curn = _nodes[s];
-			
 			var layer_id = this.add_unique_id_to_onode(curn);
-		
 			if(curn.hasOwnProperty("smlayerid")==true){
-				
 				var row = curn.name+":"+curn.smlayerid;
-				
 			}
-			
-			
 			if(s==0){
-				
 				map_string+=row;
-				
 			}else{
-				
 				map_string+=",";
 				map_string+=row;
-				
 			}
-			
-			
 		}
 		
 		S.log.add(map_string,"nodes");
-		
 		return map_string;		
 
 	}
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 	this.parse_node_list = function(_node_list_string){ 
@@ -278,29 +354,21 @@ OO.TreeManager = function(_S){
 	this.fetch_nodes_by_id = function(_ID_list){
 		
 		var id_to_find = _ID_list;
-		
 		var inspected_nodes = this.get_all_nodes();
-		
 		var found_nodes = []
 
 		for(var n = 0 ; n < inspected_nodes.length ; n ++){
 			
 			var current_node = OO.doc.getNodeByPath(inspected_nodes[n]);
-
 			if(current_node.hasOwnProperty("smlayerid")){
-				
+
 				var found_index = _ID_list.indexOf(current_node.smlayerid) 
-			
 				if(found_index != -1){
-					
 					found_nodes.push(current_node);
-					
 					id_to_find.splice(found_index, 1);
-					
 					if(id_to_find == 0){
 						
 						// all nodes where found
-						
 						return found_nodes;
 						
 					}
@@ -312,9 +380,7 @@ OO.TreeManager = function(_S){
 		}
 		
 		for(var i = 0 ; i <  id_to_find.length ; i ++){
-			
 			S.log.add(id_to_find[i]+" not found","search result")
-			
 		}
 		
 		return found_nodes;
@@ -325,27 +391,21 @@ OO.TreeManager = function(_S){
 	this.get_node_id = function(_node){
 	
 		var onode = OO.doc.getNodeByPath(_node); 
-
 		if(onode.hasOwnProperty('smlayerdid')){
-		
 			return onode.smlayerid;
-			
 		}
-		
 		return false;
-		
 	}
 	
 	// KEY NODES 
 	
 	this.add_key_node_to_tree = function(_key,_node,_tree){
-		
+
 		var node_id = this.get_node_id(_node);
 		var key_node = {key:_key,node:node_id};
 		var key_node_list = this.parse_key_node_list(_tree.get_key_notes());
 		key_node_list.push(key_node);
 		var key_node_list_string = this.stringify_key_nodes_list(key_node_list);
-		
 	}
 	
 	
@@ -356,15 +416,12 @@ OO.TreeManager = function(_S){
 	this.find_map_modules_in_nodes = function(_nodes){
 		
 		var map_module_list = [];
-		
 		for(var n = 0 ; n < _nodes.length ; n ++){
 		
 			var current_onode = OO.doc.getNodeByPath(_nodes[n]);
-			
 			if(current_onode.type == "SCRIPT_MODULE"){
 			
 				if(current_onode.hasOwnProperty("treemap")){
-						
 					map_module_list.push(current_onode);
 	
 				}
@@ -374,9 +431,7 @@ OO.TreeManager = function(_S){
 		}
 		
 		if(map_module_list.length == 0){
-		
 			return false;
-			
 		}
 		
 		return map_module_list; 
@@ -414,11 +469,8 @@ OO.TreeManager = function(_S){
 			for(var n = 0 ; n < group_nodes.length ; n++){
 				
 				var current_node = OO.doc.getNodeByPath(group_nodes[n]);
-				
 				if(current_node.type == "GROUP"){
-					
 					groups_to_analyse.push(current_node); 
-					
 				}
 				
 				node_list.push(current_node);
@@ -548,6 +600,14 @@ OO.TreeManager = function(_S){
 	}
 		
 	
+
+
+
+
+
+
+
+
 	function copypaste_tpl_in_group(_tpl_file_path,_group_scene_path){
 
 		if(_group_scene_path != null){
@@ -673,12 +733,19 @@ OO.TreeManager = function(_S){
 
 	this.export_group_to_path = function(_group,_path,_tpl_name){
 		
-		
 		S.log.add("exporting tpl to "+_path,"file")
 		
 		selection.addNodeToSelection(_group)
 		var process = copyPaste.createTemplateFromSelection(_tpl_name,_path)
 		S.log.add("[copyPaste] "+ process,"process")
+
+		if(process == _tpl_name){
+			S.log.add("[copyPaste] "+ process +" exported ","process")
+		}else{
+			S.log.add("[copyPaste] "+ process +" exported ","error")
+		}
+
+		return true;
 
 		
 	}

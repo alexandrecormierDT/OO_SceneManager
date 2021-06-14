@@ -8,17 +8,17 @@ OO.TPL = function (_name){
 
     this.data.file_path
 
-    this.data.tpl_type = "master"
-    this.data.tpl_id = 0000
-    this.data.asset_link =""
-    this.data.entity_type ="asset"
-    this.data.asset_code =""
-    this.data.asset_type  =""
-    this.data.asset_id =""
-    this.data.last_push_time =""
-    this.data.last_pull_time =""
-    this.data.birth_xstage_path =""
-    this.data.last_source_xstage_path =
+    this.data.tpl_type = "master";
+    this.data.tpl_id = 0000;
+    this.data.asset_link ="";
+    this.data.entity_type ="asset";
+    this.data.asset_code ="";
+    this.data.sg_asset_type  ="";
+    this.data.asset_id ="";
+    this.data.last_push_time ="";
+    this.data.last_pull_time ="";
+    this.data.birth_xstage_path ="";
+    this.data.last_source_xstage_path ="";
     this.data.note =""
     this.data.task  =""
     this.data.departement  =""
@@ -31,14 +31,14 @@ OO.TPL = function (_name){
     this.data.file_size =""; 
     this.data.number_of_files=0; 
     this.data.number_of_nodes = 0
+    this.data.nodes_path_list = "";
+
 
     this.get_tpl_folder_path = function(){
 
         return this.data.folder_path+"//"+ this.data.name+".tpl";;
     
     }
-
-
 
     this.format_properties_in_json = function(){
 
@@ -62,9 +62,6 @@ OO.TPL = function (_name){
 
         string += "}"
 
-        //MessageLog.trace(json_object.toSring());
-        
-        //var string = JSON.stringify(json_object)
         MessageLog.trace(string)
         return string;
 

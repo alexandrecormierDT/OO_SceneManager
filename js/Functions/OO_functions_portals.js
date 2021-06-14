@@ -159,14 +159,13 @@ function create_portals_by_asset_type(_asset_type){
 
 		S.portals.reset_list();
 
-		S.portals.load_asset_portals_from_breakdown_by_type(_asset_type);
+		S.portals.create_asset_portals_from_breakdown_by_type(_asset_type);
 		
 		if(_asset_type == "anim"){
 
-			S.portals.reset_list();
-			S.portals.load_asset_portals_from_breakdown_by_type("Character");
-			S.portals.load_asset_portals_from_breakdown_by_type("Prop");
-			S.portals.load_asset_portals_from_breakdown_by_type("FX");
+			S.portals.create_asset_portals_from_breakdown_by_type("Character");
+			S.portals.create_asset_portals_from_breakdown_by_type("Prop");
+			S.portals.create_asset_portals_from_breakdown_by_type("FX");
 			
 		}
 			
@@ -175,9 +174,7 @@ function create_portals_by_asset_type(_asset_type){
 	}
 
 	S.log.save();
-	
 	var log_object = S.log;
-
 	return log_object 
 	
 }
@@ -198,7 +195,6 @@ function create_anim_portals(){
 	log_object.set_script_tag("OO_create_anim_portals"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
-	
 	
 }
 
@@ -714,4 +710,20 @@ function delete_anim_portals(){
 	S.log.create_scene_script_log_file_and_folder(); 
 	S.log.save_scene_script_log_file();
 	
+}
+
+
+function rebbot_bg_portals(){
+
+	S = new OO.SceneManager();
+
+	S.portals.delete_scene_portals_by_type("BG");
+
+	create_portals_by_asset_type("BG")
+
+	//fit_bg_portals_to_camera()
+
+	//pull_png_by_asset_type("BG");
+
+
 }

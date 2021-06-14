@@ -8,57 +8,44 @@ OO.PortalManager = function(_S){
 	this.creator = new OO.PortalCreator(S); 
 	this.fiter = new OO.PortalFiter(S); 
 
-	var portal_objects_array = [];
+	var loaded_portal_objects_array = [];
 
 	//array where portals are store by asset id [ID][PORTAL_OBJECT]
 	var portal_id_table = []
 	
-	this.get_list = function(){return portal_objects_array;}
-	this.reset_list= function(){ portal_objects_array = []; }
+	this.get_list = function(){return loaded_portal_objects_array;}
+	this.reset_list= function(){ loaded_portal_objects_array = []; }
 
 	this.add = function(_portal){
 		portal_id_table[_portal.get_id()] = _portal;
-		portal_objects_array.push(_portal);
+		loaded_portal_objects_array.push(_portal);
 	}
 	
 	this.load_from_scene = function(){
-		
-		// Detect the script module with "portal" attributes among the scene nodes and fetch the linked nodes to make the tree, read the script module attributes 
-		//add a new portal object to the list. 
-
-		var scene_nodes =$.scene.root.nodes;
-		this.load_from_node_list(scene_nodes)
-
+		var scene_script_module_paths = node.getNodes(["SCRIPT_MODULE"]);
+		loaded_portal_objects_array = this.fetch_from_node_list(scene_script_module_paths)
 	}
 
 	this.load_from_scene_by_sg_asset_type = function(_sg_asset_type){
-		
-		var fetched_scene_nodes = $.scene.root.nodes;
-		this.load_from_node_list_by_asset_type(fetched_scene_nodes,_sg_asset_type)
-
+		var scene_script_module_paths = node.getNodes(["SCRIPT_MODULE"]);
+		loaded_portal_objects_array = this.fetch_portals_from_node_list_by_asset_type(scene_script_module_paths,_sg_asset_type)
 	}
 
 
 
-	this.load_from_node_list_by_asset_type= function(_node_list,_asset_type){
-		
-		// init list
-		this.reset_list()
+	this.fetch_portals_from_node_list_by_asset_type= function(_node_list,_asset_type){
 
+		var fetched_portals = []
 		var scene_PSM = fetch_portal_modules_from_list(_node_list)
-
-		MessageLog.trace(scene_PSM)
 
 		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
 
 			var cur_script_module = scene_PSM[sm];
-
 			var type = OO.filter_string(cur_script_module.sg_asset_type);
 
 			if(match_sg_asset_type(type,_asset_type)){
 
 				//building the portal instance from the nodeview
-				
 				var tpl_path = OO.filter_string(cur_script_module.tpl_path);
 				var psd_path = OO.filter_string(cur_script_module.psd_path);
 				var png_path = OO.filter_string(cur_script_module.png_path);
@@ -98,22 +85,18 @@ OO.PortalManager = function(_S){
 				nportal.set_path('psd',psd_path)
 				nportal.set_path('svg',svg_path)
 	
-				this.add(nportal);
-
-
+				fetched_portals.push(nportal);
 			}
-		
-	
-
 		}
+
 		MessageLog.trace("load_from_node_list by asset type")
+		return  fetched_portals 
 
 	}
 	
-	this.load_from_node_list= function(_node_list){
+	this.fetch_portals_from_node_list= function(_node_list){
 
-		this.reset_list()
-
+		var fetched_portals = []
 		var scene_PSM = fetch_portal_modules_from_list(_node_list)
 
 		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
@@ -163,20 +146,19 @@ OO.PortalManager = function(_S){
 				nportal.set_path('psd',psd_path)
 				nportal.set_path('svg',svg_path)
 
-				this.add(nportal);
+				fetched_portals.push(nportal);
 
 			}
-		
 
-
-		
 		MessageLog.trace("load_from_node_list")
+		return  fetched_portals
 
 	}
 
 	function fetch_portal_modules_from_list(_node_list){
 
 		var scene_PSM = []
+		
 		MessageLog.trace("_node_list")
 		MessageLog.trace(_node_list)
 		for(var n = 0 ; n < _node_list.length ; n++){
@@ -231,8 +213,8 @@ OO.PortalManager = function(_S){
 
 	this.empty_scene_portals_by_type = function(_asset_type){
 		this.load_from_scene_by_sg_asset_type(_asset_type)
-		for(var p = 0 ; p < portal_objects_array.length ; p++){
-			var current_portal = portal_objects_array[p];
+		for(var p = 0 ; p < loaded_portal_objects_array.length ; p++){
+			var current_portal = loaded_portal_objects_array[p];
 			this.empty_portal(current_portal);
 		}
 	}
@@ -247,8 +229,8 @@ OO.PortalManager = function(_S){
 	}
 
 	this.get_scene_portal_by_asset =  function(_asset){
-		for(var p = 0 ; p < portal_objects_array.length ; p++){
-			var current_portal = portal_objects_array[p]; 
+		for(var p = 0 ; p < loaded_portal_objects_array.length ; p++){
+			var current_portal = loaded_portal_objects_array[p]; 
 			if(portal_correspond_to_asset(current_portal,_asset)){
 				return current_portal;
 			}
@@ -343,20 +325,15 @@ OO.PortalManager = function(_S){
 				var ungrouped_portal_group = OO.doc.getNodeByPath("Top/"+nportal.get_code());
 					
 				if(ungrouped_portal_group != undefined){
-	
 					ungrouped_portal_group.linkOutNode(_composite)
-					
-				}					
+				}			
 			}
-
 		}
-
-	
 	}
 
 
 
-	this.load_asset_portals_from_breakdown_by_type = function(_asset_type){
+	this.create_asset_portals_from_breakdown_by_type = function(_asset_type){
 
 		var asset_object_array = S.breakdown.get_asset_list();
 
@@ -382,42 +359,38 @@ OO.PortalManager = function(_S){
 
 			
 			if(asset_type == _asset_type || asset_type == "all_type"){
-				
-				if(this.find_portal_by_asset_id(asset_id)==false){
 
-					this.creator.set_code( asset_code )
-					this.creator.set_sg_asset_type( asset_type )
-					this.creator.set_id( asset_id )
-					this.creator.set_tpl_path( final_tpl_path )
-					this.creator.set_psd_path( final_psd_path )
-					this.creator.set_png_path( final_png_path )
-					this.creator.set_svg_path( final_svg_path )
-					var nportal = this.creator.create_portal(); 
-				
-					if(nportal!=false){
-						this.add(nportal);  
-					}
-
+				this.creator.set_code( asset_code )
+				this.creator.set_sg_asset_type( asset_type )
+				this.creator.set_id( asset_id )
+				this.creator.set_tpl_path( final_tpl_path )
+				this.creator.set_psd_path( final_psd_path )
+				this.creator.set_png_path( final_png_path )
+				this.creator.set_svg_path( final_svg_path )
+				var nportal = this.creator.create_portal();
+			
+				if(nportal!=false){
+					this.add(nportal);  
 				}
-
-				
 			}
-
 		}
-
 	}
+
+
+
 
 	this.place_portals_in_line_and_connect_to_composite= function(_line_start_point,_composite){
 		
-		if(portal_objects_array.length > 0){
+		if(loaded_portal_objects_array.length > 0){
 			
-			for(var p = 0 ; p < portal_objects_array.length; p++){
+			for(var p = 0 ; p < loaded_portal_objects_array.length; p++){
 				
-				var cportal = portal_objects_array[p]
+				var cportal = loaded_portal_objects_array[p]
 				var cportal_tree = cportal.get_tree(); 
+				 
 				
 				if(p > 0){
-					var pportal = portal_objects_array[p-1];
+					var pportal = loaded_portal_objects_array[p-1];
 					S.trees.put_next_to(pportal.get_tree(),cportal.get_tree(),100);
 				}else{
 
@@ -429,9 +402,9 @@ OO.PortalManager = function(_S){
 			
 			//	ungrouping them 
 			
-			for(var p = 0 ; p <portal_objects_array.length; p++){
+			for(var p = 0 ; p <loaded_portal_objects_array.length; p++){
 				
-				var cportal = portal_objects_array[p]
+				var cportal = loaded_portal_objects_array[p]
 				var cportal_tree = cportal.get_tree(); 
 				cportal_tree.ungroup();
 
@@ -449,8 +422,8 @@ OO.PortalManager = function(_S){
 	this.pull_scene_portal_data_by_sg_asset_type = function(_data_type,_sg_asset_type){
 
 		this.load_from_scene_by_sg_asset_type(_sg_asset_type);
-		for(var p = 0 ; p < portal_objects_array.length ; p++){
-			var current_portal = portal_objects_array[p];
+		for(var p = 0 ; p < loaded_portal_objects_array.length ; p++){
+			var current_portal = loaded_portal_objects_array[p];
 			this.pull(current_portal,_data_type);
 		}
 
@@ -607,7 +580,7 @@ OO.PortalManager = function(_S){
 			var export_path = _portal.get_path(_data_type);
 			var export_folder_path = _portal.get_dir(_data_type);
 			var export_folder_object = new $.oFolder(export_folder_path); 
-			export_folder_object.create()
+			export_folder_object.create();
 			var export_process = false;
 			
 			var portal_tree = _portal.get_tree();
@@ -625,20 +598,6 @@ OO.PortalManager = function(_S){
 				case 'tpl':
 
 					var new_tpl = new OO.TPL(_portal.get_code())
-
-					/*this.tpl_id = 0000
-					this.asset_code =""
-					this.asset_type  =""
-					this.asset_id =""
-					this.last_push_time =""
-					this.last_pull_time =""
-					this.birth_xstage_path =""
-					this.last_source_xstage_path =
-					this.note =""
-					this.task  =""
-					this.departement  =""
-					this.project  =""
-					this.author = "";*/
 
 					new_tpl.data.group_path = portal_tree.get_key_node("PORTAL_GROUP");
 					new_tpl.data.folder_path = export_folder_path
@@ -670,17 +629,17 @@ OO.PortalManager = function(_S){
 		portal_tree.delete_nodes();
 
 		//deleting backdrop
-		bd_name = _portal.get_backdrop_name();
-		var portal_backdrop = S.backdrops.get_backdrop_by_name(bd_name)
+		bd_body = _portal.get_backdrop_body();
+		var portal_backdrop = S.backdrops.get_backdrop_by_body(bd_body)
 		S.backdrops.delete_backdrop(portal_backdrop)
 
 	}
 
 	this.delete_all_scene_portals = function(){
 		this.load_from_scene();
-		MessageLog.trace(portal_objects_array)
-		for(var p = 0 ; p < portal_objects_array.length ; p++){
-			var current_portal = portal_objects_array[p];
+		MessageLog.trace(loaded_portal_objects_array)
+		for(var p = 0 ; p < loaded_portal_objects_array.length ; p++){
+			var current_portal = loaded_portal_objects_array[p];
 			this.delete_portal(current_portal);
 		}
 	}
@@ -691,8 +650,8 @@ OO.PortalManager = function(_S){
 
 	this.delete_scene_portals_by_type = function(_asset_type){
 		this.load_from_scene_by_sg_asset_type(_asset_type)
-		for(var p = 0 ; p < portal_objects_array.length ; p++){
-			var current_portal = portal_objects_array[p];
+		for(var p = 0 ; p < loaded_portal_objects_array.length ; p++){
+			var current_portal = loaded_portal_objects_array[p];
 			this.delete_portal(current_portal);
 		}
 	}
@@ -734,8 +693,8 @@ OO.PortalManager = function(_S){
 		try{
 			
 			this.load_from_scene_by_sg_asset_type(_asset_type);
-			for(var p = 0 ; p < portal_objects_array.length; p++){
-				var current_portal = portal_objects_array[p]
+			for(var p = 0 ; p < loaded_portal_objects_array.length; p++){
+				var current_portal = loaded_portal_objects_array[p]
 				S.log.add("updating paths of portal - "+current_portal.get_code(),"process");
 				udpate_portal_paths_from_vault(current_portal);
 			}	
@@ -754,8 +713,8 @@ OO.PortalManager = function(_S){
 		try{
 
 			this.load_from_node_list(_node_list);
-			for(var p = 0 ; p < portal_objects_array.length; p++){
-				var current_portal = portal_objects_array[p]
+			for(var p = 0 ; p < loaded_portal_objects_array.length; p++){
+				var current_portal = loaded_portal_objects_array[p]
 				S.log.add("updating paths of portal "+current_portal.get_code()+"with new department "+_departement,"process");
 
 				

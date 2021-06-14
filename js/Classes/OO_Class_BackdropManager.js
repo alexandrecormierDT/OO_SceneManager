@@ -20,6 +20,22 @@ OO.BackdropManager = function(_S){
 		}
 	}
 
+
+	this.get_backdrop_by_body = function(bdbody){
+
+		var backdrops = $.scene.root.backdrops;
+		var match = 0; 
+		for(var b = 0 ; b < backdrops.length ; b++){
+			if(backdrops[b].body == bdbody){
+				match++;
+				return backdrops[b];
+			};
+		}
+		if(match==0){
+			return false;
+		}
+	}
+
 	//native test
 	function fetch_group_backdrops(_group_node_path){
 		var backdrops_object_array = Backdrop.backdrops(_group_node_path);
