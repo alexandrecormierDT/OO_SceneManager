@@ -41,6 +41,9 @@ OO.TPLManager = function(_S){
     }
 
 
+
+
+
     function get_file_size(_file_path){
 
         return 1;
@@ -48,11 +51,12 @@ OO.TPLManager = function(_S){
 
     function create_passeport_for_tpl_object(_tpl_object){
 
-       var passeport =  new OO.TPLPassport(_tpl_object.get_tpl_folder_path())
+       var passeport =  new OO.TPLPassport()
        passeport.set_tpl_object(_tpl_object)
        passeport.create_txt()
 
     }
+
 
     function get_number_of_files_in_folder(_folder_path){
 

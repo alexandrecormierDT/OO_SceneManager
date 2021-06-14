@@ -1,6 +1,6 @@
-OO.TPLPassport = function(_file_path){
+OO.TPLPassport = function(){
 
-    var file_path = _file_path; 
+    var file_path="";
     var content = "";
     var tpl_object ={};
 
@@ -11,6 +11,11 @@ OO.TPLPassport = function(_file_path){
             return  pstring;
         }
         return false
+    }
+
+    this.set_file_path = function(_fp){
+
+        file_path = _fp
     }
 
     this.set_tpl_object = function(_to){
@@ -41,12 +46,10 @@ OO.TPLPassport = function(_file_path){
 
     this.create_txt = function(){
 
-        var tpl_dir_path = _tpl_object.get_tpl_folder_path()
+        var tpl_dir_path = tpl_object.get_tpl_folder_path()
         var txt_file_path = tpl_dir_path+"//tpl_passeport.txt"; 
 
-        var json_string = _tpl_object.format_properties_in_json()
-
-        S.log.add("creating file "+txt_file_path,"file")
+        var json_string = tpl_object.format_properties_in_json()
 
         MessageLog.trace( "tpl_dir_path" )
         MessageLog.trace( tpl_dir_path )
@@ -62,6 +65,7 @@ OO.TPLPassport = function(_file_path){
     }
 
     this.format_TPL_object = function(){
+
         var property_list = Object.getOwnPropertyNames(tpl_object.data)
         var json_object = {}; 
         var detach_object =tpl_object.data; 

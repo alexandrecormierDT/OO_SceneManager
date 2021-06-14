@@ -387,8 +387,7 @@ function push_selected_portals(_data_type){
 	try{
 
 		S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/push_portal.html");
-		S.portals.load_from_node_list($.scene.selectedNodes);
-		var portal_list = S.portals.get_list()
+		var portal_list = S.portals.fetch_portals_from_node_list($.scene.selectedNodes);
 	
 		for(var p = 0 ; p < portal_list.length; p++){
 	
