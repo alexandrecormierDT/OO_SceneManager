@@ -353,8 +353,7 @@ function pull_selected_portals_process(_data_type){
 	try{
 
 		var S = new OO.SceneManager();	
-		S.portals.load_from_node_list($.scene.selectedNodes);
-		var portal_list = S.portals.get_list()
+		var portal_list = S.portals.fetch_portals_from_node_list($.scene.selectedNodes);
 		for(var p = 0 ; p <  portal_list.length; p++){
 			
 				var current_portal =  portal_list[p]
@@ -623,8 +622,7 @@ function fit_selected_portals_to_camera(){
 	S.context.set_vault_path(OO.vault_path)
 	S.breakdown.load_current_shot_breakdown();
 	
-	S.portals.load_from_node_list($.scene.selectedNodes);
-	var portal_list = S.portals.get_list(); 
+	var portal_list = S.portals.fetch_portals_from_node_list($.scene.selectedNodes);
 	
 	
 	for(var p = 0 ; p < portal_list.length; p++){

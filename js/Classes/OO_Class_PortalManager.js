@@ -712,7 +712,8 @@ OO.PortalManager = function(_S){
 
 		try{
 
-			this.load_from_node_list(_node_list);
+			loaded_portal_objects_array = S.portals.fetch_portals_from_node_list($.scene.selectedNodes);
+			
 			for(var p = 0 ; p < loaded_portal_objects_array.length; p++){
 				var current_portal = loaded_portal_objects_array[p]
 				S.log.add("updating paths of portal "+current_portal.get_code()+"with new department "+_departement,"process");
