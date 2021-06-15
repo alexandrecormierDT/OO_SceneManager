@@ -5,11 +5,10 @@ OO.TPL = function (_name){
 	
     this.data.name = _name; 
     this.data.folder_path = "";
-
     this.data.file_path
 
     this.data.tpl_type = "master";
-    this.data.tpl_id = 0000;
+    this.data.tpl_id = "TPL_0000";
     this.data.asset_link ="";
     this.data.entity_type ="asset";
     this.data.asset_code ="";
@@ -26,44 +25,41 @@ OO.TPL = function (_name){
     this.data.author = ""; 
     this.data.status =""; 
 
-
     this.data.group_path = ""; 
     this.data.file_size =""; 
     this.data.number_of_files=0; 
     this.data.number_of_nodes = 0
-    this.data.nodes_path_list = "";
+    this.data.nodes_path_list = [];
 
+    this.data.tpl_folder_path = ""; 
+
+    this.set_tpl_folder_path = function(_tfp){
+        this.data.tpl_folder_path = _tfp
+    }
 
     this.get_tpl_folder_path = function(){
+        this.data.tpl_folder_path =this.data.folder_path+"//"+ this.data.name+".tpl";
+        return this.data.tpl_folder_path
+    }
 
-        return this.data.folder_path+"//"+ this.data.name+".tpl";;
-    
+    this.format_data_folder_path = function(){
+
     }
 
     this.format_properties_in_json = function(){
-
-       var property_list = Object.getOwnPropertyNames(this.data)
        var json_object = {}; 
-       var detach_object = this.data; 
-       var string = "{"
+        for(var key in this.data){
+            var value = this.data[key];
 
-        for(var i = 0 ; i< property_list.length ; i++){
-            var current_prop = property_list[i]; 
-            MessageLog.trace(current_prop)
-            json_object[current_prop] = detach_object[current_prop]+"";
-            var coma = ','
-            if(i ==0){
-                 coma =''
-            }else{
-                coma= ',';
+            //to prevent cycling
+            if(typeof value === "object" && value !== null){
+                value = ""; 
             }
-            string+=coma+'\n'+'"'+current_prop+'":"'+detach_object[current_prop]+'"'
+            if(Array.isArray(this.data[key])){
+                value = this.data[key];
+            }
+            json_object[key] = value;
         }
-
-        string += "}"
-
-        MessageLog.trace(string)
-        return string;
-
+        return JSON.stringify(json_object)
     }
 }

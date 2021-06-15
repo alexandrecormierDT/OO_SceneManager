@@ -113,6 +113,19 @@ OO.SGVersion = function(_S){
 		}
 	}
 
+	this.render_and_upload_movie_as_version_with_deadline = function(){
+
+		S.log.add("render_and_upload_movie_as_version","script")
+		format_render_and_upload_command_string();
+
+		MessageLog.trace(render_and_upload_movie_command)
+
+		S.log.add(render_and_upload_movie_command,"arguments")
+
+		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
+
+	}
+
 	this.render_and_upload_movie_as_version = function(){
 		
 		S.log.add("render_and_upload_movie_as_version","script")
@@ -121,7 +134,7 @@ OO.SGVersion = function(_S){
 
 		S.log.add(render_and_upload_movie_command,"arguments")
 
-		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
+		//S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
 		
 		var process_render_movie = new Process2(render_and_upload_movie_command);
 		var launch = process_render_movie.launch();
@@ -147,7 +160,6 @@ OO.SGVersion = function(_S){
 		MessageLog.trace(movie_upload_command)
 		
 		var process_movie = new Process2(movie_upload_command);
-
 
 		MessageLog.trace(process_movie.launch());
 		MessageLog.trace(process_movie.errorMessage());
@@ -179,17 +191,17 @@ OO.SGVersion = function(_S){
 
 		MessageLog.trace(png_upload_command);
 		
-		//var process_png = new Process2(png_upload_command);
+		var process_png = new Process2(png_upload_command);
 
-		S.deadline.submit_command_line_job(png_upload_command);
+		//S.deadline.submit_command_line_job(png_upload_command);
 
-		/*S.log.add(png_upload_command,"arguments")
+		S.log.add(png_upload_command,"arguments")
 		if(launch == 0){
 			S.log.add(launch+" = upload succeed","success")
 		}else{
 			S.log.add(launch+" = upload failed","error")
 
-		}*/
+		}
 		
 	}
 	

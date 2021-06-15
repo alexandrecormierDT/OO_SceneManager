@@ -33,26 +33,28 @@ OO.TPLPassport = function(){
     this.parse_content_to_TPL_object = function(){
 
         content = read_txt(); 
-        var json_obj = JSON.parse(content);
-        
-        var tpl_object = new OO.TPL(json_obj.name)
-        var property_list = Object.getOwnPropertyNames(json_obj)
-         for(var i = 0 ; i< property_list.length ; i++){
-             var current_prop = property_list[i]; 
-             tpl_object[current_prop] = detach_object[current_prop]+"";
-         }
+        if(content!=false){
+            var json_obj = JSON.parse(content);
+            tpl_object = new OO.TPL(json_obj.name)
+            var property_list = Object.getOwnPropertyNames(json_obj)
+             for(var i = 0 ; i< property_list.length ; i++){
+                 var current_prop = property_list[i]; 
+                 tpl_object.data[current_prop] = json_obj[current_prop];
+             }
+    
+             return tpl_object
+        }else{
+
+            return false;
+        }
+
 
     }
 
     this.create_txt = function(){
 
-        var tpl_dir_path = tpl_object.get_tpl_folder_path()
-        var txt_file_path = tpl_dir_path+"//tpl_passeport.txt"; 
-
+        var txt_file_path =tpl_object.data.folder_path+"//"+ tpl_object.data.name+".tpl//tpl_passeport.txt"
         var json_string = tpl_object.format_properties_in_json()
-
-        MessageLog.trace( "tpl_dir_path" )
-        MessageLog.trace( tpl_dir_path )
 
         var txt_file_object = new PermanentFile(txt_file_path);	
         txt_file_object.remove();    
@@ -62,27 +64,6 @@ OO.TPLPassport = function(){
         txt_file_object.write(json_string);          
         txt_file_object.close(); 
 
-    }
-
-    this.format_TPL_object = function(){
-
-        var property_list = Object.getOwnPropertyNames(tpl_object.data)
-        var json_object = {}; 
-        var detach_object =tpl_object.data; 
-        var string = "{"
-         for(var i = 0 ; i< property_list.length ; i++){
-             var current_prop = property_list[i]; 
-             json_object[current_prop] = detach_object[current_prop]+"";
-             var coma = ','
-             if(i ==0){
-                  coma =''
-             }else{
-                 coma= ',';
-             }
-             string+=coma+'\n'+'"'+current_prop+'":"'+detach_object[current_prop]+'"'
-         }
-         string += "}"
-         return string;
     }
 
 }

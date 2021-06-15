@@ -214,7 +214,7 @@ function create_master_asset_portal(){
 	var target_composite = false;
 	
 	target_backdrop = S.backdrops.get_backdrop_by_name('TPL_EXPORT');
-	target_composite = $.roor.scene.getNodeByPath("Top/TPL_EXPORT_C");	
+	target_composite = $.scene.getNodeByPath("Top/TPL_EXPORT_C");	
 	
 	if(target_backdrop == false){
 		target_backdrop = {x:0,y:0};
@@ -713,14 +713,26 @@ function delete_anim_portals(){
 function rebbot_bg_portals(){
 
 	S = new OO.SceneManager();
-
 	S.portals.delete_scene_portals_by_type("BG");
-
 	create_portals_by_asset_type("BG")
 
-	//fit_bg_portals_to_camera()
+}
 
-	//pull_png_by_asset_type("BG");
+
+
+
+
+
+function compare_portal_content_to_selected_tpl(){
+
+	S = new OO.SceneManager();
+
+	var library_tpl = S.library.parse_selected_tpl_to_object();
+	var selected_portal_object = S.portals.fetch_portals_from_node_list($.scene.selectedNodes)[0]
+	var portal_tpl = S.tpl.parse_portal_object_to_tpl_object(selected_portal_object)
+
+	S.tpl.compare_tpl_objects(library_tpl,portal_tpl)
+
 
 
 }

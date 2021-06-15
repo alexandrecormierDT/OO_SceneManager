@@ -53,11 +53,16 @@ OO.Portal = function (){
 	var portal_paths = [];
 	var portal_backdrop_name = "PORTAL";
 	var portal_backdrop_body = "";
+	var portal_content = "empty"; 
 	
 	
 	// TREE
 	var portal_tree = null;
 	
+	
+
+
+
 	
 	//SETTERS
 	
@@ -76,7 +81,10 @@ OO.Portal = function (){
 		portal_paths[_key] = _path;
 		
 	}	
-	
+	this.set_content = function(_c){
+		portal_content = _c;
+	}
+		
 
 	this.set_departement = function(_d){
 		portal_departement = _d;
@@ -110,6 +118,10 @@ OO.Portal = function (){
 	this.get_id = function(){
 		return portal_id;
 	}
+
+	this.get_content = function(){
+		return portal_content;
+	}
 	
 	this.get_departement = function(){
 		return portal_departement; 
@@ -140,6 +152,10 @@ OO.Portal = function (){
 		
 	}	
 
+
+
+
+	// backdrop
 	this.get_backdrop_name = function(){
 
 		format_backdrop_name()
@@ -152,18 +168,6 @@ OO.Portal = function (){
 		return portal_backdrop_body;
 
 	}
-
-	this.change_backdrop_color_to = function(_color_object){
-
-
-	}
-
-	this.get_backdrop_object = function(){
-		format_backdrop_name()
-		
-
-	}
-
 
 	function format_backdrop_name(){
 
@@ -179,16 +183,12 @@ OO.Portal = function (){
 
 	}
 
+
 	// PATHS
-
 	this.update_path = function(_key,_path){
-	
-		if(portal_paths.hasOwnProperty(_key) == true){
-			
+		if(portal_paths.hasOwnProperty(_key) == true){			
 			portal_paths[_key] = _path;
-			
 		}
-
 	}
 	
 	// used in push portal , to find where to export the tpl for exemple 
@@ -203,10 +203,9 @@ OO.Portal = function (){
 			var dir = path.split(file)[0]
 			
 			return dir; 
-			
 		}
-
 	}
+
 	
 	
 	this.path_exist = function(_key){
@@ -216,10 +215,10 @@ OO.Portal = function (){
 	
 	}
 
-	// script_module
-	
-	var portal_script_module_object = null; 
-	
+
+
+
+
 	this.update_script_module_attributes_from_current_instance = function(){
 		
 		var attributes_object = get_attributes_object_from_current_instance()
@@ -232,44 +231,53 @@ OO.Portal = function (){
 		var attr_object = {
 			code: portal_code,
 			id: portal_id,
+			content: portal_content,
 			tpl_version: portal_tpl_version,
 			sg_asset_type: portal_sg_asset_type,
 			departement: portal_departement,
 			tpl_path: portal_paths['tpl'],
 			psd_path: portal_paths['psd'],
 			png_path: portal_paths['png'],
-			svg_path: portal_paths['svg']
+			svg_path: portal_paths['svg'],
 		}
 		
 		return attr_object;
 		
 	}
 
+	
+
+
+	// script module edition
+
 	this.set_several_script_module_attributes = function(_attributes_object){
 		
 		var attributes_names = Object.getOwnPropertyNames(_attributes_object); 
+
+		MessageLog.trace("_attributes_object")
+		MessageLog.trace(_attributes_object)
 		
 		for (var a = 0 ;  a <attributes_names.length ; a++){
 			
 			var cur_attr_name = attributes_names[a]
 			var cur_attr_val = _attributes_object[cur_attr_name]
 			set_script_module_attribute(cur_attr_name,cur_attr_val);
+
+			
 			
 		}		
-		
 	}
 	
 	function set_script_module_attribute(_attr,_value){
 		
 		var portal_script_module_path = portal_tree.get_key_node("PORTAL_MODULE");
 		var portal_script_module_object = $.scn.getNodeByPath(portal_script_module_path)
-		
 		if(portal_script_module_object.attributes.hasOwnProperty(_attr)){
-			
 			portal_script_module_object.attributes[_attr].setValue(_value);
-			
+
 		}
-		
+			
+
 	}
 
 			
@@ -284,31 +292,6 @@ OO.Portal = function (){
 		} 
 		return false;
 	}	
-
-
-	//obsolete
-	
-	this.tpl_exist = function(){
-		
-		var tpl = new $.oFile(this.get_path('tpl'))
-		return tpl.exists;
-		
-	}
-	
-	this.psd_exist = function(){
-		
-		var psd = new $.oFile(this.get_path('psd'))
-		return psd.exists;
-	}
-	
-	
-	this.png_exist = function(){
-		
-		var png = new $.oFile(this.get_path('png'))
-		return png.exists;
-	}
-
-
 }
 
 MessageLog.trace("Class Portal");

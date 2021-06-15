@@ -26,6 +26,7 @@ OO.SceneManager = function(){
 	this.scene_settings = ""; 
 	this.psd_importer = new OO.PSDImporter(this)
 	this.tpl = new OO.TPLManager(this)
+	this.library = new OO.LibraryManager(this)
 
 
 	this.get_current_project = function(){

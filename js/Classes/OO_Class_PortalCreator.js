@@ -17,6 +17,7 @@ OO.PortalCreator = function(_S){
 	var current_departement = default_departement;
 	var current_tpl_version = null;		
 	var current_status =  null;
+	var current_content =  null;
 
 	this.set_sg_asset_type = function(_sat){
 		current_sg_asset_type = _sat
@@ -57,7 +58,10 @@ OO.PortalCreator = function(_S){
 		current_status = _as
 	}; 	
 	
-	
+	this.set_content = function(_cc){
+		current_content = _cc
+	}; 	
+		
 	
 	this.create_portal = function(){ 
 
@@ -75,6 +79,8 @@ OO.PortalCreator = function(_S){
 		nportal.set_tpl_version(current_tpl_version)
 		nportal.set_status(current_status)
 		nportal.set_id(current_id)
+		nportal.set_content(current_content)
+
 		
 		// IMPORTING THE TPL 
 		var pnodes =  S.trees.import_tpl_in_temp_group(script_module_path);
@@ -90,6 +96,7 @@ OO.PortalCreator = function(_S){
 						
 				cn.name = "PORTAL_"+current_code
 				ntree.set_key_node("PORTAL_MODULE",cn);
+
 			}
 			
 			if(cn.type == "GROUP"){

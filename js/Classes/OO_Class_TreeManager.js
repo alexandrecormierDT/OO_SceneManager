@@ -236,30 +236,24 @@ OO.TreeManager = function(_S){
 		
 		var node_array = []
 		var groups_to_read = []
+		
 		if(node.isGroup( _node_path)==true){
 			groups_to_read.push(_node_path)
 		}
+
 		for(var g = 0 ; g < groups_to_read.length; g++){
 			current_group = groups_to_read[g]; 
 			for(var i =0 ;i< node.numberOfSubNodes(groups_to_read[g]);i++){
-				var sub_node = node.subNode(groups_to_read[g],i);
-				node_array.push(sub_node);
-				if(node.isGroup(sub_node)==true){
-					groups_to_read.push(sub_node)
+				var sub_node_path = node.subNode(groups_to_read[g],i);
+				node_array.push(sub_node_path);
+				if(node.isGroup(sub_node_path)==true){
+					groups_to_read.push(sub_node_path)
 				}
 			}
-
 		}
 
 	  	return node_array; 
 	}
-
-	this.format_group_to_string = function(_group_node_path){
-
-
-
-	}
-
 
 
 	this.format_node_path_list = function(_nodes){
@@ -270,9 +264,9 @@ OO.TreeManager = function(_S){
 		for(var s = 0 ; s < _nodes.length ; s++){
 			var curn = _nodes[s];
 			if(s==0){
-				string+=curn;
+				string+='"'+curn+'"';
 			}else{
-				string+=','+curn;
+				string+=',"'+curn+'"';
 			}
 		}
 
@@ -640,8 +634,19 @@ OO.TreeManager = function(_S){
 	this.delete_group_nodes = function(_group_node_path){
 
 		var sub_nodes = node.subNodes(_group_node_path);
-		var temp_group = node.createGroup(sub_nodes, "group_to_delete");
-		node.deleteNode(temp_group,true,true);
+		var temp_group = node.createGroup(sub_nodes, "group_to_delete"+Math.floor(Math.random()*1000000));
+
+		var nodes_to_delete =node.subNodes(temp_group); 
+
+		for(index in  nodes_to_delete){
+			node.deleteNode( nodes_to_delete[index],true,true);
+			S.log.add("[TreeManager] DELETED "+nodes_to_delete[index],"node")
+		}
+
+		node.deleteNode( temp_group,true,true);
+		S.log.add("[TreeManager] DELETED "+temp_group,"node")
+
+
 
 	}
 	
