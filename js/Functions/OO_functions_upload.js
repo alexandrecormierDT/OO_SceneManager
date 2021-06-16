@@ -144,7 +144,8 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	scene.saveAll();
 
 
-	S.version.render_and_upload_movie_as_version_with_deadline()
+	//S.version.render_and_upload_movie_as_version_with_deadline()
+	S.version.render_and_upload_movie_as_version()
 
 	S.log.save();
 

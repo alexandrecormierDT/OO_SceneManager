@@ -393,8 +393,8 @@ function push_selected_portals(_data_type){
 			var current_portal = portal_list[p];
 			S.portals.push_portal(current_portal,_data_type);
 			MessageLog.trace("hellp")
-			S.elements.set_scene_folder_path(S.get_scene_folder_path())
-			S.elements.copy_asset_elements_folders_to_bank(current_portal.get_code()); 
+			//S.elements.set_scene_folder_path(S.get_scene_folder_path())
+			//S.elements.copy_asset_elements_folders_to_bank(current_portal.get_code()); 
 				
 		}	
 
