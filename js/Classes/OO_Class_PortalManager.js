@@ -196,7 +196,7 @@ OO.PortalManager = function(_S){
 					portal_group.backdrops[g].body = "deleteme";				
 				}
 			}
-			
+
 			S.log.add("portal is now empty","process");
 
 		}catch(error){
@@ -528,7 +528,11 @@ OO.PortalManager = function(_S){
 		final_path = _portal.get_path('tpl') ;
 
 		var tpl = S.tpl.parse_tpl_file_to_tpl_object(final_path)
-		var tpl_id = tpl.data.tpl_id 
+		var tpl_id = "TPL"
+
+		if(tpl!=false){
+			tpl_id = tpl.data.tpl_id 
+		}
 		
 		S.trees.import_tpl_in_group(final_path,portal_group)
 		var tpl_group = S.trees.get_first_sub_group_in_group(portal_group); 
@@ -673,6 +677,7 @@ OO.PortalManager = function(_S){
 		
 		//udpate 
 		_portal.set_several_script_module_attributes(path_attributes_object); 
+		
 	}
 
 

@@ -739,8 +739,8 @@ OO.TreeManager = function(_S){
 	this.export_group_to_path = function(_group,_path,_tpl_name){
 		
 		S.log.add("exporting tpl to "+_path,"file")
-		
-		selection.addNodeToSelection(_group)
+		//selection.clear()
+		selection.addNodesToSelection(_group)
 		var process = copyPaste.createTemplateFromSelection(_tpl_name,_path)
 		S.log.add("[copyPaste] "+ process,"process")
 
@@ -749,10 +749,7 @@ OO.TreeManager = function(_S){
 		}else{
 			S.log.add("[copyPaste] "+ process +" exported ","error")
 		}
-
 		return true;
-
-		
 	}
 
 

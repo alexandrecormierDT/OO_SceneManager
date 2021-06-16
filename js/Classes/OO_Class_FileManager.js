@@ -1,0 +1,4 @@
+OO.FileManager = function(){
+
+    
+}

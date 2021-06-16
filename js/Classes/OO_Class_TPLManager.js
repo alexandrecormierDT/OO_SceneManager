@@ -16,7 +16,8 @@ OO.TPLManager = function(_S){
 
             S.log.add("[TPLManager] creating tpl "+_TPLOBJECT.data.tpl_id,"file")
              create_passeport_file_for_tpl_object(_TPLOBJECT);
-            var export_process = S.trees.export_group_to_path(_TPLOBJECT.data.group_path,_TPLOBJECT.data.folder_path,_TPLOBJECT.data.name+".tpl")
+
+            var export_process = S.trees.export_group_to_path(_TPLOBJECT.data.nodes_path_list,_TPLOBJECT.data.folder_path,_TPLOBJECT.data.name+".tpl")
 
             if(export_process==true){
 
@@ -45,6 +46,25 @@ OO.TPLManager = function(_S){
 			return tpl_object
 		}
 		return false; 
+    }
+
+    this.parse_nodes_path_array_to_tpl_object = function(_asset,_node_path_array){
+
+        var new_tpl = new OO.TPL(_asset.get_code())
+
+        //from portal
+        new_tpl.data.asset_code =_asset.get_code();
+        new_tpl.data.asset_id =_asset.get_id();
+        new_tpl.data.tpl_id = "ACTION_TPL_123"
+        new_tpl.data.sg_asset_type = _asset.get_sg_asset_type();
+        new_tpl.data.nodes_path_list = _node_path_array
+        new_tpl.data.number_of_nodes = _node_path_array.length;
+
+        //from_scene_infos
+        new_tpl.data.last_source_xstage_path = S.get_xstage_path()+""
+        new_tpl.data.project = S.get_current_project()+""
+
+        return new_tpl;
     }
 
     this.parse_portal_object_to_tpl_object = function(_portal_object){
@@ -110,10 +130,10 @@ OO.TPLManager = function(_S){
     this.valueB =_valueB
 
     this.print = function(){
-
         var string = "tpl mismatch on ( "+_key+" ) :  ( "+_valueB+" ) instead of  ( "+_valueA+" )"; 
-
         return string;
     }
+
+    
 
 }

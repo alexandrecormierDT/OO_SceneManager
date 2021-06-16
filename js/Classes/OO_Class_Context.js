@@ -327,6 +327,9 @@ OO.Context = function (_S,_type){
 				case "tpl": 	
 					dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/master/"
 					break;	
+				case "action_tpl": 	
+					dir_path = LIBRARY_PATH+"/"+departement+"/assets/"+asset_type+"/"+asset_code+"/action/"
+					break;	
 				case "svg":
 					dir_path = SVG_PATH;
 					break;
@@ -393,6 +396,7 @@ OO.Context = function (_S,_type){
 				break; 			
 				
 				case "tpl": 
+				case "action_tpl": 
 					
 					file_path = dir_path+"/"+asset_code+".tpl";
 					

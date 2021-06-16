@@ -392,19 +392,21 @@ function push_selected_portals(_data_type){
 	
 			var current_portal = portal_list[p];
 			S.portals.push_portal(current_portal,_data_type);
+			MessageLog.trace("hellp")
+			S.elements.set_scene_folder_path(S.get_scene_folder_path())
+			S.elements.copy_asset_elements_folders_to_bank(current_portal.get_code()); 
 				
 		}	
 
 	}catch(error){
 	
-			S.log.add_script_error_object(error); 
+		S.log.add_script_error_object(error); 
 		
 	}
 
 	S.log.save();
 	var log_object = S.log;
 	return log_object;
-
 	
 } 
 
@@ -722,17 +724,3 @@ function rebbot_bg_portals(){
 
 
 
-
-function compare_portal_content_to_selected_tpl(){
-
-	S = new OO.SceneManager();
-
-	var library_tpl = S.library.parse_selected_tpl_to_object();
-	var selected_portal_object = S.portals.fetch_portals_from_node_list($.scene.selectedNodes)[0]
-	var portal_tpl = S.tpl.parse_portal_object_to_tpl_object(selected_portal_object)
-
-	S.tpl.compare_tpl_objects(library_tpl,portal_tpl)
-
-
-
-}

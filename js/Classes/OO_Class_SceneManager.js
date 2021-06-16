@@ -27,6 +27,7 @@ OO.SceneManager = function(){
 	this.psd_importer = new OO.PSDImporter(this)
 	this.tpl = new OO.TPLManager(this)
 	this.library = new OO.LibraryManager(this)
+	//this.bank = new OO.Bank(this)
 
 
 	this.get_current_project = function(){
@@ -94,6 +95,14 @@ OO.SceneManager = function(){
 		var scene_path = scene.currentProjectPathRemapped();
 		var xstage_path = scene_path+"/"+version_name+".xstage";
 		return xstage_path;
+
+	}
+
+
+	this.get_scene_folder_path = function(){
+
+		var scene_path = scene.currentProjectPathRemapped();
+		return scene_path;
 
 	}
 

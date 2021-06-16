@@ -3,17 +3,11 @@
 OO.Lipsing = function (){
 	
 	var lipsdetec_string = ""; 
-	
 	var lipsdetec_object = ""; 
-	
 	var emotion = ""; 
-	
-	var angle = ""; 
-	
+	var angle = "";
 	var detected_frames = []
-	
 	var detected_phonemes = []; 
-	
 	var current_sub_name =""; 
 	
 	
@@ -27,13 +21,12 @@ OO.Lipsing = function (){
 	this.parse_frames_and_phonemes_from_lipsdetec_string = function(){
 		
 		var line_split =lipsdetec_string.split("\n");
-		
+
 		MessageLog.trace(line_split)
 		
 		for(var l = 0 ; l < line_split.length ; l++){
 			
 			var current_line = line_split[l]; 
-			
 			var space_split = current_line.split(" ");
 			
 			if(space_split.length > 1){
@@ -55,8 +48,6 @@ OO.Lipsing = function (){
 	function remove_linebreak(_string){
 		
 		var string = _string+"";
-		
-		
 		var without_linebreak = _string.replace(/(\r\n|\n|\r)/gm, "");
 		return without_linebreak;
 		
@@ -67,21 +58,14 @@ OO.Lipsing = function (){
 		for(var f = 0 ; f < detected_frames.length ; f++){
 			
 			current_frame = detected_frames[f]; 
-			
 			next_frame = detected_frames[f+1]
 			
 			if(current_frame == _frame ){
-				
 				return detected_phonemes[f];
-					
 			}else if(current_frame < _frame && next_frame > _frame){
-				
 				return detected_phonemes[f];
-				
 			}
-			
 		}
-		
 	}
 	
 	this.set_current_emotion = function(_em){
@@ -112,7 +96,6 @@ OO.Lipsing = function (){
 	this.generate_lips_sub_name_for_frame = function(_given_frame){
 		
 		var phonem_at_given_frame = get_phonem_at_frame(_given_frame);  
-		
 		var sub_name = render_sub_name_with_angle_and_emotion_for_phoneme(phonem_at_given_frame);
 		
 		current_sub_name = sub_name; 

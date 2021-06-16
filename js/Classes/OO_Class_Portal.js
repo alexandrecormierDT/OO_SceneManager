@@ -152,7 +152,22 @@ OO.Portal = function (){
 		
 	}	
 
+	this.get_peg_path = function(){
 
+		return portal_tree.get_key_node("PORTAL_PEG");
+
+	}
+
+	this.get_group_path = function(){
+
+		return portal_tree.get_key_node("PORTAL_GROUP");
+
+	}
+
+	this.get_script_module_path= function(){
+
+		return portal_tree.get_key_node("PORTAL_MODULE");
+	}
 
 
 	// backdrop

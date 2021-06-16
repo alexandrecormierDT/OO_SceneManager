@@ -30,8 +30,9 @@ OO.TPL = function (_name){
     this.data.number_of_files=0; 
     this.data.number_of_nodes = 0
     this.data.nodes_path_list = [];
-
     this.data.tpl_folder_path = ""; 
+
+    
 
     this.set_tpl_folder_path = function(_tfp){
         this.data.tpl_folder_path = _tfp
@@ -40,10 +41,6 @@ OO.TPL = function (_name){
     this.get_tpl_folder_path = function(){
         this.data.tpl_folder_path =this.data.folder_path+"//"+ this.data.name+".tpl";
         return this.data.tpl_folder_path
-    }
-
-    this.format_data_folder_path = function(){
-
     }
 
     this.format_properties_in_json = function(){
