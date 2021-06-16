@@ -82,7 +82,7 @@ OO.TPLManager = function(_S){
         new_tpl.data.sg_asset_type = _portal_object.get_sg_asset_type();
 
         //node
-        var tpl_node_path_list = S.trees.get_sub_nodes(new_tpl.data.group_path)
+        var tpl_node_path_list = new_tpl.data.group_path
         new_tpl.data.nodes_path_list = tpl_node_path_list
         new_tpl.data.number_of_nodes = tpl_node_path_list.length;
 

@@ -740,7 +740,13 @@ OO.TreeManager = function(_S){
 		
 		S.log.add("exporting tpl to "+_path,"file")
 		//selection.clear()
-		selection.addNodesToSelection(_group)
+		
+		if(Array.isArray(_group)){
+			selection.addNodesToSelection(_group)
+		}else{
+			selection.addNodeToSelection(_group)
+		}
+
 		var process = copyPaste.createTemplateFromSelection(_tpl_name,_path)
 		S.log.add("[copyPaste] "+ process,"process")
 
