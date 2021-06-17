@@ -666,13 +666,20 @@ OO.TreeManager = function(_S){
 		var png_image_object = new OO.ImageFile(_png_path)
 
 		var dimention_object = png_image_object.get_dimention_object();
-		var final_sy = parseFloat(dimention_object.height/1080)
-		var final_sx = final_sy;
-			
-		//changin node scale
-		node.setTextAttr(_node_path, "SCALE.XY", frame.current(),final_sx);				
-		node.setTextAttr(_node_path, "SCALE.X", frame.current(),final_sx);				
-		node.setTextAttr(_node_path, "SCALE.Y", frame.current(),final_sx);		
+
+		if(dimention_object == false){
+			S.log.add("[ImageFile] could create or find dimention txt")
+		}else{
+			var final_sy = parseFloat(dimention_object.height/1080)
+			var final_sx = final_sy;
+				
+			//changin node scale
+			node.setTextAttr(_node_path, "SCALE.XY", frame.current(),final_sx);				
+			node.setTextAttr(_node_path, "SCALE.X", frame.current(),final_sx);				
+			node.setTextAttr(_node_path, "SCALE.Y", frame.current(),final_sx);	
+
+		}
+	
 	}
 
 	this.scale_anim_node_to_png_size = function(_node_path,_png_path){
@@ -680,18 +687,22 @@ OO.TreeManager = function(_S){
 		var png_image_object = new OO.ImageFile(_png_path)
 
 		var dimention_object = png_image_object.get_dimention_object();
-		var final_sy = parseFloat(dimention_object.height/1080)
+		if(dimention_object == false){
+			S.log.add("[ImageFile] could not create or find dimention txt")
+		}else{
+			var final_sy = parseFloat(dimention_object.height/1080)
 
-		//a quick fix for data that wasn't working (harmony need 3 instead of 2.13)
-		if(final_sy > 2 ){
-			final_sy = 3;
+			//a quick fix for data that wasn't working (harmony need 3 instead of 2.13)
+			if(final_sy > 2 ){
+				final_sy = 3;
+			}
+			var final_sx = final_sy;
+				
+			//changin node scale
+			node.setTextAttr(_node_path, "SCALE.XY", frame.current(),final_sx);				
+			node.setTextAttr(_node_path, "SCALE.X", frame.current(),final_sx);				
+			node.setTextAttr(_node_path, "SCALE.Y", frame.current(),final_sx);
 		}
-		var final_sx = final_sy;
-			
-		//changin node scale
-		node.setTextAttr(_node_path, "SCALE.XY", frame.current(),final_sx);				
-		node.setTextAttr(_node_path, "SCALE.X", frame.current(),final_sx);				
-		node.setTextAttr(_node_path, "SCALE.Y", frame.current(),final_sx);
 				
 	} 	
 

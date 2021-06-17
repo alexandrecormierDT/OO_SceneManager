@@ -1,7 +1,18 @@
-set project = %1
-set source_folder_path = %2
-set element_name = %3
-set asset_name = %4
+@echo off
+SET project = %1
+SET source = %2
+SET asset= %3
 
-mkdir "P:\projects\%project%\bank\elements\%asset_name%\%element_name%
-xcopy  %source_folder_path% "P:\projects\%project%\bank\elements\%asset_name%\%element_name% /e /i /h /c
+
+for  /f "delims=" %%a in ('dir /b  /a:d %2 ^|findstr /l /i "%3"') do (
+    echo %%a
+    if exist P:\projects\%1\bank\elements\%3\%%a (
+        xcopy %2%%a P:\projects\%1\bank\elements\%3\%%a /K /D /H /-Y
+    ) else (
+
+        mkdir P:\projects\%1\bank\elements\%3\%%a
+        xcopy %2%%a P:\projects\%1\bank\elements\%3\%%a /K /D /H /-Y
+
+    )
+    
+)

@@ -4,7 +4,7 @@
 
 OO.SceneManager = function(){
 	
-	//access to the xstage throuht the class 
+	var harmony_path = 'C:/Program Files (x86)/Toon Boom Animation/Toon Boom Harmony 20 Premium/win64/bin/HarmonyPremium.exe';
 	
 	this.stage = new OO.Stage(this);
 	this.backdrops = new OO.BackdropManager(this);
@@ -21,7 +21,6 @@ OO.SceneManager = function(){
 	this.render = new OO.RenderManager(this);
 	this.version = new OO.SGVersion(this);
 	this.deadline = new OO.DeadLineJobSubmiter(this);
-	var harmony_path = 'C:/Program Files (x86)/Toon Boom Animation/Toon Boom Harmony 20 Premium/win64/bin/HarmonyPremium.exe';
 	this.svg_reader = new OO.SVGReader(this);
 	this.scene_settings = ""; 
 	this.psd_importer = new OO.PSDImporter(this)

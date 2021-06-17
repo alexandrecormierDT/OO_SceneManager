@@ -2,24 +2,37 @@ OO.ImageFile = function(_image_file_path){
 
     var image_file_path = _image_file_path;
     //environnement ! 
-	var read_image_info_bat = "P:\\pipeline\\alexdev\\proto\\OO_SceneManager_proto\\bin\\read_image_infos.bat";
+	var read_image_info_bat = "P:\\pipeline\\alexdev\\"+branch+"\\OO_SceneManager_"+branch+"\\bin\\read_image_infos.bat";
     var dimention_txt_creation_command_string = ""; 
 
-	this.get_dimention_object = function(){
 
+    
+
+	this.get_dimention_object = function(){
+        var resolution_object = parse_object_from_created_or_found_dimention_txt()
+        return resolution_object;
+	}
+
+    function remove_line_breaks(_str){
+        var str = _str+"";
+        return  str.replace(/(\r\n|\n|\r)/gm, "");
+    }
+
+    function parse_object_from_created_or_found_dimention_txt(){
         // we create the file if non exsitant
-		var file_test = new $.oFile(image_file_path+".txt");
-        var txt_exists = file_test.exists;
-        if(txt_exists == false){
-            create_image_dimention_txt_for_image_file()
+
+		var file_test = new $.oFile(remove_line_breaks(image_file_path+".txt"));
+        MessageLog.trace("PATH")
+        MessageLog.trace(remove_line_breaks(image_file_path+".txt"))
+        var file_created = false;
+
+        if( file_test.exists == false){
+            file_created = create_image_dimention_txt_for_image_file()
         }
 
-        //we check again if the file was created
         txt_file_object = new $.oFile(image_file_path+".txt");
-        if(file_test.exists){
-
-            MessageLog.trace("reading "+image_file_path+".txt")
-
+        if(txt_file_object.exists==true){
+            MessageLog.trace("[ImageFile]   reading   "+image_file_path+".txt")
             //we read its content
             var txt_content = txt_file_object.read()
             var resolution_object = parse_dimention_txt_content_to_object(txt_content)
@@ -32,8 +45,10 @@ OO.ImageFile = function(_image_file_path){
 
         return false;
 
-        
-	}
+    }
+
+
+
 
     this.has_dimention_txt_file = function(){
 
@@ -41,13 +56,6 @@ OO.ImageFile = function(_image_file_path){
         return file_test.exists
 
     }
-
-    this.create_dimention_txt_file = function(){
-
-        create_image_dimention_txt_for_image_file()
-
-    }
-
 
 	function create_image_dimention_txt_for_image_file(){
 
@@ -60,8 +68,18 @@ OO.ImageFile = function(_image_file_path){
 		var process_create_txt = new Process2(dimention_txt_creation_command_string);
 		var launch = process_create_txt.launch();
 
-        MessageLog.trace("txt created")
+        MessageLog.trace("launch")
+        MessageLog.trace(launch)
 
+        MessageLog.trace("[ImageFile] creating  "+image_file_path+".txt")
+
+        if(launch==0){
+            MessageLog.trace("[ImageFile] success")
+            return true
+        }else{
+            MessageLog.trace("[ImageFile] failed")
+            return false;
+        }
 	}
 
 

@@ -17,15 +17,13 @@ OO.ElementFolder = function (_folder_path){
 		return last_split;
 
 	}	
-
-
-	var element_name = this.extract_element_name_from_path(); 
 	
 	this.get_folder_path = function(){
 		return element_folder_path; 
 	}
 	
 	this.get_name = function(){
+		var element_name = this.extract_element_name_from_path(); 
 		return element_name; 
 	}
 
@@ -61,6 +59,5 @@ OO.ElementFolder = function (_folder_path){
 	
 	this.delete_subs_with_wrong_prefix = function(){
 	}
-	
 	
 }
