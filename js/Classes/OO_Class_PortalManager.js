@@ -177,14 +177,9 @@ OO.PortalManager = function(_S){
 	}
 
 	this.empty_portal = function (_portal){
-		
-		MessageLog.trace("-------------empty_portal")
-
 		try{
-
 			var portal_tree = _portal.get_tree()
 			var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
-
 			S.trees.delete_group_nodes(portal_group.path)
 
 			for(var g= 0 ; g < portal_group.backdrops.length ; g++){
@@ -196,16 +191,12 @@ OO.PortalManager = function(_S){
 					portal_group.backdrops[g].body = "deleteme";				
 				}
 			}
-
 			S.log.add("portal is now empty","process");
 
 		}catch(error){
-
 			S.log.add_script_error_object(error); 
-
 		}
-
-
+		return true;
 	}
 
 
@@ -454,21 +445,23 @@ OO.PortalManager = function(_S){
 
 				switch (_data_type){
 					case 'psd': 
-						this.empty_portal(_portal);
-						pulled_nodes = pull_psd(_portal)
-						_portal.set_several_script_module_attributes(pull_attributes_object); 
+						if(this.empty_portal(_portal)==true){
+							pulled_nodes = pull_psd(_portal)
+							_portal.set_several_script_module_attributes(pull_attributes_object); 
+						}
 					break;
 					case 'png': 
-						this.empty_portal(_portal);	
-						pulled_nodes = pull_png(_portal); 
-						_portal.set_several_script_module_attributes(pull_attributes_object); 
+						if(this.empty_portal(_portal)==true){
+							pulled_nodes = pull_png(_portal); 
+							_portal.set_several_script_module_attributes(pull_attributes_object); 
+						};	
 					break;			
 					case 'tpl':
-						this.empty_portal(_portal);
-						var tpl_id  = pull_tpl(_portal); 
-						//read tpl id 
-						pull_attributes_object.content = tpl_id;
-						_portal.set_several_script_module_attributes(pull_attributes_object); 
+						if(this.empty_portal(_portal)==true){
+							var tpl_id  = pull_tpl(_portal); 
+							pull_attributes_object.content = tpl_id;
+							_portal.set_several_script_module_attributes(pull_attributes_object); 
+						}
 					break;
 					case 'elements':
 						pull_elements(_portal); 

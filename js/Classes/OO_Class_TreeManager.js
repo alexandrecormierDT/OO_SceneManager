@@ -638,9 +638,9 @@ OO.TreeManager = function(_S){
 
 		var nodes_to_delete =node.subNodes(temp_group); 
 
-		for(index in  nodes_to_delete){
-			node.deleteNode( nodes_to_delete[index],true,true);
-			S.log.add("[TreeManager] DELETED "+nodes_to_delete[index],"node")
+		for(n = nodes_to_delete.length ; n = 0 ; n-- ){
+			node.deleteNode( nodes_to_delete[n],true,true);
+			S.log.add("[TreeManager] DELETED "+nodes_to_delete[n],"node")
 		}
 
 		node.deleteNode( temp_group,true,true);
