@@ -11,7 +11,6 @@ function export_markers_process(){
 	S.load_xstage();
 	S.views.load(S.stage);
 	scene.saveAll();
-	
 	S.views.set_output_dir("P:/projects/billy/views");
 	
 	if(S.views.noviews == false){
@@ -24,7 +23,6 @@ function export_markers_process(){
 		
 	}
 
-	
 	S.log.save();	
 	S.log.set_script_tag("OO_export_markers"); 
 	S.log.create_scene_script_log_file_and_folder(); 
@@ -63,7 +61,6 @@ function export_asset_png_process(){
 		userCode.text = library_asset_png_path;
 		dialog.add( userCode );	
 		
-		var userScale = new LineEdit();
 		var userScale = new ComboBox();
 		userScale.label = "expend camera frame : ";
 		userScale.editable = false;

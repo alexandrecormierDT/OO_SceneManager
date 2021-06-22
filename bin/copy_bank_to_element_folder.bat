@@ -9,7 +9,7 @@ if not "%4"=="" (
     set overwrite=False
 )
 mkdir P:\projects\%project%\bank\log\elementcopy 2>NUL
-set log_file_path=P:\projects\%project%\bank\log\elementcopy\%datetime%_push_log.txt
+set log_file_path=P:\projects\%project%\bank\log\elementcopy\%datetime%_pull_log.txt
 
 echo -------------------------------------------------------------- >> %log_file_path%
 echo COPY PROCESS  %datetime% >> %log_file_path%
@@ -35,8 +35,8 @@ goto eof
 :copy
 echo %subFolder% "copying element folder" 2>&1 1>> %log_file_path%
 
-set source_folder_path=%elementfolder%%subFolder%
-set dest_folder_path=P:\projects\%project%\bank\elements\%asset%\%subFolder%
+set source_folder_path=P:\projects\%project%\bank\elements\%asset%\%subFolder%
+set dest_folder_path=%elementfolder%%subFolder%
 
 robocopy %arguments% %source_folder_path% %dest_folder_path% 2>&1 1>>  %log_file_path%
 goto eof

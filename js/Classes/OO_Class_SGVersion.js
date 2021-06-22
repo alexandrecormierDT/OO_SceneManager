@@ -5,7 +5,7 @@
 OO.SGVersion = function(_S){
 	
 	var S = _S;
-	var entity ="shot"; 
+	var entity =""; 
 	var project_name = "billy"; 
 	var shot_name = "";
 	var asset_name = "";
@@ -24,72 +24,65 @@ OO.SGVersion = function(_S){
 	var png_upload_command = ""; 
 	
 	var upload_repport = ""; 
+
+	this.reset = function(){
+
+		entity =""; 
+		project_name = S.get_current_project(); 
+		shot_name = "";
+		asset_name = "";
+		version_name = "";
+		movie_file_path = "";
+		png_file_path = "";
+		task_name = "";
+		task_status = "";
+
+	}
 	
 	
 	this.set_project_name = function(_sn){
-		
 		shot_name = _sn
-		
 	}
 	
 	this.set_entity  = function(_e){
-		
 		entity = _e
-		
 	}	
-	
+
 	this.set_shot_name = function(_sn){
-		
 		shot_name = _sn
-		
 	}
+
 	this.set_asset_name = function(_sn){
-		
 		asset_name = _sn
-		
 	}	
+
 	this.set_version_name = function(_vn){
-		
 		version_name = _vn
 	}	
 	
 	this.set_png_file_path = function(_pfp){
-		
 		png_file_path = _pfp
-		
 	}	
 	
 	this.set_movie_file_path = function(_mfp){
-		
 		movie_file_path = _mfp
-		
 	}		
 	
 	this.set_task_name = function(_tn){
-		
 		task_name = _tn
-		
 	}	
 	
 	this.set_task_status = function(_ts){
-		
 		task_status = _ts
-		
 	}		
 
 	function format_movie_upload_command_string(){
-		
 		movie_upload_command = '"'+movie_upload_bat_file_path+'" -p "'+project_name+'" -a "'+shot_name+'" -f "'+movie_file_path+'"  -n "'+version_name+'" -t "'+task_name+'"  -s  "'+task_status+'" ';
-
 	}
 
 
-
-
 	function format_render_and_upload_command_string(){
-
 		render_and_upload_movie_command ='"'+render_and_upload_bat_file_path+'" "'+S.get_xstage_path()+'" "'+project_name+'" "'+shot_name+'" "'+movie_file_path+'" "'+version_name+'" "'+task_name+'"  "'+task_status+'" '
-
 	}
 
 	this.render_and_upload_movie_as_version_detached = function(){
@@ -98,9 +91,7 @@ OO.SGVersion = function(_S){
 		format_render_and_upload_command_string();
 
 		MessageLog.trace(render_and_upload_movie_command)
-
 		S.log.add(render_and_upload_movie_command,"arguments")
-
 		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
 
 		var process_render_movie = new Process2(render_and_upload_movie_command);
@@ -117,11 +108,8 @@ OO.SGVersion = function(_S){
 
 		S.log.add("render_and_upload_movie_as_version","script")
 		format_render_and_upload_command_string();
-
 		MessageLog.trace(render_and_upload_movie_command)
-
 		S.log.add(render_and_upload_movie_command,"arguments")
-
 		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
 
 	}
@@ -155,7 +143,6 @@ OO.SGVersion = function(_S){
 		
 		MessageLog.clearLog();
 		MessageLog.trace(movie_upload_command)
-		
 		var process_movie = new Process2(movie_upload_command);
 
 		MessageLog.trace(process_movie.launch());
@@ -189,6 +176,7 @@ OO.SGVersion = function(_S){
 		MessageLog.trace(png_upload_command);
 		
 		var process_png = new Process2(png_upload_command);
+		var launch = process_png.launchAndDetach();
 
 		//S.deadline.submit_command_line_job(png_upload_command);
 
@@ -199,6 +187,13 @@ OO.SGVersion = function(_S){
 			S.log.add(launch+" = upload failed","error")
 
 		}
+		
+	}
+
+	this.upload_png_as_version_with_deadline = function(){
+		
+		format_png_upload_command_string()
+		S.deadline.submit_command_line_job(png_upload_command);
 		
 	}
 	

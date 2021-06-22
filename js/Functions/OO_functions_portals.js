@@ -338,7 +338,7 @@ function pull_selected_portals_dialog(){
 	var userType = new ComboBox();
 	userType.label = "data type to pull : "
 	userType.editable = true;
-	userType.itemList = ["png","psd","tpl"];
+	userType.itemList = ["png","psd","tpl","elements"];
 	dialog.add( userType );		
 	
 	if (dialog.exec()){
@@ -379,6 +379,9 @@ function pull_selected_portals_process(_data_type){
 
 
 
+
+
+
 function push_selected_portals(_data_type){
 
 	var S = new OO.SceneManager();	
@@ -393,7 +396,7 @@ function push_selected_portals(_data_type){
 			var current_portal = portal_list[p];
 			S.portals.push_portal(current_portal,_data_type);
 			//MessageLog.trace("hellp")
-			//S.elements.copy_asset_elements_folders_to_bank(current_portal.get_code()); 
+			S.elements.copy_asset_elements_folders_to_bank(current_portal.get_code()); 
 				
 		}	
 
@@ -406,6 +409,112 @@ function push_selected_portals(_data_type){
 	S.log.save();
 	var log_object = S.log;
 	return log_object;
+	
+} 
+
+
+
+
+function push_selected_portals_dialog(){
+
+	var dialog = new Dialog();
+	dialog.title = "PUSH PORTAL";
+	
+	var tplInput = new CheckBox();
+	tplInput.text = "push TPL to library";
+	tplInput.checked = false;
+	dialog.add(tplInput);
+
+	var pngInput = new CheckBox();
+	pngInput.text = "push PNG to library ";
+	dialog.add(pngInput);
+
+	var export_version = new CheckBox();
+	export_version.text = "push PNG to shotgun version (using current camera)";
+	dialog.add(export_version);
+
+	var INPUT_TASK_NAME= new ComboBox();
+	 INPUT_TASK_NAME.label = "task : ";
+	 INPUT_TASK_NAME.editable = true;
+	 INPUT_TASK_NAME.itemList = ["design_main","puppet_rig","test_rig"];
+	 INPUT_TASK_NAME.currentItem = "puppet_rig";
+	dialog.add(INPUT_TASK_NAME);	
+	
+	var INPUT_TASK_STATUS= new ComboBox();
+	 INPUT_TASK_STATUS.label = "status : ";
+	 INPUT_TASK_STATUS.editable = false;
+	 INPUT_TASK_STATUS.itemList = ["psr","ret","pdr"];
+	 INPUT_TASK_STATUS.currentItem = "psr";
+	dialog.add(INPUT_TASK_STATUS)
+
+
+
+	var tvgInput = new CheckBox();
+	tvgInput.text = "push asset elements to bank";
+	dialog.add(tvgInput);
+
+	var paletteInput = new CheckBox();
+	paletteInput.text = "push palettes to bank";
+	dialog.add(paletteInput);
+
+	if (dialog.exec())
+	{
+		var S = new OO.SceneManager();	
+
+		try{
+	
+			S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/OO_push_portal_dialog.html");
+			var portal_list = S.portals.fetch_portals_from_node_list($.scene.selectedNodes);
+		
+			for(var p = 0 ; p < portal_list.length; p++){
+				
+				var current_portal = portal_list[p];
+
+				if(tplInput.checked == true){
+
+					S.portals.push_portal(current_portal,"tpl");
+
+				}
+
+				if(pngInput.checked == true){
+
+					push_result_obj = S.portals.push_portal(current_portal,"png");
+
+					//export version
+					if(export_version.checked == true){
+						S.version.reset();
+						S.version.set_project_name(S.get_current_project()) ;
+						S.version.set_asset_name(current_portal.get_code()) ;
+						S.version.set_version_name(current_portal.get_code()+"_"+push_result_obj.tpl_id);
+						S.version.set_task_name(INPUT_TASK_NAME.currentItem);
+						S.version.set_task_status (INPUT_TASK_STATUS.currentItem);
+						S.version.set_png_file_path(push_result_obj.png_path);	
+						S.version.upload_png_as_version()
+					}
+				}
+
+				if(elementsInput.checked == true){
+
+					S.portals.push_portal(current_portal,"elements");
+					
+				}
+
+
+					
+			}	
+	
+		}catch(error){
+		
+			S.log.add_script_error_object(error); 
+			
+		}
+	
+		S.log.save();
+		var log_object = S.log;
+		return log_object;
+		
+	}
+
 	
 } 
 

@@ -37,17 +37,13 @@ OO.DeadLineJob = function(){
 
     }
 
-
     this.set_xstage_path = function(_xstage_path){
         xstage_path = _xstage_path;
     }
 
     function format_harmony_plugin_info_file_content(){
-
         var content;
-
         content = "Version=20\nSceneFile="+xstage_path+"";
-
         return content;
     }
 
@@ -176,7 +172,7 @@ OO.DeadLineJob = function(){
 
     function get_unique_id(){
 
-		var k = Math.floor(Math.random() * 10000000);
+		var k = Math.floor(Math.random() * 10000000000);
 		var m =k.toString();	
 			
 		return m ;

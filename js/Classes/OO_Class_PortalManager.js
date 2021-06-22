@@ -447,26 +447,35 @@ OO.PortalManager = function(_S){
 
 		try{
 		
-			if(_portal.path_exist(_data_type)){
+			if(_portal.path_exist(_data_type) || _data_type =='elements'){
 
 				this.update_script_module_attribute_key(_portal)
-				this.empty_portal(_portal);
+				
 
 				switch (_data_type){
 					case 'psd': 
+						this.empty_portal(_portal);
 						pulled_nodes = pull_psd(_portal)
+						_portal.set_several_script_module_attributes(pull_attributes_object); 
 					break;
 					case 'png': 
+						this.empty_portal(_portal);	
 						pulled_nodes = pull_png(_portal); 
+						_portal.set_several_script_module_attributes(pull_attributes_object); 
 					break;			
 					case 'tpl':
+						this.empty_portal(_portal);
 						var tpl_id  = pull_tpl(_portal); 
 						//read tpl id 
 						pull_attributes_object.content = tpl_id;
+						_portal.set_several_script_module_attributes(pull_attributes_object); 
+					break;
+					case 'elements':
+						pull_elements(_portal); 
+						_portal.set_several_script_module_attributes(pull_attributes_object); 
 					break;
 				}	
 				
-				_portal.set_several_script_module_attributes(pull_attributes_object); 
 				
 			}else{
 				S.log.add("[PortalManager] data not found for path "+_portal.get_path(_data_type),"error");
@@ -571,12 +580,18 @@ OO.PortalManager = function(_S){
 	}	
 
 
+	function pull_elements(_portal){
 
+		S.elements.copy_bank_to_asset_elements_folders(_portal.get_code()); 
+
+	}	
 	
 	//********************************** P U S H **************************************//
 	
 	
 	this.push_portal = function(_portal,_data_type){
+
+		var return_obj = {}
 
 		try{
 		
@@ -587,9 +602,11 @@ OO.PortalManager = function(_S){
 			var export_folder_object = new $.oFolder(export_folder_path); 
 			export_folder_object.create();
 
+			
 			this.update_script_module_attribute_key(_portal)
-			var export_process = false;
-			var portal_tree = _portal.get_tree();
+			
+			var new_tpl = S.tpl.parse_portal_object_to_tpl_object(_portal)
+			return_obj.tpl_id = new_tpl.data.tpl_id
 			
 			switch (_data_type){
 				
@@ -599,24 +616,37 @@ OO.PortalManager = function(_S){
 				
 				case 'png': 					
 
+					var display = _portal.get_code()+"_version"
+					return_obj.png_path = S.views.export_currentframe_png_to(export_path,_portal.get_push_png_scale(),display);
+
 				break;			
 				
 				case 'tpl':
 
-					var new_tpl = S.tpl.parse_portal_object_to_tpl_object(_portal)
 					S.tpl.create_tpl_file_with_passeport(new_tpl,export_folder_path)
-					S.log.add("exporting "+_data_type+" to "+_portal.get_path(_data_type),"process");	
+					S.log.add("exporting "+_data_type+" to "+export_path,"process");	
+
+					//updating the portal feilds with the new tpl ID
 					_portal.set_several_script_module_attributes({content:new_tpl.data.tpl_id})
+					
 	
 				break;
+
+				case 'elements' : 
+
+					S.elements.copy_asset_elements_folders_to_bank(current_portal.get_code()); 
+
+				break
 			}			
-
 		}catch(error){
-
 			S.log.add_script_error_object(error); 
-
 		}
+
+		return return_obj
 	}	
+
+
+
 
 
 	this.delete_portal = function(_portal){
@@ -752,7 +782,18 @@ OO.PortalManager = function(_S){
 			node.setTextAttr(module,"departement",frame.current,"");	
 			
 		}	
-	
+		if(sm_onode.hasOwnProperty("png_push_scale")==false){
+
+			node.createDynamicAttr(module, "STRING", "png_push_scale", "png_scale", false)
+			node.setTextAttr(module,"png_push_scale",frame.current,"1.5");	
+			
+		}	
+		if(sm_onode.hasOwnProperty("png_resolution")==false){
+
+			node.createDynamicAttr(module, "STRING", "png_push_resolution", "png_resolution", false)
+			node.setTextAttr(module,"png_push_resolution",frame.current,"1");	
+			
+		}	
 	}
 
 }

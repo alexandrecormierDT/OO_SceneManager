@@ -3,6 +3,8 @@ OO.AssetManager = function(_S){
 	var S = _S; 
 
 	var asset_object_array = []
+
+	this.detector = new OO.AssetDetector(_S)
 	
 	this.add = function(_asset_object){
 		asset_object_array.push(_asset_object);

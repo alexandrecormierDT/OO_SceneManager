@@ -50,34 +50,3 @@ function push_selected_posing(){
    // MessageLog.trace(pegDataB.toString("Top"));
 
 }
-
-function selected_layers_to_nodes(){
-		
-    //MessageLog.trace(arguments.callee.name)
-    
-    node_list = Array();
-    
-    var numSelLayers = Timeline.numLayerSel;
-    
-    for ( var i = 0; i < numSelLayers; i++ )
-    {
-        if ( Timeline.selIsNode( i ) ){
-            node_list.push(Timeline.selToNode(i));
-        }
-    }
-
-    return unique_array(node_list);
-    
-}
-
-function unique_array(arr){
-		
-    var unique_array = Array();
-    for(var i = 0 ; i<arr.length;i++){
-        if(unique_array.indexOf(arr[i])==-1){
-            unique_array.push(arr[i]);
-        }
-    }
-    return unique_array;
-    
-}

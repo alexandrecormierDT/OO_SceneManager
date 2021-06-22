@@ -22,23 +22,28 @@
 	provide path informations for exporting and importing. 
 	
 	ATTRIBUTES OF THE SCRIPT NODE
-
 	<specs>
-	  <ports>
+	<ports>
 		<in type="IMAGE"/>
-		<out type="IMAGE"/>
-	  </ports>
+	</ports>
 
-	  <attributes>
+	<attributes>
 	<attr type="bool" name="portal" value=""/> 
 	<attr type="String" name="id" value=""/> 
 	<attr type="String" name="code" value=""/> 
-	<attr type="String" name="type" value=""/> 
+	<attr type="String" name="sg_asset_type" value=""/> 
 	<attr type="String" name="tpl_path" value=""/> 
 	<attr type="String" name="psd_path" value=""/> 
-
-	  </attributes>
+	<attr type="String" name="png_path" value=""/> 
+	<attr type="String" name="svg_path" value=""/> 
+	<attr type="String" name="last_pull" value=""/> 
+	<attr type="String" name="content" value=""/> 
+	<attr type="String" name="departement" value=""/> 
+	<attr type="String" name="push_png_scale" value=""/> 
+	<attr type="String" name="push_png_resolution" value=""/> 
+	</attributes>
 	</specs>
+
 	*/
 
 OO.Portal = function (){
@@ -47,14 +52,16 @@ OO.Portal = function (){
 	var portal_code = null;
 	var portal_id = null;
 	var portal_sg_asset_type = null
-	var portal_departement = "boxanim";
 	var portal_tpl_version = null;
 	var portal_status = null; 
 	var portal_paths = [];
-	var portal_backdrop_name = "PORTAL";
-	var portal_backdrop_body = "";
 	var portal_content = "empty"; 
+	var portal_departement = "boxanim";
+	var portal_push_png_scale = "1.5";
+	var portal_push_png_resolution = "1";
 	
+	var portal_backdrop_body = "";
+	var portal_backdrop_name = "PORTAL";
 	
 	// TREE
 	var portal_tree = null;
@@ -93,6 +100,16 @@ OO.Portal = function (){
 	this.set_tpl_version = function(_tv){
 		portal_tpl_version = _tv;
 	}	
+
+	this.set_push_png_resolution = function(_ppr){
+
+		portal_push_png_resolution = _ppr
+	}
+
+	this.set_push_png_scale = function(_pps){
+
+		portal_push_png_scale = _pps
+	}
 	
 	this.set_status = function(_tv){
 		portal_status = _tv;
@@ -125,24 +142,33 @@ OO.Portal = function (){
 	
 	this.get_departement = function(){
 		return portal_departement; 
-		
 	}
 	
 	this.get_sg_asset_type = function(){
 		return portal_sg_asset_type; 
-		
 	}
 	
 	this.get_tpl_version = function(){
 		return portal_tpl_version; 
-		
 	}
 	
 	this.get_status_version = function(){
 		return portal_status; 
 		
 	}		
+
+
+	this.get_push_png_resolution = function(_pps){
+		return portal_push_png_scale;
+	}
+
+	this.get_push_png_scale = function(_pps){
+		return portal_push_png_scale;
+	}
 	
+
+
+
 	this.get_path = function(_key){
 		
 		if(portal_paths.hasOwnProperty(_key) == true){
@@ -249,6 +275,9 @@ OO.Portal = function (){
 			content: portal_content,
 			tpl_version: portal_tpl_version,
 			sg_asset_type: portal_sg_asset_type,
+			departement: portal_departement,
+			push_png_resolution: portal_push_png_resolution,
+			push_png_scale: portal_push_png_scale,
 			departement: portal_departement,
 			tpl_path: portal_paths['tpl'],
 			psd_path: portal_paths['psd'],

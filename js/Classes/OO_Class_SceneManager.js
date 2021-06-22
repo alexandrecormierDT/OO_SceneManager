@@ -15,6 +15,7 @@ OO.SceneManager = function(){
 	this.context = new OO.Context(this);
 	this.scene_files = new OO.SceneFilesManager(this);
 	this.elements = new OO.ElementManager(this);
+	this.posings = new OO.PosingManager(this);
 	this.portals = new OO.PortalManager(this);
 	this.setups = new OO.SetupManager(this);
 	this.log = new OO.Log();

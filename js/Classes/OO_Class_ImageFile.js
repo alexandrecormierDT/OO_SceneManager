@@ -31,6 +31,7 @@ OO.ImageFile = function(_image_file_path){
         }
 
         txt_file_object = new $.oFile(image_file_path+".txt");
+        
         if(txt_file_object.exists==true){
             MessageLog.trace("[ImageFile]   reading   "+image_file_path+".txt")
             //we read its content

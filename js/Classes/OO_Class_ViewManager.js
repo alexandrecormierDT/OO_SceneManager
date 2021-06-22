@@ -14,6 +14,7 @@ OO.ViewManager = function(_S){
 	
 	//reference to the singleton
 	var S = _S;
+	var default_display = "Display All";
 	
 	if(_S == ""){
 	
@@ -195,14 +196,10 @@ OO.ViewManager = function(_S){
 				MessageLog.trace(CV.frameScale)
 
 				
-
 				this.export_frame_to_png_with_scale(CV.exportFrame,final_path,CV.frameScale);
 
 				S.version.set_png_file_path( final_path);	
-
 				S.version.upload_png_as_version()
-		
-				
 				S.log.set_script_tag("OO_upload_png_as_version_dialog"); 
 				S.log.create_scene_script_log_file_and_folder(); 
 				S.log.save_scene_script_log_file(); 
@@ -280,7 +277,6 @@ OO.ViewManager = function(_S){
 	function format_dimention_txt_creation_command_string(_image_file_path){
 		
 		var dimention_txt_creation_command_string = '"'+read_image_info_bat+'" "'+_image_file_path+'"';
-
 		return dimention_txt_creation_command_string;
 
 	}
@@ -329,10 +325,19 @@ OO.ViewManager = function(_S){
 
 	}	
 	
-	this.export_currentframe_png_to = function(_file_path,_frameScale){
+	this.export_currentframe_png_to = function(_file_path,_frameScale,_display_name){
 
 		// we set the camera to 0 to avoid any weird image dimentions
 		this.init_camera();
+
+		//we change the display 
+		var display_name = _display_name
+		if(display_name!= undefined ){
+			render.setRenderDisplay(display_name)	
+			$.scene.defaultDisplay = display_name
+		}
+
+
 
 		
 		var path_object = parse_path_object(_file_path)
@@ -357,16 +362,20 @@ OO.ViewManager = function(_S){
 
 		if (!exporter.save(params)){
 
-			throw new Error(S.log.add("failed to exportlayer at location "+_file_path,"error"));	
+			S.log.add("failed to exportlayer at location "+_file_path,"error");	
+			return false;
 
 		}else{
 
 			S.log.add("creating txt dimention file "+_file_path+".txt","file")
 			//we create the dimention txt file to be red later at importation step
 			var exported_image = new OO.ImageFile(_file_path);
-			exported_image.create_dimention_txt_file()
+			exported_image.get_dimention_object()
+			return _file_path;
 
 		}
+
+
 
 
 
@@ -402,15 +411,10 @@ OO.ViewManager = function(_S){
 	this.write_resolution_txt = function(_path,_frameScale){
 		
 		var txt_path = _path+".txt"
-		
 		var reso_file = new $.oFile(txt_path);
-		
 		var width = Math.floor(1920*_frameScale);
-		
 		var height =  Math.floor(1080*_frameScale);
-		
 		var content = width+'\n'+height;
-
 		reso_file.write(content);           // write line to file
 		
 	}
