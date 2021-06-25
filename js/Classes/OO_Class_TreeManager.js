@@ -659,12 +659,26 @@ OO.TreeManager = function(_S){
 		return nodes; 		
 		
 	}	
+	
+	this.scale_bg_node_to_png_size_with_cadre = function(_node_path,_png_path,_cadre){
 
+		if( _cadre.hasOwnProperty('bg')==false){
+			S.log.add("[TreeManager] could find bg prop in cadre ")
+		}else{
+			var final_sy = parseFloat( _cadre.bg.height/1080)
+			var final_sx = final_sy;
+				
+			//changin node scale
+			node.setTextAttr(_node_path, "SCALE.XY", frame.current(),final_sx);				
+			node.setTextAttr(_node_path, "SCALE.X", frame.current(),final_sx);				
+			node.setTextAttr(_node_path, "SCALE.Y", frame.current(),final_sx);	
+		}
+	
+	}
 
 	this.scale_bg_node_to_png_size = function(_node_path,_png_path){
 
 		var png_image_object = new OO.ImageFile(_png_path)
-
 		var dimention_object = png_image_object.get_dimention_object();
 
 		if(dimention_object == false){
@@ -677,7 +691,6 @@ OO.TreeManager = function(_S){
 			node.setTextAttr(_node_path, "SCALE.XY", frame.current(),final_sx);				
 			node.setTextAttr(_node_path, "SCALE.X", frame.current(),final_sx);				
 			node.setTextAttr(_node_path, "SCALE.Y", frame.current(),final_sx);	
-
 		}
 	
 	}

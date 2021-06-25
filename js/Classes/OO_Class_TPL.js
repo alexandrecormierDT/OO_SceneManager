@@ -32,14 +32,18 @@ OO.TPL = function (_name){
     this.data.nodes_path_list = [];
     this.data.tpl_folder_path = ""; 
 
-    
+    this.data.start_frame = 1;
+    this.data.number_of_frames = 1;
 
+    this.get_node_path_array = function(){
+        return this.data.nodes_path_list
+    }
     this.set_tpl_folder_path = function(_tfp){
         this.data.tpl_folder_path = _tfp
     }
 
     this.get_tpl_folder_path = function(){
-        this.data.tpl_folder_path =this.data.folder_path+"//"+ this.data.name+".tpl";
+        this.data.tpl_folder_path =this.data.folder_path+ this.data.name+".tpl";
         return this.data.tpl_folder_path
     }
 

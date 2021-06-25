@@ -92,7 +92,7 @@ OO.SGVersion = function(_S){
 
 		MessageLog.trace(render_and_upload_movie_command)
 		S.log.add(render_and_upload_movie_command,"arguments")
-		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
+		//S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
 
 		var process_render_movie = new Process2(render_and_upload_movie_command);
 		var launch = process_render_movie.launchAndDetach();

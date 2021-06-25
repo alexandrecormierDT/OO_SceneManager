@@ -41,11 +41,8 @@ OO.ImageFile = function(_image_file_path){
             MessageLog.trace(resolution_object.width)
             MessageLog.trace(resolution_object.height)
             return resolution_object;
-
         }
-
         return false;
-
     }
 
 

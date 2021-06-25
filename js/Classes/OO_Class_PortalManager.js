@@ -494,18 +494,20 @@ OO.PortalManager = function(_S){
 
 			if(png_node != false){
 
-				// scale the read to fit the original size of the png
-				S.trees.scale_anim_node_to_png_size(png_node.path,final_path)
-
 				S.log.add("[PortalManager] importing PNG file to nodeview "+final_path,"process")
 
 				//different treatment for bg
 				if(portal_sg_asset_type == 'BG' || portal_sg_asset_type == 'bg'){
 					S.log.add("[PortalManager] "+portal_sg_asset_type+" detected","process");
-					S.log.add("[PortalManager] scaling node with svg data ","process");
-					S.trees.scale_bg_node_to_png_size(png_node.path,final_path)
+					S.log.add("[PortalManager] scaling png node with svg cadre data","process");
+					//S.trees.scale_bg_node_to_png_size(png_node.path,final_path)
+
+					S.svg_reader.set_path(_portal.get_path('svg'));
+					var shot_cadre = S.svg_reader.get_layout_cadre_for_shot(S.context.get_shot())
+					S.trees.scale_bg_node_to_png_size_with_cadre(png_node.path,final_path,shot_cadre)
+
 				}else{
-					S.log.add("[PortalManager] scaling node with dimention txt data ","process");
+					S.log.add("[PortalManager] scaling png node with dimention txt data ","process");
 					S.trees.scale_anim_node_to_png_size(png_node.path,final_path);
 				}
 				//positionning the node and renaming it 

@@ -5,13 +5,19 @@ OO.PosingManager = function(_S){
 
     this.creator = new OO.PosingCreator(_S)
 
-    this.apply_posing_at_frame = function(_posing_object,_frame){
-        _posing_object.apply_rigstate_at_frame(_frame);
+    this.apply_posing_at_frame = function(_posing_object,_first_frame){
+
+        var posing_tpl = S.tpl.parse_tpl_file_to_tpl_object(_posing_object.get_file_path("tpl"))
+        S.tpl.paste_action_tpl_to_frame(posing_tpl,_first_frame)
+
+        _posing_object.set_start_frame(posing_tpl.data.tart_frame)
+        _posing_object.set_number_of_frames(posing_tpl.data.number_of_frames)
+        for(var index = 0 ; index < posing_tpl.data.number_of_frames; index++){
+            _posing_object.apply_rigstate_at_frame(_first_frame+index,index);
+        }
     }
 
     this.fetch_library_posings_for_asset_object = function(_asset_object){
-        MessageLog.trace("fetch_library_posings_for_asset_object")
-        MessageLog.trace(_asset_object.get_code())
         var posing_object_array = []
         var library_asset_posings_folder_path = S.context.get_dir_path(_asset_object,"posings")
         var folder_obj = new $.oFolder(library_asset_posings_folder_path)
@@ -31,15 +37,24 @@ OO.PosingManager = function(_S){
         return true; 
     }
 
+    this.filter_nodes= function(_node_path_array){
+        var types_to_exclude = ["GROUP","MasterController","COLOR_ART","LINE_ART","UNDERLAY","OVERLAY","COMPOSITE","CUTTER","AutoPatchModule","AutoFoldModule"]
+        var filtered_array = []
+        for(var n = 0 ; n < _node_path_array.length ; n++){
+            var current_node_path = _node_path_array[n]
+           if(types_to_exclude.indexOf(node.type(current_node_path))==-1){
 
-    this.export_posing_to_library = function(_posing_object){
-        create_posing_files_and_folder_in_library(_posing_object); 
+                filtered_array.push(current_node_path)
+            }
+        }
+        return filtered_array;
     }
 
 
-    this.import_posing_to_rig = function(){
 
 
+    this.export_posing_to_library = function(_posing_object){
+        create_posing_files_and_folder_in_library(_posing_object); 
     }
 
     function parse_posing_folder_to_posing_object (_posing_folder_path,_asset_object){
@@ -49,40 +64,48 @@ OO.PosingManager = function(_S){
 
         var nposing = new OO.Posing(posing_name)
         nposing.set_folder_path(_posing_folder_path)
-        nposing.set_root_group_path("Top/"+_asset_object.get_code())
         nposing.set_asset_code(_asset_object.get_code())
+        nposing.set_group_path("Top/"+_asset_object.get_code())
+
+        //tpl
+        var tpl_object = S.tpl.parse_tpl_file_to_tpl_object(nposing.get_file_path("tpl"))
+        var number_of_frames = 1
+        if(tpl_object !=false){
+            number_of_frames = tpl_object.data.number_of_frames
+        }
+
+        //rigstate
+        for(var f = 0 ; f <  number_of_frames ; f++){
+            nposing.parse_rigstate_file_content(f)
+        }
 
         return nposing;
-
     }
 
 
     function create_posing_files_and_folder_in_library(_posing_object) {
 
-        MessageLog.trace("create_posing_files_and_folder_in_library")
-
         var folder_path =  format_and_create_library_posing_folder_path(_posing_object)
         _posing_object.set_folder_path(folder_path)
-  
-        MessageLog.trace("rigstate")
-        //rigstate
-        var rigstate_string = _posing_object.get_rigstate_string();
-        var rigstate_file_path = _posing_object.get_file_path("rigstate")
-        var rigstate_file_object = new PermanentFile(rigstate_file_path);		
+
+       //rigstate
+       for(var f = 0 ; f < _posing_object.get_number_of_frames(); f++){
+        var rigstate_string = _posing_object.get_rigstate_string(f);
+        var rigstate_file_path = _posing_object.get_file_path("rigstate",f)
+        var rigstate_file_object = new PermanentFile(rigstate_file_path);        
         rigstate_file_object.open(4);                
         rigstate_file_object.write(rigstate_string);          
-        rigstate_file_object.close();     
+        rigstate_file_object.close();    
+       }
 
-        MessageLog.trace("elements")
-        //elements
-        S.elements.copy_tvg_object_array_to_folder(_posing_object.get_used_tvg_obj_array(),_posing_object.get_file_path("elements"))
 
-        MessageLog.trace("png")
         //png
         S.views.export_currentframe_png_to(_posing_object.get_file_path("png"),1)
 
-        
-    
+        //tpl
+        linked_asset = S.breakdown.get_asset_object_by_code(_posing_object.get_asset_code())
+        var posing_tpl = S.tpl.parse_posing_object_to_tpl_object(_posing_object,linked_asset)
+        S.tpl.create_tpl_file_with_passeport(posing_tpl)
     }
 
     function format_and_create_library_posing_folder_path(_posing_object){
@@ -94,31 +117,15 @@ OO.PosingManager = function(_S){
         dir_object1.create();
 
         //folder "asset/posings/posing_name"
-        var posing_folder = asset_posings_folder+"\\"+_posing_object.get_name();
+        var posing_folder = asset_posings_folder+_posing_object.get_name();
         var dir_object2 = new $.oFolder(posing_folder );
         dir_object2.create();
 
         MessageLog.trace("posing_folder")
         MessageLog.trace(posing_folder)
 
-
         return posing_folder
     }
-
-
-    function copy_elements_to_library(_posing_object){
-
-
-    }
-
-
-
-}
-
-
-this.apply_posing_to_selection = function (_posing_object){
-
-
 }
 
 

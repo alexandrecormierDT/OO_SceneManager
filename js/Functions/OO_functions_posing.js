@@ -1,23 +1,16 @@
 
 function create_posing_from_selection_dialog(){
-
 	var d = new Dialog
 	d.title = "EXPORT NEW POSING";
 	d.width = 200;
-
 	var POSING_SUFFIX = new ComboBox();
 	POSING_SUFFIX.label = "POSING_SUFFIX : ";
 	POSING_SUFFIX.editable = true;
 	POSING_SUFFIX.itemList = [];
 	d.add(POSING_SUFFIX);
-
 	if ( d.exec() ){
-
 		create_posing_from_selection_process(POSING_SUFFIX.currentItem)
-
     }
-
-
 }
 
 function create_posing_from_selection_process(_suffix){
@@ -28,32 +21,29 @@ function create_posing_from_selection_process(_suffix){
 	S.context.set_vault_path(OO.vault_path)
 
 	try{
+		var selected_nodes_paths = selected_layers_to_nodes();
+		var number_of_selected_frames = selection.numberOfFrames() != 0 ? selection.numberOfFrames() : 1;
 
-	//var selected_nodes_paths = selection.selectedNodes(0); 
-	var selected_nodes_paths = selected_layers_to_nodes()
+		//detecting asset from selected nodes
+		S.assets.detector.set_source_layer_path(selected_nodes_paths[0])
+		var detected_asset_code = S.assets.detector.get_asset_code()
+		var linked_asset_object = S.breakdown.get_asset_object_by_code(detected_asset_code)
+		
+		//creating posing object with the PosingCreator class
+		S.posings.creator.reset()
+		S.posings.creator.set_suffix(_suffix); 
+		S.posings.creator.set_frame(frame.current()); 
+		S.posings.creator.set_frame_range(frame.current(),number_of_selected_frames); 
+		S.posings.creator.set_linked_asset_object(linked_asset_object); 
+		S.posings.creator.set_nodes(selected_nodes_paths); 
 
-	//detecting asset from selected nodes
-	S.assets.detector.set_source_layer_path(selected_nodes_paths[0])
-	var detected_asset_code = S.assets.detector.get_asset_code()
-	var linked_asset_object = S.breakdown.get_asset_object_by_code(detected_asset_code)
-	
-	//creating posing object with the PosingCreator class
-	S.posings.creator.reset()
-	S.posings.creator.set_suffix(_suffix); 
-	S.posings.creator.set_frame(frame.current()); 
-	S.posings.creator.set_linked_asset_object(linked_asset_object); 
-	S.posings.creator.set_nodes(selected_nodes_paths); 
-	S.posings.creator.set_root_group_path("Top/"+linked_asset_object.get_code()); 
-	var new_posing = S.posings.creator.create_posing_object();
+		var new_posing = S.posings.creator.create_posing_object();
 
-	S.posings.export_posing_to_library(new_posing)
+		S.posings.export_posing_to_library(new_posing)
 
 	}catch(error){
-		
 		S.log.add_script_error_object(error); 
-		
 	}
-
 }
 
 function import_library_posing_for_selected_asset_dialog(){
@@ -98,11 +88,10 @@ function import_library_posing_for_selected_asset_dialog(){
 		var selected_posing_index = posing_names_string_array.indexOf(SELECTED_POSING.currentItem)
 		var selected_posing_obj =  asset_posing_obj_array[selected_posing_index]
 		try{
-			selected_posing_obj.parse_rigstate_file_content();
-			selected_posing_obj.fetch_used_tvg();
 			S.posings.apply_posing_at_frame(selected_posing_obj,frame.current())
 			
 		}catch(error){
+
 			S.log.add_script_error_object(error); 
 		}
 	}
@@ -112,14 +101,12 @@ function import_library_posing_for_selected_asset_dialog(){
 function import_library_posing_for_selected_asset(){
 
 	MessageLog.trace("import_library_posing_for_selected_asset")
-
 	var S = new OO.SceneManager();	
 
 	S.context.set_library_path(OO.library_path);	
 	S.context.set_vault_path(OO.vault_path)
 
 	try{
-
 		//var selected_nodes_paths = selection.selectedNodes(0); 
 		var selected_nodes_paths = selected_layers_to_nodes()
 
@@ -134,11 +121,8 @@ function import_library_posing_for_selected_asset(){
 		S.posings.fetch_library_posings_for_asset_object(linked_asset_object)
 
 	}catch(error){
-		
 		S.log.add_script_error_object(error); 
-		
 	}
-
 }
 
 

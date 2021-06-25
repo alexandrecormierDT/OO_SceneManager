@@ -125,16 +125,59 @@ OO.ElementManager = function (_S)
 
 	this.copy_tvg_object_array_to_folder = function(_tvg_obj_array,_folder_path){
 		try{
+			var final_command_line = "";
 			for(var t = 0 ; t <  _tvg_obj_array.length ; t++ ){
 				var current_tvg_obj = _tvg_obj_array[t];
-				var tvg_scene_path = backslash_to_slash(current_tvg_obj.get_element_folder_scene_path())
+				var element_folder_path = backslash_to_slash(current_tvg_obj.get_element_folder_scene_path())
+				var tvg_scene_path = backslash_to_slash(current_tvg_obj.get_scene_path())
 				var folder_path_with_element_name = backslash_to_slash(_folder_path+"\\"+current_tvg_obj.element_name+"\\");
-				copy_paste_file_to_folder(tvg_scene_path,folder_path_with_element_name); 
+
+				var robocopy_line = "robocopy /s /lev:1 /MT /XC "+element_folder_path+" "+folder_path_with_element_name+" "+current_tvg_obj.sub_name; 
+				final_command_line+=robocopy_line
+				if(t<_tvg_obj_array.length-1){
+					final_command_line+=" && "
+				}
 			}
+			S.deadline.submit_command_line_job(final_command_line,"TVG_COPY_from_scene_to_library");
 		}catch(error){
 			S.log.add_script_error_object(error); 
 		}
 		return true; 
+	}
+
+
+
+	this.copy_elements_folder_to_scene = function(_source_elements_folder_path){
+
+		try{
+			var final_command_line = "";
+
+			var folder_obj = new $.oFolder(_source_elements_folder_path)
+			var sub_folders_array = folder_obj.getFolders();
+	
+			for(var f = 0 ; f < sub_folders_array.length ; f++ ){
+				var current_folder_obj = sub_folders_array[f]
+
+				var source_folder = current_folder_obj.path
+				var dest_folder = backslash_to_slash(scene.currentProjectPathRemapped()+"\\elements\\"+current_folder_obj.name)
+				var robocopy_line = "robocopy /s /lev:1 /MT /XC "+source_folder+" "+dest_folder; 
+
+				final_command_line+=robocopy_line
+
+				if(f<sub_folders_array.length-1){
+					final_command_line+=" && "
+				}
+			}
+
+			MessageLog.trace(final_command_line)
+			S.deadline.submit_command_line_job(final_command_line,"TVG_COPY_from_library_to_scene");
+
+		}catch(error){
+			S.log.add_script_error_object(error); 
+		}
+
+
+
 	}
 
 

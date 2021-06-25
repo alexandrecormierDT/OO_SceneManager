@@ -5,7 +5,7 @@ OO.TVG = function (){
 	this.node_path
 	this.element_id
 	this.element_name
-	this.sub_name = ""
+	this.exposure_name = ""
 	
 	this.get_scene_path = function(){
 		var path = scene.currentProjectPathRemapped()+"\\elements\\"+this.element_name+"\\"+this.sub_name
@@ -15,6 +15,12 @@ OO.TVG = function (){
 	this.get_element_folder_scene_path = function(){
 		var path = scene.currentProjectPathRemapped()+"\\elements\\"+this.element_name+"\\"
 		return path
+	}
+
+	this.get_exposure_name = function(){
+		var srt = this.sub_name+"";
+		var split_1 =  this.sub_name.split("-")[1];
+		return split_1.split(".")[0]
 	}
 
 
