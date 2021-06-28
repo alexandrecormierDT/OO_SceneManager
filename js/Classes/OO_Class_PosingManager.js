@@ -94,6 +94,7 @@ OO.PosingManager = function(_S){
        //rigstate
        for(var index = 0 ; index < _posing_object.get_number_of_frames(); index++){
         var rigstate_string = _posing_object.get_rigstate_string(index);
+        //rigs tates are stored inside the tpl folder
         var rigstate_file_path = _posing_object.get_file_path("rigstate",index)
         var rigstate_file_object = new PermanentFile(rigstate_file_path);        
         rigstate_file_object.open(4);                

@@ -90,6 +90,7 @@ OO.Posing = function (_posing_name){
         return posing_name
     }
     this.get_file_path = function(_file_type,_index){
+        var index = _index != undefined ? _index : 0
         var file_path ="";
         switch(_file_type){
             case "png": 
@@ -99,7 +100,7 @@ OO.Posing = function (_posing_name){
             file_path=posing_folder_path+"/";
             break; 
             case "rigstate": 
-            file_path=posing_folder_path+"/"+posing_name+_index+".rigstate";
+            file_path=this.get_file_path("tpl")+"/"+posing_name+index+".rigstate";
             break; 
             case "tpl_bare": 
             file_path=posing_name+".tpl";

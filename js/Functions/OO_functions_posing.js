@@ -1,10 +1,17 @@
 
 function create_posing_from_selection_dialog(){
+
+	var S = new OO.SceneManager();
+	var selected_nodes_paths = selected_layers_to_nodes();
+	S.assets.detector.set_source_layer_path(selected_nodes_paths[0])
+	var asset_code = S.assets.detector.get_asset_code()
+
+
 	var d = new Dialog
-	d.title = "EXPORT NEW POSING";
-	d.width = 200;
+	d.title = "EXPORT NEW POSING FOR : "+asset_code.toUpperCase();
+	d.width = 400;
 	var POSING_SUFFIX = new ComboBox();
-	POSING_SUFFIX.label = "POSING_SUFFIX : ";
+	POSING_SUFFIX.label = "p_"+asset_code+"_";
 	POSING_SUFFIX.editable = true;
 	POSING_SUFFIX.itemList = [];
 	d.add(POSING_SUFFIX);

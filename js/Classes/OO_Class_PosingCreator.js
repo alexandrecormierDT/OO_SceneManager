@@ -69,11 +69,22 @@ OO.PosingCreator = function(_S){
         return RS;
     }
 
+    function filter_types(_node_path_array){
+        var filtered_array = []
+        var excluded_node_types = ["MasterController","COMPOSITE","CUTTER","COLOR_ART","COLOR_MASK","OVERLAY","UNDERLAY","VISIBILITY"]
+        for(var n = 0 ; n < _node_path_array.length ; n++){
+            if(excluded_node_types.indexOf(node.type(current_nodes_path_array))==-1){
+                filtered_array.push(_node_path_array[n])
+            }
+        }
+        return filtered_array;
+    }
+
     function create_rigstate_from_node_path_array_for_frame(_frame){
-        
+        var nodes_path = filter_types(current_nodes_path_array)
         var RS = new RigState(current_name,_frame);
-        for(var n = 0 ; n < current_nodes_path_array.length ; n++){
-            var current_node_path = current_nodes_path_array[n];
+        for(var n = 0 ; n < nodes_path.length ; n++){
+            var current_node_path = nodes_path[n];
             var attributes_list = node.getAllAttrKeywords(current_node_path)
             attributes_list.push("DRAWING.ELEMENT")	
             RS.addNodeAttrList(current_node_path, attributes_list,_frame);
@@ -85,17 +96,11 @@ OO.PosingCreator = function(_S){
     function create_rigstate_object_array(){
 
         var last_frame = current_start_frame+current_number_of_frames
-        MessageLog.trace(" HE R E RE ---------------- ")
-        MessageLog.trace(current_start_frame )
-        MessageLog.trace(current_number_of_frames )
-        MessageLog.trace(last_frame )
         var objects_array = []
         for(var f = current_start_frame ; f <  last_frame  ; f++){
             var new_rigstate = create_rigstate_from_node_path_array_for_frame(f)
             objects_array.push(new_rigstate)
-            MessageLog.trace("objects_array")
         }
-        MessageLog.trace(objects_array.length)
         return objects_array
     }
 
