@@ -1,8 +1,6 @@
 OO.PosingManager = function(_S){
 
     var S = _S ; 
-    
-
     this.creator = new OO.PosingCreator(_S)
 
     this.apply_posing_at_frame = function(_posing_object,_first_frame){
@@ -88,24 +86,25 @@ OO.PosingManager = function(_S){
         var folder_path =  format_and_create_library_posing_folder_path(_posing_object)
         _posing_object.set_folder_path(folder_path)
 
+        //tpl
+        linked_asset = S.breakdown.get_asset_object_by_code(_posing_object.get_asset_code())
+        var posing_tpl = S.tpl.parse_posing_object_to_tpl_object(_posing_object,linked_asset)
+        S.tpl.create_tpl_file_with_passeport(posing_tpl)
+
        //rigstate
-       for(var f = 0 ; f < _posing_object.get_number_of_frames(); f++){
-        var rigstate_string = _posing_object.get_rigstate_string(f);
-        var rigstate_file_path = _posing_object.get_file_path("rigstate",f)
+       for(var index = 0 ; index < _posing_object.get_number_of_frames(); index++){
+        var rigstate_string = _posing_object.get_rigstate_string(index);
+        var rigstate_file_path = _posing_object.get_file_path("rigstate",index)
         var rigstate_file_object = new PermanentFile(rigstate_file_path);        
         rigstate_file_object.open(4);                
         rigstate_file_object.write(rigstate_string);          
         rigstate_file_object.close();    
        }
 
-
         //png
         S.views.export_currentframe_png_to(_posing_object.get_file_path("png"),1)
 
-        //tpl
-        linked_asset = S.breakdown.get_asset_object_by_code(_posing_object.get_asset_code())
-        var posing_tpl = S.tpl.parse_posing_object_to_tpl_object(_posing_object,linked_asset)
-        S.tpl.create_tpl_file_with_passeport(posing_tpl)
+
     }
 
     function format_and_create_library_posing_folder_path(_posing_object){

@@ -59,6 +59,7 @@ OO.Portal = function (){
 	var portal_departement = "boxanim";
 	var portal_push_png_scale = "1.5";
 	var portal_push_png_resolution = "1";
+	var portal_last_pull = "1";
 	
 	var portal_backdrop_body = "";
 	var portal_backdrop_name = "PORTAL";
@@ -115,11 +116,18 @@ OO.Portal = function (){
 		portal_status = _tv;
 	}	
 
+
+	this.set_last_pull = function(_lp){
+
+		portal_last_pull = _lp
+	}
+
 	// TREE
 	this.set_tree = function(_pt){
 		portal_tree = _pt;
 		
 	}
+
 	
 	//GETTERS
 
@@ -158,14 +166,18 @@ OO.Portal = function (){
 	}		
 
 
-	this.get_push_png_resolution = function(_pps){
+	this.get_push_png_resolution = function(){
 		return portal_push_png_scale;
 	}
 
-	this.get_push_png_scale = function(_pps){
+	this.get_push_png_scale = function(){
 		return portal_push_png_scale;
 	}
 	
+
+	this.get_last_pull = function(_lp){
+		return portal_last_pull;
+	}
 
 
 
@@ -246,6 +258,7 @@ OO.Portal = function (){
 			return dir; 
 		}
 	}
+
 
 	
 	

@@ -10,14 +10,20 @@ OO.TPLManager = function(_S){
         if(_TPLOBJECT.data.folder_path != undefined){
 
             _TPLOBJECT.data.tpl_id= "TPL_"+S.get_unique_id();
-            _TPLOBJECT.data.last_push_time = Math.round(+new Date())+""
+            _TPLOBJECT.data.last_push_time = get_timestamp()
             _TPLOBJECT.data.last_source_xstage_path = S.get_xstage_path()+""
             _TPLOBJECT.data.project = S.get_current_project()+""
 
             S.log.add("[TPLManager] creating tpl "+_TPLOBJECT.data.tpl_id,"file")
              create_passeport_file_for_tpl_object(_TPLOBJECT);
+             export_process = false;
 
-            var export_process = S.trees.export_group_to_path(_TPLOBJECT.data.nodes_path_list,_TPLOBJECT.data.folder_path,_TPLOBJECT.data.name+".tpl")
+             //if the tpl is a master (in case of a portal for exemeple) we export the group rather than the sub nodes. 
+            if(_TPLOBJECT.data.group_path!=null || _TPLOBJECT.data.tpl_type == "master"){
+                export_process = S.trees.export_group_to_path(_TPLOBJECT.data.group_path,_TPLOBJECT.data.folder_path,_TPLOBJECT.data.name+".tpl")
+            }else{
+                export_process = S.trees.export_group_to_path(_TPLOBJECT.data.nodes_path_list,_TPLOBJECT.data.folder_path,_TPLOBJECT.data.name+".tpl")
+            }
 
             if(export_process==true){
                 _TPLOBJECT.data.file_size = 0
@@ -40,6 +46,7 @@ OO.TPLManager = function(_S){
 		passeport.set_file_path(_tpl_file_path+"/tpl_passeport.txt")
         MessageLog.trace(_tpl_file_path+"/tpl_passeport.txt")
 		var tpl_object = passeport.parse_content_to_TPL_object()
+
 		if(tpl_object != false){
 			return tpl_object
 		}
@@ -57,6 +64,7 @@ OO.TPLManager = function(_S){
         new_tpl.data.sg_asset_type = _asset.get_sg_asset_type();
         new_tpl.data.nodes_path_list = _node_path_array
         new_tpl.data.number_of_nodes = _node_path_array.length;
+        new_tpl.data.tpl_type = "action"
 
 
         //from_scene_infos
@@ -65,6 +73,8 @@ OO.TPLManager = function(_S){
 
         return new_tpl;
     }
+
+
 
     this.parse_posing_object_to_tpl_object = function(_posing_object,_asset){
 
@@ -89,7 +99,6 @@ OO.TPLManager = function(_S){
         new_tpl.data.number_of_frames= _posing_object.get_number_of_frames(); 
         new_tpl.data.group_path = _posing_object.get_group_path(); 
 
-
         //from_scene_infos
         new_tpl.data.last_source_xstage_path = S.get_xstage_path()+""
         new_tpl.data.project = S.get_current_project()+""
@@ -110,9 +119,11 @@ OO.TPLManager = function(_S){
         new_tpl.data.tpl_id = _portal_object.get_content();
         new_tpl.data.departement = _portal_object.get_departement();
         new_tpl.data.sg_asset_type = _portal_object.get_sg_asset_type();
+        new_tpl.data.last_pull_time = _portal_object.get_last_pull();
+        new_tpl.data.tpl_type = "master"
 
         //node
-        var tpl_node_path_list = new_tpl.data.group_path
+        var tpl_node_path_list = S.trees.get_sub_nodes(portal_tree.get_key_node("PORTAL_GROUP").path)
         new_tpl.data.nodes_path_list = tpl_node_path_list
         new_tpl.data.number_of_nodes = tpl_node_path_list.length;
 
@@ -123,34 +134,49 @@ OO.TPLManager = function(_S){
         return new_tpl;
     }
 
-    this.compare_tpl_objects = function(_A,_B){
+    this.compare_tpl_objects = function(_A,_B,_anme,_bname){
+
+        var dontcompare_list = ['last_push_time','last_pull_time']
 
         var differences_object_array = []
         for (var key in _A.data) {
             if (_A.data.hasOwnProperty(key)) {
-                if(_B.data.hasOwnProperty(key)){
+                if(_B.data.hasOwnProperty(key) && dontcompare_list.indexOf(key)==-1){
                     if(_A.data[key]!=_B.data[key]){
                         if(key == "nodes_path_list"){
                             for(var n = 0 ; n < _A.data[key].length ; n++){
                                 if(Array.isArray(_B.data[key]) &&_B.data[key].indexOf(_A.data[key][n])==-1 ){
-                                    var diff = new  OO.TPL_difference(key,_A.data[key][n],"no node"); 
+                                    var diff = new  OO.TPL_difference(key,_A.data[key][n],"no node",_anme,_bname); 
                                     differences_object_array.push(diff);
                                 }
                             }
                         }else{
-                            var diff = new  OO.TPL_difference(key,_A.data[key],_B.data[key]); 
+                            var diff = new  OO.TPL_difference(key,_A.data[key],_B.data[key],_anme,_bname); 
                             differences_object_array.push(diff)
                         }
                     }
                 }
             }
         }      
+
+        return differences_object_array
+    }
+
+
+    this.compare_list_of_node_paths= function(_listA,_listB){
+        var differences_object_array = []
+        for (var n =  0 ; n < _listA.length ; _listA++) {
+            var current_node_path =  _listA[n]
+            if(_listB.indexOf(current_node_path)==-1){
+                var diff = new  OO.TPL_difference("NODE : ","nothing",current_node_path); 
+                differences_object_array.push(diff)
+            }
+        }    
         for(var d= 0 ; d< differences_object_array.length ; d++){
             MessageLog.trace(differences_object_array[d].print())
         }
         return differences_object_array
     }
-
 
     this.paste_action_tpl_to_frame = function(_tpl_obj,_frame){
 
@@ -183,17 +209,18 @@ OO.TPLManager = function(_S){
 }
 
 
- OO.TPL_difference = function(_key,_valueA,_valueB){
-
+ OO.TPL_difference = function(_key,_valueA,_valueB,_Aname,_Bname){
     this.comparekey = _key
     this.valueA =_valueA
     this.valueB =_valueB
-
     this.print = function(){
-        var string = "tpl mismatch on ( "+_key+" ) :  ( "+_valueB+" ) instead of  ( "+_valueA+" )"; 
+        var string = "tpl mismatch on ( "+_key+" ) :  "+_Bname+" ( "+_valueB+" ) instead of "+_Aname+" ( "+_valueA+" )"; 
         return string;
     }
+}
 
-    
 
+function get_timestamp(){
+
+    return new Date().getTime()
 }

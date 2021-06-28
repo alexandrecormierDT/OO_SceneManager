@@ -102,6 +102,8 @@ OO.PortalManager = function(_S){
 		for(var sm = 0 ; sm < scene_PSM.length ; sm++){
 
 			var cur_script_module = scene_PSM[sm];
+			var last_pull =  cur_script_module.last_pull != undefined ? cur_script_module.last_pull : 0000
+			var content =  cur_script_module.content != undefined ? cur_script_module.content : "empty";
 
 			var type = OO.filter_string(cur_script_module.sg_asset_type);
 
@@ -145,6 +147,9 @@ OO.PortalManager = function(_S){
 				nportal.set_path('png',png_path)
 				nportal.set_path('psd',psd_path)
 				nportal.set_path('svg',svg_path)
+
+				nportal.set_last_pull(last_pull)
+				nportal.set_content(content)
 
 				fetched_portals.push(nportal);
 
@@ -419,6 +424,16 @@ OO.PortalManager = function(_S){
 		}
 
 	}
+
+
+
+	this.get_current_selected_portal = function(){
+
+		S.assets.detector.set_source_layer_path(selection.selectedNodes(0)[0])
+		var detected_asset_code = S.assets.detector.get_asset_code()
+
+
+	}
 		
 	
 	
@@ -431,7 +446,7 @@ OO.PortalManager = function(_S){
 		S.log.add(_data_type,"data_type")
 
 		var pull_attributes_object= {
-			last_pull: Math.round(+new Date())+"",
+			last_pull: get_timestamp(),
 			content:_data_type
 		}
 		
@@ -622,7 +637,7 @@ OO.PortalManager = function(_S){
 					S.log.add("exporting "+_data_type+" to "+export_path,"process");	
 
 					//updating the portal feilds with the new tpl ID
-					_portal.set_several_script_module_attributes({content:new_tpl.data.tpl_id})
+					_portal.set_several_script_module_attributes({content:new_tpl.data.tpl_id,last_pull:new_tpl.data.last_push_time})
 					
 	
 				break;
@@ -791,7 +806,93 @@ OO.PortalManager = function(_S){
 		}	
 	}
 
+
+	this.is_portal_up_to_date = function(_portal){
+
+		var repport = []
+		if(_portal.get_sg_asset_type =="BG"){
+			//psd
+			S.context.set_vault_path(OO.vault_path)
+			if(_portal.path_exist('psd')){
+				var library_tpl = S.tpl.parse_tpl_file_to_tpl_object(_portal.get_path('tpl'))
+				var portal_tpl =  S.tpl.parse_portal_object_to_tpl_object(_portal)
+				repport = S.tpl.compare_tpl_objects(library_tpl,portal_tpl)
+			}else{
+				repport.push("no psd found")
+			}
+		}else{
+			//tpl
+			S.context.set_library_path(OO.library_path);	
+			if(_portal.path_exist('tpl')){
+
+				var library_tpl = S.tpl.parse_tpl_file_to_tpl_object(_portal.get_path('tpl'))
+				var portal_tpl =  S.tpl.parse_portal_object_to_tpl_object(_portal)
+
+				if(library_tpl!=false){
+
+					repport.push("----------------------------COMPARARAISON-----------------------");
+					repport.push("RIG *A* : ( "+_portal.get_path('tpl')+" ) ")
+					repport.push("RIG *B* : ( "+_portal.get_code()+" ) ");
+					repport.push("------------------------------------------------------------------------");
+					repport.push("*A* last push time : "+timeConverter(parseInt(library_tpl.data.last_push_time)))
+					repport.push("*B* last pull time : "+timeConverter(parseInt(portal_tpl.data.last_pull_time)))
+					repport.push("------------------------------------------------------------------------");
+					
+					var nodifferences = true;
+					
+					repport.push("Comparing A to B ... ")
+					differences_object_array = S.tpl.compare_tpl_objects(library_tpl,portal_tpl,"A","B")
+					for(var d= 0 ; d< differences_object_array.length ; d++){
+						repport.push("----> "+differences_object_array[d].print())
+					}
+					
+					repport.push("Comparing B to A ... ")
+					var differences_object_array = S.tpl.compare_tpl_objects(portal_tpl,library_tpl,"B","A")
+					differences_object_array = S.tpl.compare_tpl_objects(portal_tpl,library_tpl,"B","A")
+
+					for(var d= 0 ; d< differences_object_array.length ; d++){
+						repport.push("----> "+differences_object_array[d].print())
+					}
+
+					repport.push("-------------------------------------------------------------------------");
+				}else{
+					repport.push("Sorry unable to compare : ")
+					repport.push("no tpl passeport found. The rig would need to be pushed again from the rig scene to match the new data system")
+				}
+
+
+			}else{
+				repport.push("Sorry unable to compare : ")
+				repport.push("no tpl found")
+			}
+			var message = ""; 
+			for(var r = 0 ; r<repport.length;r++){
+				message+=repport[r]+"\n";
+			}
+
+			MessageBox.information(message)
+			MessageLog.trace(message)
+
+		}
+		return repport;
+
+	}
 }
+
+
+
+function timeConverter(UNIX_timestamp){
+	var a = new Date(UNIX_timestamp);
+	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	var year = a.getFullYear();
+	var month = months[a.getMonth()];
+	var date = a.getDate();
+	var hour = a.getHours();
+	var min = a.getMinutes();
+	var sec = a.getSeconds();
+	var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+	return time;
+  }
 
 
 

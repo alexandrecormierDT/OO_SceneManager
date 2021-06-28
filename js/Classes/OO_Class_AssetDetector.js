@@ -41,6 +41,29 @@ OO.AssetDetector = function (){
 		}
 	}
 	
+	function find_portal_group_in_source_layer_path(){
+		
+		// exemple of value : Top/ch_billy/CH_BILLY-G/myselectedlayer
+		
+		var slash_split =  source_layer_path.split("/"); 
+
+		var  group_name = "";
+		var  group_path = "";
+		for(var s=slash_split.length; s > 0 ; s--){
+			var current_split = slash_split[s]; 
+			var underscore_split = current_split.split("_"); 
+			var before_underscore = underscore_split[0]
+			if( markers.indexOf(before_underscore) != -1){
+				group_name =current_split;
+			}
+		}
+
+		var split_name = source_layer_path.split(group_name)
+		var group_path = split_name[0]+group_name;
+		var obj =  {path:group_path,name:group_name}
+		return obj
+	}
+	
 	
 	this.get_asset_code = function(){
 		
@@ -49,11 +72,19 @@ OO.AssetDetector = function (){
 		
 	}
 	
+	
+	this.get_portal_group = function(){
+		
+		var portal_group_object = find_portal_group_in_source_layer_path();
+		return portal_group_object;
+		
+	}
+	
 	this.get_asset_group = function(){
 		
 		detected_asset_code = find_asset_code_in_source_layer_path()
 		var before_character = source_layer_path.split(detected_asset_code)[0];
-		var asset_group = before_asset_code+detected_asset_code
+		asset_group = before_asset_code+detected_asset_code
 		return asset_group;
 		
 	}

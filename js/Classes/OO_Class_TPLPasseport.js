@@ -31,7 +31,6 @@ OO.TPLPassport = function(){
 
 
     this.parse_content_to_TPL_object = function(){
-
         content = read_txt(); 
         MessageLog.trace(content)
         if(content!=false){
@@ -48,8 +47,6 @@ OO.TPLPassport = function(){
 
             return false;
         }
-
-
     }
 
     this.create_txt = function(){

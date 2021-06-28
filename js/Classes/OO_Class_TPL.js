@@ -25,7 +25,7 @@ OO.TPL = function (_name){
     this.data.author = ""; 
     this.data.status =""; 
 
-    this.data.group_path = ""; 
+    this.data.group_path = null; 
     this.data.file_size =""; 
     this.data.number_of_files=0; 
     this.data.number_of_nodes = 0

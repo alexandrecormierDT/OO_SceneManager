@@ -200,12 +200,6 @@ OO.TreeManager = function(_S){
 
 
 
-
-
-
-
-
-
 	this.fetch_all_nodes_path_recursive = function(_node_path){
 
 		var nodes_to_treat = []

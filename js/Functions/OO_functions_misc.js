@@ -255,3 +255,13 @@ function batch_fix_camera_and_animatic_z(){
 	}
 	
 }
+
+
+
+function sg_request_test(){
+
+	var S = new OO.SceneManager();
+	S.breakdown.load_current_shot_breakdown()
+	S.breakdown.print_current_shot_infos()
+	MessageLog.trace(S.breakdown.get_asset_list())
+}

@@ -28,18 +28,45 @@ OO.Breakdown = function(_S){
 
     }
 
+    this.print_current_shot_infos = function(){
+
+        MessageLog.trace(current_shot.asset_code_list)
+        MessageLog.trace(current_shot.id)
+
+    }
+
     this.load_current_shot_breakdown = function(){
-
-        current_shot_code = S.context.get_shot(); 
-        if(current_shot_code != false){
-            current_shot = parse_shot_csv_and_find_shot(current_shot_code); 
-            asset_list = parse_asset_code_list(current_shot.asset_code_list);
-            MessageLog.trace("current_shot.asset_code_list")
-            MessageLog.trace(current_shot.asset_code_list)         
+        try{
+            var current_shot_code = S.context.get_shot(); 
+            if(current_shot_code != false){
+                current_shot = parse_shot_from_shotgrid(current_shot_code); 
+                asset_list =   current_shot.asset_code_list;         
+            }
+        }catch(error){
+            S.log.add_script_error_object(error); 
         }
-        
+    }
 
-        
+    
+    function parse_shot_from_shotgrid(_shot_code){
+        var shot_json = S.shotgrid.get_shot(_shot_code);
+        var shot_object = new OO.Shot(_shot_code); 
+        shot_object.asset_object_list = parse_(shot_json.assets);
+        shot_object.id= shot_json.id;
+        shot_object.project = S.get_current_project();
+
+        return shot_object
+    }
+
+    function parse_asset_json_obj_list(_asset_obj_array){
+        for(var a = 0 ; a < _asset_obj_array.length; a++){
+            var current_asset = _asset_obj_array[a];
+        }
+    }
+
+
+    function parse_sgrequest_json_for_asset(){
+        var asset_json = S.shotgrid.get_asset_json_for(_asset_code);
     }
 
     //find a matching asset to complete the data on the asset

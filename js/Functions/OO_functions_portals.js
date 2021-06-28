@@ -271,7 +271,6 @@ function pull_psd_by_asset_type(_asset_type){
 function pull_bg_portal_png(){
 	
 	var log_object = pull_png_by_asset_type("BG");
-	
 	log_object.set_script_tag("OO_pull_bg_portals_png"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
@@ -281,7 +280,6 @@ function pull_bg_portal_png(){
 function pull_anim_portal_png(){
 	
 	var log_object = pull_png_by_asset_type("anim");
-	
 	log_object.set_script_tag("OO_pull_anim_portals_png"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
@@ -292,7 +290,6 @@ function pull_anim_portal_png(){
 function pull_anim_portal_tpl(){
 	
 	var log_object = pull_tpl_by_asset_type("anim");
-	
 	log_object.set_script_tag("OO_pull_anim_portals_tpl"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
@@ -302,7 +299,6 @@ function pull_anim_portal_tpl(){
 function pull_bg_portal_png(){
 	
 	var log_object = pull_png_by_asset_type("BG");
-	
 	log_object.set_script_tag("OO_pull_bg_portals_png"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
@@ -315,7 +311,6 @@ function pull_bg_portal_psd(){
 	
 
 	var log_object = pull_psd_by_asset_type("BG");
-
 	log_object.set_script_tag("OO_pull_bg_portals_psd"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 
@@ -449,9 +444,9 @@ function push_selected_portals_dialog(){
 
 
 
-	var tvgInput = new CheckBox();
-	tvgInput.text = "push asset elements to bank";
-	dialog.add(tvgInput);
+	var elementsInput = new CheckBox();
+	elementsInput.text = "push asset elements to bank";
+	dialog.add(elementsInput);
 
 	var paletteInput = new CheckBox();
 	paletteInput.text = "push palettes to bank";
@@ -831,4 +826,16 @@ function rebbot_bg_portals(){
 
 
 
+function are_selected_portals_up_to_date(){
 
+	var S = new OO.SceneManager();
+	S.context.set_vault_path(OO.vault_path)
+	var portal_list = S.portals.fetch_portals_from_node_list($.scene.selectedNodes);
+	for(var p = 0 ; p < portal_list.length; p++){	
+		var current_portal = portal_list[p];
+		var repport = S.portals.is_portal_up_to_date(current_portal)
+		for(var d= 0 ; d< repport.length ; d++){
+			MessageLog.trace(repport[d])
+		}
+	}
+}

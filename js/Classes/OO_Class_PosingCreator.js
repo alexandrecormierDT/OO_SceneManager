@@ -84,7 +84,8 @@ OO.PosingCreator = function(_S){
 
     function create_rigstate_object_array(){
 
-        var last_frame = current_start_frame+current_number_of_frames+1
+        var last_frame = current_start_frame+current_number_of_frames
+        MessageLog.trace(" HE R E RE ---------------- ")
         MessageLog.trace(current_start_frame )
         MessageLog.trace(current_number_of_frames )
         MessageLog.trace(last_frame )

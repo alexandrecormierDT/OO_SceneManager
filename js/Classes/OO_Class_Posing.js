@@ -137,6 +137,7 @@ OO.Posing = function (_posing_name){
         var rigstate_string = rigstate_object_array[index].toString(group_path); 
         return rigstate_string;
     }
+    
     this.parse_rigstate_file_content = function(_index){
         var  index= _index!=undefined ? _index : 0
         var file_path = this.get_file_path("rigstate",index)

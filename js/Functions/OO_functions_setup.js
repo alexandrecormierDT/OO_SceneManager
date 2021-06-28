@@ -38,43 +38,26 @@ function  import_billy_settings(){
 function import_setup(_setup_name){
 	
 	var S = new OO.SceneManager();	
-	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/import_setup.html");
-
-	
 	S.context = new OO.Context(this,"Shotgun");
-	
 	S.context.set_library_path(OO.library_path);
-	
-	
-	
-	//mark scene path : 
-	
-	// burnin should be improted separately
-	
+	batch_fix_camera_and_animatic_z()
 
 	switch (_setup_name){
 	
 		case 'shot': 
 		
 			S.context.set_from_scene_path();
-		
 			var RENDER_MOV = "Top/RENDER_MOV";
-			
 			S.context.set_bg_preview_path(OO.bg_preview_path);
-			
 			var video_render_path = S.context.generate_bg_preview_render_path();
-			
 			S.setups.apply(_setup_name);	
 			
 			// after the setup is imported in the nodeview
 			
 			S.write_scene_path_backdrop();
-			
 			S.update_render_path(RENDER_MOV,video_render_path);
-			
 			S.context.set_from_scene_path();
-			
 			S.write_shot_burnin(S.context.get_scene_path(),S.context.get_shot(),OO.aujourdhui())
 			
 		break; 
@@ -82,13 +65,10 @@ function import_setup(_setup_name){
 		case 'design': 
 		
 			S.context.set_from_scene_path();
-		
 			S.setups.apply(_setup_name);	
 		
 			// after the setup is imported in the nodeview
-			
 			S.write_scene_path_backdrop();
-			
 			S.write_asset_burnin(S.context.get_scene_path(),S.context.code,OO.aujourdhui());
 			
 		break; 
@@ -111,7 +91,6 @@ function import_setup(_setup_name){
 function import_layout_setup(){
 	
 	var log_object = import_setup('shot');
-	
 	log_object.set_script_tag("OO_import_layout_setup"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 	
@@ -126,16 +105,13 @@ function load_anim_setup(){
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/load_anim_setup.html");
 	
 	S.context = new OO.Context(this,"Shotgun");
-	
 	S.context.set_library_path(OO.library_path);
-	
 	S.context.set_psd_path(OO.psd_path);
 	
 	var shot_setup = S.setups.apply('shot');	
 	
 	S.context.set_video_export_path(OO.video_export_path)
 	var video_render_path = S.context.generate_bg_preview_render_path();
-	
 	S.render.set_movie_render_path(video_render_path)
 	S.render.update_write_movie_render_path()
 

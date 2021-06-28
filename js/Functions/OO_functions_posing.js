@@ -8,6 +8,13 @@ function create_posing_from_selection_dialog(){
 	POSING_SUFFIX.editable = true;
 	POSING_SUFFIX.itemList = [];
 	d.add(POSING_SUFFIX);
+
+	var number_of_selected_frames = selection.numberOfFrames() != 0 ? selection.numberOfFrames() : 1;
+	MessageLog.trace("number_of_selected_frames")
+	MessageLog.trace(number_of_selected_frames)
+	MessageLog.trace(selection.numberOfFrames())
+	MessageLog.trace(selection.isSelectionRange())
+
 	if ( d.exec() ){
 		create_posing_from_selection_process(POSING_SUFFIX.currentItem)
     }
@@ -21,8 +28,15 @@ function create_posing_from_selection_process(_suffix){
 	S.context.set_vault_path(OO.vault_path)
 
 	try{
+
 		var selected_nodes_paths = selected_layers_to_nodes();
-		var number_of_selected_frames = selection.numberOfFrames() != 0 ? selection.numberOfFrames() : 1;
+		var number_of_selected_frames = 1
+		if(selection.isSelectionRange()){
+			number_of_selected_frames = selection.numberOfFrames();
+		}
+
+		MessageLog.trace("number_of_selected_frames")
+		MessageLog.trace(number_of_selected_frames)
 
 		//detecting asset from selected nodes
 		S.assets.detector.set_source_layer_path(selected_nodes_paths[0])
@@ -124,5 +138,7 @@ function import_library_posing_for_selected_asset(){
 		S.log.add_script_error_object(error); 
 	}
 }
+
+
 
 
