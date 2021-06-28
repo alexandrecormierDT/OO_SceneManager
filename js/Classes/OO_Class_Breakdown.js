@@ -40,38 +40,61 @@ OO.Breakdown = function(_S){
             var current_shot_code = S.context.get_shot(); 
             if(current_shot_code != false){
                 current_shot = parse_shot_from_shotgrid(current_shot_code); 
-                asset_list =   current_shot.asset_code_list;         
+                asset_list = parse_asset_object_array_from_shotgrid(current_shot.assets);         
             }
         }catch(error){
             S.log.add_script_error_object(error); 
         }
     }
 
-    
+    //SHOTGRID
     function parse_shot_from_shotgrid(_shot_code){
-        var shot_json = S.shotgrid.get_shot(_shot_code);
+
         var shot_object = new OO.Shot(_shot_code); 
-        shot_object.asset_object_list = parse_(shot_json.assets);
-        shot_object.id= shot_json.id;
+
+        var shotgrid_object = S.shotgrid.get_shot_by_code(_shot_code);
+        shot_object.assets = shotgrid_object.assets;
+        shot_object.id= shotgrid_object.id;
         shot_object.project = S.get_current_project();
 
         return shot_object
     }
 
-    function parse_asset_json_obj_list(_asset_obj_array){
-        for(var a = 0 ; a < _asset_obj_array.length; a++){
-            var current_asset = _asset_obj_array[a];
+    function parse_asset_object_array_from_shotgrid(_json_obj_array){
+        var asset_object_array = []
+        for(var a = 0 ; a < _json_obj_array.length; a++){
+            var asset_id =_json_obj_array[a].id; 
+            var nasset_object = parse_asset_object_from_shotgrid_by_id(asset_id)
+            asset_object_array.push(nasset_object)
+            MessageLog.trace(" --------------------------------------------------------------------------------------------nasset_object.id")
+            MessageLog.trace( nasset_object.id)
         }
+        return asset_object_array;
     }
 
-
-    function parse_sgrequest_json_for_asset(){
-        var asset_json = S.shotgrid.get_asset_json_for(_asset_code);
+    function parse_asset_object_from_shotgrid_by_id(_asset_id){
+        var shotgrid_object = S.shotgrid.get_asset_by_id(_asset_id)
+        var new_asset_object = new OO.Asset(shotgrid_object.code);
+        MessageLog.trace("new_asset_object.id")
+        new_asset_object.id = _asset_id
+        new_asset_object.sg_asset_type = shotgrid_object.sg_asset_type
+        new_asset_object.project = S.get_current_project()
+       //new_asset_object.shots = shotgrid_object.shots;
+        return new_asset_object;
     }
+    function parse_asset_object_from_shot_grid_by_code(_asset_code){
+        var shotgrid_object = S.shotgrid.get_asset_by_code(_asset_code)
+        var new_asset_object = new OO.Asset(shotgrid_object.code);
+        new_asset_object.id = shotgrid_object.id
+        new_asset_object.sg_asset_typ = shotgrid_object.sg_asset_type
+        new_asset_object.project = S.get_current_project()
+        new_asset_object.shots = shotgrid_object.shots;
+        return new_asset_object;      
+    }
+
 
     //find a matching asset to complete the data on the asset
     function parse_asset_code_list(_asset_code_list){
-
         var asset_object_array =[]
         for (var a = 0 ; a < _asset_code_list.length ; a++){
             var current_asset_code = _asset_code_list[a]; 
@@ -177,12 +200,8 @@ OO.Breakdown = function(_S){
                     asset_object.sg_asset_type = sg_asset_type;
                     asset_object.project = project ;
                     asset_object.shots = shots;
-
-
-                    MessageLog.trace(get_asset_link(asset_object))
-
                     match++;
-                    S.log.add("[Breakdown] "+get_asset_link(asset_object),"link")
+                  //  S.log.add("[Breakdown] "+get_asset_link(asset_object),"link")
                     S.log.add("[Breakdown] found asset ( "+asset_object.get_code()+" ) in Asset.csv database ","success")
 
 
@@ -213,8 +232,6 @@ OO.Breakdown = function(_S){
             for (var l = 1 ; l < line_split.length ; l++){       
                 var second_split = line_split[l].split('"');
                 var code = remove_spaces(second_split[3]) 
-                MessageLog.trace("code")
-                MessageLog.trace(code)
                 asset_code_list.push(code)
             }
         }
@@ -222,10 +239,6 @@ OO.Breakdown = function(_S){
         return asset_code_list
     }
 
-    this.get_asset_code_by_id = function(_asset_id){
-
-
-    }
 
 	this.get_asset_object_by_code = function(_search_code){
 		

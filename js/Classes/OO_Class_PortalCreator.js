@@ -76,10 +76,13 @@ OO.PortalCreator = function(_S){
 		nportal.set_path('png',current_png_path)
 		nportal.set_path('psd',current_psd_path)
 		nportal.set_path('svg',current_svg_path)
-		nportal.set_tpl_version(current_tpl_version)
 		nportal.set_status(current_status)
 		nportal.set_id(current_id)
 		nportal.set_content(current_content)
+
+
+		S.log.add("[PortalCreator] portal id  "+nportal.get_id(),"info")
+		S.log.add("[PortalCreator] portal sg_asset_type "+nportal.get_sg_asset_type(),"success")
 
 		
 		// IMPORTING THE TPL 

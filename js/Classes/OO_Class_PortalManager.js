@@ -591,9 +591,7 @@ OO.PortalManager = function(_S){
 
 
 	function pull_elements(_portal){
-
 		S.elements.copy_bank_to_asset_elements_folders(_portal.get_code()); 
-
 	}	
 	
 	//********************************** P U S H **************************************//
@@ -794,13 +792,13 @@ OO.PortalManager = function(_S){
 		}	
 		if(sm_onode.hasOwnProperty("png_push_scale")==false){
 
-			node.createDynamicAttr(module, "STRING", "png_push_scale", "png_scale", false)
+			node.createDynamicAttr(module, "STRING", "push_png_scale", "push_png_scale", false)
 			node.setTextAttr(module,"png_push_scale",frame.current,"1.5");	
 			
 		}	
 		if(sm_onode.hasOwnProperty("png_resolution")==false){
 
-			node.createDynamicAttr(module, "STRING", "png_push_resolution", "png_resolution", false)
+			node.createDynamicAttr(module, "STRING", "push_png_resolution", "push_png_resolution", false)
 			node.setTextAttr(module,"png_push_resolution",frame.current,"1");	
 			
 		}	

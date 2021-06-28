@@ -310,17 +310,12 @@ OO.Portal = function (){
 	this.set_several_script_module_attributes = function(_attributes_object){
 		
 		var attributes_names = Object.getOwnPropertyNames(_attributes_object); 
-
-		MessageLog.trace("_attributes_object")
-		MessageLog.trace(_attributes_object)
-		
 		for (var a = 0 ;  a <attributes_names.length ; a++){
 			
 			var cur_attr_name = attributes_names[a]
 			var cur_attr_val = _attributes_object[cur_attr_name]
+			MessageLog.trace(cur_attr_name+"="+cur_attr_val)
 			set_script_module_attribute(cur_attr_name,cur_attr_val);
-
-			
 			
 		}		
 	}
@@ -328,10 +323,12 @@ OO.Portal = function (){
 	function set_script_module_attribute(_attr,_value){
 		
 		var portal_script_module_path = portal_tree.get_key_node("PORTAL_MODULE");
-		var portal_script_module_object = $.scn.getNodeByPath(portal_script_module_path)
+		var portal_script_module_object = $.scene.getNodeByPath(portal_script_module_path)
+		MessageLog.trace(_attr)
 		if(portal_script_module_object.attributes.hasOwnProperty(_attr)){
-			portal_script_module_object.attributes[_attr].setValue(_value);
-
+			MessageLog.trace(_attr)
+			MessageLog.trace(_value)
+			node.setTextAttr(portal_script_module_object.path,_attr,1,_value)
 		}
 			
 
