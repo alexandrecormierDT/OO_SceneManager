@@ -8,13 +8,13 @@
 OO.Breakdown = function(_S){
 
 	var S = _S; 
+    var current_shot = ""; 
     var asset_list =[];
     var shot_list =[];
 
     var input_type ="csv";
     var shot_breakdown_csv_path = OO.sg_path+"/csv/Shot.csv";
     var asset_breakdown_csv_path = OO.sg_path+"/csv/Asset.csv";
-    var current_shot = ""; 
 
 	// add asset objects to the asset manager broken down in the specified shot
 
@@ -35,25 +35,37 @@ OO.Breakdown = function(_S){
 
     }
 
-    this.load_current_shot_breakdown = function(){
+    this.load_current_shot_breakdown_python = function(){
         try{
             var current_shot_code = S.context.get_shot(); 
             if(current_shot_code != false){
                 current_shot = parse_shot_from_shotgrid(current_shot_code); 
-                asset_list = parse_asset_object_array_from_shotgrid(current_shot.assets);         
+                asset_list = parse_asset_object_array_from_shotgrid(current_shot.asset_code_list);         
             }
         }catch(error){
             S.log.add_script_error_object(error); 
         }
     }
+    this.load_current_shot_breakdown = function(){
+        try{
+            var current_shot_code = S.context.get_shot(); 
+            if(current_shot_code != false){
+                current_shot = parse_shot_csv_and_find_shot(current_shot_code); 
+                asset_list = parse_asset_code_list(current_shot.asset_code_list);
+                MessageLog.trace("current_shot.asset_code_list")
+                MessageLog.trace(current_shot.asset_code_list)  
+            }
+        }catch(error){
+            S.log.add_script_error_object(error); 
+        }
+    }       
 
     //SHOTGRID
     function parse_shot_from_shotgrid(_shot_code){
 
         var shot_object = new OO.Shot(_shot_code); 
-
         var shotgrid_object = S.shotgrid.get_shot_by_code(_shot_code);
-        shot_object.assets = shotgrid_object.assets;
+        shot_object.asset_code_list = shotgrid_object.assets;
         shot_object.id= shotgrid_object.id;
         shot_object.project = S.get_current_project();
 
@@ -82,6 +94,7 @@ OO.Breakdown = function(_S){
        //new_asset_object.shots = shotgrid_object.shots;
         return new_asset_object;
     }
+
     function parse_asset_object_from_shot_grid_by_code(_asset_code){
         var shotgrid_object = S.shotgrid.get_asset_by_code(_asset_code)
         var new_asset_object = new OO.Asset(shotgrid_object.code);

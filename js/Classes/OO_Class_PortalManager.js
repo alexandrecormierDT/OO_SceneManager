@@ -241,7 +241,6 @@ OO.PortalManager = function(_S){
 			match++;
 		}
 		if( match == 2){
-			
 			return true
 		}
 		return false;
@@ -252,7 +251,6 @@ OO.PortalManager = function(_S){
 		
 		var anim_equivalent = ["FX","Character","Prop","Vehicle"];
 		
-
 		input_type = remove_spaces(_input_type)
 		compare_type = remove_spaces(_compare_type)
 
@@ -456,7 +454,6 @@ OO.PortalManager = function(_S){
 			if(_portal.path_exist(_data_type) || _data_type =='elements'){
 
 				this.update_script_module_attribute_key(_portal)
-				
 
 				switch (_data_type){
 					case 'psd': 
@@ -828,29 +825,27 @@ OO.PortalManager = function(_S){
 
 				if(library_tpl!=false){
 
-					repport.push("----------------------------COMPARARAISON-----------------------");
+					repport.push("----------------------------COMPARAISON-----------------------");
 					repport.push("RIG *A* : ( "+_portal.get_path('tpl')+" ) ")
 					repport.push("RIG *B* : ( "+_portal.get_code()+" ) ");
 					repport.push("------------------------------------------------------------------------");
 					repport.push("*A* last push time : "+timeConverter(parseInt(library_tpl.data.last_push_time)))
 					repport.push("*B* last pull time : "+timeConverter(parseInt(portal_tpl.data.last_pull_time)))
 					repport.push("------------------------------------------------------------------------");
-					
-					var nodifferences = true;
-					
+
 					repport.push("Comparing A to B ... ")
 					differences_object_array = S.tpl.compare_tpl_objects(library_tpl,portal_tpl,"A","B")
 					for(var d= 0 ; d< differences_object_array.length ; d++){
 						repport.push("----> "+differences_object_array[d].print())
 					}
 					
-					repport.push("Comparing B to A ... ")
+					/*repport.push("Comparing B to A ... ")
 					var differences_object_array = S.tpl.compare_tpl_objects(portal_tpl,library_tpl,"B","A")
 					differences_object_array = S.tpl.compare_tpl_objects(portal_tpl,library_tpl,"B","A")
 
 					for(var d= 0 ; d< differences_object_array.length ; d++){
 						repport.push("----> "+differences_object_array[d].print())
-					}
+					}*/
 
 					repport.push("-------------------------------------------------------------------------");
 				}else{
