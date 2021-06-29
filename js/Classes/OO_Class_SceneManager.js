@@ -1,6 +1,6 @@
 // CLASS OO_SceneManager
 
-//////MessageLog.trace("CLASS OO_SceneManager imported")
+////////MessageLog.trace("CLASS OO_SceneManager imported")
 
 OO.SceneManager = function(){
 	
@@ -73,11 +73,11 @@ OO.SceneManager = function(){
 
 		var fov = 41.112
 
-		MessageLog.trace("multiply_resolution_by")
-		MessageLog.trace(_factor)
-		MessageLog.trace(rx )
-		MessageLog.trace(ry )
-		MessageLog.trace(fov)
+		//MessageLog.trace("multiply_resolution_by")
+		//MessageLog.trace(_factor)
+		//MessageLog.trace(rx )
+		//MessageLog.trace(ry )
+		//MessageLog.trace(fov)
 
 		scene.setDefaultResolution(rx,ry,fov);
 
@@ -330,5 +330,5 @@ OO.SceneManager = function(){
 
 }
 
-MessageLog.trace("Class SceneManager ");
+//MessageLog.trace("Class SceneManager ");
 

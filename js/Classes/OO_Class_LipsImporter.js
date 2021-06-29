@@ -87,12 +87,12 @@ OO.LipsImporter = function (){
 			lips_detection.set_current_character(character_lowercase)
 			var character_lipsdetec_txt_content = lips_detection.get_lipsdetection_txt_content()
 				
-			MessageLog.trace("importing detec");
-			MessageLog.trace(character_lipsdetec_txt_content);
+			//MessageLog.trace("importing detec");
+			//MessageLog.trace(character_lipsdetec_txt_content);
 			
 			if(character_lipsdetec_txt_content != false){
 
-				MessageLog.trace("injecting lips");
+				//MessageLog.trace("injecting lips");
 					
 				var lipsing_object = new OO.Lipsing();
 				
@@ -115,7 +115,7 @@ OO.LipsImporter = function (){
 					
 					var current_sub_name =lipsing_object.get_current_sub_name(); 
 					
-					MessageLog.trace(current_sub_name);
+					//MessageLog.trace(current_sub_name);
 					
 					var lips_injector_object = new OO.LipsInjector(); 
 					
@@ -131,7 +131,7 @@ OO.LipsImporter = function (){
 		
 		}else{
 		
-			MessageLog.trace("missing variables");
+			//MessageLog.trace("missing variables");
 			
 		}
 	

@@ -1,6 +1,6 @@
 // CLASS OO_Portal
 
-////MessageLog.trace("CLASS OO_Portal")
+//////MessageLog.trace("CLASS OO_Portal")
 
 /*
 	a portal is a tree with a particular setup to import and export tpl
@@ -226,7 +226,7 @@ OO.Portal = function (){
 
 		departement_name_upper_case = portal_departement.toUpperCase();
 		portal_backdrop_name =" < "+departement_name_upper_case+" PORTAL : "+portal_code+" > ";
-		MessageLog.trace(portal_backdrop_name)
+		//MessageLog.trace(portal_backdrop_name)
 
 	}
 
@@ -314,7 +314,7 @@ OO.Portal = function (){
 			
 			var cur_attr_name = attributes_names[a]
 			var cur_attr_val = _attributes_object[cur_attr_name]
-			MessageLog.trace(cur_attr_name+"="+cur_attr_val)
+			//MessageLog.trace(cur_attr_name+"="+cur_attr_val)
 			set_script_module_attribute(cur_attr_name,cur_attr_val);
 			
 		}		
@@ -324,10 +324,10 @@ OO.Portal = function (){
 		
 		var portal_script_module_path = portal_tree.get_key_node("PORTAL_MODULE");
 		var portal_script_module_object = $.scene.getNodeByPath(portal_script_module_path)
-		MessageLog.trace(_attr)
+		//MessageLog.trace(_attr)
 		if(portal_script_module_object.attributes.hasOwnProperty(_attr)){
-			MessageLog.trace(_attr)
-			MessageLog.trace(_value)
+			//MessageLog.trace(_attr)
+			//MessageLog.trace(_value)
 			node.setTextAttr(portal_script_module_object.path,_attr,1,_value)
 		}
 			
@@ -348,4 +348,4 @@ OO.Portal = function (){
 	}	
 }
 
-MessageLog.trace("Class Portal");
+//MessageLog.trace("Class Portal");

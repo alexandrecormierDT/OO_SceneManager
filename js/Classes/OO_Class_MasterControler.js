@@ -139,13 +139,13 @@ OO.MasterControler = function (_node_path){
 		
 		ui_data_poses = get_ui_data_poses_path_with_subfolder(_sub_folder_name);
 		extra_file_tbstate_path = get_extra_file_tbstate_path_with_subfolder(_sub_folder_name)
-		MessageLog.trace("ui_data_poses");
-		MessageLog.trace(ui_data_poses);
-		MessageLog.trace("extra_file_tbstate_path");
-		MessageLog.trace(extra_file_tbstate_path);
+		//MessageLog.trace("ui_data_poses");
+		//MessageLog.trace(ui_data_poses);
+		//MessageLog.trace("extra_file_tbstate_path");
+		//MessageLog.trace(extra_file_tbstate_path);
 		
 	}
 	
 } 
 
-MessageLog.trace("Class MasterControler ");
+//MessageLog.trace("Class MasterControler ");

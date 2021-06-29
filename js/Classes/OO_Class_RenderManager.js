@@ -1,6 +1,6 @@
 // CLASS OO_SceneManager
 
-//////MessageLog.trace("CLASS OO_SceneManager imported")
+////////MessageLog.trace("CLASS OO_SceneManager imported")
 
 OO.RenderManager = function(_S){
 	

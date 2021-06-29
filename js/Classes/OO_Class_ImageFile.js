@@ -22,8 +22,8 @@ OO.ImageFile = function(_image_file_path){
         // we create the file if non exsitant
 
 		var file_test = new $.oFile(remove_line_breaks(image_file_path+".txt"));
-        MessageLog.trace("PATH")
-        MessageLog.trace(remove_line_breaks(image_file_path+".txt"))
+        //MessageLog.trace("PATH")
+        //MessageLog.trace(remove_line_breaks(image_file_path+".txt"))
         var file_created = false;
 
         if( file_test.exists == false){
@@ -33,13 +33,13 @@ OO.ImageFile = function(_image_file_path){
         txt_file_object = new $.oFile(image_file_path+".txt");
         
         if(txt_file_object.exists==true){
-            MessageLog.trace("[ImageFile]   reading   "+image_file_path+".txt")
+            //MessageLog.trace("[ImageFile]   reading   "+image_file_path+".txt")
             //we read its content
             var txt_content = txt_file_object.read()
             var resolution_object = parse_dimention_txt_content_to_object(txt_content)
-            MessageLog.trace("resolution_object")
-            MessageLog.trace(resolution_object.width)
-            MessageLog.trace(resolution_object.height)
+            //MessageLog.trace("resolution_object")
+            //MessageLog.trace(resolution_object.width)
+            //MessageLog.trace(resolution_object.height)
             return resolution_object;
         }
         return false;
@@ -66,16 +66,16 @@ OO.ImageFile = function(_image_file_path){
 		var process_create_txt = new Process2(dimention_txt_creation_command_string);
 		var launch = process_create_txt.launch();
 
-        MessageLog.trace("launch")
-        MessageLog.trace(launch)
+        //MessageLog.trace("launch")
+        //MessageLog.trace(launch)
 
-        MessageLog.trace("[ImageFile] creating  "+image_file_path+".txt")
+        //MessageLog.trace("[ImageFile] creating  "+image_file_path+".txt")
 
         if(launch==0){
-            MessageLog.trace("[ImageFile] success")
+            //MessageLog.trace("[ImageFile] success")
             return true
         }else{
-            MessageLog.trace("[ImageFile] failed")
+            //MessageLog.trace("[ImageFile] failed")
             return false;
         }
 	}
@@ -104,7 +104,7 @@ OO.ImageFile = function(_image_file_path){
 	function format_dimention_txt_creation_command_string(_image_file_path){
 		
 		dimention_txt_creation_command_string = '"'+read_image_info_bat+'" "'+image_file_path+'"';
-        MessageLog.trace(dimention_txt_creation_command_string)
+        //MessageLog.trace(dimention_txt_creation_command_string)
 		
 	}
 

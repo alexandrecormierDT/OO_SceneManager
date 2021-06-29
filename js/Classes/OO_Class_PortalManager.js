@@ -89,7 +89,7 @@ OO.PortalManager = function(_S){
 			}
 		}
 
-		MessageLog.trace("load_from_node_list by asset type")
+		//MessageLog.trace("load_from_node_list by asset type")
 		return  fetched_portals 
 
 	}
@@ -155,7 +155,7 @@ OO.PortalManager = function(_S){
 
 			}
 
-		MessageLog.trace("load_from_node_list")
+		//MessageLog.trace("load_from_node_list")
 		return  fetched_portals
 
 	}
@@ -164,8 +164,8 @@ OO.PortalManager = function(_S){
 
 		var scene_PSM = []
 		
-		MessageLog.trace("_node_list")
-		MessageLog.trace(_node_list)
+		//MessageLog.trace("_node_list")
+		//MessageLog.trace(_node_list)
 		for(var n = 0 ; n < _node_list.length ; n++){
 			var cnode = $.scene.getNodeByPath(_node_list[n])
 			if(cnode!=null){
@@ -177,7 +177,7 @@ OO.PortalManager = function(_S){
 			}
 
 		}
-		MessageLog.trace(scene_PSM)
+		//MessageLog.trace(scene_PSM)
 		return scene_PSM
 	}
 
@@ -262,16 +262,16 @@ OO.PortalManager = function(_S){
 			input_type= "BG"; 
 		}
 
-		MessageLog.trace("_input_type")
-		MessageLog.trace(input_type)
-		MessageLog.trace(compare_type)
+		//MessageLog.trace("_input_type")
+		//MessageLog.trace(input_type)
+		//MessageLog.trace(compare_type)
 
 		if(input_type == compare_type ){
 			return true;
 		}
 
 		if(compare_type  == "anim" && anim_equivalent.indexOf(input_type) != -1){
-			MessageLog.trace("match")
+			//MessageLog.trace("match")
 			return true;
 		}
 
@@ -331,16 +331,16 @@ OO.PortalManager = function(_S){
 	this.create_asset_portals_from_breakdown_by_type = function(_asset_type){
 
 		var asset_object_array = S.breakdown.get_asset_list();
-		MessageLog.trace(asset_object_array)
+		//MessageLog.trace(asset_object_array)
 
 		for(var a = 0 ; a <asset_object_array.length ; a++){
 			
 			var current_asset = asset_object_array[a]; 
-			MessageLog.trace("CURRENT ASSET")
-			MessageLog.trace(current_asset)
-			MessageLog.trace(current_asset.get_code())
-			MessageLog.trace(current_asset.get_id())
-			MessageLog.trace(current_asset.get_type())
+			//MessageLog.trace("CURRENT ASSET")
+			//MessageLog.trace(current_asset)
+			//MessageLog.trace(current_asset.get_code())
+			//MessageLog.trace(current_asset.get_id())
+			//MessageLog.trace(current_asset.get_type())
 			
 			var final_psd_path = S.context.get_asset_data_path(current_asset,'psd');
 			var final_png_path = S.context.get_asset_data_path(current_asset,'png');
@@ -447,7 +447,6 @@ OO.PortalManager = function(_S){
 			last_pull: get_timestamp(),
 			content:_data_type
 		}
-		
 
 		try{
 		
@@ -537,9 +536,9 @@ OO.PortalManager = function(_S){
 		var portal_tree  = _portal.get_tree();	
 		var portal_group = portal_tree.get_key_node("PORTAL_GROUP");
 
-		MessageLog.trace(portal_tree)
-		MessageLog.trace("portal_group")
-		MessageLog.trace(portal_group)
+		//MessageLog.trace(portal_tree)
+		//MessageLog.trace("portal_group")
+		//MessageLog.trace(portal_group)
 
 		final_path = _portal.get_path('tpl') ;
 
@@ -600,7 +599,7 @@ OO.PortalManager = function(_S){
 
 		try{
 		
-			MessageLog.trace("push_portal");
+			//MessageLog.trace("push_portal");
 			
 			var export_path = _portal.get_path(_data_type);
 			var export_folder_path = _portal.get_dir(_data_type);
@@ -670,7 +669,7 @@ OO.PortalManager = function(_S){
 
 	this.delete_all_scene_portals = function(){
 		this.load_from_scene();
-		MessageLog.trace(loaded_portal_objects_array)
+		//MessageLog.trace(loaded_portal_objects_array)
 		for(var p = 0 ; p < loaded_portal_objects_array.length ; p++){
 			var current_portal = loaded_portal_objects_array[p];
 			this.delete_portal(current_portal);
@@ -864,7 +863,7 @@ OO.PortalManager = function(_S){
 			}
 
 			MessageBox.information(message)
-			MessageLog.trace(message)
+			//MessageLog.trace(message)
 
 		}
 		return repport;
@@ -890,4 +889,4 @@ function timeConverter(UNIX_timestamp){
 
 
 
-MessageLog.trace("CLASS OO_PortalManager")
+//MessageLog.trace("CLASS OO_PortalManager")

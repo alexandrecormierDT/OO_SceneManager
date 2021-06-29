@@ -1,6 +1,6 @@
 // CLASS OO_Tree
 
-////////MessageLog.trace("CLASS OO_Tree")
+//////////MessageLog.trace("CLASS OO_Tree")
 
 
 OO.Tree = function(_code,_nodes){
@@ -68,8 +68,8 @@ OO.Tree = function(_code,_nodes){
 	
 	// KEY NODES 
 	this.set_key_node = function(_key,_node_path){
-		MessageLog.trace(_key)
-		MessageLog.trace(_node_path)
+		//MessageLog.trace(_key)
+		//MessageLog.trace(_node_path)
 		
 		key_nodes[_key] = _node_path;
 		if(tree_nodes.indexOf(_node_path) == -1){
@@ -318,14 +318,14 @@ OO.Tree = function(_code,_nodes){
 	}
 
 	this.delete_nodes = function(){
-		MessageLog.trace("---------------tree_nodes")
-		MessageLog.trace(tree_nodes)
+		//MessageLog.trace("---------------tree_nodes")
+		//MessageLog.trace(tree_nodes)
 		var temp_group = node.createGroup(tree_nodes, "group_to_delete");
 		node.deleteNode(temp_group,true,true);
 	}
 	
 }
 
-MessageLog.trace("Class Tree")
+//MessageLog.trace("Class Tree")
 
 

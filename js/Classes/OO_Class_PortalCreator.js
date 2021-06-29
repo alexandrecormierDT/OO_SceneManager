@@ -142,4 +142,4 @@ OO.PortalCreator = function(_S){
   
 }
 
-MessageLog.trace("Class PortalCreator");
+//MessageLog.trace("Class PortalCreator");

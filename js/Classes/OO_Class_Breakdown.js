@@ -30,35 +30,37 @@ OO.Breakdown = function(_S){
 
     this.print_current_shot_infos = function(){
 
-        MessageLog.trace(current_shot.asset_code_list)
-        MessageLog.trace(current_shot.id)
+        //MessageLog.trace(current_shot.asset_code_list)
+        //MessageLog.trace(current_shot.id)
 
     }
 
-    this.load_current_shot_breakdown_python = function(){
+    this.load_current_shot_breakdown = function(){
         try{
             var current_shot_code = S.context.get_shot(); 
             if(current_shot_code != false){
                 current_shot = parse_shot_from_shotgrid(current_shot_code); 
-                asset_list = parse_asset_object_array_from_shotgrid(current_shot.asset_code_list);         
+                asset_list = parse_shot_asset_list_from_shotgrid(current_shot.id);         
             }
         }catch(error){
             S.log.add_script_error_object(error); 
         }
     }
-    this.load_current_shot_breakdown = function(){
+
+    
+    /*this.load_current_shot_breakdown = function(){
         try{
             var current_shot_code = S.context.get_shot(); 
             if(current_shot_code != false){
                 current_shot = parse_shot_csv_and_find_shot(current_shot_code); 
                 asset_list = parse_asset_code_list(current_shot.asset_code_list);
-                MessageLog.trace("current_shot.asset_code_list")
-                MessageLog.trace(current_shot.asset_code_list)  
+                //MessageLog.trace("current_shot.asset_code_list")
+                //MessageLog.trace(current_shot.asset_code_list)  
             }
         }catch(error){
             S.log.add_script_error_object(error); 
         }
-    }       
+    } */      
 
     //SHOTGRID
     function parse_shot_from_shotgrid(_shot_code){
@@ -72,22 +74,29 @@ OO.Breakdown = function(_S){
         return shot_object
     }
 
-    function parse_asset_object_array_from_shotgrid(_json_obj_array){
+    function parse_shot_asset_list_from_shotgrid(_shot_id){
         var asset_object_array = []
-        for(var a = 0 ; a < _json_obj_array.length; a++){
-            var asset_id =_json_obj_array[a].id; 
-            var nasset_object = parse_asset_object_from_shotgrid_by_id(asset_id)
+        var shotgrid_object_table = S.shotgrid.get_asset_list_by_shot_id(_shot_id)
+        for(var a = 0 ; a < shotgrid_object_table.length; a++){
+            var nasset_object = parse_asset_object_from_shotgrid_table_object(shotgrid_object_table[a])
             asset_object_array.push(nasset_object)
-            MessageLog.trace(" --------------------------------------------------------------------------------------------nasset_object.id")
-            MessageLog.trace( nasset_object.id)
         }
         return asset_object_array;
     }
 
+    function parse_asset_object_from_shotgrid_table_object(_shotgrid_table_object){
+        var new_asset_object = new OO.Asset(_shotgrid_table_object.code);
+        new_asset_object.id = _shotgrid_table_object.id
+        new_asset_object.sg_asset_type = _shotgrid_table_object.sg_asset_type
+        new_asset_object.project = S.get_current_project()
+        return new_asset_object;
+    }
+
+
     function parse_asset_object_from_shotgrid_by_id(_asset_id){
         var shotgrid_object = S.shotgrid.get_asset_by_id(_asset_id)
         var new_asset_object = new OO.Asset(shotgrid_object.code);
-        MessageLog.trace("new_asset_object.id")
+        //MessageLog.trace("new_asset_object.id")
         new_asset_object.id = _asset_id
         new_asset_object.sg_asset_type = shotgrid_object.sg_asset_type
         new_asset_object.project = S.get_current_project()
@@ -135,7 +144,7 @@ OO.Breakdown = function(_S){
                 var second_split = line_split[l].split('"');
                 if(second_split[3] == _shot_code){
 
-                    MessageLog.trace(_shot_code)
+                    //MessageLog.trace(_shot_code)
 
                     //parsing shot line
                     var shot_id = second_split[1];
@@ -341,4 +350,4 @@ OO.Breakdown = function(_S){
 	
 }
 
-MessageLog.trace("Class Breakdown");
+//MessageLog.trace("Class Breakdown");

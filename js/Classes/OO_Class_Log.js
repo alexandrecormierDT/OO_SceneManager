@@ -1,6 +1,6 @@
 // CLASS OO_SceneManager
 
-//MessageLog.trace("CLASS OO_Log imported")
+////MessageLog.trace("CLASS OO_Log imported")
 
 OO.Log =function (){
 		
@@ -177,11 +177,7 @@ OO.Log =function (){
 				var file_test = new $.oFile(file_path)
 				
 				if(file_test.exists == false){
-					
-					MessageLog.trace("file_path");
-					MessageLog.trace(file_path);
 					var logfile = new PermanentFile(file_path);						
-					
 				}
 				
 				scene_script_log_path = file_path;
@@ -197,16 +193,9 @@ OO.Log =function (){
 			var scene_log_dir_path = create_scene_log_folder_if_missing()
 			var txt_file_path = scene_log_dir_path+"/batch.txt"; 
 			var txt_file_test = new $.oFile(txt_file_path);
-
-			MessageLog.trace("txt_file_path")
-			MessageLog.trace(txt_file_path)
-			MessageLog.trace(txt_file_test)
-
 			if(txt_file_test.exists == false){
 
-				var txt_file_object = new PermanentFile(txt_file_path);	
-				MessageLog.trace("txt_file_object")		
-				MessageLog.trace(txt_file_object)	
+				var txt_file_object = new PermanentFile(txt_file_path);		
 				txt_file_object.open(4);                
 				txt_file_object.write(script_tag);          
 				txt_file_object.close(); 
@@ -260,8 +249,6 @@ OO.Log =function (){
 		this.set_script_tag = function(_st){
 			
 			script_tag = _st
-			MessageLog.trace("script_tag");
-			MessageLog.trace(script_tag);
 			
 		}
 		

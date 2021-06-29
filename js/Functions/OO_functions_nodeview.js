@@ -144,7 +144,7 @@ function copy_node_name_process(){
 	
 	var snodes = selection.selectedNodes(); 
 	
-	////MessageLog.trace(snodes);
+	//////MessageLog.trace(snodes);
 	
 	    var d = new Dialog
 	    d.title = "COPY NODE NAME";

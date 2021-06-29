@@ -1,5 +1,5 @@
 OO.Asset = function(_asset_code){
-	MessageLog.trace("New Object Asset ");
+	//MessageLog.trace("New Object Asset ");
 	this.code=_asset_code;
 	this.id = 0;
 	this.sg_asset_type ="";
@@ -30,4 +30,4 @@ OO.Asset = function(_asset_code){
 
 }
 
-MessageLog.trace("Class Asset");
+//MessageLog.trace("Class Asset");

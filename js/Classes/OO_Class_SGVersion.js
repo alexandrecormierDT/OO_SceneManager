@@ -1,6 +1,6 @@
 // CLASS OO_ASSET
 
-////MessageLog.trace("CLASS OO_ASSET")
+//////MessageLog.trace("CLASS OO_ASSET")
 
 OO.SGVersion = function(_S){
 	
@@ -90,7 +90,7 @@ OO.SGVersion = function(_S){
 		S.log.add("render_and_upload_movie_as_version","script")
 		format_render_and_upload_command_string();
 
-		MessageLog.trace(render_and_upload_movie_command)
+		//MessageLog.trace(render_and_upload_movie_command)
 		S.log.add(render_and_upload_movie_command,"arguments")
 		//S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
 
@@ -108,7 +108,7 @@ OO.SGVersion = function(_S){
 
 		S.log.add("render_and_upload_movie_as_version","script")
 		format_render_and_upload_command_string();
-		MessageLog.trace(render_and_upload_movie_command)
+		//MessageLog.trace(render_and_upload_movie_command)
 		S.log.add(render_and_upload_movie_command,"arguments")
 		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
 
@@ -118,7 +118,7 @@ OO.SGVersion = function(_S){
 		
 		S.log.add("render_and_upload_movie_as_version","script")
 		format_render_and_upload_command_string();
-		MessageLog.trace(render_and_upload_movie_command)
+		//MessageLog.trace(render_and_upload_movie_command)
 
 		S.log.add(render_and_upload_movie_command,"arguments")
 		
@@ -141,13 +141,13 @@ OO.SGVersion = function(_S){
 		
 		format_movie_upload_command_string()
 		
-		MessageLog.clearLog();
-		MessageLog.trace(movie_upload_command)
+		//MessageLog.clearLog();
+		//MessageLog.trace(movie_upload_command)
 		var process_movie = new Process2(movie_upload_command);
 
-		MessageLog.trace(process_movie.launch());
-		MessageLog.trace(process_movie.errorMessage());
-		MessageLog.trace(process_movie);		
+		//MessageLog.trace(process_movie.launch());
+		//MessageLog.trace(process_movie.errorMessage());
+		//MessageLog.trace(process_movie);		
 
 		S.log.add("TBMOVIEUPLAOD","start")
 		S.log.add(movie_upload_command,"arguments")
@@ -173,7 +173,7 @@ OO.SGVersion = function(_S){
 		
 		format_png_upload_command_string()
 
-		MessageLog.trace(png_upload_command);
+		//MessageLog.trace(png_upload_command);
 		
 		var process_png = new Process2(png_upload_command);
 		var launch = process_png.launchAndDetach();
@@ -207,4 +207,4 @@ OO.SGVersion = function(_S){
 }
 
 
-MessageLog.trace("Class SGVersion ");
+//MessageLog.trace("Class SGVersion ");

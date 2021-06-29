@@ -40,12 +40,11 @@
 
 function PAL_Remove_All_Unused_Colors_And_Palettes()
 {
+
     var pf = new private_functions;			
     var usedColors = pf.getNodeColors();
     var allColors = pf.getSceneColors();	
     var paletteList = PaletteObjectManager.getScenePaletteList();
-    
-    scene.beginUndoRedoAccum( "Remove Unused Scene Colors And Palettes" );
     
     for( var idx = 0; idx < paletteList.numPalettes; idx++ )
     {
@@ -61,45 +60,16 @@ function PAL_Remove_All_Unused_Colors_And_Palettes()
         // remove palette if empty
         if( palette.nColors == 0 )
         {		
-            paletteList.removePaletteById( palId );
+			paletteList.removePaletteById( palId );
+			paletteList.removePaletteReferencesAndDeleteOnDisk( palId );
+			MessageLog.trace(palette)
         }
     }	
-    scene.endUndoRedoAccum();	
+
 }
 
 function private_functions()
 {
-	this.confirmBox = function( palName, mode )
-	{
-		var dialog = new Dialog();
-		if( mode == "all" )
-		{
-			dialog.title = "Remove All Unused Colors And Palettes";
-			var str1 = "You are about to remove all unused colors and palettes of the scene file.\n\n\nTip: You can skip this confirmation dialog from popping up by\nholding down shift while pressing on the script's icon :)";
-		}
-		else
-		{
-			dialog.title = "Remove Unused Colors On Selected Palette";
-			var str1 = "You are about to remove unused colors on " + palName + " palette.\n\n\nTip: You can skip this confirmation dialog from popping up by\nholding down shift while pressing on the script's icon :)";
-		}
-		dialog.width = 400;
-
-		var input1 = new TextEdit;
-		input1.label = "";
-		input1.text = str1;
-
-		dialog.add( input1 );
-		
-		if ( !dialog.exec() )
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}			
-	}
-
 	
 	this.getNodeColors = function()
 	{

@@ -29,8 +29,8 @@ OO.CharacterDetector = function (){
 			
 			if( before_underscore == uppercase_marker || before_underscore == marker){
 			
-				MessageLog.trace("current_split");
-				MessageLog.trace(current_split);
+				//MessageLog.trace("current_split");
+				//MessageLog.trace(current_split);
 				var six_split = current_split.split("-"); 
 
 				//in case the group is named "CH_JC-G"

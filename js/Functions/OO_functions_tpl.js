@@ -28,7 +28,7 @@ function push_selected_posing(){
    character_detector.set_source_layer_path(selected_layers[0])
    var detected_character = character_detector.get_character();
 
-   MessageLog.trace(selected_layers)
+   //MessageLog.trace(selected_layers)
 
    if(detected_character!=false){
 
@@ -47,6 +47,6 @@ function push_selected_posing(){
 
     //
     //var pegDataB = new NodeState($.scene.selectedNodes[0].path, 1, ["POSITION", "SCALE", "ROTATION","DRAWING.ELEMENT","DRAWING.ELEMENT.PATH"]);
-   // MessageLog.trace(pegDataB.toString("Top"));
+   // //MessageLog.trace(pegDataB.toString("Top"));
 
 }

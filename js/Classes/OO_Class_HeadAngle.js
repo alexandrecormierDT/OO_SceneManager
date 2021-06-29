@@ -33,8 +33,8 @@ OO.HeadAngle = function (){
 		
 		var current_tvg_name = column.getDrawingName(head_layer_drawing_column,current_frame)
 		head_layer_current_sub_name = extract_sub_name_from_tvg_name(current_tvg_name); 
-		MessageLog.trace("head_layer_current_sub_name");
-		MessageLog.trace(head_layer_current_sub_name);
+		//MessageLog.trace("head_layer_current_sub_name");
+		//MessageLog.trace(head_layer_current_sub_name);
 		
 	}
 	
@@ -43,7 +43,7 @@ OO.HeadAngle = function (){
 		fetch_head_layer_drawing_column()
 		fetch_head_layer_current_sub_name()
 		underscore_split = head_layer_current_sub_name.split("_"); 
-		MessageLog.trace(underscore_split.length);
+		//MessageLog.trace(underscore_split.length);
 		
 		if(underscore_split.length > 1){
 			

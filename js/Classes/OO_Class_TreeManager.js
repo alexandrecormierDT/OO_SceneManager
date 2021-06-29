@@ -91,9 +91,9 @@ OO.TreeManager = function(_S){
 
 	this.add_map_module = function(_code,_node_to_link){
 		
-		////MessageLog.trace("TOP NODE");
+		//////MessageLog.trace("TOP NODE");
 		
-		////MessageLog.trace(_node_to_link)
+		//////MessageLog.trace(_node_to_link)
 		
 		var script_module = false;
 
@@ -107,7 +107,7 @@ OO.TreeManager = function(_S){
 				
 			}
 			
-			////MessageLog.trace(parent_group)
+			//////MessageLog.trace(parent_group)
 			
 			// importing tpl as oNode object
 			
@@ -253,8 +253,8 @@ OO.TreeManager = function(_S){
 	this.format_node_path_list = function(_nodes){
 		
 		var string ="[";
-		MessageLog.trace("_nodes")
-		MessageLog.trace(_nodes)
+		//MessageLog.trace("_nodes")
+		//MessageLog.trace(_nodes)
 		for(var s = 0 ; s < _nodes.length ; s++){
 			var curn = _nodes[s];
 			if(s==0){
@@ -265,8 +265,8 @@ OO.TreeManager = function(_S){
 		}
 
 		string +="]";
-		MessageLog.trace("string")
-		MessageLog.trace(string)
+		//MessageLog.trace("string")
+		//MessageLog.trace(string)
 
 		return string;		
 
@@ -606,9 +606,9 @@ OO.TreeManager = function(_S){
 			myPasteOptions.extendScene = false;
 			var myDragObject = copyPaste.copyFromTemplate(_tpl_file_path,0,0,myCopyOptions);
 			
-			MessageLog.trace("tpl_file_path");
-			MessageLog.trace(_tpl_file_path);
-			MessageLog.trace(_group_scene_path);
+			//MessageLog.trace("tpl_file_path");
+			//MessageLog.trace(_tpl_file_path);
+			//MessageLog.trace(_group_scene_path);
 	
 			copyPaste.pasteNewNodes(myDragObject,_group_scene_path,myPasteOptions);
 	
@@ -617,7 +617,7 @@ OO.TreeManager = function(_S){
 		}
 
 		S.log.add("[TreeManager][copypaste_tpl_in_group]  group error "+_group_scene_path,"error")
-		MessageLog.trace("[TreeManager][copypaste_tpl_in_group]  group error "+_group_scene_path)
+		//MessageLog.trace("[TreeManager][copypaste_tpl_in_group]  group error "+_group_scene_path)
 
 		return false; 
 
@@ -824,7 +824,7 @@ OO.TreeManager = function(_S){
 
 	this.arange_psd_node = function(_tree){
 		
-		////////MessageLog.trace("ARRANGE PSD NODES");
+		//////////MessageLog.trace("ARRANGE PSD NODES");
 		
 		var reads = _tree.get_reads();
 		var group = _tree.get_parent_group();
@@ -918,13 +918,13 @@ OO.TreeManager = function(_S){
 		
 		if(cadre.hasOwnProperty('rect')==true){
 
-			MessageLog.trace("C A D R E    C O N T E N T ")
-			MessageLog.trace(Object.getOwnPropertyNames(cadre))
-			MessageLog.trace(Object.getOwnPropertyNames(cadre.rect))
-			MessageLog.trace(Object.getOwnPropertyNames(cadre.bg))
-			MessageLog.trace(cadre.rect.width)
-			MessageLog.trace(cadre.rect.x)
-			MessageLog.trace(cadre.rect.y)
+			//MessageLog.trace("C A D R E    C O N T E N T ")
+			//MessageLog.trace(Object.getOwnPropertyNames(cadre))
+			//MessageLog.trace(Object.getOwnPropertyNames(cadre.rect))
+			//MessageLog.trace(Object.getOwnPropertyNames(cadre.bg))
+			//MessageLog.trace(cadre.rect.width)
+			//MessageLog.trace(cadre.rect.x)
+			//MessageLog.trace(cadre.rect.y)
 
 			// camera dimmentions :
 		
@@ -981,7 +981,7 @@ OO.TreeManager = function(_S){
 				
 			}else{
 				
-				////MessageLog.trace("reseting camera");
+				//////MessageLog.trace("reseting camera");
 				
 				S.log.add("reseting camera coords","warning");
 				
@@ -1184,5 +1184,5 @@ OO.TreeManager = function(_S){
 }
 
 
-MessageLog.trace("CLASS OO_TreeManager")
+//MessageLog.trace("CLASS OO_TreeManager")
 

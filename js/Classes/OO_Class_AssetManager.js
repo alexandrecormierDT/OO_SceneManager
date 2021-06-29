@@ -34,5 +34,5 @@ OO.AssetManager = function(_S){
 	}
 
 }
-MessageLog.trace("Class AssetManager");
+//MessageLog.trace("Class AssetManager");
 

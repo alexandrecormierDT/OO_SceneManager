@@ -1,6 +1,6 @@
 function add_sub_folder_to_selected_mcs_dialog(){
 	
-	MessageLog.trace("add_sub_folder_to_selected_mcs_dialog");
+	//MessageLog.trace("add_sub_folder_to_selected_mcs_dialog");
 	
 	var S = new OO.SceneManager();	
 	
@@ -27,8 +27,8 @@ function add_sub_folder_to_selected_mcs_dialog(){
 		
 		var sub_folder_name = INPUT_SUB_FOLDER_NAME.currentItem
 		
-		MessageLog.trace("sub_folder_name");
-		MessageLog.trace(sub_folder_name);
+		//MessageLog.trace("sub_folder_name");
+		//MessageLog.trace(sub_folder_name);
 		
 		MCM.add_sub_folder_to_mcs(sub_folder_name); 
 		
@@ -63,8 +63,8 @@ function show_current_angle_eye_mc(){
 	
 	var mc_node_path = character_group+"/mc_LOOK_"+current_head_angle;
 	
-	MessageLog.trace("mc_node_path");
-	MessageLog.trace(mc_node_path);
+	//MessageLog.trace("mc_node_path");
+	//MessageLog.trace(mc_node_path);
 	
 	var MCM = new OO.MCManager();
 	MCM.fetch_scene_mcs(); 

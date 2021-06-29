@@ -1,5 +1,5 @@
 OO.Shot = function(_shot_code){
-    MessageLog.trace("New Object Shot ");
+    //MessageLog.trace("New Object Shot ");
     this.code = _shot_code
     this.asset_code_list = []; 
     this.id = ""; 
@@ -16,4 +16,4 @@ OO.Shot = function(_shot_code){
 
 }
 
-MessageLog.trace("Class Shot ");
+//MessageLog.trace("Class Shot ");

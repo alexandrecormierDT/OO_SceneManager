@@ -34,9 +34,9 @@ OO.ScriptFolder = function (_folder_path){
 				
 				var new_tvg_object = new OO.TVG(current_tvg_file_path);
 				
-				MessageLog.trace("SUB NAME --->"+new_tvg_object.get_sub_name()); 
-				MessageLog.trace("TVG NAME --->"+new_tvg_object.get_tvg_name()); 
-				MessageLog.trace("PREFIX NAME --->"+new_tvg_object.get_script_prefix()); 
+				//MessageLog.trace("SUB NAME --->"+new_tvg_object.get_sub_name()); 
+				//MessageLog.trace("TVG NAME --->"+new_tvg_object.get_tvg_name()); 
+				//MessageLog.trace("PREFIX NAME --->"+new_tvg_object.get_script_prefix()); 
 				
 				tvg_list.push(new_tvg_object);
 				

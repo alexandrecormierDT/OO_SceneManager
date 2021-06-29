@@ -24,7 +24,7 @@ function create_tree_with_selection(){
 	
 	var TREE_CODE = "";
 	
-	////MessageLog.trace(selected_nodes);
+	//////MessageLog.trace(selected_nodes);
 	
 	
 	
@@ -60,9 +60,9 @@ function select_tree_nodes(){
 	
 	var fetched_map_modules = S.trees.find_map_modules_in_nodes(selected_nodes)
 	
-	////MessageLog.trace("MODULES");
+	//////MessageLog.trace("MODULES");
 	
-	////MessageLog.trace(fetched_map_modules);
+	//////MessageLog.trace(fetched_map_modules);
 	
 	selection.clearSelection ()
 	
@@ -78,7 +78,7 @@ function select_tree_nodes(){
 		
 	}
 	
-	////MessageLog.trace(selected_nodes);
+	//////MessageLog.trace(selected_nodes);
 	
 }
 
@@ -90,7 +90,7 @@ function show_layer_ID(){
 	
 	var selection = OO.doc.selectedNodes;
 	
-	////MessageLog.trace(S.trees.get_node_smlayerid(selection[0]));
+	//////MessageLog.trace(S.trees.get_node_smlayerid(selection[0]));
 	
 	MessageBox.information(S.trees.get_node_smlayerid(selection[0]));
 	

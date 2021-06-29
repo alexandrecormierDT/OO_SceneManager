@@ -15,7 +15,7 @@
 
 function upload_render_as_SG_version_dialog(){
 	
-	MessageLog.trace("UPLOAD PREVIEW TO SHOTGUN");
+	//MessageLog.trace("UPLOAD PREVIEW TO SHOTGUN");
 	
 	var S = new OO.SceneManager();	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/upload_render_as_SG_version.html");
@@ -106,7 +106,7 @@ function upload_render_as_SG_version_dialog(){
 
 function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	
-	MessageLog.trace("upload_render_as_SG_version_for_task");
+	//MessageLog.trace("upload_render_as_SG_version_for_task");
 	
 	var S = new OO.SceneManager();	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/upload_render_as_SG_version.html");

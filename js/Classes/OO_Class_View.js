@@ -1,6 +1,6 @@
 // CLASS OO_View
 
-//MessageLog.trace("CLASS OO_View");
+////MessageLog.trace("CLASS OO_View");
 
 OO.View = function(TLM){
 	
@@ -44,8 +44,8 @@ OO.View = function(TLM){
 			
 			var note = parse_note(TLM.note);
 
-			MessageLog.trace("notessss")
-			MessageLog.trace(Object.getOwnPropertyNames(note))
+			//MessageLog.trace("notessss")
+			//MessageLog.trace(Object.getOwnPropertyNames(note))
 			
 			if(note!=false){
 				
@@ -100,8 +100,8 @@ OO.View = function(TLM){
 		
 		//if(this.file_name == false){
 
-			MessageLog.trace("     this.asset")
-			MessageLog.trace(this.asset)
+			//MessageLog.trace("     this.asset")
+			//MessageLog.trace(this.asset)
 	
 			return this.asset+"_"+this.task+"_"+this.version+"."+this.exportFormat;
 		
@@ -169,10 +169,10 @@ OO.View = function(TLM){
 		}
 		
 		
-		MessageLog.trace("NOTES");
-		MessageLog.trace("note_obj");							
-		MessageLog.trace(note_obj);							
-		MessageLog.trace(Object.getOwnPropertyNames(note_obj));
+		//MessageLog.trace("NOTES");
+		//MessageLog.trace("note_obj");							
+		//MessageLog.trace(note_obj);							
+		//MessageLog.trace(Object.getOwnPropertyNames(note_obj));
 		
 		
 		return note_obj;

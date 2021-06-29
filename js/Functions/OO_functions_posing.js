@@ -17,10 +17,10 @@ function create_posing_from_selection_dialog(){
 	d.add(POSING_SUFFIX);
 
 	var number_of_selected_frames = selection.numberOfFrames() != 0 ? selection.numberOfFrames() : 1;
-	MessageLog.trace("number_of_selected_frames")
-	MessageLog.trace(number_of_selected_frames)
-	MessageLog.trace(selection.numberOfFrames())
-	MessageLog.trace(selection.isSelectionRange())
+	//MessageLog.trace("number_of_selected_frames")
+	//MessageLog.trace(number_of_selected_frames)
+	//MessageLog.trace(selection.numberOfFrames())
+	//MessageLog.trace(selection.isSelectionRange())
 
 	if ( d.exec() ){
 		create_posing_from_selection_process(POSING_SUFFIX.currentItem)
@@ -42,8 +42,8 @@ function create_posing_from_selection_process(_suffix){
 			number_of_selected_frames = selection.numberOfFrames();
 		}
 
-		MessageLog.trace("number_of_selected_frames")
-		MessageLog.trace(number_of_selected_frames)
+		//MessageLog.trace("number_of_selected_frames")
+		//MessageLog.trace(number_of_selected_frames)
 
 		//detecting asset from selected nodes
 		S.assets.detector.set_source_layer_path(selected_nodes_paths[0])
@@ -69,7 +69,7 @@ function create_posing_from_selection_process(_suffix){
 
 function import_library_posing_for_selected_asset_dialog(){
 
-	MessageLog.trace("import_library_posing_for_selected_asset")
+	//MessageLog.trace("import_library_posing_for_selected_asset")
 
 	var S = new OO.SceneManager();	
 
@@ -84,8 +84,8 @@ function import_library_posing_for_selected_asset_dialog(){
 	var detected_asset_code = S.assets.detector.get_asset_code()
 	var linked_asset_object = S.breakdown.get_asset_object_by_code(detected_asset_code)
 
-	MessageLog.trace("linked_asset_object.get_code()")
-	MessageLog.trace(linked_asset_object.get_code())
+	//MessageLog.trace("linked_asset_object.get_code()")
+	//MessageLog.trace(linked_asset_object.get_code())
 	
 	var asset_posing_obj_array = S.posings.fetch_library_posings_for_asset_object(linked_asset_object)
 
@@ -121,7 +121,7 @@ function import_library_posing_for_selected_asset_dialog(){
 
 function import_library_posing_for_selected_asset(){
 
-	MessageLog.trace("import_library_posing_for_selected_asset")
+	//MessageLog.trace("import_library_posing_for_selected_asset")
 	var S = new OO.SceneManager();	
 
 	S.context.set_library_path(OO.library_path);	
@@ -136,8 +136,8 @@ function import_library_posing_for_selected_asset(){
 		var detected_asset_code = S.assets.detector.get_asset_code()
 		var linked_asset_object = S.breakdown.get_asset_object_by_code(detected_asset_code)
 
-		MessageLog.trace("linked_asset_object.get_code()")
-		MessageLog.trace(linked_asset_object.get_code())
+		//MessageLog.trace("linked_asset_object.get_code()")
+		//MessageLog.trace(linked_asset_object.get_code())
 		
 		S.posings.fetch_library_posings_for_asset_object(linked_asset_object)
 

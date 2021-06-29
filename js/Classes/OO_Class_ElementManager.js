@@ -27,7 +27,7 @@ OO.ElementManager = function (_S)
 				var current_folder_path = sub_folders[f];
 				var new_element_object = new OO.ElementFolder(current_folder_path);
 				//new_element_object.fetch_tvg_files_from_element_folder();
-				MessageLog.trace("ELEMENT ----> "+new_element_object.get_name());
+				//MessageLog.trace("ELEMENT ----> "+new_element_object.get_name());
 				elements_folders_object_array.push(new_element_object);					
 			}
 		}
@@ -43,7 +43,7 @@ OO.ElementManager = function (_S)
 
 				var current_folder_path = sub_folders[f]+"";
 
-				MessageLog.trace(current_folder_path)
+				//MessageLog.trace(current_folder_path)
 
 				split_slash = current_folder_path.split("/")
 				element_name = split_slash[split_slash.length-1]
@@ -58,9 +58,9 @@ OO.ElementManager = function (_S)
 					elements_folders_object_array.push( element_obj);
 				}		
 				
-				MessageLog.trace("element_obj.name")
-				MessageLog.trace(element_obj.name)
-				MessageLog.trace(element_obj.path)
+				//MessageLog.trace("element_obj.name")
+				//MessageLog.trace(element_obj.name)
+				//MessageLog.trace(element_obj.path)
 			}
 		}
 	}
@@ -113,9 +113,9 @@ OO.ElementManager = function (_S)
 			if(node.type(current_node_path)=="READ"){
 				var element_id = node.getElementId(current_node_path);
 				var current_drawing_sub_name = node.getTextAttr(current_node_path, _frame,"DRAWING.ELEMENT");
-				MessageLog.trace("element_id")
-				MessageLog.trace(element_id)
-				MessageLog.trace(current_drawing_sub_name)
+				//MessageLog.trace("element_id")
+				//MessageLog.trace(element_id)
+				//MessageLog.trace(current_drawing_sub_name)
 				var tvg_path = ""
 				tvg_paths_array.push(tvg_path)
 			}
@@ -169,7 +169,7 @@ OO.ElementManager = function (_S)
 				}
 			}
 
-			MessageLog.trace(final_command_line)
+			//MessageLog.trace(final_command_line)
 			S.deadline.submit_command_line_job(final_command_line,"TVG_COPY_from_library_to_scene");
 
 		}catch(error){
@@ -207,13 +207,13 @@ OO.ElementManager = function (_S)
 					tvg_obj.node_path = current_node_path;
 					tvg_obj.element_id = node.getElementId(current_node_path);
 					tvg_obj.element_name = element.getNameById(tvg_obj.element_id)	
-					MessageLog.trace(tvg_obj.element_name)
-					MessageLog.trace(tvg_obj.element_id)
+					//MessageLog.trace(tvg_obj.element_name)
+					//MessageLog.trace(tvg_obj.element_id)
 					if ( Timeline.selIsColumn(i)){
 						var currentColumn = Timeline.selToColumn(i);
 						if (column.type(currentColumn) == "DRAWING"){
 							tvg_obj.sub_name=column.getDrawingName(currentColumn,_frame);
-							MessageLog.trace(tvg_obj.sub_name)
+							//MessageLog.trace(tvg_obj.sub_name)
 						}
 						tvg_obj_array.push(tvg_obj)
 					}
@@ -224,7 +224,7 @@ OO.ElementManager = function (_S)
     }
 }
 
-MessageLog.trace("Class ElementManager")
+//MessageLog.trace("Class ElementManager")
 
 
 function backslash_to_slash(_str){

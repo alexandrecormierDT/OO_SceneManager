@@ -1,6 +1,6 @@
 // CLASS OO_ASSET
 
-////MessageLog.trace("CLASS OO_ASSET")
+//////MessageLog.trace("CLASS OO_ASSET")
 
 OO.DeadLineJobSubmiter = function(_S){
 	
@@ -18,13 +18,13 @@ OO.DeadLineJobSubmiter = function(_S){
 
         var command_line = job.format_submit_command_line();
 
-        MessageLog.trace(command_line);
+        //MessageLog.trace(command_line);
 
 		var deadline_process = new Process2(command_line); 
 		deadline_process.launch();
 
-        //MessageLog.trace(launch);
-       // MessageLog.trace(deadline_process.errorMessage());
+        ////MessageLog.trace(launch);
+       // //MessageLog.trace(deadline_process.errorMessage());
   
     }
 
@@ -41,7 +41,7 @@ OO.DeadLineJobSubmiter = function(_S){
         job.create_job_files();
 
         var command_line = job.format_submit_command_line();
-        MessageLog.trace(command_line);
+        //MessageLog.trace(command_line);
 
 		var deadline_process = new Process2(command_line); 
 		var launch = deadline_process.launch();

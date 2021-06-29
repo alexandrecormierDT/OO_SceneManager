@@ -121,8 +121,8 @@ OO.PosingManager = function(_S){
         var dir_object2 = new $.oFolder(posing_folder );
         dir_object2.create();
 
-        MessageLog.trace("posing_folder")
-        MessageLog.trace(posing_folder)
+        //MessageLog.trace("posing_folder")
+        //MessageLog.trace(posing_folder)
 
         return posing_folder
     }

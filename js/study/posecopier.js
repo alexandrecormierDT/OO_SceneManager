@@ -4,7 +4,7 @@ function PoseCopierDialog()
 
   function trace( msg )
   {
-    MessageLog.trace( "Pose Copier : " + msg );
+    //MessageLog.trace( "Pose Copier : " + msg );
   }
 
   this.setControlsAvailability = function ()

@@ -45,4 +45,4 @@ OO.PortalFiter  = function(_S){
 
 }
 
-MessageLog.trace("Class PortalPlacer ");
+//MessageLog.trace("Class PortalPlacer ");

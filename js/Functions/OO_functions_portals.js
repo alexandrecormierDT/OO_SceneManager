@@ -390,7 +390,7 @@ function push_selected_portals(_data_type){
 	
 			var current_portal = portal_list[p];
 			S.portals.push_portal(current_portal,_data_type);
-			//MessageLog.trace("hellp")
+			////MessageLog.trace("hellp")
 			S.elements.copy_asset_elements_folders_to_bank(current_portal.get_code()); 
 				
 		}	
@@ -835,7 +835,7 @@ function are_selected_portals_up_to_date(){
 		var current_portal = portal_list[p];
 		var repport = S.portals.is_portal_up_to_date(current_portal)
 		for(var d= 0 ; d< repport.length ; d++){
-			MessageLog.trace(repport[d])
+			//MessageLog.trace(repport[d])
 		}
 	}
 }

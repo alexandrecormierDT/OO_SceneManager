@@ -1,5 +1,5 @@
 // CLASS OO_Stage
-//MessageLog.trace("CLASS OO_Stage")
+////MessageLog.trace("CLASS OO_Stage")
 
 
 OO.Stage = function (_S){
@@ -28,7 +28,7 @@ OO.Stage = function (_S){
 
 	this.get_TLM = function(){
 		
-		//MessageLog.trace("stage get_TLM");
+		////MessageLog.trace("stage get_TLM");
 		
 		var timelineMarkers = XMLobj.timelineMarkers.timelineMarker;
 		
@@ -41,7 +41,7 @@ OO.Stage = function (_S){
 			
 		}
 		
-		//MessageLog.trace(list);
+		////MessageLog.trace(list);
 		
 
 		return list;

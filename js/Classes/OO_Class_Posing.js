@@ -150,7 +150,7 @@ OO.Posing = function (_posing_name){
     }
 
     this.apply_rigstate_at_frame = function(_frame,_index){
-        MessageLog.trace("____"+_frame+"____"+_index)
+        //MessageLog.trace("____"+_frame+"____"+_index)
         var  index= _index!=undefined ? _index : 0;
         if(rigstate_object_array[index]!=null){
             rigstate_object_array[index].applyState(_frame)

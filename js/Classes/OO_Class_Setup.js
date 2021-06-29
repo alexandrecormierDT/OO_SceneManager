@@ -1,6 +1,6 @@
 // CLASS OO_ASSET
 
-////MessageLog.trace("CLASS OO_Setup")
+//////MessageLog.trace("CLASS OO_Setup")
 
 OO.Setup = function(_name,_tree,_script){
 

@@ -1,6 +1,6 @@
 // CLASS OO_ASSET
 
-MessageLog.trace("CLASS OO_SetupManager")
+//MessageLog.trace("CLASS OO_SetupManager")
 
 OO.SetupManager = function(_S){
 
@@ -12,7 +12,7 @@ OO.SetupManager = function(_S){
 
 	this.apply = function(setup_name){ 
 	
-		MessageLog.trace("apply "+setup_name)
+		//MessageLog.trace("apply "+setup_name)
 		
 		var current_setup = this.get_current_setup(setup_name)
 	

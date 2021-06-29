@@ -7,8 +7,8 @@ OO.PortalReader = function(_S){
     this.fetch_portal_modules_from_list = function(_node_list){
 
 		var scene_PSM = []
-		MessageLog.trace("_node_list")
-		MessageLog.trace(_node_list)
+		//MessageLog.trace("_node_list")
+		//MessageLog.trace(_node_list)
 		for(var n = 0 ; n < _node_list.length ; n++){
 			var cnode = $.scene.getNodeByPath(_node_list[n])
 			if(cnode!=null){
@@ -20,7 +20,7 @@ OO.PortalReader = function(_S){
 			}
 
 		}
-		MessageLog.trace(scene_PSM)
+		//MessageLog.trace(scene_PSM)
 		return scene_PSM
 	}
 
@@ -81,7 +81,7 @@ OO.PortalReader = function(_S){
 
 			}
 		
-		MessageLog.trace("load_from_node_list")
+		//MessageLog.trace("load_from_node_list")
 
 	}
 
@@ -93,4 +93,4 @@ OO.PortalReader = function(_S){
 
 }
 
-MessageLog.trace("Class PortalReader");
+//MessageLog.trace("Class PortalReader");

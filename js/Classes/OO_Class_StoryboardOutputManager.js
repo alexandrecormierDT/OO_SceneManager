@@ -50,7 +50,7 @@ OO.StoryboardOutputManager = function (){
 		
 		var episode_data_folder_path = root_folder_path+_data_type+"/"+current_season+"/"+current_episode+"/"
 		
-		MessageLog.trace(episode_data_folder_path);
+		//MessageLog.trace(episode_data_folder_path);
 		
 		return episode_data_folder_path;
 		
@@ -79,13 +79,13 @@ OO.StoryboardOutputManager = function (){
 			
 			var current_wave_file_path = wave_files[w];
 			
-			MessageLog.trace(current_wave_file_path);
+			//MessageLog.trace(current_wave_file_path);
 			
 			var new_voice_track_object = new OO.VoiceTrack(current_wave_file_path);
 			
-			MessageLog.trace("VOICE TRACK : FILE --->"+new_voice_track_object.get_file_name()); 
-			MessageLog.trace("VOICE TRACK : SHOT --->"+new_voice_track_object.get_shot_code()); 
-			MessageLog.trace("VOICE TRACK : CHARACTER --->"+new_voice_track_object.get_character()); 
+			//MessageLog.trace("VOICE TRACK : FILE --->"+new_voice_track_object.get_file_name()); 
+			//MessageLog.trace("VOICE TRACK : SHOT --->"+new_voice_track_object.get_shot_code()); 
+			//MessageLog.trace("VOICE TRACK : CHARACTER --->"+new_voice_track_object.get_character()); 
 			
 			voice_tracks.push(new_voice_track_object);
 			

@@ -81,7 +81,7 @@ OO.LipsDetectionManager = function (){
 		
 		var current_output_path = render_character_lipsdetection_txt_path();
 		
-		MessageLog.trace(current_output_path);
+		//MessageLog.trace(current_output_path);
 		
 		
 		this.generator.set_output_path(current_output_path);
@@ -100,8 +100,8 @@ OO.LipsDetectionManager = function (){
 		
 		var lipsdetection_txt_path = render_character_lipsdetection_txt_path();
 		
-		MessageLog.trace("lipsdetection_txt_path");
-		MessageLog.trace(lipsdetection_txt_path);
+		//MessageLog.trace("lipsdetection_txt_path");
+		//MessageLog.trace(lipsdetection_txt_path);
 		
 		var txt_file_object = new $.oFile(lipsdetection_txt_path);
 		
@@ -113,7 +113,7 @@ OO.LipsDetectionManager = function (){
 			
 		}
 		
-		MessageLog.trace(lipsdetection_txt_path+" does not exists");
+		//MessageLog.trace(lipsdetection_txt_path+" does not exists");
 		
 		return false;
 		

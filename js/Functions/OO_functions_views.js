@@ -81,11 +81,11 @@ function export_asset_png_process(){
 			
 			var user_scale = OO.filter_string(userScale.currentItem)
 
-			MessageLog.trace("export_asset_png_process")
-			MessageLog.trace("user_scale")
-			MessageLog.trace(user_scale)
-			MessageLog.trace("user_png_path")
-			MessageLog.trace(user_png_path)
+			//MessageLog.trace("export_asset_png_process")
+			//MessageLog.trace("user_scale")
+			//MessageLog.trace(user_scale)
+			//MessageLog.trace("user_png_path")
+			//MessageLog.trace(user_png_path)
 
 			
 			

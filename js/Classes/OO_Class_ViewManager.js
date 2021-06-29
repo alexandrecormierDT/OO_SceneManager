@@ -1,6 +1,6 @@
 // CLASS OO_ViewManager
 
-//MessageLog.trace("CLASS OO_ViewManager");
+////MessageLog.trace("CLASS OO_ViewManager");
 
 OO.ViewManager = function(_S){
 
@@ -39,13 +39,13 @@ OO.ViewManager = function(_S){
 
 	this.load = function(_stage){
 		
-			//MessageLog.trace("ViewManager Load");
+			////MessageLog.trace("ViewManager Load");
 		
 			var TLM_list_of_views=_stage.get_TLM();
 			
 			if(TLM_list_of_views.length == 0){
 				
-				//MessageLog.trace('no views detected in the scene');
+				////MessageLog.trace('no views detected in the scene');
 				S.log.add("no views detected" ,"error")
 				MessageBox.warning("no views detected");
 				this.noviews = true;
@@ -178,8 +178,8 @@ OO.ViewManager = function(_S){
 				S.version.set_task_status (CV.task_status );
 
 				var resolutionFactor = CV.resolutionFactor
-				MessageLog.trace("CV.resolutionFactor")
-				MessageLog.trace(CV.resolutionFactor)
+				//MessageLog.trace("CV.resolutionFactor")
+				//MessageLog.trace(CV.resolutionFactor)
 				
 				//for high res images
 				if(resolutionFactor!=1){
@@ -190,10 +190,10 @@ OO.ViewManager = function(_S){
 				
 				//scene.saveAll();
 
-				MessageLog.trace("CV.exportFrame")
-				MessageLog.trace(CV.exportFrame)
-				MessageLog.trace("CV.frameScale")
-				MessageLog.trace(CV.frameScale)
+				//MessageLog.trace("CV.exportFrame")
+				//MessageLog.trace(CV.exportFrame)
+				//MessageLog.trace("CV.frameScale")
+				//MessageLog.trace(CV.frameScale)
 
 				
 				this.export_frame_to_png_with_scale(CV.exportFrame,final_path,CV.frameScale);
@@ -236,10 +236,10 @@ OO.ViewManager = function(_S){
 		var file_test;
 
 		var txt_file  = this.create_image_dimention_txt_for_image_file(_image_file_path);
-		//MessageLog.trace(Object.getOwnPropertyNames(infos) );
+		////MessageLog.trace(Object.getOwnPropertyNames(infos) );
 
-		MessageLog.trace(txt_file);
-		MessageLog.trace(txt_file);
+		//MessageLog.trace(txt_file);
+		//MessageLog.trace(txt_file);
 
 		var dimentions = {
 			height : 10, 

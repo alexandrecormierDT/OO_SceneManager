@@ -123,9 +123,9 @@ OO.SVGReader = function(_S){
 						cadre.bg.width = attr.width
 						cadre.bg.height = attr.height
 
-						MessageLog.trace("cadre")
-						MessageLog.trace(cadre)
-						MessageLog.trace(Object.getOwnPropertyNames(cadre))
+						//MessageLog.trace("cadre")
+						//MessageLog.trace(cadre)
+						//MessageLog.trace(Object.getOwnPropertyNames(cadre))
 					}
 				}				
 			}
@@ -147,4 +147,4 @@ OO.SVGReader = function(_S){
 	
 }
 
-MessageLog.trace("Class SVGReader ");
+//MessageLog.trace("Class SVGReader ");

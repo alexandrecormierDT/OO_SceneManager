@@ -9,8 +9,8 @@ OO.ShotgridReader = function(_S){
     
     function format_out_file_path(_tag){
         var tag = _tag!=undefined ? _tag : "notag"
-        var random_serial = Math.floor(Math.random()*10000000000)
-        var file_name = "sg_request_"+tag+"_"+random_serial+".txt";
+        var random_serial = new Date().getTime()
+        var file_name = "sgrequest_"+tag+"_"+random_serial+".txt";
         var temp_file_path = temp_file_folder_path+"\\"+file_name
         return temp_file_path
     }
@@ -36,6 +36,30 @@ OO.ShotgridReader = function(_S){
             S.log.add(launch+" = process failed","error")
             return false;
         }
+    }
+
+    function send_asset_list_request_for_shot_id(_shot_id){
+        var out_file_path = format_out_file_path(_shot_id)
+        var request_command_line = sg_request_bat_file_path+" -p "+project+" -sid "+_shot_id+" -f asset_list -o "+out_file_path
+		var request_process = new Process2(request_command_line);
+		var launch = request_process.launch();
+		S.log.add("[ShotgridReader] ASSET "+request_command_line,"arguments")
+		if(launch == 0){
+			S.log.add("[ShotgridReader] ASSET "+launch+" = process succeed","success")
+		}else{
+			S.log.add("[ShotgridReader] ASSET "+launch+" = process failed","error")
+		}       
+
+        var file_object = new $.oFile(out_file_path)
+        if(file_object.exists){
+            var file_content = file_object.read()
+            var return_object = JSON.parse(file_content) 
+            return return_object;
+        }else{
+            S.log.add(launch+" = process failed","error")
+            return false;
+        }
+
     }
 
     function  send_asset_request_for_id(_asset_id){
@@ -76,8 +100,8 @@ OO.ShotgridReader = function(_S){
         var file_object = new $.oFile(out_file_path)
         if(file_object.exists){
             var file_content = file_object.read()
-            MessageLog.trace("file_content")
-            MessageLog.trace(file_content)
+            //MessageLog.trace("file_content")
+            //MessageLog.trace(file_content)
             var return_object = JSON.parse(file_content) 
             return return_object[0];
         }else{
@@ -96,6 +120,9 @@ OO.ShotgridReader = function(_S){
 
     this.get_asset_by_code = function(_asset_code){
         return send_asset_request_for_code(_asset_code); 
+    }
+    this.get_asset_list_by_shot_id = function (_shot_id){
+        return send_asset_list_request_for_shot_id(_shot_id); 
     }
 }
 

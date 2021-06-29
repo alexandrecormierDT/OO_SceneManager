@@ -36,7 +36,7 @@ OO.LipsDetectionGenerator = function (){
 
 		var command_string ='"'+rhubarb_path+'" -o "'+output_path+'" "'+source_wave_path+'" -r '+detect_type+' -f dat --datFrameRate '+dat_frame_rate+' --datUsePrestonBlair';
 		
-		MessageLog.trace(command_string);
+		//MessageLog.trace(command_string);
 		
 		return command_string;
 		

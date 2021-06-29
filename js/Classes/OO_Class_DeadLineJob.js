@@ -1,6 +1,6 @@
 // CLASS OO_ASSET
 
-////MessageLog.trace("CLASS OO_ASSET")
+//////MessageLog.trace("CLASS OO_ASSET")
 
 OO.DeadLineJob = function(){
 	
@@ -51,7 +51,7 @@ OO.DeadLineJob = function(){
 
         var content;
         content = "Shell=cmd\nShellExecute=True\nArguments="+command_line_string;
-        MessageLog.trace(content)
+        //MessageLog.trace(content)
 
         return content;
     }

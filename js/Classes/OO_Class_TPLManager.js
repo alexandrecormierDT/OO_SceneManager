@@ -44,7 +44,7 @@ OO.TPLManager = function(_S){
 
 		var passeport = new OO.TPLPassport()
 		passeport.set_file_path(_tpl_file_path+"/tpl_passeport.txt")
-        MessageLog.trace(_tpl_file_path+"/tpl_passeport.txt")
+        //MessageLog.trace(_tpl_file_path+"/tpl_passeport.txt")
 		var tpl_object = passeport.parse_content_to_TPL_object()
 
 		if(tpl_object != false){
@@ -173,7 +173,7 @@ OO.TPLManager = function(_S){
             }
         }    
         for(var d= 0 ; d< differences_object_array.length ; d++){
-            MessageLog.trace(differences_object_array[d].print())
+            //MessageLog.trace(differences_object_array[d].print())
         }
         return differences_object_array
     }
@@ -195,16 +195,16 @@ OO.TPLManager = function(_S){
         copyPaste.setPasteSpecialDrawingFileMode("ONLY_CREATE_IF_DOES_NOT_EXIST")
         copyPaste.setPasteSpecialDrawingAction("ADD_OR_REMOVE_EXPOSURE")
 
-       MessageLog.trace("__________________________")
-       MessageLog.trace(_tpl_obj.get_tpl_folder_path())
-       MessageLog.trace(_tpl_obj.data.start_frame)
-       MessageLog.trace(_tpl_obj.data.number_of_frames)
-       MessageLog.trace(_tpl_obj.data.nodes_path_list)
+       //MessageLog.trace("__________________________")
+       //MessageLog.trace(_tpl_obj.get_tpl_folder_path())
+       //MessageLog.trace(_tpl_obj.data.start_frame)
+       //MessageLog.trace(_tpl_obj.data.number_of_frames)
+       //MessageLog.trace(_tpl_obj.data.nodes_path_list)
 
        var drag_object = copyPaste.copyFromTemplate(_tpl_obj.get_tpl_folder_path(), _tpl_obj.data.start_frame,  _tpl_obj.data.number_of_frames, copyPaste.getCurrentCreateOptions() );
        var copy_process = copyPaste.paste(drag_object,_tpl_obj.data.nodes_path_list,_frame,_tpl_obj.data.number_of_frames,copyPaste.getCurrentPasteOptions() )	
         //copyPaste.paste(dragObject,_tpl_obj.data.nodes_path_list,_frame,1,pasteOptions )	
-        MessageLog.trace(copy_process)
+        //MessageLog.trace(copy_process)
     }
 }
 

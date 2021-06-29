@@ -38,9 +38,9 @@ OO.ElementFolder = function (_folder_path){
 				
 				var current_tvg_file_path = tvg_files[s];
 				var new_tvg_object = new OO.TVG(current_tvg_file_path);
-				MessageLog.trace("SUB NAME --->"+new_tvg_object.get_sub_name()); 
-				MessageLog.trace("TVG NAME --->"+new_tvg_object.get_tvg_name()); 
-				MessageLog.trace("PREFIX NAME --->"+new_tvg_object.get_element_prefix()); 
+				//MessageLog.trace("SUB NAME --->"+new_tvg_object.get_sub_name()); 
+				//MessageLog.trace("TVG NAME --->"+new_tvg_object.get_tvg_name()); 
+				//MessageLog.trace("PREFIX NAME --->"+new_tvg_object.get_element_prefix()); 
 				tvg_object_array.push(new_tvg_object);
 				
 			}

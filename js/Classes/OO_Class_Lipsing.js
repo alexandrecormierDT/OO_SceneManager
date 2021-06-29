@@ -22,7 +22,7 @@ OO.Lipsing = function (){
 		
 		var line_split =lipsdetec_string.split("\n");
 
-		MessageLog.trace(line_split)
+		//MessageLog.trace(line_split)
 		
 		for(var l = 0 ; l < line_split.length ; l++){
 			
@@ -40,8 +40,8 @@ OO.Lipsing = function (){
 			
 		}
 		
-		MessageLog.trace(detected_frames)
-		MessageLog.trace(detected_phonemes)
+		//MessageLog.trace(detected_frames)
+		//MessageLog.trace(detected_phonemes)
 		
 	}
 	

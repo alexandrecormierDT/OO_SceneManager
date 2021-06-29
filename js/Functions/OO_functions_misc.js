@@ -164,7 +164,7 @@ function get_scene_asset_shot_list(){
 	
 	var billy_shot_list = S.assets.get_asset_shot_list("ch_billy");
 	
-	////MessageLog.trace(billy_shot_list);
+	//////MessageLog.trace(billy_shot_list);
 	
 }
 
@@ -197,8 +197,8 @@ function turnoff_burnin(){
 function check_composite_to_2d(){
 	
 	node.setTextAttr("Top/CHECKC", "COMPOSITE_2D", frame.current(),"Y");
-	////MessageLog.trace("COMPOSITE_2D to Y ")
-	////MessageLog.trace(node.getTextAttr("Top/CHECKC", frame.current(),"COMPOSITE_2D"))
+	//////MessageLog.trace("COMPOSITE_2D to Y ")
+	//////MessageLog.trace(node.getTextAttr("Top/CHECKC", frame.current(),"COMPOSITE_2D"))
 	
 }
 
@@ -237,7 +237,7 @@ function deadline_test(){
 
 function batch_fix_camera_and_animatic_z(){
 	
-	//MessageLog.trace("SETTING CAMERA Z TO 12 AND SCALING ANIMATIC TO 0.5"); 
+	////MessageLog.trace("SETTING CAMERA Z TO 12 AND SCALING ANIMATIC TO 0.5"); 
 	
 	var camera_path = "Top/Camera"; 
 	var animatic_path = "Top/Animatic"; 
@@ -263,5 +263,5 @@ function sg_request_test(){
 	var S = new OO.SceneManager();
 	S.breakdown.load_current_shot_breakdown()
 	S.breakdown.print_current_shot_infos()
-	MessageLog.trace(S.breakdown.get_asset_list())
+	//MessageLog.trace(S.breakdown.get_asset_list())
 }
