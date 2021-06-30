@@ -93,12 +93,11 @@ function import_library_posing_for_selected_asset_dialog(){
 
 	for(var p = 0 ; p < asset_posing_obj_array.length ; p++){
 		posing_names_string_array[p] = asset_posing_obj_array[p].get_suffix()
-		//posing_names_string_array[p] = asset_posing_obj_array[p].get_name()
 	}
 
 	var d = new Dialog
 	d.title = "IMPORT POSING";
-	d.width = 200;
+	d.width = 300;
 
 	var SELECTED_POSING = new ComboBox();
 	SELECTED_POSING.label = "POSING LIST : ";

@@ -2,7 +2,7 @@ OO.ShotgridReader = function(_S){
 
     var S = _S; 
     var sg_request_bat_file_path = "P:\\projects\\billy\\marc_to_alex\\sg_requests\\sg_request.bat"
-    var temp_file_folder_path = "P:\\pipeline\\temp\\sg_request"
+    var temp_file_folder_path = "P:\\projects\\billy\\logs\\sg_request"
 
     //var project = S.get_current_project();
     var project = "billy"
