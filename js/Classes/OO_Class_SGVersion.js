@@ -92,23 +92,22 @@ OO.SGVersion = function(_S){
 
 		//MessageLog.trace(render_and_upload_movie_command)
 		S.log.add(render_and_upload_movie_command,"arguments")
-		//S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
+		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
 
-		var process_render_movie = new Process2(render_and_upload_movie_command);
+		/*var process_render_movie = new Process2(render_and_upload_movie_command);
 		var launch = process_render_movie.launchAndDetach();
 		
 		if(launch == 0){
 			S.log.add(launch+" = upload succeed","success")
 		}else{
 			S.log.add(launch+" = upload failed","error")
-		}
+		}*/
 	}
 
 	this.render_and_upload_movie_as_version_with_deadline = function(){
 
 		S.log.add("render_and_upload_movie_as_version","script")
 		format_render_and_upload_command_string();
-		//MessageLog.trace(render_and_upload_movie_command)
 		S.log.add(render_and_upload_movie_command,"arguments")
 		S.deadline.submit_command_line_job(render_and_upload_movie_command,version_name);
 
@@ -118,7 +117,6 @@ OO.SGVersion = function(_S){
 		
 		S.log.add("render_and_upload_movie_as_version","script")
 		format_render_and_upload_command_string();
-		//MessageLog.trace(render_and_upload_movie_command)
 
 		S.log.add(render_and_upload_movie_command,"arguments")
 		
@@ -141,13 +139,8 @@ OO.SGVersion = function(_S){
 		
 		format_movie_upload_command_string()
 		
-		//MessageLog.clearLog();
-		//MessageLog.trace(movie_upload_command)
 		var process_movie = new Process2(movie_upload_command);
-
-		//MessageLog.trace(process_movie.launch());
-		//MessageLog.trace(process_movie.errorMessage());
-		//MessageLog.trace(process_movie);		
+	
 
 		S.log.add("TBMOVIEUPLAOD","start")
 		S.log.add(movie_upload_command,"arguments")

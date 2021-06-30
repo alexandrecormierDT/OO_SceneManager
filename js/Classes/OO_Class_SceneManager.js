@@ -32,9 +32,12 @@ OO.SceneManager = function(){
 
 
 	this.get_current_project = function(){
-
 		return "billy";
+	}
 
+	this.get_current_user_name = function(){
+		user_name = System.getenv("USERNAME");
+		return user_name;
 	}
 
 	this.get_unique_id = function(){
