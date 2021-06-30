@@ -19,7 +19,7 @@ OO.TPLManager = function(_S){
              export_process = false;
 
              //if the tpl is a master (in case of a portal for exemeple) we export the group rather than the sub nodes. 
-            if(_TPLOBJECT.data.group_path!=null || _TPLOBJECT.data.tpl_type == "master"){
+            if(_TPLOBJECT.data.group_path!=null && _TPLOBJECT.data.tpl_type == "master"){
                 export_process = S.trees.export_group_to_path(_TPLOBJECT.data.group_path,_TPLOBJECT.data.folder_path,_TPLOBJECT.data.name+".tpl")
             }else{
                 export_process = S.trees.export_group_to_path(_TPLOBJECT.data.nodes_path_list,_TPLOBJECT.data.folder_path,_TPLOBJECT.data.name+".tpl")
@@ -195,16 +195,10 @@ OO.TPLManager = function(_S){
         copyPaste.setPasteSpecialDrawingFileMode("ONLY_CREATE_IF_DOES_NOT_EXIST")
         copyPaste.setPasteSpecialDrawingAction("ADD_OR_REMOVE_EXPOSURE")
 
-       //MessageLog.trace("__________________________")
-       //MessageLog.trace(_tpl_obj.get_tpl_folder_path())
-       //MessageLog.trace(_tpl_obj.data.start_frame)
-       //MessageLog.trace(_tpl_obj.data.number_of_frames)
-       //MessageLog.trace(_tpl_obj.data.nodes_path_list)
-
        var drag_object = copyPaste.copyFromTemplate(_tpl_obj.get_tpl_folder_path(), _tpl_obj.data.start_frame,  _tpl_obj.data.number_of_frames, copyPaste.getCurrentCreateOptions() );
-       var copy_process = copyPaste.paste(drag_object,_tpl_obj.data.nodes_path_list,_frame,_tpl_obj.data.number_of_frames,copyPaste.getCurrentPasteOptions() )	
-        //copyPaste.paste(dragObject,_tpl_obj.data.nodes_path_list,_frame,1,pasteOptions )	
-        //MessageLog.trace(copy_process)
+       var paste_process = copyPaste.paste(drag_object,_tpl_obj.data.nodes_path_list,_frame,_tpl_obj.data.number_of_frames,copyPaste.getCurrentPasteOptions() )	
+    
+       S.log.add("[TPLManager] paste_process "+paste_process,"process")
     }
 }
 

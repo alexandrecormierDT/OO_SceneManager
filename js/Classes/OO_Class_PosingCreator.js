@@ -12,6 +12,7 @@ OO.PosingCreator = function(_S){
     var current_start_frame = 1;
     var current_number_of_frames = 1;
     var current_frame = 1;
+    var current_nodes_path_array;
 
 
     this.reset = function(){
@@ -81,12 +82,12 @@ OO.PosingCreator = function(_S){
     }
 
     function create_rigstate_from_node_path_array_for_frame(_frame){
-        var nodes_path = filter_types(current_nodes_path_array)
+       // var nodes_path = filter_types(current_nodes_path_array)
         var RS = new RigState(current_name,_frame);
-        for(var n = 0 ; n < nodes_path.length ; n++){
-            var current_node_path = nodes_path[n];
+        for(var n = 0 ; n < current_nodes_path_array.length ; n++){
+            var current_node_path = current_nodes_path_array[n];
             var attributes_list = node.getAllAttrKeywords(current_node_path)
-            attributes_list.push("DRAWING.ELEMENT")	
+            //attributes_list.push("DRAWING.ELEMENT")	
             RS.addNodeAttrList(current_node_path, attributes_list,_frame);
         }
         return RS;

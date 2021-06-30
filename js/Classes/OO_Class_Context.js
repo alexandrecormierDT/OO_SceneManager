@@ -229,6 +229,8 @@ OO.Context = function (_S,_type){
 				}
 			}
 
+
+
 		return data; 
 
 	}
@@ -258,9 +260,12 @@ OO.Context = function (_S,_type){
 		var scene_split = this.breakdown_scene_path();
 		var scene_name = scene_split[scene_split.length-1] 
 		var name_split = scene_name.split("_");
-		var episode = name_split[0];
-		return episode;
-
+		if(name_split.length>1){
+			var episode = name_split[0];
+			return episode;
+		}else{
+			return false;
+		}
 	}
 	
 	this.get_shot_code_from_scene_name = function(){

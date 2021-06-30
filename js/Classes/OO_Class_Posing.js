@@ -30,6 +30,8 @@ OO.Posing = function (_posing_name){
     var tpl_object = null
 
 
+
+
     this.set_posing_name = function(_pn){
         posing_name = _pn
     }
@@ -42,15 +44,14 @@ OO.Posing = function (_posing_name){
         return nodes_path_array;
     }
     this.get_read_nodes_path_array =function(){
-        return read_nodes_path_array;
+        return  get_nodes_path_by_type("READ")
     }
 
     function get_nodes_path_by_type(_node_type){
-        var types_to_include = [_node_type]
         var filtered_array = []
         for(var n = 0 ; n < nodes_path_array.length ; n++){
             var current_node_path = nodes_path_array[n]
-            if(types_to_include.indexOf(node.type(current_node_path))!=-1){
+            if(node.type(current_node_path)==_node_type){
                 filtered_array.push(current_node_path)
             }
         }
@@ -89,6 +90,14 @@ OO.Posing = function (_posing_name){
     this.get_name = function(){
         return posing_name
     }
+
+    this.get_suffix = function(){
+
+        var split_code = posing_name.split(asset_code+"_")
+        var last = split_code[split_code.length-1]
+        return last
+    }
+
     this.get_file_path = function(_file_type,_index){
         var index = _index != undefined ? _index : 0
         var file_path ="";

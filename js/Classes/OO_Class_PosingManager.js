@@ -6,12 +6,16 @@ OO.PosingManager = function(_S){
     this.apply_posing_at_frame = function(_posing_object,_first_frame){
 
         var posing_tpl = S.tpl.parse_tpl_file_to_tpl_object(_posing_object.get_file_path("tpl"))
+        MessageLog.trace(posing_tpl.data.nodes_path_list)
         S.tpl.paste_action_tpl_to_frame(posing_tpl,_first_frame)
+        S.log.add("[PosingManager] pasting tpl "+posing_tpl.data.tpl_id+"  "+_first_frame,"info")
 
         _posing_object.set_start_frame(posing_tpl.data.tart_frame)
         _posing_object.set_number_of_frames(posing_tpl.data.number_of_frames)
+
         for(var index = 0 ; index < posing_tpl.data.number_of_frames; index++){
             _posing_object.apply_rigstate_at_frame(_first_frame+index,index);
+           S.log.add("[PosingManager] parsing tbstates "+index,"info")
         }
     }
 

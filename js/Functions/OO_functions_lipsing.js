@@ -40,9 +40,11 @@ function autolips_dialog(){
 
 	if ( d.exec() ){
 
+		
 		var selected_character = INPUT_CHARACTER.currentItem;
 		var selected_emotion = INPUT_EMOTION.currentItem;	
-
+		
+		generate_shot_lipsdetection_for_character(selected_character)
 		//scene context (to replace with shotgun real infos) 
 		
 		var S = new OO.SceneManager();
@@ -80,8 +82,8 @@ function generate_shot_lipsdetection_for_character(_character){
 	
 	S.context = new OO.Context(this,"Shotgun");	
 	
-	var current_episode = S.context.get_episode();
 	var current_shot = S.context.get_shot();
+	var current_episode = S.context.get_episode();
 	var current_character = _character;
 	
 	var storyboard_outputs = new OO.StoryboardOutputManager()

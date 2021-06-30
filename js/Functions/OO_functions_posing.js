@@ -92,7 +92,8 @@ function import_library_posing_for_selected_asset_dialog(){
 	var posing_names_string_array = []
 
 	for(var p = 0 ; p < asset_posing_obj_array.length ; p++){
-		posing_names_string_array[p] = asset_posing_obj_array[p].get_name()
+		posing_names_string_array[p] = asset_posing_obj_array[p].get_suffix()
+		//posing_names_string_array[p] = asset_posing_obj_array[p].get_name()
 	}
 
 	var d = new Dialog
