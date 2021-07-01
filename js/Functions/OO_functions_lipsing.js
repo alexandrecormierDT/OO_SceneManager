@@ -83,6 +83,7 @@ function generate_shot_lipsdetection_for_character(_character){
 	S.context = new OO.Context(this,"Shotgun");	
 	
 	var current_shot = S.context.get_shot();
+	//var current_episode = S.context.get_episode();
 	var current_episode = S.context.get_episode();
 	var current_character = _character;
 	

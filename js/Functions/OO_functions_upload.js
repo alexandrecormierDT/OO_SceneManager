@@ -93,6 +93,7 @@ function upload_render_as_SG_version_dialog(){
 		scene.saveAll();
 
 		S.version.render_and_upload_movie_as_version_detached()
+		//S.version.render_and_upload_movie_as_version_detache_with_dead_line()
 
 		S.log.save();
 		S.log.set_script_tag("OO_upload_render_as_SG_version_dialog"); 
@@ -110,7 +111,6 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	
 	var S = new OO.SceneManager();	
 	S.log.create_new_log_file("P:/projects/billy/pre_shotgun/batch_pool/logs/upload_render_as_SG_version.html");
-
 	S.log.add("upload_render_as_SG_version_for_task","script");
 	S.log.add(_task_name,"script");
 	S.log.add(_version_suffix,"script");
@@ -169,7 +169,6 @@ function upload_bg_preview_to_SG(){
 function upload_layout_preview_to_SG(){
 	
 	var log_object = upload_render_as_SG_version_for_task('layout_bg','bab'); 
-	
 	log_object.set_script_tag("OO_upload_layout_preview_to_SG"); 
 	log_object.create_scene_script_log_file_and_folder(); 
 	log_object.save_scene_script_log_file(); 	

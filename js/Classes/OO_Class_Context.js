@@ -104,16 +104,13 @@ OO.Context = function (_S,_type){
 	}
 
 	function is_inside_the_vault(){
-		
 		var scene_path = scene.currentProjectPathRemapped()
 		var slash_split = scene_path.split("\\");
 
 		if(slash_split[0] == "P:" && slash_split[1] == ".vault"){
 			return true; 
 		}
-		
 		return false;
-		
 	}
 	
 	
@@ -136,6 +133,8 @@ OO.Context = function (_S,_type){
 		// 0  1          2      3      4        5      6             7   8             9           10   11
 		
 		// SHOT
+
+		//P:\projects\billy\pre_shotgun\batch_pool\xstages\test_scenes\batch
 		
 		// P:/projects/billy/pre_production_test/pipeline_dev/seuqence_test/ep222_pl001/animation/work/a-cormier/toonboom/scenes
 		// 0    1        2        3                4              5             6            7       8     9        10      11
@@ -186,7 +185,7 @@ OO.Context = function (_S,_type){
 				
 				this.entity = "shot"; 
 			
-				if(scene_path[3] == "pre_shotgun"){
+				if(scene_path[3] == "pre_shotgun" ||scene_path[3] == "anim" ){
 					
 					//P:/projects/billy/pre_shotgun/batch_pool/xstages/saison1/ep101/ep101_pl105_animatic_v001
 					//0  1          2      3           4          5       6       7    8 
@@ -194,11 +193,14 @@ OO.Context = function (_S,_type){
 					this.project = scene_path[2];
 					this.division = scene_path[6];
 					this.episode = scene_path[7];
-					this.shot_code = scene_path[6];						
+					this.saison = scene_path[6];						
 					this.scene_folder = scene_path[8];	
 					this.shot_code = this.get_shot_code_from_scene_name();
 					
-				
+					MessageLog.trace("this.shot_code")
+					MessageLog.trace(this.shot_code)
+					MessageLog.trace("scene_path[6]")
+					MessageLog.trace(scene_path[6])
 					
 				}else{
 					
@@ -275,6 +277,7 @@ OO.Context = function (_S,_type){
 		var scene_name = scene_split[scene_split.length-1] 
 		var name_split = scene_name.split("_");
 		var shot_code = name_split[0]+"_"+name_split[1];
+		MessageLog.trace( name_split[0]+""+name_split[1]+""+name_split[2])
 		return shot_code;
 	}
 	
@@ -292,7 +295,10 @@ OO.Context = function (_S,_type){
 	}	
 
 	this.get_shot = function(){
+
 		this.set_from_scene_path();
+		//S.log.add("[Context] current shot : ( "+this.shot_code+" ) ","info")
+		MessageLog.trace(this.shot_code)
 		return this.shot_code;
 	}
 	
@@ -460,8 +466,6 @@ OO.Context = function (_S,_type){
 		}			
 		
 		var task_dir_path = VAULT_PATH+"/assets/"+dir_type+"/"+asset_type+"/default/"+asset_code+"/"+task+"/"
-
-		//MessageLog.trace(task_dir_path)
 
 		var task_folder = new $.oFolder(task_dir_path);
 		

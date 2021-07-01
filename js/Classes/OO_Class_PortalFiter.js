@@ -10,6 +10,17 @@ OO.PortalFiter  = function(_S){
 
     }
 
+
+    this.get_current_cadre = function(_portal){
+
+        var psd_path = _portal.get_path('psd');
+        var psd_object = new OO.PSD(psd_path)
+        var cadre =  psd_object.get_cadre_object_for_shot(current_shot)
+
+
+
+    }
+
     this.fit_portal_to_camera = function(_portal){
 
         var svg_path =_portal.get_path('svg');
@@ -24,6 +35,7 @@ OO.PortalFiter  = function(_S){
         //we instaciate the cadre class
         S.svg_reader.set_path(svg_path);
         var shot_cadre = S.svg_reader.get_layout_cadre_for_shot(current_shot)
+       // var shot_cadre = this.get_current_cadre(_portal)
 
         //fetch portal nodes
         var current_portal_tree =_portal.get_tree()

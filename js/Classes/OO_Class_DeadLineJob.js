@@ -7,13 +7,11 @@ OO.DeadLineJob = function(){
     var xstage_path =""; 
     var command_line_string = ""; 
 
-    var jobs_file_temp_folder = "P:\\pipeline\\alexdev\\temp";
+    var jobs_file_temp_folder = System.getenv("TEMP");
     //var dead_line_path = "%DEADLINE_PATH%\\deadlinecommand.exe";
     var deadLine_root_path  = System.getenv("DEADLINE_PATH");
     var dead_line_path = deadLine_root_path+"\\deadlinecommand.exe";
     var deadline_web_server_root = "http://deadline:8081/"
-
-    var user_name = System.getenv("USERNAME");
 
     var job_info_file_path = ""; 
     var plugin_info_file_path = ""; 
