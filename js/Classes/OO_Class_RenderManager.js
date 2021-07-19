@@ -7,17 +7,11 @@ OO.RenderManager = function(_S){
 	var S = _S;
 	
 	var movie_writer_node_path = "Top/RENDER_MOV"; 
-	
 	var frames_writer_node_path = "Top/RENDER_FRAMES"; 
-	
 	var movie_render_path = ""; 
-	
 	var frames_render_path = ""; 
-	
-	var movie_format; 
-	
+	var movie_format;
 	var frames_format; 
-	
 	var movie_name;
 	
 	
@@ -44,7 +38,6 @@ OO.RenderManager = function(_S){
 	this.set_movie_render_path_to_frames_folder_with_name = function (_name){
 		
 		movie_name = _name;
-		
 		movie_render_path = get_scene_frames_folder()+_name; 
 		
 	}
@@ -114,6 +107,12 @@ OO.RenderManager = function(_S){
 		
 	}
 
+	this.set_movie_format_to_HD264 = function(){
+
+		// MOVIE_FORMAT = com.toonboom.mp4.1.0
+		node.setTextAttr(movie_writer_node_path, "MOVIE_FORMAT",1,"com.toonboom.mp4.1.0");
+
+	}
 
 }
 

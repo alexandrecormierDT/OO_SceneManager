@@ -73,6 +73,7 @@ function upload_render_as_SG_version_dialog(){
 		
 		var formated_version_name = selected_shot_name+"_"+selected_task_name+"_"+selected_version_suffix+"_"+get_unique_id();
 		
+		S.render.set_movie_format_to_HD264()
 		S.render.set_movie_render_path_to_frames_folder_with_name(formated_version_name);
 		S.render.update_write_movie_render_path();
 
@@ -124,6 +125,7 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	var task_name = _task_name
 	var task_status = "pdr"
 
+	S.render.set_movie_format_to_HD264()
 	S.render.set_movie_render_path_to_frames_folder_with_name(version_name);
 	S.render.update_write_movie_render_path();
 		
