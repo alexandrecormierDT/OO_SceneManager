@@ -17,6 +17,8 @@ OO.HeadAngle = function (){
 	this.fetch_head_layer_path_in_source_group = function(){
 		
 		head_layer_path = source_group+"/TETE";
+		MessageLog.trace("head_layer_path")
+		MessageLog.trace(head_layer_path)
 		
 	}
 	

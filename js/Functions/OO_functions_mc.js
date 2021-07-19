@@ -47,8 +47,7 @@ function show_current_angle_eye_mc(){
 
 	var S = new OO.SceneManager();	
 	
-	try{
-	
+
 		var snodes = selection.selectedNodes(); 
 		
 		var first_selected_node = snodes[0];
@@ -64,6 +63,9 @@ function show_current_angle_eye_mc(){
 		head_angle_object.fetch_head_layer_path_in_source_group();	
 		
 		var current_head_angle = head_angle_object.get_head_angle_at_frame(frame.current())
+
+		MessageLog.trace("current_head_angle");
+		MessageLog.trace(current_head_angle);
 		
 		var mc_node_path = character_group+"/mc_LOOK_"+current_head_angle;
 		
@@ -77,12 +79,7 @@ function show_current_angle_eye_mc(){
 		var eye_mc = new OO.MasterControler(mc_node_path);
 		eye_mc.show_controls();
 
-	}catch(error){
 
-		
-	}
-
-	
 	
 }
 
