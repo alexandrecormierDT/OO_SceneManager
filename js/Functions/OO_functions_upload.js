@@ -71,7 +71,7 @@ function upload_render_as_SG_version_dialog(){
 		var selected_task_name = sanitizer.clean_string_for_command_line(INPUT_TASK_NAME.currentItem)
 		var selected_task_status = sanitizer.clean_string_for_command_line(INPUT_TASK_STATUS.currentItem)
 		
-		var formated_version_name = selected_shot_name+"_"+selected_task_name+"_"+selected_version_suffix
+		var formated_version_name = selected_shot_name+"_"+selected_task_name+"_"+selected_version_suffix+"_"+get_unique_id();
 		
 		S.render.set_movie_render_path_to_frames_folder_with_name(formated_version_name);
 		S.render.update_write_movie_render_path();
@@ -93,7 +93,7 @@ function upload_render_as_SG_version_dialog(){
 		scene.saveAll();
 
 		S.version.render_and_upload_movie_as_version_detached()
-		//S.version.render_and_upload_movie_as_version_detache_with_dead_line()
+		//S.version.render_and_upload_movie_as_version_detached_with_dead_line()
 
 		S.log.save();
 		S.log.set_script_tag("OO_upload_render_as_SG_version_dialog"); 
@@ -120,7 +120,7 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	S.context.set_from_scene_path();
 
 	var shot_code = S.context.get_shot()
-	var version_name = shot_code+"_"+_task_name+"_"+_version_suffix;
+	var version_name = shot_code+"_"+_task_name+"_"+_version_suffix+"_"+get_unique_id();
 	var task_name = _task_name
 	var task_status = "pdr"
 
@@ -144,8 +144,8 @@ function upload_render_as_SG_version_for_task(_task_name,_version_suffix){
 	scene.saveAll();
 
 
-	S.version.render_and_upload_movie_as_version_with_deadline()
-	//S.version.render_and_upload_movie_as_version()
+	//S.version.render_and_upload_movie_as_version_with_deadline()
+	S.version.render_and_upload_movie_as_version()
 
 	S.log.save();
 

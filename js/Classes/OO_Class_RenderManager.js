@@ -114,7 +114,21 @@ OO.RenderManager = function(_S){
 		
 	}
 	
-	
+	this.get_unique_rendered_movie_path = function(){
+		
+		var serial = get_unique_id()
+		return movie_render_path+"_"+serial+".mov";	
+		
+	}	
+
+    function get_unique_id(){
+
+		var k = Math.floor(Math.random() * 10000000);
+		var m =k.toString();	
+		return m ;
+
+
+    }
 }
 
 

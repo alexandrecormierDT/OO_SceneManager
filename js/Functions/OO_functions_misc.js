@@ -42,9 +42,14 @@ function log_test(){
 }
 
 
+function get_unique_id(){
+
+	var k = Math.floor(Math.random() * 10000000);
+	var m =k.toString();	
+	return m ;
 
 
-
+}
 
 
 
@@ -264,4 +269,14 @@ function sg_request_test(){
 	S.breakdown.load_current_shot_breakdown()
 	S.breakdown.print_current_shot_infos()
 	//MessageLog.trace(S.breakdown.get_asset_list())
+}
+
+function get_time_stamp_string(){
+			
+	var ts = Math.round(+new Date() / 10)+""
+	//we keep it short
+	var str = ts.substring(5);
+	var str = ts
+	return str;			
+	
 }
