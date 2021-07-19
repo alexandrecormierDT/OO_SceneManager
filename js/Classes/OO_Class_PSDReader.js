@@ -18,19 +18,22 @@ OO.PSDReader= function (_S){
 	}
 
 	function get_json_object(){
+
 		var path = format_json_path()
 		json_file_object = new $.oFile(path);
-		MessageLog.trace(path)
 		var file_content = ""; 
 		var return_object  = false; 
+		
 		if(json_file_object.exists==true){
 			file_content = json_file_object.read()
 			return_object = JSON.parse(file_content)
 		}else{
-			if(create_json()){
+			create_json()
+			if(json_file_object.exists==true){
 				file_content = json_file_object.read()
-				return_object = JSON.parse(file_content)				
-			}
+				return_object = JSON.parse(file_content)	
+			}			
+		
 		}
 		return return_object
 	}
@@ -112,7 +115,8 @@ OO.PSDReader= function (_S){
 		var command_line = format_convert_command_line()
 		var conversion_process = new Process2(format_convert_command_line())
 		var launch = conversion_process.launch()
-		MessageLog.trace("ARGUMENTS "+command_line)
+		S.log.add(command_line,'arguments')
+		
         if(launch==0){
             return true
         }else{

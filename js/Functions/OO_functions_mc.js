@@ -44,34 +44,43 @@ function add_sub_folder_to_selected_mcs_dialog(){
 ==================================================================================================================================================================*/
 
 function show_current_angle_eye_mc(){
+
+	var S = new OO.SceneManager();	
 	
-	var snodes = selection.selectedNodes(); 
+	try{
 	
-	var first_selected_node = snodes[0];
-	
-	var character_detector = new OO.CharacterDetector()
-	character_detector.set_source_layer_path(first_selected_node)
-	var detected_character = character_detector.get_character();	
-	
-	var character_group = character_detector.get_character_group()
-	
-	var head_angle_object = new OO.HeadAngle(); 
-	head_angle_object.set_source_group(character_group);
-	head_angle_object.fetch_head_layer_path_in_source_group();	
-	
-	var current_head_angle = head_angle_object.get_head_angle_at_frame(frame.current())
-	
-	var mc_node_path = character_group+"/mc_LOOK_"+current_head_angle;
-	
-	//MessageLog.trace("mc_node_path");
-	//MessageLog.trace(mc_node_path);
-	
-	var MCM = new OO.MCManager();
-	MCM.fetch_scene_mcs(); 
-	MCM.hide_all_mcs(); 
-	
-	var eye_mc = new OO.MasterControler(mc_node_path);
-	eye_mc.show_controls();
+		var snodes = selection.selectedNodes(); 
+		
+		var first_selected_node = snodes[0];
+		
+		var character_detector = new OO.CharacterDetector()
+		character_detector.set_source_layer_path(first_selected_node)
+		var detected_character = character_detector.get_character();	
+		
+		var character_group = character_detector.get_character_group()
+		
+		var head_angle_object = new OO.HeadAngle(); 
+		head_angle_object.set_source_group(character_group);
+		head_angle_object.fetch_head_layer_path_in_source_group();	
+		
+		var current_head_angle = head_angle_object.get_head_angle_at_frame(frame.current())
+		
+		var mc_node_path = character_group+"/mc_LOOK_"+current_head_angle;
+		
+		MessageLog.trace("mc_node_path");
+		MessageLog.trace(mc_node_path);
+		
+		var MCM = new OO.MCManager();
+		MCM.fetch_scene_mcs(); 
+		MCM.hide_all_mcs(); 
+		
+		var eye_mc = new OO.MasterControler(mc_node_path);
+		eye_mc.show_controls();
+
+	}catch(error){
+
+		
+	}
 
 	
 	

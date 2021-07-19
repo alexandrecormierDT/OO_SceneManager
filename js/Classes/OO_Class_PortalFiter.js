@@ -47,7 +47,7 @@ OO.PortalFiter  = function(_S){
         var portal_peg = current_portal_tree.get_key_node("PORTAL_PEG");
 
         //we apply the transformation
-        if(shot_cadre != false){
+        if(shot_cadre != false && shot_cadre != undefined){
             if(shot_cadre.has_rect()==true){
                 this.transform_peg_to_fit_cadre(portal_peg,shot_cadre);
                 S.log.add("[PortalFiter] portal fit to camera ","success");				
