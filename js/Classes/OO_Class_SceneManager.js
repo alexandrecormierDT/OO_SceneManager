@@ -24,6 +24,7 @@ OO.SceneManager = function(){
 	this.version = new OO.SGVersion(this);
 	this.deadline = new OO.DeadLineJobSubmiter(this);
 	this.svg_reader = new OO.SVGReader(this);
+	this.psd_reader = new OO.PSDReader(this);
 	this.scene_settings = ""; 
 	this.psd_importer = new OO.PSDImporter(this)
 	this.tpl = new OO.TPLManager(this)

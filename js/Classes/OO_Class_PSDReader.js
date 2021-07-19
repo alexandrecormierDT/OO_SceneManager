@@ -1,20 +1,26 @@
 // CLASS OO_PSD
 
 
-OO.PSD = function (_psd_file_path){
+OO.PSDReader= function (_S){
 
-	var psd_file_path = _psd_file_path;
+	var S = _S
+	var psd_file_path = "";
 	var read_image_info_bat = "P:\\pipeline\\alexdev\\"+FOLDER+"\\OO_SceneManager_"+FOLDER+"\\bin\\read_psd.bat";
 	var convert_psd_to_json_bat_file = "P:\\pipeline\\alexdev\\"+FOLDER+"\\OO_SceneManager_"+FOLDER+"\\bin\\convert_psd_to_json.bat"
 	var layer_objects_table = []
 
-	this.get_psd_layer_object_array = function(){
+	this.set_path =function(_path){
+		psd_file_path = _path
+	}
 
+	this.get_psd_layer_object_array = function(){
 		return parse_layers_object_from_json()
 	}
 
 	function get_json_object(){
-		json_file_object = new $.oFile(format_json_path());
+		var path = format_json_path()
+		json_file_object = new $.oFile(path);
+		MessageLog.trace(path)
 		var file_content = ""; 
 		var return_object  = false; 
 		if(json_file_object.exists==true){
@@ -33,9 +39,8 @@ OO.PSD = function (_psd_file_path){
 		var layer_list_object = get_json_object()
 		layer_objects_table = []
 		for(var l = 0 ; l < layer_list_object.length ; l++){
-			MessageLog.trace(layer_list_object[l])
 			var nlayer = new OO.PSDLayer(layer_list_object[l].layer_name)
-			var geometry = parse_object_from_geometry_string(layer_list_object[l].geometry)
+			var geometry = parse_object_from_geometry_string(layer_list_object[l].geometry+'')
 			nlayer.x = geometry.x
 			nlayer.y = geometry.y
 			nlayer.width = geometry.width
@@ -53,57 +58,61 @@ OO.PSD = function (_psd_file_path){
 
 		//10927x4316+0+0
 		//10927x4316-0+0
+		if(_str!=undefined){
 
-		var cutin = 0;
-		var cutout = 0; 
-		var separators = ["x","-","+"]
-		var splits = []
-    	var sign = ""
-		for(var i = 0 ; i < _str.length ; i++){
-			var current_char = _str[i]
-			var cutted_string = ""
-			if(separators.indexOf(current_char)!=-1){
-				cutout = i
-				cutted_string= sign+_str.substring(cutin,cutout);
-				splits.push(cutted_string);
-				cutin=cutout+1;
-				if(current_char=="-"){
-					sign="-"
-				}else{
-					sign=""
+			var cutin = 0;
+			var cutout = 0; 
+			var separators = ["x","-","+"]
+			var splits = []
+			var sign = ""
+			for(var i = 0 ; i < _str.length ; i++){
+				var current_char = _str[i]
+				var cutted_string = ""
+				if(separators.indexOf(current_char)!=-1){
+					cutout = i
+					cutted_string= sign+_str.substring(cutin,cutout);
+					splits.push(cutted_string);
+					cutin=cutout+1;
+					if(current_char=="-"){
+						sign="-"
+					}else{
+						sign=""
+					}
+				}
+				if(i==_str.length-1){
+					cutout = i+1
+					cutted_string= sign+_str.substring(cutin,cutout);
+					splits.push(cutted_string);    	
 				}
 			}
-			if(i==_str.length-1){
-				cutout = i+1
-				cutted_string= sign+_str.substring(cutin,cutout);
-				splits.push(cutted_string);    	
+
+			var obj = {
+				width : parseInt(splits[0]),
+				height: parseInt(splits[1]),
+				x: parseInt(splits[2]),
+				y: parseInt(splits[3])
 			}
+
+			MessageLog.trace("obj.x")
+			MessageLog.trace(obj.x)
+			MessageLog.trace("obj.y")
+			MessageLog.trace(obj.y)
+			return obj
 		}
 
-		var obj = {
-			width : parseInt(splits[0]),
-			height: parseInt(splits[1]),
-			x: parseInt(splits[2]),
-			y: parseInt(splits[3])
-		}
 
-
-		MessageLog.trace(splits[0])
-		MessageLog.trace(splits[1])
-		MessageLog.trace(splits[2])
-		MessageLog.trace(splits[3])
-
-		return obj
 	}
 
 	function format_convert_command_line(){
-		var command_string = convert_psd_to_json_bat_file+" "+psd_file_path; 
+		var command_string = convert_psd_to_json_bat_file+' "'+psd_file_path+'"'; 
 		return command_string;
 	}
 
 	function create_json(){
+		var command_line = format_convert_command_line()
 		var conversion_process = new Process2(format_convert_command_line())
 		var launch = conversion_process.launch()
+		MessageLog.trace("ARGUMENTS "+command_line)
         if(launch==0){
             return true
         }else{
@@ -119,19 +128,26 @@ OO.PSD = function (_psd_file_path){
 		}else{
 			return false;
 		}
-	
+	}
+
+	function assert_png_path(){
+
+		return  psd_file_path.split(".")[0]+".png";
 	}
 
 	this.get_cadre_object_for_shot_code = function(_shot_code){
-        var ncadre = new OO.Cadre(_shot_code)
 		var layer_object = this.get_layer_object_by_name(_shot_code)
-		var png_object = new OO.ImageFile(); 
+		var canvas_layer = this.get_layer_object_by_name("")
 		if(layer_object!=false){
-
-
+			var ncadre = new OO.Cadre(_shot_code)
+			ncadre.bg.width =canvas_layer.width
+			ncadre.bg.height =canvas_layer.height
+			ncadre.rect.width = layer_object.width
+			ncadre.rect.height = layer_object.height
+			ncadre.rect.x = layer_object.x
+			ncadre.rect.y = layer_object.y
 			return ncadre
 		}
-
 	}
 }
 
