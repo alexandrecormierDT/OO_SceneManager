@@ -190,7 +190,7 @@ OO.TPLManager = function(_S){
         copyPaste.setPasteSpecialFullTransfer(true);
     
         // make sure that we do not paste any palettes (as requested).
-        copyPaste.setPasteSpecialColorPaletteOption( "REUSE_PALETTES" );
+        //copyPaste.setPasteSpecialColorPaletteOption( "REUSE_PALETTES" );
         copyPaste.setPasteSpecialColorPaletteOption( "DO_NOTHING" );
         copyPaste.setPasteSpecialDrawingFileMode("ONLY_CREATE_IF_DOES_NOT_EXIST")
         copyPaste.setPasteSpecialDrawingAction("ADD_OR_REMOVE_EXPOSURE")

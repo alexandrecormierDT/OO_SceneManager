@@ -23,6 +23,9 @@ OO.CharacterDetector = function (){
 			character:"",
 			group:""
 		}
+
+		MessageLog.trace("source_layer_path")
+		MessageLog.trace(source_layer_path)
  
 		var tail = "";
 		var character_found = false
@@ -32,7 +35,8 @@ OO.CharacterDetector = function (){
 
 		for(var s= slash_split.length-1 ; s >= 0 ; s--){
 			
-			var current_split = slash_split[s]; 
+			var current_split = slash_split[s].toLowerCase(); 
+			MessageLog.trace(current_split)
 			var underscore_split = current_split.split("_"); 
 			var before_underscore = underscore_split[0]
 
