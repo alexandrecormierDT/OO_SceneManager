@@ -35,21 +35,20 @@ OO.CharacterDetector = function (){
 
 		for(var s= slash_split.length-1 ; s >= 0 ; s--){
 			
-			var current_split = slash_split[s].toLowerCase(); 
+			var current_split =  slash_split[s]
+			var lowercase_split = current_split.toLowerCase(); 
 			MessageLog.trace(current_split)
-			var underscore_split = current_split.split("_"); 
+			var underscore_split = lowercase_split.split("_"); 
 			var before_underscore = underscore_split[0]
 
 			if(character_found==false){
 
 				if( before_underscore == uppercase_marker || before_underscore == marker){
 				
-					MessageLog.trace("current_split");
-					MessageLog.trace(current_split);
-					var six_split = current_split.split("-"); 
+					var six_split = lowercase_split.split("-"); 
 	
-					//in case the group is named "CH_JC-G"
-					if(six_split.length>1 && six_split[1]=="G"){
+					//in case the group is named "CH_JC-G" lower case
+					if(six_split.length>1 && six_split[1]=="g"){
 						return_obj.character =  six_split[0];
 					}else{
 						return_obj.character =  current_split;

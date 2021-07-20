@@ -42,8 +42,6 @@ OO.AssetDetector = function (){
 
 				if( markers.indexOf(before_underscore) != -1){
 
-					
-				
 					MessageLog.trace("current_split");
 					MessageLog.trace(current_split);
 					var six_split = lower_case_split.split("-"); 
