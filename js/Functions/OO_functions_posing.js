@@ -48,11 +48,16 @@ function create_posing_from_selection_process(_suffix){
 		//detecting asset from selected nodes
 		S.assets.detector.set_source_layer_path(selected_nodes_paths[0])
 		var detected_asset_code = S.assets.detector.get_asset_code()
+		var detected_group = S.assets.detector.get_asset_group()
 		var linked_asset_object = S.breakdown.get_asset_object_by_code(detected_asset_code)
+
+		MessageLog.trace("detected_group")
+		MessageLog.trace(detected_group)
 		
 		//creating posing object with the PosingCreator class
 		S.posings.creator.reset()
 		S.posings.creator.set_suffix(_suffix); 
+		S.posings.creator.set_group_path(detected_group); 
 		S.posings.creator.set_frame(frame.current()); 
 		S.posings.creator.set_frame_range(frame.current(),number_of_selected_frames); 
 		S.posings.creator.set_linked_asset_object(linked_asset_object); 
@@ -82,6 +87,11 @@ function import_library_posing_for_selected_asset_dialog(){
 	//detecting asset from selected nodes
 	S.assets.detector.set_source_layer_path(selected_nodes_paths[0])
 	var detected_asset_code = S.assets.detector.get_asset_code()
+	var detected_asset_group = S.assets.detector.get_asset_group()
+
+	MessageLog.trace("-----------------detected_asset_group")
+	MessageLog.trace(detected_asset_group)
+
 	var linked_asset_object = S.breakdown.get_asset_object_by_code(detected_asset_code)
 
 	//MessageLog.trace("linked_asset_object.get_code()")
@@ -109,6 +119,7 @@ function import_library_posing_for_selected_asset_dialog(){
 		var selected_posing_index = posing_names_string_array.indexOf(SELECTED_POSING.currentItem)
 		var selected_posing_obj =  asset_posing_obj_array[selected_posing_index]
 		try{
+			selected_posing_obj.set_group_path(detected_asset_group)
 			S.posings.apply_posing_at_frame(selected_posing_obj,frame.current())
 			
 		}catch(error){

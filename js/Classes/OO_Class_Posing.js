@@ -16,7 +16,7 @@ OO.Posing = function (_posing_name){
     var number_of_frames = 1; 
 
     //nodes
-    var group_path = [];
+    var group_path ="";
     var root_node_path = [];
     var nodes_path_array = [];
     var read_nodes_path_array = []
@@ -136,6 +136,8 @@ OO.Posing = function (_posing_name){
         return group_path
     }
     this.set_group_path = function(_gp){
+        MessageLog.trace("GROUP PATH SET TO")
+        MessageLog.trace(_gp)
         group_path = _gp
     }
     this.set_rigstate_object_array = function(_rsoa){
@@ -154,6 +156,8 @@ OO.Posing = function (_posing_name){
         var file_object =  new $.oFile(file_path);                
         var file_content = file_object.read();    
         parsed_rigstate_object = new RigState() 
+        MessageLog.trace("group_path")
+        MessageLog.trace(group_path)
         parsed_rigstate_object.loadFromString(file_content,0,group_path);
         rigstate_object_array.push(parsed_rigstate_object)
     }

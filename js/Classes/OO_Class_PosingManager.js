@@ -67,13 +67,13 @@ OO.PosingManager = function(_S){
         var nposing = new OO.Posing(posing_name)
         nposing.set_folder_path(_posing_folder_path)
         nposing.set_asset_code(_asset_object.get_code())
-        nposing.set_group_path("Top/"+_asset_object.get_code())
-
+        
         //tpl
         var tpl_object = S.tpl.parse_tpl_file_to_tpl_object(nposing.get_file_path("tpl"))
         var number_of_frames = 1
         if(tpl_object !=false){
             number_of_frames = tpl_object.data.number_of_frames
+            nposing.set_group_path(tpl_object.data.group_path)
         }
 
         //rigstate

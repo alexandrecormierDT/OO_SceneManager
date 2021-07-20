@@ -1,5 +1,6 @@
-OO.AssetDetector = function (){
+OO.AssetDetector = function (_S){
 	
+	var S = _S
 	var source_layer_path = ""
 	var markers = ["ch","pr","bg","fx","refx","vh"]; 
 	var detected_asset_code = ""; 
@@ -45,14 +46,17 @@ OO.AssetDetector = function (){
 					MessageLog.trace("current_split");
 					MessageLog.trace(current_split);
 					var six_split = lower_case_split.split("-"); 
-	
 					//in case the group is named "CH_JC-G"
-					if(six_split.length>1 && six_split[1]=="g"){
+
+					
+					if(six_split.length>1){
 						return_obj.character =  six_split[0];
 					}else{
 						return_obj.character =  lower_case_split;
 					}
-					character_found = true;
+					if(S.breakdown.get_asset_object_by_code(return_obj.character)!=false){
+						character_found = true;
+					}
 					tail= current_split
 				}
 

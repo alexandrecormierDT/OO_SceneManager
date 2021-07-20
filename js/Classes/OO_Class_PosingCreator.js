@@ -13,8 +13,9 @@ OO.PosingCreator = function(_S){
     var current_number_of_frames = 1;
     var current_frame = 1;
     var current_nodes_path_array;
-
-
+    var current_group_path;
+    
+    
     this.reset = function(){
         current_name = ""; 
         current_nodes_array = [];
@@ -23,6 +24,7 @@ OO.PosingCreator = function(_S){
         current_root_node_path = ""; 
         current_start_frame = 1;
         current_number_of_frames = 1;
+        current_group_path = ""
     }
 
     this.set_suffix = function(_sfx){
@@ -47,7 +49,7 @@ OO.PosingCreator = function(_S){
     }
 
     this.set_group_path= function(_gp){
-        current_group_path = _cn
+        current_group_path = _gp
     }
 
 
@@ -62,7 +64,7 @@ OO.PosingCreator = function(_S){
 
     function format_group_path(){
 
-        return "Top/"+current_linked_asset_object.get_code()
+        return current_group_path
     }
 
     function create_full_group_rigstate(){
