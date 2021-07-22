@@ -1,7 +1,7 @@
 OO.ShotgridReader = function(_S){
 
     var S = _S; 
-    var sg_request_bat_file_path = "P:\\projects\\billy\\marc_to_alex\\sg_requests\\sg_request.bat"
+    var sg_request_bat_file_path = "P:/projects/billy/marc_to_alex/sg_requests/sg_request.bat"
     var temp_file_folder_path = System.getenv("TEMP")
 
     //var project = S.get_current_project();
@@ -11,9 +11,10 @@ OO.ShotgridReader = function(_S){
         var tag = _tag!=undefined ? _tag : "notag"
         var random_serial = new Date().getTime()
         var file_name = "sgrequest_"+tag+"_"+random_serial+".txt";
-        var temp_file_path = temp_file_folder_path+"\\"+file_name
+        var temp_file_path = temp_file_folder_path+"/"+file_name
         return temp_file_path
     }
+
 
     function send_shot_request_for_code(_shot_code){
         var out_file_path = format_out_file_path(_shot_code)

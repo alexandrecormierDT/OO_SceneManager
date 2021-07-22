@@ -40,7 +40,12 @@ OO.PortalFiter  = function(_S){
     this.fit_portal_to_camera = function(_portal){
 
         var shot_cadre = this.get_current_cadre_from_psd(_portal.get_path('psd'))
-        //var shot_cadre = this.get_current_cadre_from_svg(_portal.get_path('svg');)
+		
+		// in case no data where ectracted from the psd 
+		if(shot_cadre == undefined){
+			S.log.add("[PortalFiter] reading from psd issued no data , switching back to svg  ","rollback");	
+			shot_cadre = this.get_current_cadre_from_svg(_portal.get_path('svg'))
+		}
 
         //fetch portal nodes
         var current_portal_tree =_portal.get_tree()

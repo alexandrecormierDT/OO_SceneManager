@@ -35,7 +35,7 @@ OO.Breakdown = function(_S){
 
     }
 
-    /*this.load_current_shot_breakdown = function(){
+    this.load_current_shot_breakdown = function(){
         try{
             var current_shot_code = S.context.get_shot(); 
             if(current_shot_code != false){
@@ -45,11 +45,12 @@ OO.Breakdown = function(_S){
         }catch(error){
             S.log.add_script_error_object(error); 
         }
-    }*/
+    }
     
-    this.load_current_shot_breakdown = function(){
+    /*this.load_current_shot_breakdown = function(){
         try{
             var current_shot_code = S.context.get_shot(); 
+            
             if(current_shot_code != false){
                 current_shot = parse_shot_csv_and_find_shot(current_shot_code); 
                 asset_list = parse_asset_code_list(current_shot.asset_code_list);
@@ -59,7 +60,7 @@ OO.Breakdown = function(_S){
         }catch(error){
             S.log.add_script_error_object(error); 
         }
-    }     
+    }  */   
 
     //SHOTGRID
     function parse_shot_from_shotgrid(_shot_code){

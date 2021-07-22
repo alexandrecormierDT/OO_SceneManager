@@ -19,6 +19,8 @@ OO.PSDReader= function (_S){
 
 	function get_json_object(){
 
+		//TODO : sometimes the json gives 
+
 		var path = format_json_path()
 		json_file_object = new $.oFile(path);
 		var file_content = ""; 
@@ -33,8 +35,8 @@ OO.PSDReader= function (_S){
 				file_content = json_file_object.read()
 				return_object = JSON.parse(file_content)	
 			}			
-		
 		}
+
 		return return_object
 	}
 
