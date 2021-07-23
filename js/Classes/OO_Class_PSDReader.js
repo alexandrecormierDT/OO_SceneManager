@@ -24,17 +24,21 @@ OO.PSDReader= function (_S){
 		var path = format_json_path()
 		json_file_object = new $.oFile(path);
 		var file_content = ""; 
-		var return_object  = false; 
-		
+	
 		if(json_file_object.exists==true){
 			file_content = json_file_object.read()
-			return_object = JSON.parse(file_content)
 		}else{
 			create_json()
 			if(json_file_object.exists==true){
 				file_content = json_file_object.read()
-				return_object = JSON.parse(file_content)	
 			}			
+		}
+		var return_object = false;
+		try {
+			return_object = JSON.parse(file_content)	
+		} catch (error) {
+			S.log.add_script_error_object(error); 
+			return_object = false;
 		}
 
 		return return_object

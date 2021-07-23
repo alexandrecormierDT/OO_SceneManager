@@ -40,7 +40,7 @@ OO.PortalFiter  = function(_S){
     this.fit_portal_to_camera = function(_portal){
 
         var shot_cadre = this.get_current_cadre_from_psd(_portal.get_path('psd'))
-		
+
 		// in case no data where ectracted from the psd 
 		if(shot_cadre == undefined){
 			S.log.add("[PortalFiter] reading from psd issued no data , switching back to svg  ","rollback");	
@@ -55,15 +55,12 @@ OO.PortalFiter  = function(_S){
         if(shot_cadre != false && shot_cadre != undefined){
             if(shot_cadre.has_rect()==true){
                 this.transform_peg_to_fit_cadre(portal_peg,shot_cadre);
-                S.log.add("[PortalFiter] portal fit to camera ","success");				
-                
+                S.log.add("[PortalFiter] portal fit to camera ","success");				              
             }else{
-                
                 S.log.add("[PortalFiter] no cadre detected, scaling secu by default ","error");					
                 this.scale_to_camera(portal_peg);
             }
         }
-        
     }
     
 
