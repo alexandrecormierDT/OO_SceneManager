@@ -9,7 +9,7 @@ OO.ImageFile = function(_image_file_path){
     
 
 	this.get_dimention_object = function(){
-        var resolution_object = parse_object_from_created_or_found_dimention_txt()
+        var resolution_object = parse_object_from_created_dimention_txt()
         return resolution_object;
 	}
 
@@ -18,17 +18,9 @@ OO.ImageFile = function(_image_file_path){
         return  str.replace(/(\r\n|\n|\r)/gm, "");
     }
 
-    function parse_object_from_created_or_found_dimention_txt(){
-        // we create the file if non exsitant
+    function parse_object_from_created_dimention_txt(){
 
-		var file_test = new $.oFile(remove_line_breaks(image_file_path+".txt"));
-        //MessageLog.trace("PATH")
-        //MessageLog.trace(remove_line_breaks(image_file_path+".txt"))
-        var file_created = false;
-
-        if( file_test.exists == false){
-            file_created = create_image_dimention_txt_for_image_file()
-        }
+        file_created = create_image_dimention_txt_for_image_file()
 
         txt_file_object = new $.oFile(image_file_path+".txt");
         
@@ -79,16 +71,25 @@ OO.ImageFile = function(_image_file_path){
 
         // P:/projects/billy/library/boxanim/assets/Character/ch_jack/png/ch_jack.png PNG 1920x1080 1920x1080+0+0 8-bit sRGB 272985B 0.000u 0:00.023
         // 0                                                                           1     2             3      4     5      6       7     8
+        // PNG 4001x2250 4001x2250+0+0 8-bit sRGB 1.10264MiB 0.000u
+
 
         //we parse the dimentions
         var space_split = _content.split(" ");
         var dimentions = space_split[2]+""
         var x_split = dimentions.split("x")
 
+        
+
+        MessageLog.trace("CONTENT")
+        MessageLog.trace(_content)
+
         var obj  = {
             width : parseFloat(x_split[0]),
             height :parseFloat(x_split[1])
         }
+
+        
 
         return obj;
 

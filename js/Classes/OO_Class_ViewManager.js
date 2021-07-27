@@ -346,7 +346,7 @@ OO.ViewManager = function(_S){
 
 		params.renderStaticCameraAtSceneRes = true;
 		params.fileFormat = 'PNG4'
-		params.borderScale = _frameScale;
+		params.borderScale = parseInt(_frameScale);
 		params.exportCameraFrame = false;
 		params.exportAllCameraFrame = false;
 		params.filePattern = path_object.file_bare;
@@ -358,6 +358,8 @@ OO.ViewManager = function(_S){
 		params.layoutname = path_object.file_bare;
 
 		var exporter = new LayoutExport();
+		MessageLog.trace("params.borderScale")
+		MessageLog.trace(params.borderScale)
 		exporter.addRender(params);
 
 		if (!exporter.save(params)){

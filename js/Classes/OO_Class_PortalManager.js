@@ -121,6 +121,8 @@ OO.PortalManager = function(_S){
 					}
 				}
 
+				var push_png_scale = OO.filter_string(cur_script_module.push_png_scale);
+				var push_png_resolution = OO.filter_string(cur_script_module.push_png_resolution);
 				var code = OO.filter_string(cur_script_module.code);
 				var id = OO.filter_string(cur_script_module.id);
 
@@ -147,9 +149,12 @@ OO.PortalManager = function(_S){
 				nportal.set_path('png',png_path)
 				nportal.set_path('psd',psd_path)
 				nportal.set_path('svg',svg_path)
+				
 
 				nportal.set_last_pull(last_pull)
 				nportal.set_content(content)
+				nportal.set_push_png_scale(push_png_scale)
+				nportal.set_push_png_resolution(push_png_resolution)
 
 				fetched_portals.push(nportal);
 
@@ -611,7 +616,11 @@ OO.PortalManager = function(_S){
 			
 			var new_tpl = S.tpl.parse_portal_object_to_tpl_object(_portal)
 			return_obj.tpl_id = new_tpl.data.tpl_id
-			
+
+			var folder_object = new $.oFolder(export_folder_path);
+			folder_object.create();
+			S.log.add("[PortalManager] creating folder "+export_folder_path,"files");
+
 			switch (_data_type){
 				
 				case 'psd': 
@@ -621,6 +630,8 @@ OO.PortalManager = function(_S){
 				case 'png': 					
 
 					var display = _portal.get_code()+"_version"
+					MessageLog.trace("''''''''''''''''''''''_portal.get_push_png_scale()''''''''''''''''''''''")
+					MessageLog.trace(_portal.get_push_png_scale())
 					return_obj.png_path = S.views.export_currentframe_png_to(export_path,_portal.get_push_png_scale(),display);
 
 				break;			
@@ -683,9 +694,8 @@ OO.PortalManager = function(_S){
 			this.delete_portal(current_portal);
 		}
 	}
-	
 
-	function udpate_portal_paths_from_vault(_portal,_new_departement){
+	this.udpate_portal_paths_from_vault = function(_portal,_new_departement){
 	
 		var linked_asset = S.breakdown.get_asset_object_by_code(_portal.get_code());
 		var new_departement = _new_departement != undefined ? _new_departement : _portal.get_departement();
@@ -724,7 +734,7 @@ OO.PortalManager = function(_S){
 			for(var p = 0 ; p < loaded_portal_objects_array.length; p++){
 				var current_portal = loaded_portal_objects_array[p]
 				S.log.add("updating paths of portal - "+current_portal.get_code(),"process");
-				udpate_portal_paths_from_vault(current_portal);
+				this.udpate_portal_paths_from_vault(current_portal);
 			}	
 	
 		}catch(error){
@@ -751,7 +761,7 @@ OO.PortalManager = function(_S){
 				current_portal.set_departement(_departement)
 				portal_backdrop.title= current_portal.get_backdrop_name()
 
-				udpate_portal_paths_from_vault(current_portal,_departement);
+				this.udpate_portal_paths_from_vault(current_portal,_departement);
 			}	
 	
 		}catch(error){

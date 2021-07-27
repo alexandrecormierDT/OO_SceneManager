@@ -644,15 +644,7 @@ OO.TreeManager = function(_S){
 
 	}
 	
-	
-	
-	this.import_psd_in_group = function(_code,_path,_group){
-		
-		S.log.add("importing psd "+_path,"file")
-		var nodes = _group.importPSD(_path,true,false,false,"ASIS");  
-		return nodes; 		
-		
-	}	
+
 	
 	this.scale_bg_node_to_png_size_with_cadre = function(_node_path,_png_path,_cadre){
 
@@ -698,17 +690,24 @@ OO.TreeManager = function(_S){
 			S.log.add("[ImageFile] could not create or find dimention txt")
 		}else{
 			var final_sy = parseFloat(dimention_object.height/1080)
+			MessageLog.trace("final_sy")
+			MessageLog.trace(final_sy)
 
 			//a quick fix for data that wasn't working (harmony need 3 instead of 2.13)
 			if(final_sy > 2 ){
 				final_sy = 3;
 			}
 			var final_sx = final_sy;
-				
-			//changin node scale
+
+			MessageLog.trace("final_sx")
+			MessageLog.trace(dimention_object.height)
+			MessageLog.trace(dimention_object)
+
 			node.setTextAttr(_node_path, "SCALE.XY", frame.current(),final_sx);				
 			node.setTextAttr(_node_path, "SCALE.X", frame.current(),final_sx);				
 			node.setTextAttr(_node_path, "SCALE.Y", frame.current(),final_sx);
+
+				
 		}
 				
 	} 	
@@ -820,7 +819,26 @@ OO.TreeManager = function(_S){
 		onode.createAttribute("tree_id", type, displayName, linkable);
 		
 	}
+
 	
+	
+	this.import_psd_in_group = function(_code,_path,_group){
+		
+		S.log.add("[TreeManager] importing psd "+_path,"file")
+		var nodes = _group.importPSD(_path,true,false,false,"ASIS");  
+		S.log.add("[TreeManager] nodes created "+nodes,"nodes")
+		return nodes; 		
+		
+	}	
+
+	this.read_Z_from_node_name = function(_node_name){
+		var Z = false; 
+		// detect nomenclature 
+		// read watever is after the underscre 
+		// how do we detect sign ? 
+		return Z; 
+	}
+
 
 	this.arange_psd_node = function(_tree){
 		
@@ -844,22 +862,27 @@ OO.TreeManager = function(_S){
 		
 		for(var r = reads.length-1 ; r >= 0 ; r--){
 			
-			var cr = reads[r]; 
+			var cr = $.scene.getNodeByPath(reads[r]); 
+
+			if(cr != undefined){
+
+				var npeg = group.addNode("PEG",cr.name+"-P",new $.oPoint(cr.x,cr.y-40,0))
+				top_peg.linkOutNode(npeg);
+				cr.linkOutNode(final_comp);
+				
+				var Z = (reads.length-r)*z_factor;
+				//Z = this.read_Z_from_node_name(cr.name)
+				
+				npeg.linkOutNode(cr);
+				cr.attributes.can_animate.setValue("N");
+				cr.attributes.use_drawing_pivot.setValue("Apply Embedded Pivot on Parent Peg");
+				npeg.attributes.position.separate.setValue("On");
+				npeg.attributes.position.z.setValue(Z);
+				
+				_tree.add_node(npeg);
+
+			}
 			
-			var npeg = group.addNode("PEG",cr.name+"-P",new $.oPoint(cr.x,cr.y-40,0))
-			top_peg.linkOutNode(npeg);
-			cr.linkOutNode(final_comp);
-			
-			var Z = (reads.length-r)*z_factor;
-			var Z = (reads.length-r)*z_factor;
-			
-			npeg.linkOutNode(cr);
-			cr.attributes.can_animate.setValue("N");
-			cr.attributes.use_drawing_pivot.setValue("Apply Embedded Pivot on Parent Peg");
-			npeg.attributes.position.separate.setValue("On");
-			npeg.attributes.position.z.setValue(Z);
-			
-			_tree.add_node(npeg);
 			
 
 		}

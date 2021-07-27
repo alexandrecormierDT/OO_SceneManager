@@ -48,11 +48,10 @@ OO.Tree = function(_code,_nodes){
 	
 	this.get_reads = function(){
 		var read_list = []; 
-		for(var n = 0 ; n < tree_nodes.length ; n ++){
-			
-			var current_onode = OO.doc.getNodeByPath(tree_nodes[n]); 
-			if(current_onode.type == "READ"){
-				read_list.push(OO.doc.getNodeByPath(tree_nodes[n]));
+		for(var n = 0 ; n < tree_nodes.length ; n ++){		
+			var current_node = tree_nodes[n]; 
+			if(node.type(current_node)== "READ"){
+				read_list.push(current_node);
 			}
 		}	
 		return read_list;
