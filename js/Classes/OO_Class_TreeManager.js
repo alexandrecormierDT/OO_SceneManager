@@ -832,7 +832,20 @@ OO.TreeManager = function(_S){
 	}	
 
 	this.read_Z_from_node_name = function(_node_name){
-		var Z = false; 
+		var Z = 0 
+		var underscore_split = _node_name.split("_"); 
+		var prefix = underscore_split[0]
+
+		valid_prefix = ['BG','OL']
+
+		if(valid_prefix.indexOf(prefix)!=-1){
+			if(underscore_split[1]==""){
+				Z = "-"+underscore_split[2]
+			}else{
+				Z = underscore_split[1]
+			}
+		}
+
 		// detect nomenclature 
 		// read watever is after the underscre 
 		// how do we detect sign ? 
@@ -871,7 +884,7 @@ OO.TreeManager = function(_S){
 				cr.linkOutNode(final_comp);
 				
 				var Z = (reads.length-r)*z_factor;
-				//Z = this.read_Z_from_node_name(cr.name)
+				Z = this.read_Z_from_node_name(cr.name)*z_factor
 				
 				npeg.linkOutNode(cr);
 				cr.attributes.can_animate.setValue("N");
