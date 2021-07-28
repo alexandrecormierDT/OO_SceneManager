@@ -37,6 +37,7 @@ OO.PortalFiter  = function(_S){
 
     }
 
+
     this.fit_portal_to_camera = function(_portal){
 
         var shot_cadre = this.get_current_cadre_from_psd(_portal.get_path('psd'))
@@ -62,7 +63,9 @@ OO.PortalFiter  = function(_S){
             }
         }
     }
-    
+
+
+	
 
 	
 	this.scale_to_camera = function(top_peg){
@@ -78,6 +81,8 @@ OO.PortalFiter  = function(_S){
 		top_peg.attributes.scale.y.setValue(ratio);		
 		
 	}
+
+	
 
 
     this.transform_peg_to_fit_cadre = function(top_peg,cadre){
@@ -242,7 +247,63 @@ OO.PortalFiter  = function(_S){
 	}
 
 
+	this.fit_character_portal_to_current_psd = function(_portal){
 
+		// S.psd_reader needs to be set (path) and character_rest needs to be fetch (PSDReader class)
+		var character_id =_portal.get_id()
+		var transformation_object = S.psd_reader.get_character_transformation_by_id(character_id)
+		var portal_tree = _portal.get_tree()
+		if( transformation_object!=false){
+			var portal_peg = portal_tree.get_key_node("PORTAL_PEG");
+			this.transform_peg_to_fit_character(portal_peg,transformation_object)
+		}
+	}
+
+	this.fit_character_portal_to_bg_portal = function(_portal,_bg_portal){
+
+
+	}
+ 
+	this.transform_peg_to_fit_character = function(_top_peg,_transformation_object){
+
+				//FINAL SCALE 
+				var final_sx = _transformation_object.scale_x ;
+				var final_sy = _transformation_object.scale_x ;
+				
+				// FINAL POSITIONS
+				var RATIO_PIXEL_X = parseFloat(16/(1920/2))
+				var RATIO_PIXEL_Y = parseFloat(12/(1080/2))
+
+				var add_x = _top_peg.position.x + _transformation_object.dx
+				var add_y = _top_peg.position.y + _transformation_object.dy
+				
+				var final_x =  parseFloat(add_x * RATIO_PIXEL_X) 
+				//var final_x =  parseFloat(cadre_distance_to_cam_x * RATIO_PIXEL_X) + parseFloat(cam_peg_x);
+				var final_y =  parseFloat(add_y * RATIO_PIXEL_Y)
+				//var final_y =  parseFloat(-cadre_distance_to_cam_y * RATIO_PIXEL_Y)+ parseFloat(cam_peg_y);
+				var final_z =  0;			
+
+				//INJECT X
+				_top_peg.attributes.position.x.setValue(final_x);
+				
+				//INJECT Y
+				_top_peg.attributes.position.y.setValue(final_y);
+				
+				//INJECT Y
+				_top_peg.attributes.position.z.setValue(final_z);
+				
+				//INJECT SX
+				_top_peg.attributes.scale.x.setValue(final_sx);
+				
+				//INJECT SY
+				_top_peg.attributes.scale.y.setValue(final_sy);
+
+				S.log.add("[PortalFiter]  - changing bg scale SX = "+final_sx+ " SY = "+final_sy,"process");
+				S.log.add("[PortalFiter]  - changing bg position X = "+final_x+ " Y = "+final_y+ " Z = "+final_z,"process");
+
+	}
+	
+		
 
 
 

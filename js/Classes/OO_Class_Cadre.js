@@ -2,7 +2,7 @@
 
 OO.Cadre = function (_name){
 
-    var types = ["CameraIn","CameraOut","Character","Prop"]
+    
     
     this.name = _name;
 	this.rect = {x:9999999999,y:0,width:0,height:0};
@@ -18,4 +18,5 @@ OO.Cadre = function (_name){
 
    
 }
+
 

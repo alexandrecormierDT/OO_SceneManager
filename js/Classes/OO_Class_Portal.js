@@ -46,7 +46,7 @@
 
 	*/
 
-OO.Portal = function (){
+OO.Portal = function (){ 
 
 	
 	var portal_code = null;

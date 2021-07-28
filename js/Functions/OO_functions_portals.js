@@ -787,6 +787,49 @@ function fit_bg_portals_to_camera(){
 	
 }
 
+function fit_anim_portals_to_bg(){
+	
+	//FIT BG TO CAMERA
+	// loop through bg portals and change thier layout peg transform in order to fit the cadre of the current shot with the scene camera. 
+	
+	var S = new OO.SceneManager();	
+
+	try{
+
+		//fetching bg portals
+		S.portals.load_from_scene_by_sg_asset_type('BG');
+		var bg_portal_list = S.portals.get_list(); 
+		var source_bg_portal = bg_portal_list[0];
+		var source_psd_path = source_bg_portal.get_path('psd')
+
+		S.psd_reader.set_path(source_psd_path)
+		//HERE
+		S.psd_reader.get_psd_layer_object_array()
+		S.psd_reader.fetch_character_rest_objects_from_meta_txt();
+
+		S.portals.load_from_scene_by_sg_asset_type('anim');
+		var anim_portal_list = S.portals.get_list(); 
+
+		for(var p = 0 ; p <  anim_portal_list.length; p++){
+			var current_portal = anim_portal_list[p];
+			S.portals.fiter.fit_character_portal_to_current_psd(current_portal);
+		}		
+
+	}catch(error){
+		S.log.add_script_error_object(error); 
+	}
+
+
+	//log
+	S.log.save();	
+	S.log.set_script_tag("OO_fit_bg_to_camera"); 
+	S.log.create_scene_script_log_file_and_folder(); 
+	S.log.save_scene_script_log_file();
+	
+	
+}
+
+
 
 
 function delete_bg_portals(){
