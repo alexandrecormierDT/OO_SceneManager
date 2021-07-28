@@ -156,7 +156,7 @@ OO.Posing = function (_posing_name){
         var file_object =  new $.oFile(file_path);                
         var file_content = file_object.read();    
         parsed_rigstate_object = new RigState() 
-        MessageLog.trace("group_path")
+        MessageLog.trace("------> group_path red by rigstate")
         MessageLog.trace(group_path)
         parsed_rigstate_object.loadFromString(file_content,0,group_path);
         rigstate_object_array.push(parsed_rigstate_object)

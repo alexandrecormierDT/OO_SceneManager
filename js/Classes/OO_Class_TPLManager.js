@@ -195,6 +195,14 @@ OO.TPLManager = function(_S){
         copyPaste.setPasteSpecialDrawingFileMode("ONLY_CREATE_IF_DOES_NOT_EXIST")
         copyPaste.setPasteSpecialDrawingAction("ADD_OR_REMOVE_EXPOSURE")
 
+        S.log.add("[TPLManager] COPYFROMTEMPLATE ARGUMENTS ","arguments")
+        S.log.add("[TPLManager] [TPLpath] "+_tpl_obj.get_tpl_folder_path(),"arguments")
+        S.log.add("[TPLManager] [startframe] "+_tpl_obj.data.start_frame,"arguments")
+        S.log.add("[TPLManager] PASTE ARGUMENTS ","arguments")
+        S.log.add("[TPLManager] [slectionOfNodes] "+_tpl_obj.data.nodes_path_list,"arguments")
+        S.log.add("[TPLManager] [startFrame] "+_frame,"arguments")
+        S.log.add("[TPLManager] [numFrames] "+_tpl_obj.data.number_of_frames,"arguments")
+
        var drag_object = copyPaste.copyFromTemplate(_tpl_obj.get_tpl_folder_path(), _tpl_obj.data.start_frame,  _tpl_obj.data.number_of_frames, copyPaste.getCurrentCreateOptions() );
        var paste_process = copyPaste.paste(drag_object,_tpl_obj.data.nodes_path_list,_frame,_tpl_obj.data.number_of_frames,copyPaste.getCurrentPasteOptions() )	
     

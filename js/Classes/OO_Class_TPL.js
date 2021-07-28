@@ -43,7 +43,7 @@ OO.TPL = function (_name){
     }
 
     this.get_tpl_folder_path = function(){
-        this.data.tpl_folder_path =this.data.folder_path+this.data.name+".tpl";
+        this.data.tpl_folder_path =make_path_compatible_for_json(this.data.folder_path+this.data.name+".tpl");
         return this.data.tpl_folder_path
     }
 

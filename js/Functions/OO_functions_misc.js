@@ -280,3 +280,10 @@ function get_time_stamp_string(){
 	return str;			
 	
 }
+
+function make_path_compatible_for_json(_path){
+	var parts = _path.split('/');
+	   var output = parts.join('//');
+	return output; 
+
+}
